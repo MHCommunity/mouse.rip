@@ -32,7 +32,7 @@ export default function Home() {
           </a>
 
           <a
-            href="https://greasyfork.org/en/scripts/by-site/mousehuntgame.com"
+            href="https://m-h-c-t.github.io/mh-info/"
             className={styles.card}
           >
             <h2>Userscripts &rarr;</h2>
