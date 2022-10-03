@@ -17,7 +17,7 @@ export default function Home() {
         </h1>
 
         <p className={styles.description}>
-          Guides, tools, and resources for <a href="https://mousehuntgame.com">MouseHunter</a>.
+          Guides, tools, and resources for <a href="https://mousehuntgame.com">MouseHunt</a>.
         </p>
 
         <div className={styles.grid}>
@@ -47,6 +47,22 @@ export default function Home() {
             <p>
               Tools to help you calculate and optimize your hunts.
             </p>
+          </a>
+
+          <a
+            href="https://mhwiki.hitgrab.com/wiki/index.php/MouseHunt_Wiki"
+            className={styles.card}
+          >
+            <h2>MHWiki &rarr;</h2>
+            <p>Mousehunt's wiki, with a lot of information and history.</p>
+          </a>
+
+          <a
+            href="https://tsitu.github.io/MH-Tools/cre.html"
+            className={styles.card}
+          >
+            <h2>CRE &rarr;</h2>
+            <p>A Catch Rate Estimator (tsitu) which helps you decide what setup to use.</p>
           </a>
         </div>
       </main>
