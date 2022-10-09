@@ -17,7 +17,7 @@ export default function Home() {
         </h1>
 
         <p className={styles.description}>
-          Guides, tools, and resources for <a href="https://mousehuntgame.com">MouseHunter</a>.
+          Guides, tools, and resources for <a href="https://mousehuntgame.com">MouseHunt</a>.
         </p>
 
         <div className={styles.grid}>
