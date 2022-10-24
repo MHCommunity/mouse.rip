@@ -15,13 +15,13 @@ export default function Tools() {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 
-			<main className='w-full mx-auto px-5 md:px-0'>
-				<Header title='Tools' className='text-green-600' />
+			<main className='w-full px-5 mx-auto md:px-0'>
+				<Header text='Tools' className='text-green-600' />
 
-				<div role='list' className='max-w-3xl mx-auto grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2'>
+				<div role='list' className='grid max-w-3xl grid-cols-1 gap-4 mx-auto mt-4 sm:grid-cols-2'>
 					{tools.map((tool) => (
 							<Link key={tool.name} href={tool.url}>
-								<a className="bg-white border-2 rounded-lg  border-slate-100 hover:ring-1 ring-green-600 group">
+								<a className="bg-white border-2 rounded-lg border-slate-100 hover:ring-1 ring-green-600 group">
 									<div className="flex items-start px-6 py-4">
 										<div className="mt-2 shrink-0">
 											<Icon icon={tool.icon} className='text-green-600 h-9 w-9 group-hover:text-green-900' />

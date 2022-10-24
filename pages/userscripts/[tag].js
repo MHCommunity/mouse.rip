@@ -2,8 +2,8 @@ import Head from 'next/head'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import UserscriptsList from '../../components/UserscriptsList'
-
 import userscripts from '../../data/userscripts.json';
+import tags from '../../data/tags.json';
 
 export async function getStaticProps({ params }) {
 	return {
@@ -41,12 +41,8 @@ export async function getStaticPaths() {
 }
 
 export default function Userscripts({ tag = 'all' }) {
-	let title = tag.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-	title = tag === 'ui' ? 'UI' : title;
-	title = tag === 'all' ? '' : title;
-
-	title = title ? `${title} Userscripts` : 'Userscripts';
-
+	const tagData = tags.find((t) => t.id === tag)
+	const title = tagData ? tagData.name : tag
 
 	return (
 		<div className='bg-white'>
@@ -56,7 +52,7 @@ export default function Userscripts({ tag = 'all' }) {
 			</Head>
 
 			<main>
-				<Header title={title} className='text-purple-700' />
+				<Header text={title} className='text-purple-700' />
 				<UserscriptsList tag={tag} />
 			</main>
 			<Footer />

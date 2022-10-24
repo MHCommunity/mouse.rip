@@ -18,8 +18,8 @@ export default function Home() {
       </Head>
 
       <main>
-        <Header title='Tools, Guides, and Resources' main='true' />
-        <div className='max-w-3xl mx-auto px-5 md:px-0'>
+        <Header text='Tools, Guides, and Resources' main='true' />
+        <div className='max-w-3xl px-5 mx-auto md:px-0'>
           <ul role='list' className='grid grid-cols-1 gap-5 mt-3 sm:grid-cols-2 sm:gap-6'>
             <li className='flex col-span-1 rounded-md shadow-md'>
               <Link href='https://guide.mouse.rip/'>

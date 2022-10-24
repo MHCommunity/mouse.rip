@@ -13,7 +13,7 @@ export default function Userscripts() {
       </Head>
 
       <main>
-          <Header title='Userscripts' className='text-purple-700' />
+          <Header text='Userscripts' className='text-purple-700' />
           <UserscriptsList />
       </main>
       <Footer />
