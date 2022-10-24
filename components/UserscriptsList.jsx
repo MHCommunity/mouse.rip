@@ -4,7 +4,7 @@ import userscripts from '../data/userscripts.json'
 
 export default function Userscripts({ tag = 'all' }) {
 	const tags = [
-		'All',
+		'all',
 		'Event',
 		'Location',
 		'Maps',
@@ -27,7 +27,7 @@ export default function Userscripts({ tag = 'all' }) {
 			<div role='list' className='grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2'>
 				{userscripts
 					.filter((userscript) => {
-						if (tag === 'All') return true;
+						if (tag === 'all') return true;
 						return userscript.tags.includes(tag);
 					})
 					.map((userscript) => (
