@@ -12,6 +12,6 @@ module.exports = {
         destination: 'https://tsitu.github.io/MH-Tools/cre.html',
         permanent: true,
       },
-    ]
+    ];
   }
-}
+};
