@@ -27,7 +27,7 @@ export default function Userscripts({ tag = 'all' }) {
 			<div role='list' className='grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2'>
 				{userscripts
 					.filter((userscript) => {
-						if (tag === 'all') return true;
+						if (tag === 'All') return true;
 						return userscript.tags.includes(tag);
 					})
 					.map((userscript) => (
