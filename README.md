@@ -50,9 +50,12 @@ When you're finished, you can check for any errors with:
 
 If you're happy with your changes, you can submit a Pull Request!
 
-## 🗒️ Updating the tools and userscript lists
+## 🗒️ Updating the content
 
-The tools and userscript lists are generated from the JSON files in the [`data`](https://github.com/MHCommunity/mouse.rip/tree/main/data) directory. To make a change to these, you can edit and open a Pull Request directly on GitHub by clicking the "Edit this file" button on the page.
+- The **Tools** and **Userscripts** lists are generated from the JSON files in the [`data`](https://github.com/MHCommunity/mouse.rip/tree/main/data) directory.
+- Redirects are handled in [`next.config.js`](https://github.com/MHCommunity/mouse.rip/tree/main/next.config.js).
+
+If you're not familar with Git or the command line and want to make a change to these, you can edit and open a Pull Request directly on GitHub by clicking the "Edit this file" button on the page.
 
 ## 💬 Discussion & Feedback
 
