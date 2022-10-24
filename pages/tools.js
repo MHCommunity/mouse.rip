@@ -38,5 +38,5 @@ export default function Tools() {
       </main>
       <Footer />
     </div>
-  );
+  )
 }

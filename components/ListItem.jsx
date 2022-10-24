@@ -15,5 +15,5 @@ export default function ListItem({ name, description, url, icon, className }) {
         </div>
       </a>
     </Link>
-  );
+  )
 }

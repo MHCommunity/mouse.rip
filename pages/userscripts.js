@@ -18,5 +18,5 @@ export default function Userscripts() {
       </main>
       <Footer />
     </div>
-  );
+  )
 }

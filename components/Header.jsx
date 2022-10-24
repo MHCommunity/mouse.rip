@@ -14,5 +14,5 @@ export default function Header({ text, main, className }) {
         )}
       </div>
     </div>
-  );
+  )
 }

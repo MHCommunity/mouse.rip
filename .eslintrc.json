@@ -47,7 +47,6 @@
       "no-useless-concat":"error",
       "object-curly-spacing": ["error", "always"],
       "quotes": ["error", "single"],
-      "semi": ["error", "always"],
       "space-before-function-paren": ["error", {
           "anonymous": "always",
           "named": "never",

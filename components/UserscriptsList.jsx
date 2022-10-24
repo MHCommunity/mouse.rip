@@ -71,5 +71,5 @@ export default function Userscripts({ tag }) {
           ))}
       </div>
     </div>
-  );
+  )
 }

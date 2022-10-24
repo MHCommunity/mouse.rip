@@ -57,5 +57,5 @@ export default function Userscripts({ tag = 'all' }) {
       </main>
       <Footer />
     </div>
-  );
+  )
 }
