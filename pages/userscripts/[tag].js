@@ -52,7 +52,7 @@ export default function Userscripts({ tag = 'all' }) {
 		<div className='bg-white'>
 			<Head>
 				<title>{title} for MouseHunt - mouse.rip</title>
-				<meta name='description' content={`{title} for MouseHunt - mouse.rip`} />
+				<meta name='description' content={`${title} for MouseHunt - mouse.rip`} />
 			</Head>
 
 			<main>
