@@ -41,7 +41,7 @@ export async function getStaticPaths() {
 }
 
 export default function Userscripts({ tag }) {
-	const tagName = tag.replace(/-/g, ' ').replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+	const tagName = tag.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 	const pageTitle = tagName === 'Ui' ? 'User Interface Userscripts' : tagName ? `${tagName} userscripts` : 'Userscripts';
 
 	return (
