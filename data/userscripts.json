@@ -317,8 +317,8 @@
 	},
 	{
 		"name": "Spooky Shuffle Tracker",
-		"description": "Play Spooky Shuffle more conveniently by keeping track of what you've already uncovered",
-		"url": "https://greasyfork.org/en/scripts/34761-mousehunt-spooky-shuffle-tracker",
+		"description": "Play Spooky Shuffle more easily.",
+		"url": "https://greasyfork.org/en/scripts/453305-mousehunt-better-spooky-shuffle-tracker",
 		"tags": [
 			"event",
 			"halloween"
