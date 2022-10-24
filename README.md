@@ -7,7 +7,7 @@
  <a href="https://choosealicense.com/licenses/mit/">
   <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="MIT License">
  </a>
- <img src="https://img.shields.io/github/last-commit/MHCommunity/mouse.rip" alt="Last commit">
+ <img src="https://img.shields.io/github/workflow/status/MHCommunity/mouse.rip/Lint" alt="Build status">
 </p>
 
 ## 📖 About
