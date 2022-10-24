@@ -7,11 +7,15 @@
     "build": "next build",
     "export": "next build && next export",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "npm run lint:md && npm run lint:js",
+    "lint:js": "next lint",
+    "lint:js:fix": "next lint --fix",
+    "lint:md": "eslint *.md -c .eslintrc.json"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.12",
     "clsx": "^1.2.1",
+    "eslint-plugin-markdownlint": "^0.4.0",
     "next": "12.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
