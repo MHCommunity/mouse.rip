@@ -4,22 +4,43 @@ import userscripts from '../data/userscripts.json'
 
 export default function Userscripts({ tag = 'all' }) {
 	const tags = [
-		'all',
-		'Event',
-		'Location',
-		'Maps',
-		'Quality of Life',
-		'Stats',
-		'UI',
+		{
+			name: 'All',
+			key: 'all',
+		},
+		{
+			name: 'Event',
+			key: 'event',
+		},
+		{
+			name: 'Location',
+			key: 'location',
+		},
+		{
+			name: 'Maps',
+			key: 'maps',
+		},
+		{
+			name: 'Quality of Life',
+			key: 'quality-of-life',
+		},
+		{
+			name: 'Stats',
+			key: 'stats',
+		},
+		{
+			name: 'UI',
+			key: 'ui',
+		},
 	];
 
 	return (
 		<div className='px-3 mx-auto max-w-3xl'>
 			<div className='mx-auto mt-6 text-center'>
 				{tags.map((tag) => (
-					<Link key={tag} href={`/userscripts/${tag}`}>
+					<Link key={tag.key} href={`/userscripts/${tag.key}`}>
 						<a className='inline-flex items-center px-3 py-2 m-1 text-xs font-medium leading-4 text-purple-700 bg-purple-100 border border-transparent rounded-md hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2'>
-							{tag}
+							{tag.name}
 						</a>
 					</Link>
 				))}
@@ -27,7 +48,10 @@ export default function Userscripts({ tag = 'all' }) {
 			<div role='list' className='grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2'>
 				{userscripts
 					.filter((userscript) => {
-						if (tag === 'all') return true;
+						if (tag === 'all') {
+							return true;
+						}
+
 						return userscript.tags.includes(tag);
 					})
 					.map((userscript) => (

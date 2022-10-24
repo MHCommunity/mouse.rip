@@ -41,10 +41,6 @@ export async function getStaticPaths() {
 }
 
 export default function Userscripts({ tag = 'all' }) {
-	if ('ui' === tag) {
-		tag = 'ui';
-	}
-
 	const title = tag === 'all' ? 'Userscripts' : tag.charAt(0).toUpperCase() + tag.slice(1) + ' Userscripts';
 
 	return (
