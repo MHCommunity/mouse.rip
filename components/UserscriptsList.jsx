@@ -6,7 +6,7 @@ import userscripts from '../data/userscripts.json';
 export default function Userscripts({ tag }) {
   return (
     <div className="max-w-3xl px-3 mx-auto">
-      <div className="mx-auto mt-6 text-center">
+      <div className="mx-auto mt-6 text-center flex flex-wrap justify-center">
         <Link href={'/userscripts/'}>
           <a className={clsx('inline-flex items-center px-3 py-2 m-1 text-xs font-medium leading-4 text-purple-700 bg-purple-100 border border-transparent rounded-md hover:bg-purple-200', tag === 'all' ? 'bg-purple-200' : '')}>
 						All
