@@ -52,6 +52,10 @@ When you're finished, you can check for any errors with:
 
 If you're happy with your changes, you can submit a Pull Request!
 
+## 🗒️ Updating the tools and userscript lists
+
+The tools and userscript lists are generated from the JSON files in the [`data`](https://github.com/MHCommunity/mouse.rip/tree/main/data) directory. To make a change to these, you can edit and open a Pull Request directly on GitHub by clicking the "Edit this file" button on the page.
+
 ## 💬 Discussion & Feedback
 
 If you'd like to suggest a change, you can open an issue or a pull request. If you aren't comfortable or familiar with GithHub, or if you have any questions, you can chat in the `#community-tools` channel on the [MouseHunt Community Discord](https://discord.gg/Z9sxnD5reB/) server.
