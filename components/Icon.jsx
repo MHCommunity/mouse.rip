@@ -1,8 +1,13 @@
 import {
+  AcademicCapIcon,
   BeakerIcon,
   CakeIcon,
+  ChartBarIcon,
   ChartBarSquareIcon,
+  CircleStackIcon,
   ClockIcon,
+  CodeBracketIcon,
+  DocumentCheckIcon,
   GlobeEuropeAfricaIcon,
   IdentificationIcon,
   LinkIcon,
@@ -26,10 +31,15 @@ import {
 
 export default function Icon({ icon, className }) {
   switch (icon) {
+    case 'AcademicCap': return <AcademicCapIcon className={className} aria-hidden="true" />;
     case 'Beaker': return <BeakerIcon className={className} aria-hidden="true" />;
     case 'Cake': return <CakeIcon className={className} aria-hidden="true" />;
+    case 'ChartBar': return <ChartBarIcon className={className} aria-hidden="true" />;
     case 'ChartBarSquare': return <ChartBarSquareIcon className={className} aria-hidden="true" />;
+    case 'CircleStack': return <CircleStackIcon className={className} aria-hidden="true" />;
     case 'Clock': return <ClockIcon className={className} aria-hidden="true" />;
+    case 'CodeBracket': return <CodeBracketIcon className={className} aria-hidden="true" />;
+    case 'DocumentCheck': return <DocumentCheckIcon className={className} aria-hidden="true" />;
     case 'GlobeEuropeAfrica': return <GlobeEuropeAfricaIcon className={className} aria-hidden="true" />;
     case 'Identification': return <IdentificationIcon className={className} aria-hidden="true" />;
     case 'Link': return <LinkIcon className={className} aria-hidden="true" />;
