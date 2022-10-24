@@ -12,9 +12,7 @@
 
 ## 📖 About
 
-This is the repository powering [mouse.rip](https://mouse.rip), please open a Pull Request with any improvements or changes you'd like to see!
-
-Powered by [Next.js](https://nextjs.org/) and [Tailwind](https://tailwindcss.com/).
+This is the repository powering [mouse.rip](https://mouse.rip), powered by [Next.js](https://nextjs.org/) and [Tailwind](https://tailwindcss.com/).
 
 ## 🚀 Getting Started
 
