@@ -1,0 +1,14 @@
+[
+	{
+		"name": "MouseHunt Community Tools",
+		"description": "A collection of tools for MouseHunt.",
+		"url": "https://mhct.win/",
+		"icon": "Sparkles"
+	},
+	{
+		"name": "Catch Rate Estimator",
+		"description": "Calculate your catch rate, based on setup.",
+		"url": "https://tsitu.github.io/MH-Tools/cre.html",
+		"icon": "Beaker"
+	}
+]
