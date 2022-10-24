@@ -14,7 +14,7 @@ export default function Userscripts() {
 
       <main>
           <Header text='Userscripts' className='text-purple-700' />
-          <UserscriptsList />
+          <UserscriptsList tag='all' />
       </main>
       <Footer />
     </div>
