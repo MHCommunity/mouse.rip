@@ -15,7 +15,7 @@ export default function Tools() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="w-full px-5 mx-auto md:px-0">
+      <main className="w-full mx-auto">
         <Header text="Tools" className="text-green-600" />
 
         <div role="list" className="grid max-w-3xl grid-cols-1 gap-4 mx-auto mt-4 sm:grid-cols-2">

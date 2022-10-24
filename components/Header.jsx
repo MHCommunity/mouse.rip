@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Header({ text, main, className }) {
   return (
-    <div className="pt-10 pb-6 bg-gray-100">
+    <div className="pt-10 pb-6 px-3 bg-gray-100">
       <h1 className="text-3xl font-bold tracking-tight text-center text-gray-700 sm:text-4xl">
         <span className={className}>{text}</span> for MouseHunt
       </h1>
