@@ -42,7 +42,7 @@ export async function getStaticPaths() {
 
 export default function Userscripts({ tag = 'all' }) {
 	const tagData = tags.find((t) => t.id === tag)
-	const title = tagData ? tagData.name : tag
+	const title = `${tagData ? tagData.name : tag } Userscripts`
 
 	return (
 		<div className='bg-white'>
