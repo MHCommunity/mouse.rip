@@ -23,7 +23,7 @@ export default function Home() {
           <ul role="list" className="grid grid-cols-1 gap-5 mt-3 sm:grid-cols-2 sm:gap-6">
             <li className="flex col-span-1 rounded-md shadow-md">
               <Link href="https://guide.mouse.rip/">
-                <a className="flex items-center justify-between flex-1 p-3 bg-white border border-pink-400 rounded-lg hover:ring-1 ring-pink-600 group">
+                <a className="flex items-start flex-1 p-3 bg-white border border-pink-400 rounded-lg hover:ring-1 ring-pink-600 group">
                   <div className="flex-1 px-4 py-2 text-md">
                     <div className="pb-3 text-xl font-medium text-pink-600 group-hover:text-pink-800">
                       Guide <ArrowTopRightOnSquareIcon className="inline w-4 h-4 ml-1 align-baseline" aria-hidden="true" />
@@ -36,7 +36,7 @@ export default function Home() {
 
             <li className="flex col-span-1 rounded-md shadow-md">
               <Link href="/userscripts">
-                <a className="flex items-center justify-between flex-1 p-3 bg-white border border-purple-400 rounded-lg hover:ring-1 ring-purple-600 group">
+                <a className="flex items-start flex-1 p-3 bg-white border border-purple-400 rounded-lg hover:ring-1 ring-purple-600 group">
                   <div className="flex-1 px-4 py-2 text-md">
                     <div className="pb-3 text-xl font-medium text-purple-600 group-hover:text-purple-800">
                       Userscripts <ArrowSmallRightIcon className="inline w-4 h-4 ml-1 align-baseline" aria-hidden="true" />
@@ -49,7 +49,7 @@ export default function Home() {
 
             <li className="flex col-span-1 rounded-md shadow-md">
               <Link href="/tools">
-                <a className="flex items-center justify-between flex-1 p-3 bg-white border border-green-400 rounded-lg hover:ring-1 ring-green-600 group">
+                <a className="flex items-start flex-1 p-3 bg-white border border-green-400 rounded-lg hover:ring-1 ring-green-600 group">
                   <div className="flex-1 px-4 py-2 text-md">
                     <div className="pb-3 text-xl font-medium text-green-700 group-hover:text-green-900">
                       Tools <ArrowSmallRightIcon className="inline w-4 h-4 ml-1 align-baseline" aria-hidden="true" />
@@ -75,7 +75,7 @@ export default function Home() {
 
             <li className="flex col-span-1 rounded-md shadow-md">
               <Link href="https://mhwiki.hitgrab.com/wiki/index.php/MouseHunt_Wiki">
-                <a className="flex items-center justify-between flex-1 p-3 bg-white border border-yellow-400 rounded-lg hover:ring-1 ring-yellow-600 group">
+                <a className="flex items-start flex-1 p-3 bg-white border border-yellow-400 rounded-lg hover:ring-1 ring-yellow-600 group">
                   <div className="flex-1 px-4 py-2 text-md">
                     <div className="pb-3 text-xl font-medium text-yellow-700 group-hover:text-yellow-800">
                       Wiki
@@ -89,7 +89,7 @@ export default function Home() {
 
             <li className="flex col-span-1 rounded-md shadow-md">
               <Link href="https://discordapp.com/invite/Ya9zEdk">
-                <a className="flex items-center justify-between flex-1 p-3 bg-white border border-blue-400 rounded-lg hover:ring-1 ring-blue-600 group">
+                <a className="flex items-start flex-1 p-3 bg-white border border-blue-400 rounded-lg hover:ring-1 ring-blue-600 group">
                   <div className="flex-1 px-4 py-2 text-md">
                     <div className="pb-3 text-xl font-medium text-blue-600 group-hover:text-blue-800">
                       Discord
