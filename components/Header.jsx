@@ -6,7 +6,7 @@ export default function Header({ title, main, className }) {
 	return (
 		<div className='bg-gray-100 pt-10 pb-6'>
 			<h1 className='text-3xl text-center font-bold tracking-tight text-gray-700 sm:text-4xl'>
-				<span className={clsx('text-sky-500 hover:text-sky-700', className)}>{title}</span> for MouseHunt
+				<span className={className}>{title}</span> for MouseHunt
 			</h1>
 			<div className='mt-4 text-center'>
 			{ ! main && (

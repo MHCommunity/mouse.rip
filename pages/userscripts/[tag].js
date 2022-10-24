@@ -41,7 +41,12 @@ export async function getStaticPaths() {
 }
 
 export default function Userscripts({ tag = 'all' }) {
-	const title = tag === 'all' ? 'Userscripts' : tag.charAt(0).toUpperCase() + tag.slice(1) + ' Userscripts';
+	let title = tag.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+	title = tag === 'ui' ? 'UI' : title;
+	title = tag === 'all' ? '' : title;
+
+	title = title ? `${title} Userscripts` : 'Userscripts';
+
 
 	return (
 		<div className='bg-white'>
