@@ -13,13 +13,13 @@ export default function Footer() {
 				</p>
 				<div className='mt-1 flex items-center justify-center space-x-4 text-sm font-semibold leading-6 text-slate-700'>
 					<span className='text-sky-800 hover:text-sky-400'>
-						<Link href='https://github.com/mouserip'>
+						<Link href='https://github.com/MHCommunity/mouse.rip'>
 							GitHub
 						</Link>
 					</span>
 					<div className='h-4 w-px bg-slate-500/20' />
 					<span className='text-sky-800 hover:text-sky-400'>
-						<Link href='https://github.com/mouserip'>
+						<Link href='https://discordapp.com/invite/Ya9zEdk'>
 							Discord
 						</Link>
 					</span>
