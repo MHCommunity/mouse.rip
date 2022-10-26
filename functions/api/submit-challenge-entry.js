@@ -1,7 +1,7 @@
 const { Client } = require('@notionhq/client')
 
 const notion = new Client({
-  auth: process.env.INTEGRATION_NOTION_API_KEY,
+  auth: env.INTEGRATION_NOTION_API_KEY,
 })
 
 export async function onRequestPost({ request }) {
@@ -10,7 +10,7 @@ export async function onRequestPost({ request }) {
 
     await notion.pages.create({
       parent: {
-        database_id: process.env.INTEGRATION_NOTION_DATABASE_ID,
+        database_id: env.INTEGRATION_NOTION_DATABASE_ID,
       },
       properties: {
         HunterID: {
