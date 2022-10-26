@@ -4,7 +4,7 @@ const notion = new Client({
   auth: env.INTEGRATION_NOTION_API_KEY,
 })
 
-export async function onRequestPost({ request }) {
+export async function onRequestPost({ request, env }) {
   try {
     const { challengeType, hunterId, discordId } = JSON.parse(request.body)
 
