@@ -19,16 +19,6 @@
   "rules": {
     "array-bracket-spacing": ["error", "never"],
     "block-spacing": ["error", "always"],
-    "comma-dangle": [
-      "error",
-      {
-        "arrays": "only-multiline",
-        "objects": "only-multiline",
-        "imports": "never",
-        "exports": "never",
-        "functions": "never"
-      }
-    ],
     "comma-spacing": [
       "error",
       {
