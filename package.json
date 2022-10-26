@@ -1,7 +1,6 @@
 {
   "name": "mouse.rip",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
