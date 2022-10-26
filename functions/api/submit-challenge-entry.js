@@ -13,7 +13,7 @@ export async function onRequestPost({ request, env }) {
     const discordId = input.get('discordId')
 
     return new Response(
-      JSON.stringify({ success: true, message: 'You have successfully entered the challenge.' data: { challengeType, hunterId, discordId } }),
+      JSON.stringify({ success: true, message: 'You have successfully entered the challenge.', data: { challengeType, hunterId, discordId } }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     )
 
