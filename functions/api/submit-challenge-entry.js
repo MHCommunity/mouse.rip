@@ -8,12 +8,12 @@ export async function onRequestPost({ request, env }) {
 
   try {
     let input = await request.formData();
-
-    input = Object.fromEntries(input);
-    const { challengeType, hunterId, discordId } = input;
+    const challengeType = input.get('challengeType');
+    const hunterId = input.get('hunterId');
+    const discordId = input.get('discordId');
 
     return new Response(
-      JSON.stringify(input),
+      JSON.stringify([challengeType, hunterId, discordId]),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     )
 
