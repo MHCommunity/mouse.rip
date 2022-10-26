@@ -1,5 +1,5 @@
-import { ArrowSmallRightIcon } from '@heroicons/react/24/solid'
 import { Tab } from '@headlessui/react'
+import { ArrowSmallRightIcon } from '@heroicons/react/24/solid'
 import clsx from 'clsx'
 import Head from 'next/head'
 import Image from 'next/image'
