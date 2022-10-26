@@ -6,17 +6,12 @@ export async function onRequestPost({ request, env }) {
   })
 
   try {
-    const formData = await request.formData();
-    const body = {};
 
-    for (const entry of formData.entries()) {
-      body[entry[0]] = entry[1];
-    }
-
-    JSON.stringify(body);
+    // get the form inputs from the cloudflare request object
+    const { challengeType, hunterId, discordId } = JSON.parse(request.body)
 
     return new Response(
-      JSON.stringify({ success: true, message: body }),
+      JSON.stringify({ success: true, message: challengeType }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     )
 
