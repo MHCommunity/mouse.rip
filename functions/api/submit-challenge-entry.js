@@ -8,9 +8,9 @@ export async function onRequestPost({ request, env }) {
 
   try {
     let input = await request.formData();
-    let challengeType = input.get('challengeType');
-    let hunterId = input.get('hunterId');
-    let discordId = input.get('discordId');
+
+    input = Object.fromEntries(input);
+    const { challengeType, hunterId, discordId } = input;
 
     await notion.pages.create({
       parent: {
