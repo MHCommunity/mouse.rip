@@ -3,6 +3,7 @@ import Link from 'next/link'
 
 import Footer from '../components/Footer'
 import Header from '../components/Header'
+import HeaderTopNav from '../components/HeaderTopNav'
 import Icon from '../components/Icon'
 import tools from '../data/tools.json'
 
@@ -16,9 +17,10 @@ export default function Tools() {
       </Head>
 
       <main className="w-full mx-auto">
+        <HeaderTopNav />
         <Header text="Tools" className="text-green-600" />
 
-        <div role="list" className="grid max-w-3xl grid-cols-1 gap-4 mx-auto mt-4 sm:grid-cols-2">
+        <div role="list" className="max-w-3xl mx-auto mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {tools.map((tool) => (
             <Link key={tool.name} href={tool.url}>
               <a className="bg-white border-2 rounded-lg border-slate-100 hover:ring-1 ring-green-600 group">

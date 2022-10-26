@@ -2,6 +2,7 @@ import Head from 'next/head'
 
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
+import HeaderTopNav from '../../components/HeaderTopNav'
 import UserscriptsList from '../../components/UserscriptsList'
 import userscripts from '../../data/userscripts.json'
 
@@ -52,6 +53,7 @@ export default function Userscripts({ tag = 'all' }) {
       </Head>
 
       <main>
+        <HeaderTopNav />
         <Header text={pageTitle} className="text-purple-700" />
         <UserscriptsList tag={tag} />
       </main>

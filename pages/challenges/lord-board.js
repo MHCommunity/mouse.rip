@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { Fragment } from 'react'
 
 import Footer from '../../components/Footer'
-import HeaderNew from '../../components/HeaderNew'
+import HeaderTopNav from '../../components/HeaderTopNav'
 import Icon from '../../components/Icon'
 import amplifierCharm from '../../public/images/challenges/amplifier-charm.png'
 import checkmateCheese from '../../public/images/challenges/checkmate-cheese.png'
@@ -74,9 +74,9 @@ export default function LordBoardChallenge() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <HeaderNew />
+      <HeaderTopNav />
       <div className="px-3 pb-8 bg-gray-100 pt-14">
-        <div className="max-w-xl mx-auto space-y-4 text-center">
+        <div className="max-w-xl mx-auto text-center space-y-4">
           <div className="flex items-center">
             <Icon icon="CheckCircle" className="hidden text-gray-400 h-9 w-9 sm:block" />
             <h1 className="ml-3 text-3xl font-bold tracking-tight text-center text-gray-700">Lord–Master Spooky Board Challenge</h1>
@@ -96,9 +96,9 @@ export default function LordBoardChallenge() {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-4xl">
         <div className="relative px-4 sm:px-6 lg:px-8">
           <div className="mx-auto text-lg max-w-prose">
-            <p className="mt-8 text-2xl leading-8 text-gray-800">Welcome to the next installment of the Halloween Challenges, and it&apos;s time to use some of your Spooky Tickets!</p>
+            <p className="mt-8 text-2xl text-gray-800 leading-8">Welcome to the next installment of the Halloween Challenges, and it&apos;s time to use some of your Spooky Tickets!</p>
           </div>
-          <div className="mx-auto mt-6 prose prose-lg text-gray-500 prose-sky">
+          <div className="mx-auto mt-6 text-gray-500 prose prose-lg prose-sky">
             <p>
               The challenge is to do an <strong>undusted Master–Lord Spooky Shuffle Board</strong>, add up how many points you&apos;ve scored, and try to get the highest!
             </p>
@@ -189,11 +189,11 @@ export default function LordBoardChallenge() {
             </ul>
             <p>There&apos;s no way to enforce the rules around the number of boards you do and post, so please be honest and not cheat.</p>
           </div>
-          <div className="mx-auto mt-6 prose prose-lg text-gray-500">
+          <div className="mx-auto mt-6 text-gray-500 prose prose-lg">
             <h2 id="points">Points</h2>
             <div className="mx-auto mt-3 not-prose">
               <Tab.Group>
-                <Tab.List className="flex space-x-8 border-b border-gray-200">
+                <Tab.List className="flex border-b border-gray-200 space-x-8">
                   <Tab as={Fragment}>
                     {({ selected }) => (
                       <button

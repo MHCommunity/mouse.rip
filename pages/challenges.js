@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 import Footer from '../components/Footer'
-import HeaderNew from '../components/HeaderNew'
+import HeaderTopNav from '../components/HeaderTopNav'
 import Icon from '../components/Icon'
 
 export default function Challenge() {
@@ -13,10 +13,10 @@ export default function Challenge() {
         <meta name="description" content="Lounge Challenges - details and entry" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <HeaderNew />
+      <HeaderTopNav />
 
       <div className="px-3 bg-gray-100 py-14">
-        <div className="max-w-xl mx-auto space-y-1 text-center">
+        <div className="max-w-xl mx-auto text-center space-y-1">
           <h1 className="block pb-4 text-3xl font-bold tracking-tight text-center text-gray-700 sm:text-4xl">Lounge Challenges</h1>
         </div>
       </div>

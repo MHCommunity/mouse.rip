@@ -7,7 +7,7 @@ import Icon from './Icon'
 export default function Userscripts({ tag }) {
   return (
     <div className="max-w-3xl px-3 mx-auto">
-      <div className="mx-auto mt-6 text-center flex flex-wrap justify-center">
+      <div className="flex flex-wrap justify-center mx-auto mt-6 text-center">
         <Link href={'/userscripts/'}>
           <a
             className={clsx(
@@ -89,7 +89,7 @@ export default function Userscripts({ tag }) {
           </a>
         </Link>
       </div>
-      <div role="list" className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2">
+      <div role="list" className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
         {userscripts
           .filter((userscript) => {
             if (tag === 'all') return true

@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export default function Custom404() {
   return (
-    <div className="grid h-screen place-content-center">
+    <div className="h-screen grid place-content-center">
       <div className="text-center">
         <strong className="font-light tracking-tighter text-gray-200 text-9xl">404</strong>
 

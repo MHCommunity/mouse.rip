@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 import Footer from '../../components/Footer'
-import HeaderNew from '../../components/HeaderNew'
+import HeaderTopNav from '../../components/HeaderTopNav'
 
 export default function Challenge() {
   const [challengeType, setChallengeType] = useState('lord-board')
@@ -22,7 +22,7 @@ export default function Challenge() {
     fetch('/api/submit-challenge-entry', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: JSON.stringify({ challengeType, hunterId, discordId }),
+      body: `challengeType=${challengeType}&hunterId=${hunterId}&discordId=${discordId}`,
     })
       .then((res) => res.json())
       .then((data) => {
@@ -45,10 +45,10 @@ export default function Challenge() {
         <meta name="description" content="Challenge Entry - details and entry" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <HeaderNew />
+      <HeaderTopNav />
 
       <div className="px-3 bg-gray-100 py-14">
-        <div className="max-w-xl mx-auto space-y-4 text-center">
+        <div className="max-w-xl mx-auto text-center space-y-4">
           <h1 className="text-3xl font-bold tracking-tight text-center text-gray-700 sm:text-4xl">Challenge Entry</h1>
 
           <Link href="/challenges">
@@ -118,7 +118,7 @@ export default function Challenge() {
 
             <button
               type="submit"
-              className="flex justify-center w-full py-3 text-sm font-medium text-white transition border rounded-md border-sky-600 dark:border-sky-800 bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring active:text-sky-500"
+              className="flex justify-center w-full py-3 text-sm font-medium text-white border transition rounded-md border-sky-600 dark:border-sky-800 bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring active:text-sky-500"
             >
               Submit
               {loading && (

@@ -2,7 +2,7 @@ import Head from 'next/head'
 
 import Footer from '../components/Footer'
 import Header from '../components/Header'
-import HeaderNew from '../components/HeaderNew'
+import HeaderTopNav from '../components/HeaderTopNav'
 import UserscriptsList from '../components/UserscriptsList'
 
 export default function Userscripts() {
@@ -15,7 +15,7 @@ export default function Userscripts() {
       </Head>
 
       <main>
-        <HeaderNew />
+        <HeaderTopNav />
         <Header text="Userscripts" className="text-purple-700" />
         <UserscriptsList tag="all" />
       </main>
