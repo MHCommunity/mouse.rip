@@ -6,14 +6,7 @@ export async function onRequestPost({ request, env }) {
   })
 
   try {
-
-    // get the form inputs from the cloudflare request object
     const { challengeType, hunterId, discordId } = await request.json()
-
-    return new Response(
-      JSON.stringify({ success: true, message: challengeType }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
-    )
 
     await notion.pages.create({
       parent: {
@@ -24,7 +17,7 @@ export async function onRequestPost({ request, env }) {
           title: [
             {
               text: {
-                content: body.hunterId,
+                content: hunterId,
               },
             },
           ],
@@ -33,7 +26,7 @@ export async function onRequestPost({ request, env }) {
           rich_text: [
             {
               text: {
-                content: body.discordId,
+                content: discordId,
               },
             },
           ],
@@ -42,7 +35,7 @@ export async function onRequestPost({ request, env }) {
           rich_text: [
             {
               text: {
-                content: body.challengeType,
+                content: challengeType,
               },
             },
           ],
