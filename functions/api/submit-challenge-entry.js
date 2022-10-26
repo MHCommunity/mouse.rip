@@ -6,11 +6,11 @@ export async function onRequestPost({ request, env }) {
   })
 
   try {
-    let input = await context.request.formData();
+    let input = await request.formData();
     let pretty = JSON.stringify([...input], null, 2);
 
     return new Response(pretty, {
-      headers: { "content-type": "application/json;charset=UTF-8" },
+      headers: { 'content-type": "application/json;charset=UTF-8' },
     });
 
     await notion.pages.create({
