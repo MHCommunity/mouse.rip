@@ -7,11 +7,16 @@ export async function onRequestPost({ request, env }) {
 
   try {
     let input = await request.formData();
-    let pretty = JSON.stringify([...input], null, 2);
 
-    return new Response(pretty, {
-      headers: { 'content-type': 'application/json;charset=UTF-8' }
-    });
+    const challengeType = input.get('challengeType')
+    const hunterId = input.get('hunterId')
+    const discordId = input.get('discordId')
+
+    return new Response(
+      JSON.stringify({ success: true, message: 'You have successfully entered the challenge.' data: { challengeType, hunterId, discordId } }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    )
+
 
     await notion.pages.create({
       parent: {
