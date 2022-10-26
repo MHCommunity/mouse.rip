@@ -5,15 +5,6 @@ export async function onRequestPost({ request, env }) {
     auth: env.INTEGRATION_NOTION_API_KEY,
   })
 
-  const type = request.body.challengeType
-  const hunterId = request.body.hunterId
-  const discordId = request.body.discordId
-
-  return new Response(
-    JSON.stringify({ success: true, message: 'You have successfully entered the challenge.', type, hunterId, discordId }),
-    { status: 200, headers: { 'Content-Type': 'application/json' } }
-  )
-
   try {
     await notion.pages.create({
       parent: {
@@ -24,7 +15,7 @@ export async function onRequestPost({ request, env }) {
           title: [
             {
               text: {
-                content: hunterId,
+                content: request.body.hunterId,
               },
             },
           ],
@@ -33,7 +24,7 @@ export async function onRequestPost({ request, env }) {
           rich_text: [
             {
               text: {
-                content: discordId,
+                content: request.body.discordId,
               },
             },
           ],
@@ -42,7 +33,7 @@ export async function onRequestPost({ request, env }) {
           rich_text: [
             {
               text: {
-                content: challengeType,
+                content: request.body.challengeType,
               },
             },
           ],
