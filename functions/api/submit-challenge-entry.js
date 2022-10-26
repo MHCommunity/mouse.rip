@@ -13,7 +13,7 @@ export async function onRequestPost({ request, env }) {
     const discordId = input.get('discordId');
 
     return new Response(
-      JSON.stringify([challengeType, hunterId, discordId]),
+      JSON.stringify({ challenge: challengeType, hunter: hunterId, discord: discordId }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     )
 
