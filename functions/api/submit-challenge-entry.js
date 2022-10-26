@@ -12,6 +12,11 @@ export async function onRequestPost({ request, env }) {
     input = Object.fromEntries(input);
     const { challengeType, hunterId, discordId } = input;
 
+    return new Response(
+      JSON.stringify(input),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    )
+
     await notion.pages.create({
       parent: {
         database_id: env.INTEGRATION_NOTION_DATABASE_ID,
