@@ -7,7 +7,10 @@ export async function onRequestPost({ request, env }) {
   })
 
   try {
-    const { challengeType, hunterId, discordId } = JSON.parse(request.body)
+    let input = await request.formData();
+    let challengeType = input.get('challengeType');
+    let hunterId = input.get('hunterId');
+    let discordId = input.get('discordId');
 
     await notion.pages.create({
       parent: {
