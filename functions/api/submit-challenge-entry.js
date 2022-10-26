@@ -5,9 +5,16 @@ export async function onRequestPost({ request, env }) {
     auth: env.INTEGRATION_NOTION_API_KEY,
   })
 
-  const { challengeType, hunterId, discordId } = JSON.parse(request.body)
-
   try {
+    const formData = await request.formData();
+    const body = {};
+
+    for (const entry of formData.entries()) {
+      body[entry[0]] = entry[1];
+    }
+
+    JSON.stringify(body);
+
     await notion.pages.create({
       parent: {
         database_id: env.INTEGRATION_NOTION_DATABASE_ID,
@@ -17,7 +24,7 @@ export async function onRequestPost({ request, env }) {
           title: [
             {
               text: {
-                content: hunterId,
+                content: body.hunterId,
               },
             },
           ],
@@ -26,7 +33,7 @@ export async function onRequestPost({ request, env }) {
           rich_text: [
             {
               text: {
-                content: discordId,
+                content: body.discordId,
               },
             },
           ],
@@ -35,7 +42,7 @@ export async function onRequestPost({ request, env }) {
           rich_text: [
             {
               text: {
-                content: challengeType,
+                content: body.challengeType,
               },
             },
           ],
