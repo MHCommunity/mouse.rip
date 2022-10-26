@@ -1,17 +1,15 @@
 const { Client } = require('@notionhq/client')
 
 export async function onRequestPost({ request, env }) {
-
   const notion = new Client({
     auth: env.INTEGRATION_NOTION_API_KEY,
   })
 
   try {
-    let input = await request.formData();
-    const values = Object.fromEntries(input.entries());
+    const { challengeType, hunterId, discordId } = JSON.parse(request.body)
 
     return new Response(
-      JSON.stringify({ challenge: values.challengeType, hunter: values.hunterId, discord: values.discordId }),
+      JSON.stringify({ challenge: challengeType, hunter: hunterId, discord: discordId }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     )
 
