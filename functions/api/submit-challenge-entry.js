@@ -5,19 +5,12 @@ export async function onRequestPost({ request, env }) {
     auth: env.INTEGRATION_NOTION_API_KEY,
   })
 
+  return new Response(
+    JSON.stringify({ success: true, message: 'You have successfully entered the challenge.', data: { request.body.challengeType, request.body.hunterId, request.body.discordId } }),
+    { status: 200, headers: { 'Content-Type': 'application/json' } }
+  )
+
   try {
-    let input = await request.formData();
-
-    const challengeType = input.get('challengeType')
-    const hunterId = input.get('hunterId')
-    const discordId = input.get('discordId')
-
-    return new Response(
-      JSON.stringify({ success: true, message: 'You have successfully entered the challenge.', data: { challengeType, hunterId, discordId } }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
-    )
-
-
     await notion.pages.create({
       parent: {
         database_id: env.INTEGRATION_NOTION_DATABASE_ID,
