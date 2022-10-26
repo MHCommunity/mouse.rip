@@ -1,0 +1,11 @@
+{
+  "semi": false,
+  "printWidth": 200,
+  "tabWidth": 2,
+  "useTabs": false,
+  "trailingComma": "es5",
+  "singleQuote": true,
+  "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}

@@ -1,339 +1,247 @@
 [
-	{
-		"name": "Minluck & Catch Rate Estimate",
-		"description": "View the minluck and catch rate estimate, right on the camp page.",
-		"url": "https://greasyfork.org/en/scripts/449334-mousehunt-minluck-catch-rate-estimate",
-		"tags": [
-			"hunting",
-			"catch-rate",
-			"minluck"
-		],
-		"icon": "Sparkles"
-	},
-	{
-		"name": "Minluck & CRE tool",
-		"description": "Shows hunt statistics on the camp page.",
-		"url": "https://greasyfork.org/en/scripts/447193-mh-minluck-cre-tool-v2-0-new",
-		"tags": [
-			"stats",
-			"hunting"
-		],
-		"icon": "Beaker"
-	},
-	{
-		"name": "Gift Buttons",
-		"description": "Add buttons to easily accept and return all daily gifts.",
-		"url": "https://greasyfork.org/en/scripts/449489-mousehunt-gift-buttons",
-		"tags": [
-			"gifts"
-		],
-		"icon": "Cake"
-	},
-	{
-		"name": "Item Links",
-		"description": "Add links to the MouseHunt wiki, MHCT looter, MHDB, and Markethunt for items.",
-		"url": "https://greasyfork.org/en/scripts/445920-mousehunt-item-links",
-		"tags": [
-			"utility"
-		],
-		"icon": "Link"
-	},
-	{
-		"name": "Mouse Links",
-		"description": "Add links to the MouseHunt wiki & MHDB for mice.",
-		"url": "https://greasyfork.org/en/scripts/449332-mousehunt-mouse-links",
-		"tags": [
-			"utility"
-		],
-		"icon": "Link"
-	},
-	{
-		"name": "Markethunt",
-		"description": "Adds a price chart and Markethunt integration to the MH marketplace screen.",
-		"url": "https://greasyfork.org/en/scripts/441382-markethunt-plugin-for-mousehunt",
-		"tags": [
-			"items",
-			"marketplace"
-		],
-		"icon": "ChartBarSquare"
-	},
-	{
-		"name": "Wisdom Stats",
-		"description": "Displays your wisdom stats in the HUD.",
-		"url": "https://greasyfork.org/en/scripts/381219-mousehunt-wisdom-stats",
-		"tags": [
-			"stats"
-		],
-		"icon": "Trophy"
-	},
-	{
-		"name": "Taller Windows",
-		"description": "Makes all the windows taller, so you can see more of the content without scrolling.",
-		"url": "https://greasyfork.org/en/scripts/452235-mousehunt-taller-windows",
-		"tags": [
-			"ui"
-		],
-		"icon": "Window"
-	},
-	{
-		"name": "Favorite Setups",
-		"description": "Unlimited custom favorite trap setups!",
-		"url": "https://greasyfork.org/en/scripts/388403-mousehunt-favorite-setups",
-		"tags": [
-			"quality-of-life"
-		],
-		"icon": "Star"
-	},
-	{
-		"name": "MH Timers+",
-		"description": "Handy script to keep track of the various MH location timers.",
-		"url": "https://greasyfork.org/en/scripts/388058-mh-timers",
-		"tags": [
-			"utility"
-		],
-		"icon": "Clock"
-	},
-	{
-		"name": "Profile+",
-		"description": "Community requested features for the tabs on your MH profile.",
-		"url": "https://greasyfork.org/en/scripts/381389-mh-profile",
-		"tags": [
-			"quality-of-life"
-		],
-		"icon": "User"
-	},
-	{
-		"name": "Marketplace UI Tweaks",
-		"description": "Adds useful features and tweaks to the Marketplace rework",
-		"url": "https://greasyfork.org/en/scripts/378990-mousehunt-marketplace-ui-tweaks",
-		"tags": [
-			"quality-of-life"
-		],
-		"icon": "ShoppingCart"
-	},
-	{
-		"name": "Tournament Time Helper",
-		"description": "Automatically converts 'Begins in:' to your local time as well as adding the end time for tournaments.",
-		"url": "https://greasyfork.org/en/scripts/37146-mousehunt-tournament-time-helper",
-		"tags": [
-			"quality-of-life",
-			"ui"
-		],
-		"icon": "Clock"
-	},
-	{
-		"name": "No Share Buttons",
-		"description": "Remove the 'Share' buttons that prompt you to share on Facebook.",
-		"url": "https://greasyfork.org/en/scripts/452434-mousehunt-no-share-button",
-		"tags": [
-			"ui"
-		],
-		"icon": "NoSymbol"
-	},
-	{
-		"name": "QoL Utilities",
-		"description": "Miscellaneous utilities to turbo-charge your MH experience",
-		"url": "https://greasyfork.org/en/scripts/405334-mousehunt-qol-utilities",
-		"tags": [
-			"quality-of-life"
-		],
-		"icon": "LockClosed"
-	},
-	{
-		"name": "Censor Journal Names",
-		"description": "Adds toggle button at top of journal to blur out names of friends/mapmates in most journal entries",
-		"url": "https://greasyfork.org/en/scripts/445553-mh-censor-journal-names",
-		"tags": [
-			"ui",
-			"journal"
-		],
-		"icon": "Identification"
-	},
-	{
-		"name": "Send Supplies Search Bar",
-		"description": "Adds a search bar to make sending supplies easier",
-		"url": "https://greasyfork.org/en/scripts/396714-mousehunt-send-supplies-search-bar",
-		"tags": [
-			"utility"
-		],
-		"icon": "Truck"
-	},
-	{
-		"name": "No Sidebar",
-		"description": "Hides the sidebar.",
-		"url": "https://greasyfork.org/en/scripts/449491-mousehunt-no-sidebar",
-		"tags": [
-			"ui"
-		],
-		"icon": "NoSymbol"
-	},
-	{
-		"name": "Enhanced Search",
-		"description": "Improve the search logic of search bars in the game",
-		"url": "https://greasyfork.org/en/scripts/446436-mousehunt-enhanced-search-beta",
-		"tags": [
-			"utility"
-		],
-		"icon": "MagnifyingGlass"
-	},
-	{
-		"name": "Metric",
-		"description": "Convert mice weight to metric.",
-		"url": "https://greasyfork.org/en/scripts/449840-mousehunt-metric",
-		"tags": [
-			"utility"
-		],
-		"icon": "GlobeEuropeAfrica"
-	},
-	{
-		"name": "TEM Catch Stats",
-		"description": "Adds catch/crown statistics next to mouse names on the TEM",
-		"url": "https://greasyfork.org/en/scripts/376770-mousehunt-tem-catch-stats",
-		"tags": [
-			"stats"
-		],
-		"icon": "Trophy"
-	},
-	{
-		"name": "Location Catch Stats",
-		"description": "Shows caught and uncaught mouse breeds for every location",
-		"url": "https://greasyfork.org/en/scripts/381438-mousehunt-location-catch-stats",
-		"tags": [
-			"stats"
-		],
-		"icon": "Trophy"
-	},
-	{
-		"name": "Travel Tweaks",
-		"description": "Makes the travel page a bit better.",
-		"url": "https://greasyfork.org/en/scripts/452232-mousehunt-travel-tweaks",
-		"tags": [
-			"travel"
-		],
-		"icon": "Map"
-	},
-	{
-		"name": "M400 Hunting Helper",
-		"description": "Adds the ability to one click travel to the next M400 assigment location",
-		"url": "https://greasyfork.org/en/scripts/429044-mh-m400-hunting-helper",
-		"tags": [
-			"quality-of-life"
-		],
-		"icon": "Map"
-	},
-	{
-		"name": "Consolidated Map Colour Coder",
-		"description": "Colour code your maps",
-		"url": "https://greasyfork.org/en/scripts/428959-mh-consolidated-map-colour-coder",
-		"tags": [
-			"ui",
-			"maps"
-		],
-		"icon": "Swatch"
-	},
-	{
-		"name": "Map Crown Display",
-		"description": "Adds catch/crown statistics next to mouse names on the map",
-		"url": "https://greasyfork.org/en/scripts/427193-mh-map-crown-display",
-		"tags": [
-			"ui",
-			"maps",
-			"stats"
-		],
-		"icon": "Map"
-	},
-	{
-		"name": "Mapping Helper",
-		"description": "Map improvements: Invite via Hunter ID, and directly send SB+",
-		"url": "https://greasyfork.org/en/scripts/384275-mousehunt-mapping-helper",
-		"tags": [
-			"quality-of-life"
-		],
-		"icon": "UserCircle"
-	},
-	{
-		"name": "FLRT Tool",
-		"description": "Free Leech Return Tradables",
-		"url": "https://greasyfork.org/en/scripts/452655-flrt-tool",
-		"tags": [
-			"utility",
-			"maps"
-		],
-		"icon": "Users"
-	},
-	{
-		"name": "Floating Islands HUD Enhancer",
-		"description": "See more thing on your floating islands HUD!",
-		"url": "https://greasyfork.org/en/scripts/419909-mh-floating-islands-hud-enhancer",
-		"tags": [
-			"location",
-			"floating-islands"
-		],
-		"icon": "MapPin"
-	},
-	{
-		"name": "Valour Rift HUD Enhancer",
-		"description": "Changes the text that appears in the Valour Rift hud tooltips to give you the info you actually want to see",
-		"url": "https://greasyfork.org/en/scripts/392742-mh-valour-rift-hud-enhancer",
-		"tags": [
-			"location",
-			"valour-rift"
-		],
-		"icon": "MapPin"
-	},
-	{
-		"name": "Living Garden HUD Enhancer",
-		"description": "Quick travel buttons for the Living Garden area locations",
-		"url": "https://greasyfork.org/en/scripts/407059-mh-living-garden-hud-enhancer",
-		"tags": [
-			"location",
-			"living-garden",
-			"travel",
-			"ui"
-		],
-		"icon": "MapPin"
-	},
-	{
-		"name": "Warpath Wave Calculator",
-		"description": "Keeps track of remaining wave mice to help you manage the wave",
-		"url": "https://greasyfork.org/en/scripts/390221-mh-warpath-wave-calculator",
-		"tags": [
-			"location",
-			"fiery-warpath",
-			"ui"
-		],
-		"icon": "MapPin"
-	},
-	{
-		"name": "Deep Run Assistant",
-		"description": "Helps you check if you have failed a Deep Run",
-		"url": "https://greasyfork.org/en/scripts/380861-mousehunt-deep-run-assistant",
-		"tags": [
-			"location",
-			"iceberg",
-			"utility"
-		],
-		"icon": "MapPin"
-	},
-	{
-		"name": "Spooky Shuffle Tracker",
-		"description": "Play Spooky Shuffle more easily.",
-		"url": "https://greasyfork.org/en/scripts/453305-mousehunt-better-spooky-shuffle-tracker",
-		"tags": [
-			"event",
-			"halloween"
-		],
-		"icon": "Ticket"
-	},
-	{
-		"name": "Hween 2021 Trick/Treat map colour coder",
-		"description": "Colour codes mice on trick/treat maps according to type",
-		"url": "https://greasyfork.org/en/scripts/433865-mousehunt-hween-2021-trick-treat-map-colour-coder",
-		"tags": [
-			"event",
-			"maps",
-			"halloween"
-		],
-		"icon": "Map"
-	}
+  {
+    "name": "Minluck & Catch Rate Estimate",
+    "description": "View the minluck and catch rate estimate, right on the camp page.",
+    "url": "https://greasyfork.org/en/scripts/449334-mousehunt-minluck-catch-rate-estimate",
+    "tags": ["hunting", "catch-rate", "minluck"],
+    "icon": "Sparkles"
+  },
+  {
+    "name": "Minluck & CRE tool",
+    "description": "Shows hunt statistics on the camp page.",
+    "url": "https://greasyfork.org/en/scripts/447193-mh-minluck-cre-tool-v2-0-new",
+    "tags": ["stats", "hunting"],
+    "icon": "Beaker"
+  },
+  {
+    "name": "Gift Buttons",
+    "description": "Add buttons to easily accept and return all daily gifts.",
+    "url": "https://greasyfork.org/en/scripts/449489-mousehunt-gift-buttons",
+    "tags": ["gifts"],
+    "icon": "Cake"
+  },
+  {
+    "name": "Item Links",
+    "description": "Add links to the MouseHunt wiki, MHCT looter, MHDB, and Markethunt for items.",
+    "url": "https://greasyfork.org/en/scripts/445920-mousehunt-item-links",
+    "tags": ["utility"],
+    "icon": "Link"
+  },
+  {
+    "name": "Mouse Links",
+    "description": "Add links to the MouseHunt wiki & MHDB for mice.",
+    "url": "https://greasyfork.org/en/scripts/449332-mousehunt-mouse-links",
+    "tags": ["utility"],
+    "icon": "Link"
+  },
+  {
+    "name": "Markethunt",
+    "description": "Adds a price chart and Markethunt integration to the MH marketplace screen.",
+    "url": "https://greasyfork.org/en/scripts/441382-markethunt-plugin-for-mousehunt",
+    "tags": ["items", "marketplace"],
+    "icon": "ChartBarSquare"
+  },
+  {
+    "name": "Wisdom Stats",
+    "description": "Displays your wisdom stats in the HUD.",
+    "url": "https://greasyfork.org/en/scripts/381219-mousehunt-wisdom-stats",
+    "tags": ["stats"],
+    "icon": "Trophy"
+  },
+  {
+    "name": "Taller Windows",
+    "description": "Makes all the windows taller, so you can see more of the content without scrolling.",
+    "url": "https://greasyfork.org/en/scripts/452235-mousehunt-taller-windows",
+    "tags": ["ui"],
+    "icon": "Window"
+  },
+  {
+    "name": "Favorite Setups",
+    "description": "Unlimited custom favorite trap setups!",
+    "url": "https://greasyfork.org/en/scripts/388403-mousehunt-favorite-setups",
+    "tags": ["quality-of-life"],
+    "icon": "Star"
+  },
+  {
+    "name": "MH Timers+",
+    "description": "Handy script to keep track of the various MH location timers.",
+    "url": "https://greasyfork.org/en/scripts/388058-mh-timers",
+    "tags": ["utility"],
+    "icon": "Clock"
+  },
+  {
+    "name": "Profile+",
+    "description": "Community requested features for the tabs on your MH profile.",
+    "url": "https://greasyfork.org/en/scripts/381389-mh-profile",
+    "tags": ["quality-of-life"],
+    "icon": "User"
+  },
+  {
+    "name": "Marketplace UI Tweaks",
+    "description": "Adds useful features and tweaks to the Marketplace rework",
+    "url": "https://greasyfork.org/en/scripts/378990-mousehunt-marketplace-ui-tweaks",
+    "tags": ["quality-of-life"],
+    "icon": "ShoppingCart"
+  },
+  {
+    "name": "Tournament Time Helper",
+    "description": "Automatically converts 'Begins in:' to your local time as well as adding the end time for tournaments.",
+    "url": "https://greasyfork.org/en/scripts/37146-mousehunt-tournament-time-helper",
+    "tags": ["quality-of-life", "ui"],
+    "icon": "Clock"
+  },
+  {
+    "name": "No Share Buttons",
+    "description": "Remove the 'Share' buttons that prompt you to share on Facebook.",
+    "url": "https://greasyfork.org/en/scripts/452434-mousehunt-no-share-button",
+    "tags": ["ui"],
+    "icon": "NoSymbol"
+  },
+  {
+    "name": "QoL Utilities",
+    "description": "Miscellaneous utilities to turbo-charge your MH experience",
+    "url": "https://greasyfork.org/en/scripts/405334-mousehunt-qol-utilities",
+    "tags": ["quality-of-life"],
+    "icon": "LockClosed"
+  },
+  {
+    "name": "Censor Journal Names",
+    "description": "Adds toggle button at top of journal to blur out names of friends/mapmates in most journal entries",
+    "url": "https://greasyfork.org/en/scripts/445553-mh-censor-journal-names",
+    "tags": ["ui", "journal"],
+    "icon": "Identification"
+  },
+  {
+    "name": "Send Supplies Search Bar",
+    "description": "Adds a search bar to make sending supplies easier",
+    "url": "https://greasyfork.org/en/scripts/396714-mousehunt-send-supplies-search-bar",
+    "tags": ["utility"],
+    "icon": "Truck"
+  },
+  {
+    "name": "No Sidebar",
+    "description": "Hides the sidebar.",
+    "url": "https://greasyfork.org/en/scripts/449491-mousehunt-no-sidebar",
+    "tags": ["ui"],
+    "icon": "NoSymbol"
+  },
+  {
+    "name": "Enhanced Search",
+    "description": "Improve the search logic of search bars in the game",
+    "url": "https://greasyfork.org/en/scripts/446436-mousehunt-enhanced-search-beta",
+    "tags": ["utility"],
+    "icon": "MagnifyingGlass"
+  },
+  {
+    "name": "Metric",
+    "description": "Convert mice weight to metric.",
+    "url": "https://greasyfork.org/en/scripts/449840-mousehunt-metric",
+    "tags": ["utility"],
+    "icon": "GlobeEuropeAfrica"
+  },
+  {
+    "name": "TEM Catch Stats",
+    "description": "Adds catch/crown statistics next to mouse names on the TEM",
+    "url": "https://greasyfork.org/en/scripts/376770-mousehunt-tem-catch-stats",
+    "tags": ["stats"],
+    "icon": "Trophy"
+  },
+  {
+    "name": "Location Catch Stats",
+    "description": "Shows caught and uncaught mouse breeds for every location",
+    "url": "https://greasyfork.org/en/scripts/381438-mousehunt-location-catch-stats",
+    "tags": ["stats"],
+    "icon": "Trophy"
+  },
+  {
+    "name": "Travel Tweaks",
+    "description": "Makes the travel page a bit better.",
+    "url": "https://greasyfork.org/en/scripts/452232-mousehunt-travel-tweaks",
+    "tags": ["travel"],
+    "icon": "Map"
+  },
+  {
+    "name": "M400 Hunting Helper",
+    "description": "Adds the ability to one click travel to the next M400 assigment location",
+    "url": "https://greasyfork.org/en/scripts/429044-mh-m400-hunting-helper",
+    "tags": ["quality-of-life"],
+    "icon": "Map"
+  },
+  {
+    "name": "Consolidated Map Colour Coder",
+    "description": "Colour code your maps",
+    "url": "https://greasyfork.org/en/scripts/428959-mh-consolidated-map-colour-coder",
+    "tags": ["ui", "maps"],
+    "icon": "Swatch"
+  },
+  {
+    "name": "Map Crown Display",
+    "description": "Adds catch/crown statistics next to mouse names on the map",
+    "url": "https://greasyfork.org/en/scripts/427193-mh-map-crown-display",
+    "tags": ["ui", "maps", "stats"],
+    "icon": "Map"
+  },
+  {
+    "name": "Mapping Helper",
+    "description": "Map improvements: Invite via Hunter ID, and directly send SB+",
+    "url": "https://greasyfork.org/en/scripts/384275-mousehunt-mapping-helper",
+    "tags": ["quality-of-life"],
+    "icon": "UserCircle"
+  },
+  {
+    "name": "FLRT Tool",
+    "description": "Free Leech Return Tradables",
+    "url": "https://greasyfork.org/en/scripts/452655-flrt-tool",
+    "tags": ["utility", "maps"],
+    "icon": "Users"
+  },
+  {
+    "name": "Floating Islands HUD Enhancer",
+    "description": "See more thing on your floating islands HUD!",
+    "url": "https://greasyfork.org/en/scripts/419909-mh-floating-islands-hud-enhancer",
+    "tags": ["location", "floating-islands"],
+    "icon": "MapPin"
+  },
+  {
+    "name": "Valour Rift HUD Enhancer",
+    "description": "Changes the text that appears in the Valour Rift hud tooltips to give you the info you actually want to see",
+    "url": "https://greasyfork.org/en/scripts/392742-mh-valour-rift-hud-enhancer",
+    "tags": ["location", "valour-rift"],
+    "icon": "MapPin"
+  },
+  {
+    "name": "Living Garden HUD Enhancer",
+    "description": "Quick travel buttons for the Living Garden area locations",
+    "url": "https://greasyfork.org/en/scripts/407059-mh-living-garden-hud-enhancer",
+    "tags": ["location", "living-garden", "travel", "ui"],
+    "icon": "MapPin"
+  },
+  {
+    "name": "Warpath Wave Calculator",
+    "description": "Keeps track of remaining wave mice to help you manage the wave",
+    "url": "https://greasyfork.org/en/scripts/390221-mh-warpath-wave-calculator",
+    "tags": ["location", "fiery-warpath", "ui"],
+    "icon": "MapPin"
+  },
+  {
+    "name": "Deep Run Assistant",
+    "description": "Helps you check if you have failed a Deep Run",
+    "url": "https://greasyfork.org/en/scripts/380861-mousehunt-deep-run-assistant",
+    "tags": ["location", "iceberg", "utility"],
+    "icon": "MapPin"
+  },
+  {
+    "name": "Spooky Shuffle Tracker",
+    "description": "Play Spooky Shuffle more easily.",
+    "url": "https://greasyfork.org/en/scripts/453305-mousehunt-better-spooky-shuffle-tracker",
+    "tags": ["event", "halloween"],
+    "icon": "Ticket"
+  },
+  {
+    "name": "Hween 2021 Trick/Treat map colour coder",
+    "description": "Colour codes mice on trick/treat maps according to type",
+    "url": "https://greasyfork.org/en/scripts/433865-mousehunt-hween-2021-trick-treat-map-colour-coder",
+    "tags": ["event", "maps", "halloween"],
+    "icon": "Map"
+  }
 ]

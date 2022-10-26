@@ -1,10 +1,10 @@
-import Head from 'next/head';
-import Link from 'next/link';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import Icon from '../components/Icon';
+import Head from 'next/head'
+import Link from 'next/link'
 
-import tools from '../data/tools.json';
+import Footer from '../components/Footer'
+import Header from '../components/Header'
+import Icon from '../components/Icon'
+import tools from '../data/tools.json'
 
 export default function Tools() {
   return (

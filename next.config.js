@@ -3,7 +3,7 @@ module.exports = {
   reactStrictMode: false,
   swcMinify: true,
   images: {
-    unoptimized: true,
+    unoptimized: false,
   },
   async redirects() {
     return [
@@ -12,6 +12,6 @@ module.exports = {
         destination: 'https://tsitu.github.io/MH-Tools/cre.html',
         permanent: true,
       },
-    ];
-  }
+    ]
+  },
 }

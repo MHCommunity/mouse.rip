@@ -1,12 +1,9 @@
-import Head from 'next/head';
-import Link from 'next/link';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import { ArrowSmallRightIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid'
+import Head from 'next/head'
+import Link from 'next/link'
 
-import {
-  ArrowSmallRightIcon,
-  ArrowTopRightOnSquareIcon
-} from '@heroicons/react/24/solid';
+import Footer from '../components/Footer'
+import Header from '../components/Header'
 
 export default function Home() {
   return (

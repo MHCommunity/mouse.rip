@@ -1,16 +1,16 @@
-import Head from 'next/head';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-import UserscriptsList from '../../components/UserscriptsList';
+import Head from 'next/head'
 
-import userscripts from '../../data/userscripts.json';
+import Footer from '../../components/Footer'
+import Header from '../../components/Header'
+import UserscriptsList from '../../components/UserscriptsList'
+import userscripts from '../../data/userscripts.json'
 
 export async function getStaticProps({ params }) {
   return {
     props: {
       tag: params.tag,
     },
-  };
+  }
 }
 
 export async function getStaticPaths() {
@@ -18,31 +18,31 @@ export async function getStaticPaths() {
     return {
       paths: [],
       fallback: 'blocking',
-    };
+    }
   }
 
   const tags = userscripts.reduce((acc, script) => {
     script.tags.forEach((tag) => {
-      if (! acc.includes(tag)) {
-        acc.push(tag);
+      if (!acc.includes(tag)) {
+        acc.push(tag)
       }
-    });
-    return acc;
-  }, []);
+    })
+    return acc
+  }, [])
 
   const paths = tags.map((tag) => ({
     params: { tag: tag },
-  }));
+  }))
 
   return {
     paths,
-    fallback: true
-  };
+    fallback: true,
+  }
 }
 
 export default function Userscripts({ tag = 'all' }) {
-  const tagName = tag.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-  const pageTitle = tagName === 'Ui' ? 'User Interface Userscripts' : tagName ? `${tagName} userscripts` : 'Userscripts';
+  const tagName = tag.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())
+  const pageTitle = tagName === 'Ui' ? 'User Interface Userscripts' : tagName ? `${tagName} userscripts` : 'Userscripts'
 
   return (
     <div className="bg-white">

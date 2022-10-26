@@ -1,21 +1,27 @@
 [
-	{
-		"name": "MouseHunt Community Tools",
-		"description": "A collection of tools for MouseHunt.",
-		"url": "https://mhct.win/",
-		"icon": "Sparkles"
-	},
-	{
-		"name": "Catch Rate Estimator",
-		"description": "Calculate your catch rate, based on setup.",
-		"url": "https://tsitu.github.io/MH-Tools/cre.html",
-		"icon": "Beaker"
-	},
+  {
+    "name": "MouseHunt Community Tools",
+    "description": "A collection of tools for MouseHunt.",
+    "url": "https://mhct.win/",
+    "icon": "Sparkles"
+  },
+  {
+    "name": "Catch Rate Estimator",
+    "description": "Calculate your catch rate, based on setup.",
+    "url": "https://tsitu.github.io/MH-Tools/cre.html",
+    "icon": "Beaker"
+  },
   {
     "name": "Markethunt",
     "description": "A tool for tracking the prices of items in the MouseHunt market.",
     "url": "https://markethunt.vsong.ca/",
     "icon": "ChartBar"
+  },
+  {
+    "name": "MouseHunt API",
+    "description": "An unofficial API for MouseHunt.",
+    "url": "https://api.mouse.rip/",
+    "icon": "CodeBracket"
   },
   {
     "name": "Mouse & Items Drops",

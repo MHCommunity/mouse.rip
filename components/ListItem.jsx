@@ -1,6 +1,7 @@
-import clsx from 'clsx';
-import Link from 'next/link';
-import Icon from './Icon';
+import clsx from 'clsx'
+import Link from 'next/link'
+
+import Icon from './Icon'
 
 export default function ListItem({ name, description, url, icon, className }) {
   return (

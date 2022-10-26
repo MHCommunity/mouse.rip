@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from 'next/link'
 
 export default function Header({ text, main, className }) {
   return (
@@ -7,9 +7,11 @@ export default function Header({ text, main, className }) {
         <span className={className}>{text}</span> for MouseHunt
       </h1>
       <div className="mt-4 text-center">
-        { ! main && (
+        {!main && (
           <Link href="/">
-            <a className="text-sm font-light text-sky-600 hover:text-sky-800"><span aria-hidden="true">← </span> back to main page</a>
+            <a className="text-sm font-light text-sky-600 hover:text-sky-800">
+              <span aria-hidden="true">← </span> back to main page
+            </a>
           </Link>
         )}
       </div>
