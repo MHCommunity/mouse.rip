@@ -5,8 +5,12 @@ export async function onRequestPost({ request, env }) {
     auth: env.INTEGRATION_NOTION_API_KEY,
   })
 
+  const type = request.body.challengeType
+  const hunterId = request.body.hunterId
+  const discordId = request.body.discordId
+
   return new Response(
-    JSON.stringify({ success: true, message: 'You have successfully entered the challenge.', data: { request.body.challengeType, request.body.hunterId, request.body.discordId } }),
+    JSON.stringify({ success: true, message: 'You have successfully entered the challenge.', type, hunterId, discordId }),
     { status: 200, headers: { 'Content-Type': 'application/json' } }
   )
 
