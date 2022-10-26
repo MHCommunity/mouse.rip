@@ -1,17 +1,15 @@
-const { Client } = require('@notionhq/client');
+const { Client } = require('@notionhq/client')
 
 const notion = new Client({
   auth: process.env.INTEGRATION_NOTION_API_KEY,
-});
+})
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res
-      .status(405)
-      .json({ message: `${req.method} requests are not allowed` });
+    return res.status(405).json({ message: `${req.method} requests are not allowed` })
   }
   try {
-    const { challengeType, hunterId, discordId } = JSON.parse(req.body);
+    const { challengeType, hunterId, discordId } = JSON.parse(req.body)
     await notion.pages.create({
       parent: {
         database_id: process.env.INTEGRATION_NOTION_DATABASE_ID,
@@ -21,7 +19,7 @@ export default async function handler(req, res) {
           title: [
             {
               text: {
-                content: hunterId
+                content: hunterId,
               },
             },
           ],
@@ -30,7 +28,7 @@ export default async function handler(req, res) {
           rich_text: [
             {
               text: {
-                content: discordId
+                content: discordId,
               },
             },
           ],
@@ -39,15 +37,15 @@ export default async function handler(req, res) {
           rich_text: [
             {
               text: {
-                content: challengeType
+                content: challengeType,
               },
             },
           ],
-        }
+        },
       },
-    });
-    res.status(201).json({ success: true, message: 'You have successfully entered the challenge.' });
+    })
+    res.status(201).json({ success: true, message: 'You have successfully entered the challenge.' })
   } catch (error) {
-    res.status(500).json({ success: false, message: 'There was an error submitting your entry.', error: error.message });
+    res.status(500).json({ success: false, message: 'There was an error submitting your entry.', error: error.message })
   }
 }

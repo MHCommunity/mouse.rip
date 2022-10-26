@@ -1,3 +1,4 @@
+import { ArrowSmallRightIcon } from '@heroicons/react/24/solid'
 import { Tab } from '@headlessui/react'
 import clsx from 'clsx'
 import Head from 'next/head'
@@ -74,11 +75,20 @@ export default function LordBoardChallenge() {
       </Head>
 
       <HeaderNew />
-      <div className="px-3 bg-gray-100 py-14">
+      <div className="px-3 pb-8 bg-gray-100 pt-14">
         <div className="max-w-xl mx-auto space-y-4 text-center">
           <div className="flex items-center">
             <Icon icon="CheckCircle" className="hidden text-gray-400 h-9 w-9 sm:block" />
-            <h1 className="flex items-center ml-3 text-3xl font-bold tracking-tight text-center text-gray-700">Lord–Master Spooky Board Challenge</h1>
+            <h1 className="ml-3 text-3xl font-bold tracking-tight text-center text-gray-700">Lord–Master Spooky Board Challenge</h1>
+          </div>
+          <div className="flex items-center justify-center">
+            <div className="rounded-md border border-green-300 bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 mr-3">Live</div>
+            <Link href="/challenges/enter">
+              <a className="group relative inline-flex items-center overflow-hidden py-0.5 text-sky-500 hover:text-sky-700 ml-3">
+                <span className="text-sm font-medium">Enter challenge</span>
+                <ArrowSmallRightIcon className="w-4 h-4" aria-hidden="true" />
+              </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -92,11 +102,9 @@ export default function LordBoardChallenge() {
             <p>
               The challenge is to do an <strong>undusted Master–Lord Spooky Shuffle Board</strong>, add up how many points you&apos;ve scored, and try to get the highest!
             </p>
-            <div className="no-prose -mb-6">
+            <div className="-mb-6 no-prose">
               <Link href="/challenges/enter">
-                <a className="text-md no-underline font-medium text-sky-600 hover:text-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2">
-                  Enter challenge now &rarr;
-                </a>
+                <a className="font-medium no-underline text-md text-sky-600 hover:text-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2">Enter challenge now &rarr;</a>
               </Link>
             </div>
             <h2>Prizes</h2>
