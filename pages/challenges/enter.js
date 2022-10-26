@@ -21,6 +21,7 @@ export default function Challenge() {
     setLoading(true)
     fetch('/api/submit-challenge-entry', {
       method: 'POST',
+      headers: { 'Content-Type': 'multipart/form-data' },
       body: JSON.stringify({ challengeType, hunterId, discordId }),
     })
       .then((res) => res.json())
