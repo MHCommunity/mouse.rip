@@ -15,6 +15,11 @@ export async function onRequestPost({ request, env }) {
 
     JSON.stringify(body);
 
+    return new Response(
+      JSON.stringify({ success: true, message: body }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    )
+
     await notion.pages.create({
       parent: {
         database_id: env.INTEGRATION_NOTION_DATABASE_ID,
