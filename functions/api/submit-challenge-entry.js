@@ -10,7 +10,7 @@ export async function onRequestPost({ request, env }) {
     let pretty = JSON.stringify([...input], null, 2);
 
     return new Response(pretty, {
-      headers: { 'content-type": "application/json;charset=UTF-8' },
+      headers: { 'content-type': 'application/json;charset=UTF-8' }
     });
 
     await notion.pages.create({
