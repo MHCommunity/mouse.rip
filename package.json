@@ -14,7 +14,7 @@
     "prettier": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc.json"
   },
   "dependencies": {
-    "@headlessui/react": "^0.0.0-insiders.f66f492",
+    "@headlessui/react": "^1.7.3",
     "@heroicons/react": "^2.0.12",
     "@notionhq/client": "^2.2.1",
     "autoprefixer": "^10.4.12",
