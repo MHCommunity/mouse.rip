@@ -1,14 +1,20 @@
 [
-	{
+  {
     "name": "Wisdom Values",
     "description": "It's not experience, it's wisdom!",
     "url": "https://docs.google.com/spreadsheets/d/1nzD6iiHauMMwD2eHBuAyRziYJtCVnNwSYzCKbBnrRgc/edit#gid=1426419522",
     "icon": "AcademicCap"
   },
   {
-		"name": "MouseHunt Crown Tracker",
-		"description": "Silvermane's Crown Tracker Worksheet",
-		"url": "https://docs.google.com/spreadsheets/d/1Al1zqq3sYt5vDI-NJCGARDNnoswv7t99c4MaZGuoAkY/edit#gid=1010310312",
-		"icon": "DocumentCheck"
-	}
+    "name": "Location-specific Trap Effects",
+    "description": "Effects of traps and bases that are location-specific.",
+    "url": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRg_s_It1mDCefWgwc-7Gexr5Hc7lKBztFue9kYZidI76iodSUan3BoGsagLCI1M26U_zG7uVMe9kgK/pubhtml?gid=0&single=true",
+    "icon": "MapPin"
+  },
+  {
+    "name": "MouseHunt Crown Tracker",
+    "description": "Silvermane's Crown Tracker Worksheet",
+    "url": "https://docs.google.com/spreadsheets/d/1Al1zqq3sYt5vDI-NJCGARDNnoswv7t99c4MaZGuoAkY/edit#gid=1010310312",
+    "icon": "DocumentCheck"
+  }
 ]
