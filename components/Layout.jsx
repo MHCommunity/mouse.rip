@@ -107,11 +107,11 @@ export default function Layout({ children, title, className = '', isMainTitle = 
             <a className="text-2xl font-light text-sky-700 hover:text-sky-500">mouse.rip</a>
           </Link>
           <div className="flex justify-center mt-3 flex-nowrap space-x-2">
-            <Link href="/">
+            <Link href="https://discordapp.com/invite/Ya9zEdk">
               <a className="font-light text-md text-sky-700 hover:text-sky-500">Discord</a>
             </Link>
             <div>·</div>
-            <Link href="/">
+            <Link href="https://github.com/MHCommunity/mouse.rip">
               <a className="font-light text-md text-sky-700 hover:text-sky-500">GitHub</a>
             </Link>
           </div>
