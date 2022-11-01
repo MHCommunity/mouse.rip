@@ -43,15 +43,11 @@ export async function onRequestPost({ request, env }) {
       },
     })
 
-    return new Response(
-      JSON.stringify({ success: true, message: 'You have successfully entered the challenge.' }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
-    )
-
+    return new Response(JSON.stringify({ success: true, message: 'You have successfully entered the challenge.' }), { status: 200, headers: { 'Content-Type': 'application/json' } })
   } catch (error) {
-    return new Response(
-      JSON.stringify({ success: false, message: 'There was an error submitting your entry.', error: error.message }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    )
+    return new Response(JSON.stringify({ success: false, message: 'There was an error submitting your entry.', error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
   }
 }

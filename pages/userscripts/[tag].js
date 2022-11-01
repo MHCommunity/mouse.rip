@@ -1,8 +1,6 @@
 import Head from 'next/head'
 
-import Footer from '../../components/Footer'
-import Header from '../../components/Header'
-import HeaderTopNav from '../../components/HeaderTopNav'
+import Layout from '../../components/Layout'
 import UserscriptsList from '../../components/UserscriptsList'
 import userscripts from '../../data/userscripts.json'
 
@@ -43,7 +41,7 @@ export async function getStaticPaths() {
 
 export default function Userscripts({ tag = 'all' }) {
   const tagName = tag.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())
-  const pageTitle = tagName === 'Ui' ? 'User Interface Userscripts' : tagName ? `${tagName} userscripts` : 'Userscripts'
+  const pageTitle = tagName === 'Ui' ? 'User Interface userscripts' : tagName ? `${tagName} userscripts` : 'serscripts'
 
   return (
     <div className="bg-white">
@@ -52,12 +50,9 @@ export default function Userscripts({ tag = 'all' }) {
         <meta name="description" content={`${pageTitle} for MouseHunt - mouse.rip`} />
       </Head>
 
-      <main>
-        <HeaderTopNav />
-        <Header text={pageTitle} className="text-purple-700" />
+      <Layout title={pageTitle} isMainTitle className="text-purple-600">
         <UserscriptsList tag={tag} />
-      </main>
-      <Footer />
+      </Layout>
     </div>
   )
 }

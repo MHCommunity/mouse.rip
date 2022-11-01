@@ -1,61 +1,38 @@
 import Head from 'next/head'
-import Link from 'next/link'
 
-import Footer from '../components/Footer'
-import HeaderTopNav from '../components/HeaderTopNav'
-import Icon from '../components/Icon'
+import ChallengeLinks from '../components/ChallengeLinks'
+import Layout from '../components/Layout'
+import List from '../components/List'
+import ListItemComingSoon from '../components/ListItemComingSoon'
 
+const challenges = [
+  {
+    name: 'Alphabetical Catching Challenge',
+    description: 'Catch a mouse whose name starts with each letter of the alphabet.',
+    icon: 'Trophy',
+    badgeType: 'upcoming',
+    url: '/challenges/alphabetical',
+  },
+]
 export default function Challenge() {
   return (
     <div className="bg-white">
       <Head>
-        <title>Lounge Challenges - mouse.rip</title>
-        <meta name="description" content="Lounge Challenges - details and entry" />
+        <title>Discord Challenges - mouse.rip</title>
+        <meta name="description" content="MouseHunt #mh-lounge Discord Challenges - Details and entry form" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <HeaderTopNav />
 
-      <div className="px-3 bg-gray-100 py-14">
-        <div className="max-w-xl mx-auto text-center space-y-1">
-          <h1 className="block pb-4 text-3xl font-bold tracking-tight text-center text-gray-700 sm:text-4xl">Lounge Challenges</h1>
-        </div>
-      </div>
-
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-2xl">
-        <div role="list" className="flex flex-col max-w-3xl gap-3">
-          <Link href="/challenges/lord-board">
-            <a className="bg-white border-2 rounded-lg border-slate-100 hover:ring-1 ring-sky-600 group">
-              <div className="flex items-start px-6 py-4">
-                <div className="mt-2 shrink-0">
-                  <Icon icon="CheckCircle" className="text-sky-600 h-9 w-9 group-hover:text-sky-800" />
-                </div>
-                <div className="ml-4">
-                  <div className="flex items-center">
-                    <h3 className="pt-1 mb-1 text-lg font-light text-sky-700 group-hover:text-sky-900">Lord–Master Spooky Board Challenge</h3>
-                    <span className="inline-flex ml-4 items-center rounded-md border border-green-300 bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">Live</span>
-                  </div>
-                  <p className="text-sm text-gray-700">Score as many points as you can on a Lord–Master Spooky Shuffle board.</p>
-                </div>
-              </div>
-            </a>
-          </Link>
-
-          <div className="border-2 rounded-lg bg-gray-50 border-slate-100">
-            <div className="flex items-start px-6 py-4">
-              <div className="mt-2 shrink-0">
-                <Icon icon="Calendar" className="text-gray-300 h-9 w-9" />
-              </div>
-              <div className="ml-4">
-                <div className="flex items-center">
-                  <h3 className="pt-1 mb-1 text-lg font-light text-gray-400">Coming soon...</h3>
-                </div>
-                <p className="text-sm text-gray-400">More unique challenges coming soon.</p>
-              </div>
-            </div>
+      <Layout title="Discord Challenges">
+        <div className="max-w-3xl px-3 mx-auto">
+          <div className="pb-6">
+            <ChallengeLinks />
           </div>
+
+          <List items={challenges} ringClassName="ring-sky-600" textClassName="text-sky-600 group-hover:text-sky-900" />
+          <ListItemComingSoon text="More challenges coming soon." />
         </div>
-      </div>
-      <Footer />
+      </Layout>
     </div>
   )
 }

@@ -1,8 +1,6 @@
 import Head from 'next/head'
 
-import Footer from '../components/Footer'
-import Header from '../components/Header'
-import HeaderTopNav from '../components/HeaderTopNav'
+import Layout from '../components/Layout'
 import UserscriptsList from '../components/UserscriptsList'
 
 export default function Userscripts() {
@@ -14,12 +12,9 @@ export default function Userscripts() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <HeaderTopNav />
-        <Header text="Userscripts" className="text-purple-700" />
+      <Layout title="Userscripts" isMainTitle className="text-purple-600">
         <UserscriptsList tag="all" />
-      </main>
-      <Footer />
+      </Layout>
     </div>
   )
 }

@@ -1,9 +1,11 @@
 import { ArrowSmallLeftIcon } from '@heroicons/react/24/solid'
 import Link from 'next/link'
 
+import Layout from '../components/Layout'
+
 export default function Custom404() {
   return (
-    <div className="h-screen grid place-content-center">
+    <Layout>
       <div className="text-center">
         <strong className="font-light tracking-tighter text-gray-200 text-9xl">404</strong>
 
@@ -11,10 +13,10 @@ export default function Custom404() {
 
         <Link href="/">
           <a className="block px-5 py-3 mt-6 text-sm font-medium text-sky-600 hover:text-sky-700">
-            <ArrowSmallLeftIcon className="inline w-6 h-6 -mt-1" /> back to main page
+            <ArrowSmallLeftIcon className="inline w-5 h-5 -mt-1" /> back to main page
           </a>
         </Link>
       </div>
-    </div>
+    </Layout>
   )
 }
