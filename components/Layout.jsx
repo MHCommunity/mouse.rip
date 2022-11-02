@@ -74,7 +74,7 @@ export default function Layout({ children, title, className = '', isMainTitle = 
                 </div>
                 <div className="pt-4 pb-3 border-t border-gray-200">
                   <div className="mt-3 space-y-1">
-                    <Link href="https://discordapp.com/invite/Ya9zEdk" rel="noreferrer" target="_blank">
+                    <Link href="https://discord.gg/mousehunt" rel="noreferrer" target="_blank">
                       <a className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-sky-500">Discord</a>
                     </Link>
                     <Link href="https://github.com/MHCommunity/mouse.rip" rel="noreferrer" target="_blank">
@@ -107,7 +107,7 @@ export default function Layout({ children, title, className = '', isMainTitle = 
             <a className="text-2xl font-light text-sky-700 hover:text-sky-500">mouse.rip</a>
           </Link>
           <div className="flex justify-center mt-3 flex-nowrap space-x-2">
-            <Link href="https://discordapp.com/invite/Ya9zEdk">
+            <Link href="https://discord.gg/mousehunt">
               <a className="font-light text-md text-sky-700 hover:text-sky-500">Discord</a>
             </Link>
             <div>·</div>

@@ -48,7 +48,7 @@ const mainNav = [
   },
   {
     name: 'Discord',
-    href: 'https://discordapp.com/invite/Ya9zEdk',
+    href: 'https://discord.gg/mousehunt',
     description: 'Join the community, enter giveaways, and hang out.',
     external: true,
     boxColor: 'border-blue-400 ring-blue-600',
