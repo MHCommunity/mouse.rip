@@ -12,6 +12,12 @@
     "icon": "MapPin"
   },
   {
+    "name": "Most Mice Caught in a Row",
+    "description": "How many mice of the same mouse can you catch in a row?",
+    "url": "https://docs.google.com/spreadsheets/d/1AaZ7Fm_wpT_QNyvNoMLhcUdW7Z9MIJhGqlWGWAZmBjw/edit?authkey=CIT9pL4M&authkey=CIT9pL4M",
+    "icon": "Trophy"
+  },
+  {
     "name": "MouseHunt Crown Tracker",
     "description": "Silvermane's Crown Tracker Worksheet",
     "url": "https://docs.google.com/spreadsheets/d/1Al1zqq3sYt5vDI-NJCGARDNnoswv7t99c4MaZGuoAkY/edit#gid=1010310312",
