@@ -59,6 +59,7 @@ export async function onRequestPost({ request, env }) {
         success: false,
         message: 'There was an error submitting your entry.',
         error: error.message,
+        request: request,
       }),
       {
         status: 500,
