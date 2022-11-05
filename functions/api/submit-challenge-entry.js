@@ -58,8 +58,8 @@ export async function onRequestPost({ request, env }) {
       JSON.stringify({
         success: false,
         message: 'There was an error submitting your entry.',
-        error: error.message,
-        request: request,
+        error,
+        request,
       }),
       {
         status: 500,
