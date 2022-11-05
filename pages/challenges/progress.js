@@ -2,7 +2,7 @@ import { Disclosure } from '@headlessui/react'
 import { ArrowPathIcon, CheckCircleIcon } from '@heroicons/react/24/solid'
 import Head from 'next/head'
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import Layout from '../../components/Layout'
 
@@ -85,7 +85,7 @@ export default function Challenge() {
                     <div className="ml-3">
                       <h3 className="text-sm font-medium text-green-700">Updated progress for Hunter {success.hunterId}</h3>
                       <div className="mt-2">
-                        <div className="text-green-700 space-y-6 mt-5">
+                        <div className="mt-5 text-green-700 space-y-6">
                           <div className="text-xl">
                             Your next letter is <strong className="uppercase">{success.nextLetter}</strong>.
                           </div>
@@ -94,10 +94,10 @@ export default function Challenge() {
                     </div>
                   </div>
                 </div>
-                <div className="mx-auto p-4">
+                <div className="p-4 mx-auto">
                   <Disclosure>
                     <>
-                      <div className="flex justify-evenly items-center text-sm font-medium ">
+                      <div className="flex items-center text-sm font-medium justify-evenly ">
                         <Disclosure.Button>
                           <span className="inline-flex items-center rounded border border-gray-300 bg-white px-10 py-1.5 text-xs font-medium text-gray-800 shadow-sm hover:bg-gray-50">
                             View last recorded journal entries
@@ -110,7 +110,7 @@ export default function Challenge() {
                         </Link>
                       </div>
                       <Disclosure.Panel className="mt-10">
-                        <table className="min-w-full divide-y divide-gray-300 border border-gray-300 shadow-inner">
+                        <table className="min-w-full border border-gray-300 shadow-inner divide-y divide-gray-300">
                           <thead className="bg-gray-50">
                             <tr>
                               <th scope="col" className="py-3.5 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6">
@@ -127,11 +127,9 @@ export default function Challenge() {
                           <tbody className="bg-white">
                             {success.entries.map((entry, index) => (
                               <tr key={entry.id} className={index % 2 === 0 ? undefined : 'bg-gray-50'}>
-                                <td className="whitespace-nowrap py-4 pl-4 text-sm font-medium text-gray-900 sm:pl-6">
-                                  {entry.mouseName}
-                                </td>
-                                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{entry.location}</td>
-                                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{entry.dateFormatted}</td>
+                                <td className="py-4 pl-4 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">{entry.mouseName}</td>
+                                <td className="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">{entry.location}</td>
+                                <td className="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">{entry.dateFormatted}</td>
                               </tr>
                             ))}
                           </tbody>

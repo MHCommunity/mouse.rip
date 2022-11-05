@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export default function ChallengeLinks() {
   return (
-    <div className="flex justify-center no-prose space-x-4 text-center">
+    <div className="flex justify-center text-center no-prose space-x-4">
       <Link href="/challenges/enter">
         <a className="inline-flex p-3 text-sm font-medium text-white no-underline border transition rounded-md border-sky-600 bg-sky-500 hover:bg-sky-700 focus:outline-none focus:ring active:text-sky-500">
           Enter challenge
