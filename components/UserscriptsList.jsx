@@ -5,7 +5,7 @@ import ListItem from '../components/ListItem'
 import userscripts from '../data/userscripts.json'
 
 const tags = [
-  { name: 'All', href: '/userscripts/all' },
+  { name: 'All', href: '/userscripts' },
   { name: 'Event', href: '/userscripts/event' },
   { name: 'Maps', href: '/userscripts/maps' },
   { name: 'Quality of Life', href: '/userscripts/quality-of-life' },
