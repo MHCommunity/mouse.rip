@@ -18,7 +18,7 @@ export default function Challenge() {
     e.preventDefault()
 
     setLoading(true)
-    fetch('/api/submit-challenge-entry', {
+    fetch('https://api.mouse.rip/challenge-entry', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `challengeType=${challengeType}&hunterId=${hunterId}&discordId=${discordId}`,
