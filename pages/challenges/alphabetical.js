@@ -27,7 +27,7 @@ export default function Alphabetical() {
             <div className="mx-auto mt-6 text-gray-500 prose prose-lg prose-sky">
               <h2>Summary</h2>
               <p>
-                In this challenge, you&apos;ll be catching at least 26 mice across the Kingdown, one for each letter of the alphabet! Even though it is a race, if you can finish the challenge, you'll win a prize.
+                In this challenge, you&apos;ll be catching at least 26 mice across the Kingdown, one for each letter of the alphabet! Even though it is a race, if you can finish the challenge, you&apos;ll win a prize.
               </p>
               <p>
                 First, catch a mouse whose name begins with the letter <strong>A</strong>, then <strong>B</strong>, and continue on until <strong>Z</strong>.
