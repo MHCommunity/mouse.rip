@@ -6,7 +6,7 @@ import { useState } from 'react'
 import Layout from '../../components/Layout'
 
 export default function Challenge() {
-  const [challengeType, setChallengeType] = useState('lord-board')
+  const [challengeType, setChallengeType] = useState('alphabetical')
   const [hunterId, setHunterId] = useState('')
   const [discordId, setDiscordId] = useState('')
 
