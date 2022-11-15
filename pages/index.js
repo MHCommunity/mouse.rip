@@ -58,7 +58,7 @@ const mainNav = [
 
 export default function Home() {
   return (
-    <div className="bg-white">
+    <div>
       <Head>
         <title>MouseHunt Guides, Tools, and Resources - mouse.rip</title>
         <meta name="description" content="MouseHunt Guides, Tools, and Resources" />
@@ -71,14 +71,14 @@ export default function Home() {
             {mainNav.map((link) => (
               <li key={link.name} className="flex shadow-md col-span-1">
                 <Link href={link.href}>
-                  <a className={clsx('flex items-start flex-1 p-3 bg-white border  rounded-lg hover:ring-1 group', link.boxColor)}>
+                  <a className={clsx('flex items-start flex-1 p-3 bg-white dark:bg-zinc-900 border rounded-lg hover:ring-1 group', link.boxColor)}>
                     <div className="flex-1 px-4 py-2 text-md">
                       <div className={clsx('pb-3 text-xl font-medium', link.linkColor)}>
                         {link.name}
                         {link.external && <ArrowTopRightOnSquareIcon className="inline w-4 h-4 ml-1 align-baseline" aria-hidden="true" />}
                         {!link.external && <ArrowSmallRightIcon className="inline w-4 h-4 ml-1 align-baseline" aria-hidden="true" />}
                       </div>
-                      <p className="font-light text-gray-500 leading-6">{link.description}</p>
+                      <p className="font-light text-gray-700 dark:text-gray-400 leading-6">{link.description}</p>
                     </div>
                   </a>
                 </Link>

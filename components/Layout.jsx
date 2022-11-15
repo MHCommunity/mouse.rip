@@ -13,7 +13,7 @@ export default function Layout({ children, title, className = '', isMainTitle = 
   return (
     <>
       <div className="min-h-full">
-        <Disclosure as="nav" className="bg-white shadow-sm">
+        <Disclosure as="nav" className="bg-white border-b dark:bg-zinc-900 shadow-sm border-zinc-100 dark:border-zinc-800">
           {({ open }) => (
             <>
               <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -21,13 +21,15 @@ export default function Layout({ children, title, className = '', isMainTitle = 
                   <div className="flex">
                     <div className="flex items-center flex-shrink-0">
                       <Link href="/">
-                        <a className="text-2xl font-light text-sky-700 hover:text-sky-500">mouse.rip</a>
+                        <a className="text-2xl font-light text-sky-700 dark:text-sky-500 hover:text-sky-500 dark:hover:text-sky-400">mouse.rip</a>
                       </Link>
                     </div>
                     <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                       {navigation.map((item) => (
                         <Link key={item.name} href={item.href}>
-                          <a className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-sky-500">{item.name}</a>
+                          <a className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-sky-700 dark:text-zinc-400 dark:hover:text-sky-400">
+                            {item.name}
+                          </a>
                         </Link>
                       ))}
                     </div>
@@ -51,7 +53,7 @@ export default function Layout({ children, title, className = '', isMainTitle = 
                     </Link>
                   </div>
                   <div className="flex items-center -mr-2 sm:hidden">
-                    <Disclosure.Button className="inline-flex items-center justify-center p-2 text-gray-400 bg-white rounded-md hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2">
+                    <Disclosure.Button className="inline-flex items-center justify-center p-2 text-gray-400 bg-white dark:bg-slate-800 rounded-md hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2">
                       <span className="sr-only">Open main menu</span>
                       {open ? <XMarkIcon className="block w-6 h-6" aria-hidden="true" /> : <Bars3Icon className="block w-6 h-6" aria-hidden="true" />}
                     </Disclosure.Button>
@@ -66,19 +68,19 @@ export default function Layout({ children, title, className = '', isMainTitle = 
                       key={item.name}
                       as="a"
                       href={item.href}
-                      className="block py-2 pl-3 pr-4 text-base font-medium text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-sky-500"
+                      className="block py-2 pl-3 pr-4 text-base font-medium text-gray-600 border-l-4 border-transparent dark:text-gray-400 hover:bg-gray-50 hover:text-sky-500"
                     >
                       {item.name}
                     </Disclosure.Button>
                   ))}
                 </div>
-                <div className="pt-4 pb-3 border-t border-gray-200">
+                <div className="pt-4 pb-3 border-t border-zinc-100 dark:border-zinc-800">
                   <div className="mt-3 space-y-1">
                     <Link href="https://discord.gg/mousehunt" rel="noreferrer" target="_blank">
-                      <a className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-sky-500">Discord</a>
+                      <a className="block px-4 py-2 text-base font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 hover:text-sky-500">Discord</a>
                     </Link>
                     <Link href="https://github.com/MHCommunity/mouse.rip" rel="noreferrer" target="_blank">
-                      <a className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-sky-500">GitHub</a>
+                      <a className="block px-4 py-2 text-base font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 hover:text-sky-500">GitHub</a>
                     </Link>
                   </div>
                 </div>
@@ -90,7 +92,7 @@ export default function Layout({ children, title, className = '', isMainTitle = 
         <div className="py-10">
           <header>
             <div className="px-4 pt-3 pb-10 mx-auto text-center max-w-7xl sm:px-6 lg:px-8">
-              <h1 className="text-4xl font-bold leading-tight text-slate-800">
+              <h1 className="text-4xl font-bold leading-tight text-slate-800 dark:text-slate-300">
                 <span className={className}>{title}</span>
                 {isMainTitle && ' for MouseHunt'}
               </h1>
@@ -101,18 +103,18 @@ export default function Layout({ children, title, className = '', isMainTitle = 
           </main>
         </div>
       </div>
-      <footer className="py-10 border-t border-slate-900/5">
+      <footer className="py-10 border-t border-slate-900/5 dark:border-gray-100/10">
         <div className="text-center">
           <Link href="/">
-            <a className="text-2xl font-light text-sky-700 hover:text-sky-500">mouse.rip</a>
+            <a className="text-2xl font-light text-sky-700 dark:text-sky-500 hover:text-sky-500 dark:hover:text-sky-400">mouse.rip</a>
           </Link>
           <div className="flex justify-center mt-3 flex-nowrap space-x-2">
             <Link href="https://discord.gg/mousehunt">
-              <a className="font-light text-md text-sky-700 hover:text-sky-500">Discord</a>
+              <a className="font-light text-md text-sky-700 dark:text-sky-500 hover:text-sky-500 dark:hover:text-sky-400">Discord</a>
             </Link>
             <div>·</div>
             <Link href="https://github.com/MHCommunity/mouse.rip">
-              <a className="font-light text-md text-sky-700 hover:text-sky-500">GitHub</a>
+              <a className="font-light text-md text-sky-700 dark:text-sky-500 hover:text-sky-500 dark:hover:text-sky-400">GitHub</a>
             </Link>
           </div>
         </div>

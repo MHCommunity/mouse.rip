@@ -6,7 +6,7 @@ import spreadsheets from '../data/spreadsheets.json'
 
 export default function Spreadsheets() {
   return (
-    <div className="bg-white">
+    <div>
       <Head>
         <title>MouseHunt Spreadsheets - mouse.rip</title>
         <meta name="description" content="MouseHunt Spreadsheets" />

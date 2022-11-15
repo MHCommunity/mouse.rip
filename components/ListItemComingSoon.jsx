@@ -2,7 +2,7 @@ import { CalendarIcon } from '@heroicons/react/24/outline'
 
 export default function ListItem({ text }) {
   return (
-    <div className="mt-6 border-2 rounded-lg bg-gray-50 border-slate-100">
+    <div className="mt-6 border-2 rounded-lg bg-gray-50 dark:bg-zinc-900/50 border-slate-100 dark:border-zinc-800">
       <div className="flex items-start px-6 py-4">
         <div className="mt-2 shrink-0">
           <CalendarIcon className="text-gray-300 h-9 w-9" aria-hidden="true" />

@@ -38,7 +38,7 @@ export default function Challenge() {
   }
 
   return (
-    <div className="bg-white">
+    <div>
       <Head>
         <title>Challenge Entry - mouse.rip</title>
         <meta name="description" content="Challenge Entry - details and entry" />

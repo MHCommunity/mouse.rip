@@ -5,7 +5,7 @@ import UserscriptsList from '../components/UserscriptsList'
 
 export default function Userscripts() {
   return (
-    <div className="bg-white">
+    <div>
       <Head>
         <title>MouseHunt Userscripts - mouse.rip</title>
         <meta name="description" content="MouseHunt Userscripts" />

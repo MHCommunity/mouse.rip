@@ -16,7 +16,7 @@ const challenges = [
 ]
 export default function Challenge() {
   return (
-    <div className="bg-white">
+    <div>
       <Head>
         <title>Discord Challenges - mouse.rip</title>
         <meta name="description" content="MouseHunt #mh-lounge Discord Challenges - Details and entry form" />

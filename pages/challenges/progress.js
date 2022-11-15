@@ -35,7 +35,7 @@ export default function Challenge() {
   }
 
   return (
-    <div className="bg-white">
+    <div>
       <Head>
         <title>Challenge Progress Tracking - mouse.rip</title>
         <meta name="description" content="Challenge Progress Tracking - mouse.rip" />

@@ -44,7 +44,7 @@ export default function Userscripts({ tag = 'all' }) {
   const pageTitle = tagName === 'Ui' ? 'User Interface userscripts' : tagName ? `${tagName} userscripts` : 'serscripts'
 
   return (
-    <div className="bg-white">
+    <div>
       <Head>
         <title>{`${pageTitle} for MouseHunt - mouse.rip`}</title>
         <meta name="description" content={`${pageTitle} for MouseHunt - mouse.rip`} />

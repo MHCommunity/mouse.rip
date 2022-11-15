@@ -9,7 +9,7 @@ export default function ChallengeLinks() {
         </a>
       </Link>
       <Link href="/challenges/progress">
-        <a className="inline-flex items-center justify-center p-3 text-sm no-underline border rounded-md border-sky-200 hover:border-sky-400 bg-sky-100 text-sky-700 hover:bg-sky-200">
+        <a className="inline-flex items-center justify-center p-3 text-sm no-underline border rounded-md border-sky-200 hover:border-sky-400 bg-sky-100  text-sky-700 hover:bg-sky-200">
           Update progress
         </a>
       </Link>

@@ -23,8 +23,8 @@ export default function Userscripts({ tag }) {
           <Link key={tagItem.name} href={tagItem.href}>
             <a
               className={clsx(
-                tagItem.name === tag ? 'bg-purple-200' : '',
-                'inline-flex items-center px-3 py-2 m-1 text-xs font-medium leading-4 text-purple-800 bg-purple-100 border border-transparent rounded-md hover:bg-purple-200'
+                tagItem.name === tag ? 'bg-purple-200 dark:bg-purple-800' : '',
+                'inline-flex items-center px-3 py-2 m-1 text-xs font-medium leading-4 text-purple-800 bg-purple-100 dark:bg-purple-800 dark:text-purple-300 border border-transparent rounded-md hover:bg-purple-200 dark:hover:bg-purple-700'
               )}
             >
               {tagItem.name}

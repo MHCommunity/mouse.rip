@@ -6,7 +6,7 @@ import tools from '../data/tools.json'
 
 export default function Tools() {
   return (
-    <div className="bg-white">
+    <div>
       <Head>
         <title>MouseHunt Tools - mouse.rip</title>
         <meta name="description" content="MouseHunt Tools" />

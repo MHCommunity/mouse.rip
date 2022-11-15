@@ -6,7 +6,7 @@ import Layout from '../../components/Layout'
 
 export default function Alphabetical() {
   return (
-    <div className="bg-white">
+    <div>
       <Head>
         <title>Alphabetical Catching Challenge - mouse.rip</title>
         <meta name="description" content="Alphabetical Catching Challenge - details and entry" />
@@ -14,39 +14,40 @@ export default function Alphabetical() {
       </Head>
 
       <Layout title="Alphabetical Catching Challenge">
-        <div className="mt-8 sm:mx-auto sm:w-full">
+        <div className="sm:mx-auto sm:w-full">
           <div className="relative px-4 sm:px-6 lg:px-8">
-            <p className="text-2xl text-center text-gray-800 leading-8">You must catch a mouse for every letter of the alphabet – in order.</p>
+            <p className="text-2xl text-center text-gray-800 dark:text-gray-500 leading-8">You must catch a mouse for every letter of the alphabet – in order.</p>
 
             <div className="mt-6">
               <ChallengeLinks />
             </div>
 
-            <div className="mx-auto mt-6 text-gray-500 prose prose-lg prose-sky">
-              <h2>Summary</h2>
+            <div className="mx-auto mt-6 text-gray-500 dark:text-gray-300 prose prose-lg prose-sky">
+              <h2 className="dark:text-white">Summary</h2>
               <p>
                 In this challenge, you&apos;ll be catching at least 26 mice across the Kingdown, one for each letter of the alphabet! Even though it is a race, if you can finish the challenge,
                 you&apos;ll win a prize.
               </p>
               <p>
-                First, catch a mouse whose name begins with the letter <strong>A</strong>, then <strong>B</strong>, and continue on until <strong>Z</strong>.
+                First, catch a mouse whose name begins with the letter <strong className="dark:text-white">A</strong>, then <strong className="dark:text-white">B</strong>, and continue on until{' '}
+                <strong className="dark:text-white">Z</strong>.
               </p>
 
-              <h2>Prizes</h2>
+              <h2 className="dark:text-white">Prizes</h2>
               <ul>
                 <li>
-                  <strong>250</strong> <span className="text-orange-700">SUPER|brie+</span> to the first person to complete a full streak.
+                  <strong className="dark:text-white">250</strong> <span className="text-orange-700">SUPER|brie+</span> to the first person to complete a full streak.
                 </li>
                 <li>
-                  <strong>100</strong> <span className="text-orange-700">SUPER|brie+</span> to the next 10 participants who complete a full streak.
+                  <strong className="dark:text-white">100</strong> <span className="text-orange-700">SUPER|brie+</span> to the next 10 participants who complete a full streak.
                 </li>
                 <li>
-                  <strong>10</strong> <span className="text-orange-700">SUPER|brie+</span> to all participants, regardless of completion.{' '}
-                  <em className="text-xs text-gray-500">(Limited to the first 100 participants)</em>
+                  <strong className="dark:text-white">10</strong> <span className="text-orange-700">SUPER|brie+</span> to all participants, regardless of completion.{' '}
+                  <em className="text-xs text-gray-500 dark:text-gray-300">(Limited to the first 100 participants)</em>
                 </li>
               </ul>
 
-              <h2>How to play</h2>
+              <h2 className="dark:text-white">How to play</h2>
               <ol>
                 <li>
                   First,{' '}
@@ -56,10 +57,10 @@ export default function Alphabetical() {
                   . This will help us track your progress.
                 </li>
                 <li>
-                  Catch a mouse whose name begins with the letter <strong>A</strong>, such as an <em>Archer Mouse</em>.
+                  Catch a mouse whose name begins with the letter <strong className="dark:text-white">A</strong>, such as an <em>Archer Mouse</em>.
                 </li>
                 <li>
-                  Catch a mouse whose name begins with the letter <strong>B</strong>, such as a <em>Bionic Mouse</em>.
+                  Catch a mouse whose name begins with the letter <strong className="dark:text-white">B</strong>, such as a <em>Bionic Mouse</em>.
                 </li>
                 <li>
                   After 5 catches (or sooner if the catches will disappear off the first page of your journal)
@@ -91,7 +92,8 @@ export default function Alphabetical() {
               <h3>Pausing your streak</h3>
               <p>
                 It will take at least 26 hunts to finish your streak, so you probably will hit a point where you need to sleep or take a break and don&apos;t want to lose your progress. Simply travel
-                to <strong>Meadow</strong> and hunt there. All hunts there will be excluded from the challenge. Feel free to hunt in Meadow as much as you want, there is no penalty for doing so.
+                to <strong className="dark:text-white">Meadow</strong> and hunt there. All hunts there will be excluded from the challenge. Feel free to hunt in Meadow as much as you want, there is no
+                penalty for doing so.
               </p>
 
               <h3>Tracking your progress</h3>
@@ -103,20 +105,20 @@ export default function Alphabetical() {
                 will keep track of your current streak. The progress tracker will automatically update every 30 minutes.
               </p>
 
-              <h2>Rules</h2>
+              <h2 className="dark:text-white">Rules</h2>
               <ul>
                 <li>
-                  For the letter <strong>X</strong>, you must catch an <em>extra</em> <strong>C</strong> mouse that you didn&apos;t use.
+                  For the letter <strong className="dark:text-white">X</strong>, you must catch an <em>extra</em> <strong className="dark:text-white">C</strong> mouse that you didn&apos;t use.
                 </li>
                 <li>
-                  Failure to catch or failure to attract will <strong>not</strong> break your current streak.
+                  Failure to catch or failure to attract will <strong className="dark:text-white">not</strong> break your current streak.
                 </li>
                 <li>
-                  Catching any mouse that does not start with the correct letter <strong>ends</strong> your streak.
+                  Catching any mouse that does not start with the correct letter <strong className="dark:text-white">ends</strong> your streak.
                 </li>
                 <li>You must go in alphabetical order and you can&apos;t skip letters.</li>
                 <li>
-                  Any hunts in <strong>Meadow</strong> will be excluded from the challenge.
+                  Any hunts in <strong className="dark:text-white">Meadow</strong> will be excluded from the challenge.
                 </li>
               </ul>
             </div>
