@@ -56,9 +56,9 @@
     "icon": "Window"
   },
   {
-    "name": "Favorite Setups",
+    "name": "Favorite Setups+",
     "description": "Unlimited custom favorite trap setups!",
-    "url": "https://greasyfork.org/en/scripts/388403-mousehunt-favorite-setups",
+    "url": "https://greasyfork.org/en/scripts/443164-mousehunt-favorite-setups",
     "tags": ["quality-of-life"],
     "icon": "Star"
   },
@@ -243,5 +243,26 @@
     "url": "https://greasyfork.org/en/scripts/433865-mousehunt-hween-2021-trick-treat-map-colour-coder",
     "tags": ["event", "maps", "halloween"],
     "icon": "Map"
+  },
+  {
+    "name": "Spring Egg Hunt Helper",
+    "description": "Helps you find and track eggs in the Spring Egg Hunt event",
+    "url": "https://greasyfork.org/en/scripts/462034-mousehunt-spring-egg-hunt-helper",
+    "tags": ["event", "seh"],
+    "icon": "MagnifyingGlassCircle"
+  },
+  {
+    "name": "Eggsweeper Helper",
+    "description": "Helps you with the Spring Egg Hunt Eggsweeper minigame",
+    "url": "https://greasyfork.org/en/scripts/381797-mousehunt-eggsweeper-helper",
+    "tags": ["event", "seh"],
+    "icon": "Squares2X2"
+  },
+  {
+    "name": "SEH Loot Counter for Hunting Log",
+    "description": "Counts the number of unique loot you have in your daily hunting log.",
+    "url": "https://greasyfork.org/en/scripts/381058-mousehunt-seh-loot-counter-for-hunting-log",
+    "tags": ["event", "seh"],
+    "icon": "Calculator"
   }
 ]
