@@ -12,6 +12,7 @@ import {
   CodeBracketIcon,
   CubeIcon,
   DocumentCheckIcon,
+  GiftIcon,
   GlobeEuropeAfricaIcon,
   IdentificationIcon,
   LinkIcon,
@@ -64,6 +65,8 @@ export default function Icon({ icon, className }) {
       return <CubeIcon className={className} aria-hidden="true" />
     case 'DocumentCheck':
       return <DocumentCheckIcon className={className} aria-hidden="true" />
+    case 'Gift':
+      return <GiftIcon className={className} aria-hidden="true" />
     case 'GlobeEuropeAfrica':
       return <GlobeEuropeAfricaIcon className={className} aria-hidden="true" />
     case 'Identification':
