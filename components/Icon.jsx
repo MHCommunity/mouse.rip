@@ -2,6 +2,7 @@ import {
   AcademicCapIcon,
   BeakerIcon,
   CakeIcon,
+  CalculatorIcon,
   CalendarIcon,
   ChartBarIcon,
   ChartBarSquareIcon,
@@ -41,6 +42,8 @@ export default function Icon({ icon, className }) {
       return <BeakerIcon className={className} aria-hidden="true" />
     case 'Cake':
       return <CakeIcon className={className} aria-hidden="true" />
+    case 'Calculator':
+      return <CalculatorIcon className={className} aria-hidden="true" />
     case 'Calendar':
       return <CalendarIcon className={className} aria-hidden="true" />
     case 'ChartBar':
