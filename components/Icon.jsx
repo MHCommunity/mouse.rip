@@ -15,12 +15,14 @@ import {
   LinkIcon,
   LockClosedIcon,
   MagnifyingGlassIcon,
+  MagnifyingGlassCircleIcon,
   MapIcon,
   MapPinIcon,
   NoSymbolIcon,
   ShoppingCartIcon,
   SparklesIcon,
   StarIcon,
+  Squares2X2Icon,
   SwatchIcon,
   TicketIcon,
   TrophyIcon,
@@ -65,6 +67,8 @@ export default function Icon({ icon, className }) {
       return <LockClosedIcon className={className} aria-hidden="true" />
     case 'MagnifyingGlass':
       return <MagnifyingGlassIcon className={className} aria-hidden="true" />
+    case 'MagnifyingGlassCircle':
+      return <MagnifyingGlassCircleIcon className={className} aria-hidden="true" />
     case 'Map':
       return <MapIcon className={className} aria-hidden="true" />
     case 'MapPin':
@@ -77,6 +81,8 @@ export default function Icon({ icon, className }) {
       return <SparklesIcon className={className} aria-hidden="true" />
     case 'Star':
       return <StarIcon className={className} aria-hidden="true" />
+    case 'Squares2X2':
+      return <Squares2X2Icon className={className} aria-hidden="true" />
     case 'Swatch':
       return <SwatchIcon className={className} aria-hidden="true" />
     case 'Ticket':
