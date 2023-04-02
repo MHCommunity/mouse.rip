@@ -6,13 +6,12 @@ import userscripts from '../data/userscripts.json'
 
 const tags = [
   { name: 'All', href: '/userscripts' },
-  { name: 'Event', href: '/userscripts/event' },
   { name: 'Maps', href: '/userscripts/maps' },
   { name: 'Quality of Life', href: '/userscripts/quality-of-life' },
   { name: 'Stats', href: '/userscripts/stats' },
   { name: 'Travel', href: '/userscripts/travel' },
   { name: 'UI', href: '/userscripts/ui' },
-  { name: 'Utility', href: '/userscripts/utility' },
+  { name: 'Events', href: '/userscripts/event' },
 ]
 
 export default function Userscripts({ tag }) {

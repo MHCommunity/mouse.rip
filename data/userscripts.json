@@ -17,21 +17,21 @@
     "name": "Gift Buttons",
     "description": "Add buttons to easily accept and return all daily gifts.",
     "url": "https://greasyfork.org/en/scripts/449489-mousehunt-gift-buttons",
-    "tags": ["gifts"],
-    "icon": "Cake"
+    "tags": ["quality-of-life", "gifts"],
+    "icon": "Gift"
   },
   {
     "name": "Item Links",
     "description": "Add links to the MouseHunt wiki, MHCT looter, MHDB, and Markethunt for items.",
     "url": "https://greasyfork.org/en/scripts/445920-mousehunt-item-links",
-    "tags": ["utility"],
+    "tags": ["quality-of-life"],
     "icon": "Link"
   },
   {
     "name": "Mouse Links",
     "description": "Add links to the MouseHunt wiki & MHDB for mice.",
     "url": "https://greasyfork.org/en/scripts/449332-mousehunt-mouse-links",
-    "tags": ["utility"],
+    "tags": ["quality-of-life"],
     "icon": "Link"
   },
   {
@@ -66,7 +66,7 @@
     "name": "MH Timers+",
     "description": "Handy script to keep track of the various MH location timers.",
     "url": "https://greasyfork.org/en/scripts/388058-mh-timers",
-    "tags": ["utility"],
+    "tags": ["quality-of-life"],
     "icon": "Clock"
   },
   {
@@ -115,7 +115,7 @@
     "name": "Send Supplies Search Bar",
     "description": "Adds a search bar to make sending supplies easier",
     "url": "https://greasyfork.org/en/scripts/396714-mousehunt-send-supplies-search-bar",
-    "tags": ["utility"],
+    "tags": ["quality-of-life"],
     "icon": "Truck"
   },
   {
@@ -129,14 +129,14 @@
     "name": "Enhanced Search",
     "description": "Improve the search logic of search bars in the game",
     "url": "https://greasyfork.org/en/scripts/446436-mousehunt-enhanced-search-beta",
-    "tags": ["utility"],
+    "tags": ["quality-of-life"],
     "icon": "MagnifyingGlass"
   },
   {
     "name": "Metric",
     "description": "Convert mice weight to metric.",
     "url": "https://greasyfork.org/en/scripts/449840-mousehunt-metric",
-    "tags": ["utility"],
+    "tags": ["quality-of-life"],
     "icon": "GlobeEuropeAfrica"
   },
   {
@@ -171,7 +171,7 @@
     "name": "Consolidated Map Colour Coder",
     "description": "Colour code your maps",
     "url": "https://greasyfork.org/en/scripts/428959-mh-consolidated-map-colour-coder",
-    "tags": ["ui", "maps"],
+    "tags": ["maps"],
     "icon": "Swatch"
   },
   {
@@ -192,7 +192,7 @@
     "name": "FLRT Tool",
     "description": "Free Leech Return Tradables",
     "url": "https://greasyfork.org/en/scripts/452655-flrt-tool",
-    "tags": ["utility", "maps"],
+    "tags": ["quality-of-life", "maps"],
     "icon": "Users"
   },
   {
@@ -213,47 +213,33 @@
     "name": "Living Garden HUD Enhancer",
     "description": "Quick travel buttons for the Living Garden area locations",
     "url": "https://greasyfork.org/en/scripts/407059-mh-living-garden-hud-enhancer",
-    "tags": ["location", "living-garden", "travel", "ui"],
+    "tags": ["location", "living-garden", "travel"],
     "icon": "MapPin"
   },
   {
     "name": "Warpath Wave Calculator",
     "description": "Keeps track of remaining wave mice to help you manage the wave",
     "url": "https://greasyfork.org/en/scripts/390221-mh-warpath-wave-calculator",
-    "tags": ["location", "fiery-warpath", "ui"],
+    "tags": ["location", "fiery-warpath"],
     "icon": "MapPin"
   },
   {
     "name": "Deep Run Assistant",
     "description": "Helps you check if you have failed a Deep Run",
     "url": "https://greasyfork.org/en/scripts/380861-mousehunt-deep-run-assistant",
-    "tags": ["location", "iceberg", "utility"],
+    "tags": ["location", "iceberg", "quality-of-life"],
     "icon": "MapPin"
   },
   {
-    "name": "Spooky Shuffle Tracker",
-    "description": "Play Spooky Shuffle more easily.",
-    "url": "https://greasyfork.org/en/scripts/453305-mousehunt-better-spooky-shuffle-tracker",
-    "tags": ["event", "halloween"],
-    "icon": "Ticket"
-  },
-  {
-    "name": "Hween 2021 Trick/Treat map colour coder",
-    "description": "Colour codes mice on trick/treat maps according to type",
-    "url": "https://greasyfork.org/en/scripts/433865-mousehunt-hween-2021-trick-treat-map-colour-coder",
-    "tags": ["event", "maps", "halloween"],
-    "icon": "Map"
-  },
-  {
     "name": "Spring Egg Hunt Helper",
-    "description": "Helps you find and track eggs in the Spring Egg Hunt event",
+    "description": "Helps you find and track eggs in the Spring Egg Hunt event.",
     "url": "https://greasyfork.org/en/scripts/462034-mousehunt-spring-egg-hunt-helper",
     "tags": ["event", "seh"],
     "icon": "MagnifyingGlassCircle"
   },
   {
     "name": "Eggsweeper Helper",
-    "description": "Helps you with the Spring Egg Hunt Eggsweeper minigame",
+    "description": "Helps you with the Spring Egg Hunt Eggsweeper minigame.",
     "url": "https://greasyfork.org/en/scripts/381797-mousehunt-eggsweeper-helper",
     "tags": ["event", "seh"],
     "icon": "Squares2X2"
@@ -264,5 +250,54 @@
     "url": "https://greasyfork.org/en/scripts/381058-mousehunt-seh-loot-counter-for-hunting-log",
     "tags": ["event", "seh"],
     "icon": "Calculator"
+  },
+  {
+    "name": "Spooky Shuffle Tracker",
+    "description": "Play Spooky Shuffle more easily.",
+    "url": "https://greasyfork.org/en/scripts/453305-mousehunt-better-spooky-shuffle-tracker",
+    "tags": ["event", "halloween"],
+    "icon": "Ticket"
+  },
+  {
+    "name": "Hween 2021 Trick/Treat map colour coder",
+    "description": "Colour codes mice on trick/treat maps according to type.",
+    "url": "https://greasyfork.org/en/scripts/433865-mousehunt-hween-2021-trick-treat-map-colour-coder",
+    "tags": ["event", "maps", "halloween"],
+    "icon": "Swatch"
+  },
+  {
+    "name": "Gifting Buttons",
+    "description": "Adds buttons to easily ignore, accept, or return all free gifts.",
+    "url": "https://greasyfork.org/en/scripts/376572-mousehunt-gifting-buttons",
+    "tags": ["quality-of-life"],
+    "icon": "Gift"
+  },
+  {
+    "name": "Open \"All but One\" Kits/Spring Eggs",
+    "description": "Adds an open \"all but one\" button to your kits and spring eggs which have > 2 quantity.",
+    "url": "https://greasyfork.org/en/scripts/382479-mousehunt-open-all-but-one-kits-spring-eggs",
+    "tags": ["quality-of-life"],
+    "icon": "Cube"
+  },
+  {
+    "name": "Shields",
+    "description": "Change the shield to an event one or a fun custom one!",
+    "url": "https://greasyfork.org/en/scripts/454147-mousehunt-shields",
+    "tags": ["ui"],
+    "icon": "ShieldCheck"
+  },
+  {
+    "name": "LNY 2023 Lantern Lighter Colourer",
+    "description": "Color codes mice on Lantern Lighter maps according to type.",
+    "url": "https://greasyfork.org/en/scripts/458463-mousehunt-lny-2023-lantern-lighter-colourer",
+    "tags": ["event", "maps", "lny"],
+    "icon": "Swatch"
+  },
+  {
+    "name": "GWH 2022 Nice/Naughty map colour coder",
+    "description": "Color codes mice on Nice/Naughty maps according to type.",
+    "url": "https://greasyfork.org/en/scripts/456151-mousehunt-gwh-2022-nice-naughty-map-colour-coder",
+    "tags": ["event", "maps", "gwh"],
+    "icon": "Swatch"
   }
 ]

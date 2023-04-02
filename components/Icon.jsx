@@ -10,6 +10,7 @@ import {
   CircleStackIcon,
   ClockIcon,
   CodeBracketIcon,
+  CubeIcon,
   DocumentCheckIcon,
   GlobeEuropeAfricaIcon,
   IdentificationIcon,
@@ -21,6 +22,7 @@ import {
   MapPinIcon,
   NoSymbolIcon,
   ShoppingCartIcon,
+  ShieldCheckIcon,
   SparklesIcon,
   StarIcon,
   Squares2X2Icon,
@@ -58,6 +60,8 @@ export default function Icon({ icon, className }) {
       return <ClockIcon className={className} aria-hidden="true" />
     case 'CodeBracket':
       return <CodeBracketIcon className={className} aria-hidden="true" />
+    case 'Cube':
+      return <CubeIcon className={className} aria-hidden="true" />
     case 'DocumentCheck':
       return <DocumentCheckIcon className={className} aria-hidden="true" />
     case 'GlobeEuropeAfrica':
@@ -80,6 +84,8 @@ export default function Icon({ icon, className }) {
       return <NoSymbolIcon className={className} aria-hidden="true" />
     case 'ShoppingCart':
       return <ShoppingCartIcon className={className} aria-hidden="true" />
+    case 'ShieldCheck':
+      return <ShieldCheckIcon className={className} aria-hidden="true" />
     case 'Sparkles':
       return <SparklesIcon className={className} aria-hidden="true" />
     case 'Star':
