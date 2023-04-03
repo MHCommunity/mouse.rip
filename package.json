@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^0.0.0-insiders.f66f492",
-    "@heroicons/react": "^2.0.12",
+    "@heroicons/react": "^2.0.17",
     "@notionhq/client": "^2.2.1",
     "autoprefixer": "^10.4.13",
     "clsx": "^1.2.1",
