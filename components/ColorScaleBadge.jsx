@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 
-export default function ColorScaleBadge({value = 0, className = '' }) {
+export default function ColorScaleBadge({ value = 0, className = '' }) {
   value = Math.round(value)
 
   if (value < 10) {

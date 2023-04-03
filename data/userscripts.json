@@ -203,6 +203,13 @@
     "icon": "MapPin"
   },
   {
+    "name": "Floting Islands Priority Calculator",
+    "description": "",
+    "url": "https://greasyfork.org/en/scripts/411180-mousehunt-floting-islands-priority-calculator",
+    "tags": ["location", "floating-islands"],
+    "icon": "MapPin"
+  },
+  {
     "name": "Valour Rift HUD Enhancer",
     "description": "Changes the text that appears in the Valour Rift hud tooltips to give you the info you actually want to see",
     "url": "https://greasyfork.org/en/scripts/392742-mh-valour-rift-hud-enhancer",
@@ -280,6 +287,27 @@
     "icon": "Cube"
   },
   {
+    "name": "Fancy King's Reward",
+    "description": "",
+    "url": "https://greasyfork.org/en/scripts/459629-mousehunt-fancy-king-s-reward",
+    "tags": [],
+    "icon": ""
+  },
+  {
+    "name": "Rank-up Forecaster",
+    "description": "",
+    "url": "https://greasyfork.org/en/scripts/428461-mh-rank-up-forecaster-v2-0",
+    "tags": [],
+    "icon": ""
+  },
+  {
+    "name": "Inventory History",
+    "description": "https://greasyfork.org/en/scripts/421745-mh-inventory-history",
+    "url": "",
+    "tags": [],
+    "icon": ""
+  },
+  {
     "name": "Shields",
     "description": "Change the shield to an event one or a fun custom one!",
     "url": "https://greasyfork.org/en/scripts/454147-mousehunt-shields",
@@ -299,5 +327,26 @@
     "url": "https://greasyfork.org/en/scripts/456151-mousehunt-gwh-2022-nice-naughty-map-colour-coder",
     "tags": ["event", "maps", "gwh"],
     "icon": "Swatch"
+  },
+  {
+    "name": "Valour Rift Map Colourer",
+    "description": "Color codes mice on Valour Rift maps according to type.",
+    "url": "",
+    "tags": ["maps", "location", "valour-rift"],
+    "icon": "Swatch"
+  },
+  {
+    "name": "",
+    "description": "",
+    "url": "",
+    "tags": [],
+    "icon": ""
+  },
+  {
+    "name": "",
+    "description": "",
+    "url": "",
+    "tags": [],
+    "icon": ""
   }
 ]

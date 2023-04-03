@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head'
 
 import Layout from '../components/Layout'
 import ColorScaleBadge from '../components/ColorScaleBadge';
-import PowerTypeBadge from '../components/PowerTypeBadge';
+// import PowerTypeBadge from '../components/PowerTypeBadge';
 
 import minlucks from '../data/minlucks.json'
 
@@ -41,7 +41,7 @@ const flattenMinLucksByValue = (minluck) => {
 export default function Minlucks() {
   const [filter, setFilter] = useState('');
   const inputRef = React.useRef(null);
-  const [focused, setFocused] = React.useState(false);
+  const [focused, setFocused] = React.useState(false); // eslint-disable-line no-unused-vars
 
   React.useEffect(() => {
     const handleKeyDown = (nativeEvent) => {
