@@ -1,0 +1,2442 @@
+[
+  {
+    "mhct_id": 1459,
+    "name": "Burly Bruiser",
+    "id": 967
+  },
+  {
+    "mhct_id": 926,
+    "name": "Calligraphy",
+    "id": 360
+  },
+  {
+    "mhct_id": 830,
+    "name": "Candy Cane",
+    "id": 27
+  },
+  {
+    "mhct_id": 790,
+    "name": "Candy Cat",
+    "id": 670
+  },
+  {
+    "mhct_id": 804,
+    "name": "Candy Goblin",
+    "id": 671
+  },
+  {
+    "mhct_id": 797,
+    "name": "Captain Cannonball",
+    "id": 910
+  },
+  {
+    "mhct_id": 1556,
+    "name": "Captain Cloudkicker",
+    "id": 1018
+  },
+  {
+    "mhct_id": 707,
+    "name": "Cardshark",
+    "id": 468
+  },
+  {
+    "mhct_id": 1592,
+    "name": "Careless Catfish",
+    "id": 1095
+  },
+  {
+    "mhct_id": 645,
+    "name": "Carnivore",
+    "id": 579
+  },
+  {
+    "mhct_id": 703,
+    "name": "Carrion Medium",
+    "id": 884
+  },
+  {
+    "mhct_id": 662,
+    "name": "Cavalier",
+    "id": 31
+  },
+  {
+    "mhct_id": 611,
+    "name": "Centaur Ranger",
+    "id": 688
+  },
+  {
+    "mhct_id": 700,
+    "name": "Chamber Cleaver",
+    "id": 875
+  },
+  {
+    "mhct_id": 581,
+    "name": "Champion",
+    "id": 34
+  },
+  {
+    "mhct_id": 1496,
+    "name": "Champion Danseuse",
+    "id": 986
+  },
+  {
+    "mhct_id": 1494,
+    "name": "Champion Thief",
+    "id": 1010
+  },
+  {
+    "mhct_id": 760,
+    "name": "Charming Chimer",
+    "id": 886
+  },
+  {
+    "mhct_id": 1455,
+    "name": "Cheesy Party",
+    "id": 961
+  },
+  {
+    "mhct_id": 607,
+    "name": "Cherry",
+    "id": 240
+  },
+  {
+    "mhct_id": 659,
+    "name": "Cherry Sprite",
+    "id": 690
+  },
+  {
+    "mhct_id": 603,
+    "name": "Chess Master",
+    "id": 278
+  },
+  {
+    "mhct_id": 987,
+    "name": "Chip Chiseler",
+    "id": 928
+  },
+  {
+    "mhct_id": 843,
+    "name": "Christmas Tree",
+    "id": 36
+  },
+  {
+    "mhct_id": 704,
+    "name": "Chronomaster",
+    "id": 866
+  },
+  {
+    "mhct_id": 1476,
+    "name": "Cinderstorm",
+    "id": 974
+  },
+  {
+    "mhct_id": 721,
+    "name": "Circuit Judge",
+    "id": 469
+  },
+  {
+    "mhct_id": 649,
+    "name": "Clockwork Samurai",
+    "id": 37
+  },
+  {
+    "mhct_id": 694,
+    "name": "Clockwork Timespinner",
+    "id": 881
+  },
+  {
+    "mhct_id": 755,
+    "name": "Cloud Collector",
+    "id": 887
+  },
+  {
+    "mhct_id": 1509,
+    "name": "Cloud Miner",
+    "id": 1019
+  },
+  {
+    "mhct_id": 1572,
+    "name": "Cloud Strider",
+    "id": 1079
+  },
+  {
+    "mhct_id": 713,
+    "name": "Clownfish",
+    "id": 582
+  },
+  {
+    "mhct_id": 1145,
+    "name": "Clumsy Chemist",
+    "id": 952
+  },
+  {
+    "mhct_id": 802,
+    "name": "Cobweb",
+    "id": 352
+  },
+  {
+    "mhct_id": 1451,
+    "name": "Coffin Zombie",
+    "id": 953
+  },
+  {
+    "mhct_id": 845,
+    "name": "Confused Courier",
+    "id": 444
+  },
+  {
+    "mhct_id": 1575,
+    "name": "Consumed Charm Tinkerer",
+    "id": 1075
+  },
+  {
+    "mhct_id": 629,
+    "name": "Coral",
+    "id": 584
+  },
+  {
+    "mhct_id": 712,
+    "name": "Coral Cuddler",
+    "id": 585
+  },
+  {
+    "mhct_id": 627,
+    "name": "Coral Dragon",
+    "id": 586
+  },
+  {
+    "mhct_id": 631,
+    "name": "Coral Gardener",
+    "id": 587
+  },
+  {
+    "mhct_id": 675,
+    "name": "Coral Guard",
+    "id": 588
+  },
+  {
+    "mhct_id": 626,
+    "name": "Coral Harvester",
+    "id": 589
+  },
+  {
+    "mhct_id": 663,
+    "name": "Coral Queen",
+    "id": 590
+  },
+  {
+    "mhct_id": 1462,
+    "name": "Cork Defender",
+    "id": 968
+  },
+  {
+    "mhct_id": 1458,
+    "name": "Corkataur",
+    "id": 970
+  },
+  {
+    "mhct_id": 1472,
+    "name": "Corky, the Collector",
+    "id": 969
+  },
+  {
+    "mhct_id": 937,
+    "name": "Costumed Dog",
+    "id": 921
+  },
+  {
+    "mhct_id": 931,
+    "name": "Costumed Dragon",
+    "id": 361
+  },
+  {
+    "mhct_id": 933,
+    "name": "Costumed Horse",
+    "id": 544
+  },
+  {
+    "mhct_id": 935,
+    "name": "Costumed Monkey",
+    "id": 805
+  },
+  {
+    "mhct_id": 1566,
+    "name": "Costumed Ox",
+    "id": 1072
+  },
+  {
+    "mhct_id": 1454,
+    "name": "Costumed Pig",
+    "id": 960
+  },
+  {
+    "mhct_id": 930,
+    "name": "Costumed Rabbit",
+    "id": 296
+  },
+  {
+    "mhct_id": 1506,
+    "name": "Costumed Rat",
+    "id": 1012
+  },
+  {
+    "mhct_id": 936,
+    "name": "Costumed Rooster",
+    "id": 855
+  },
+  {
+    "mhct_id": 934,
+    "name": "Costumed Sheep",
+    "id": 714
+  },
+  {
+    "mhct_id": 932,
+    "name": "Costumed Snake",
+    "id": 455
+  },
+  {
+    "mhct_id": 927,
+    "name": "Costumed Tiger",
+    "id": 42
+  },
+  {
+    "mhct_id": 1593,
+    "name": "Covetous Coastguard",
+    "id": 1096
+  },
+  {
+    "mhct_id": 727,
+    "name": "Cowbell",
+    "id": 43
+  },
+  {
+    "mhct_id": 652,
+    "name": "Crabolia",
+    "id": 591
+  },
+  {
+    "mhct_id": 808,
+    "name": "Craggy Ore",
+    "id": 914
+  },
+  {
+    "mhct_id": 1590,
+    "name": "Crazed Cultivator",
+    "id": 1097
+  },
+  {
+    "mhct_id": 805,
+    "name": "Creepy Marionette",
+    "id": 826
+  },
+  {
+    "mhct_id": 983,
+    "name": "Croquet Crusher",
+    "id": 929
+  },
+  {
+    "mhct_id": 1523,
+    "name": "Cumulost",
+    "id": 1020
+  },
+  {
+    "mhct_id": 972,
+    "name": "Cupcake Camo",
+    "id": 806
+  },
+  {
+    "mhct_id": 973,
+    "name": "Cupcake Candle Thief",
+    "id": 807
+  },
+  {
+    "mhct_id": 970,
+    "name": "Cupcake Cutie",
+    "id": 715
+  },
+  {
+    "mhct_id": 971,
+    "name": "Cupcake Runner",
+    "id": 716
+  },
+  {
+    "mhct_id": 949,
+    "name": "Cupid",
+    "id": 44
+  },
+  {
+    "mhct_id": 1490,
+    "name": "Cursed Crusader",
+    "id": 1001
+  },
+  {
+    "mhct_id": 1527,
+    "name": "Cute Cloud Conjurer",
+    "id": 1021
+  },
+  {
+    "mhct_id": 1486,
+    "name": "Cutpurse",
+    "id": 1009
+  },
+  {
+    "mhct_id": 1560,
+    "name": "Cutthroat Cannoneer",
+    "id": 1022
+  },
+  {
+    "mhct_id": 1559,
+    "name": "Cutthroat Pirate",
+    "id": 1023
+  },
+  {
+    "mhct_id": 634,
+    "name": "Cuttle",
+    "id": 592
+  },
+  {
+    "mhct_id": 604,
+    "name": "Cybernetic Specialist",
+    "id": 644
+  },
+  {
+    "mhct_id": 764,
+    "name": "Cycloness",
+    "id": 888
+  },
+  {
+    "mhct_id": 612,
+    "name": "Cyclops Barbarian",
+    "id": 692
+  },
+  {
+    "mhct_id": 969,
+    "name": "Dance Party",
+    "id": 550
+  },
+  {
+    "mhct_id": 726,
+    "name": "Dancer",
+    "id": 47
+  },
+  {
+    "mhct_id": 811,
+    "name": "Davy Jones",
+    "id": 48
+  },
+  {
+    "mhct_id": 1514,
+    "name": "Daydreamer",
+    "id": 1024
+  },
+  {
+    "mhct_id": 651,
+    "name": "Deep Sea Diver",
+    "id": 593
+  },
+  {
+    "mhct_id": 680,
+    "name": "Dehydrated",
+    "id": 417
+  },
+  {
+    "mhct_id": 632,
+    "name": "Deranged Deckhand",
+    "id": 594
+  },
+  {
+    "mhct_id": 710,
+    "name": "Derpshark",
+    "id": 595
+  },
+  {
+    "mhct_id": 573,
+    "name": "Desert Nomad",
+    "id": 326
+  },
+  {
+    "mhct_id": 730,
+    "name": "Desperado",
+    "id": 471
+  },
+  {
+    "mhct_id": 826,
+    "name": "Destructoy",
+    "id": 354
+  },
+  {
+    "mhct_id": 1537,
+    "name": "Devious Gentleman",
+    "id": 1025
+  },
+  {
+    "mhct_id": 748,
+    "name": "Diamondhide",
+    "id": 730
+  },
+  {
+    "mhct_id": 959,
+    "name": "Dinosuit",
+    "id": 364
+  },
+  {
+    "mhct_id": 775,
+    "name": "Dire Lycan",
+    "id": 790
+  },
+  {
+    "mhct_id": 593,
+    "name": "Doktor",
+    "id": 645
+  },
+  {
+    "mhct_id": 868,
+    "name": "Double Black Diamond Racer",
+    "id": 798
+  },
+  {
+    "mhct_id": 1513,
+    "name": "Dragonbreather",
+    "id": 1027
+  },
+  {
+    "mhct_id": 771,
+    "name": "Dragoon",
+    "id": 889
+  },
+  {
+    "mhct_id": 689,
+    "name": "Dread Knight",
+    "id": 883
+  },
+  {
+    "mhct_id": 723,
+    "name": "Dread Pirate Mousert",
+    "id": 596
+  },
+  {
+    "mhct_id": 728,
+    "name": "Drummer",
+    "id": 57
+  },
+  {
+    "mhct_id": 577,
+    "name": "Dumpling Chef",
+    "id": 58
+  },
+  {
+    "mhct_id": 582,
+    "name": "Dunehopper",
+    "id": 418
+  },
+  {
+    "mhct_id": 643,
+    "name": "Eel",
+    "id": 597
+  },
+  {
+    "mhct_id": 968,
+    "name": "El Flamenco",
+    "id": 549
+  },
+  {
+    "mhct_id": 610,
+    "name": "Elder",
+    "id": 62
+  },
+  {
+    "mhct_id": 862,
+    "name": "Elf",
+    "id": 63
+  },
+  {
+    "mhct_id": 1479,
+    "name": "Elixir Maker",
+    "id": 991
+  },
+  {
+    "mhct_id": 580,
+    "name": "Elub Chieftain",
+    "id": 64
+  },
+  {
+    "mhct_id": 1463,
+    "name": "Emberstone Scaled",
+    "id": 984
+  },
+  {
+    "mhct_id": 1578,
+    "name": "Empyrean Appraiser",
+    "id": 1082
+  },
+  {
+    "mhct_id": 1577,
+    "name": "Empyrean Empress",
+    "id": 1087
+  },
+  {
+    "mhct_id": 1576,
+    "name": "Empyrean Geologist",
+    "id": 1076
+  },
+  {
+    "mhct_id": 1574,
+    "name": "Empyrean Javelineer",
+    "id": 1077
+  },
+  {
+    "mhct_id": 670,
+    "name": "Enlightened Labourer",
+    "id": 824
+  },
+  {
+    "mhct_id": 696,
+    "name": "Epoch Golem",
+    "id": 869
+  },
+  {
+    "mhct_id": 605,
+    "name": "Evil Scientist",
+    "id": 646
+  },
+  {
+    "mhct_id": 655,
+    "name": "Excitable Electric",
+    "id": 563
+  },
+  {
+    "mhct_id": 940,
+    "name": "Extreme Everysports",
+    "id": 398
+  },
+  {
+    "mhct_id": 1456,
+    "name": "Factory Technician",
+    "id": 962
+  },
+  {
+    "mhct_id": 600,
+    "name": "Fall Familiar",
+    "id": 243
+  },
+  {
+    "mhct_id": 1499,
+    "name": "Fallen Champion Footman",
+    "id": 1002
+  },
+  {
+    "mhct_id": 722,
+    "name": "Farmhand",
+    "id": 228
+  },
+  {
+    "mhct_id": 583,
+    "name": "Farrier",
+    "id": 472
+  },
+  {
+    "mhct_id": 661,
+    "name": "Fencer",
+    "id": 70
+  },
+  {
+    "mhct_id": 1507,
+    "name": "Fete Fromager",
+    "id": 1013
+  },
+  {
+    "mhct_id": 1614,
+    "name": "Fibbocchio",
+    "id": 1098
+  },
+  {
+    "mhct_id": 725,
+    "name": "Fiddler",
+    "id": 72
+  },
+  {
+    "mhct_id": 998,
+    "name": "Fiery Crusher",
+    "id": 930
+  },
+  {
+    "mhct_id": 1610,
+    "name": "Flamboyant Flautist",
+    "id": 1099
+  },
+  {
+    "mhct_id": 766,
+    "name": "Fluttering Flutist",
+    "id": 890
+  },
+  {
+    "mhct_id": 965,
+    "name": "Force Fighter Blue",
+    "id": 457
+  },
+  {
+    "mhct_id": 962,
+    "name": "Force Fighter Green",
+    "id": 458
+  },
+  {
+    "mhct_id": 963,
+    "name": "Force Fighter Pink",
+    "id": 459
+  },
+  {
+    "mhct_id": 960,
+    "name": "Force Fighter Red",
+    "id": 460
+  },
+  {
+    "mhct_id": 961,
+    "name": "Force Fighter Yellow",
+    "id": 461
+  },
+  {
+    "mhct_id": 950,
+    "name": "Forever Alone",
+    "id": 362
+  },
+  {
+    "mhct_id": 1568,
+    "name": "Forgotten Elder",
+    "id": 1078
+  },
+  {
+    "mhct_id": 1581,
+    "name": "Fortuitous Fool",
+    "id": 1081
+  },
+  {
+    "mhct_id": 735,
+    "name": "Foxy",
+    "id": 76
+  },
+  {
+    "mhct_id": 849,
+    "name": "Free Skiing",
+    "id": 799
+  },
+  {
+    "mhct_id": 887,
+    "name": "Frightened Flying Fireworks",
+    "id": 854
+  },
+  {
+    "mhct_id": 865,
+    "name": "Frigid Foreman",
+    "id": 678
+  },
+  {
+    "mhct_id": 1619,
+    "name": "Frost King",
+    "id": 1125
+  },
+  {
+    "mhct_id": 640,
+    "name": "Frosty Snow",
+    "id": 78
+  },
+  {
+    "id": 891,
+    "mhct_id": 770,
+    "name": "Ful'Mina The Mountain Queen"
+  },
+  {
+    "mhct_id": 1460,
+    "name": "Fuzzy Drake",
+    "id": 964
+  },
+  {
+    "mhct_id": 737,
+    "name": "Gelatinous Octahedron",
+    "id": 524
+  },
+  {
+    "mhct_id": 568,
+    "name": "Gemstone Worshipper",
+    "id": 735
+  },
+  {
+    "mhct_id": 746,
+    "name": "General Drheller",
+    "id": 379
+  },
+  {
+    "mhct_id": 946,
+    "name": "Gentleman Caller",
+    "id": 713
+  },
+  {
+    "mhct_id": 796,
+    "name": "Ghost Pirate Queen",
+    "id": 911
+  },
+  {
+    "mhct_id": 572,
+    "name": "Giant Snail",
+    "id": 83
+  },
+  {
+    "mhct_id": 814,
+    "name": "Gingerbread",
+    "id": 445
+  },
+  {
+    "mhct_id": 861,
+    "name": "Glacia Ice Fist",
+    "id": 679
+  },
+  {
+    "mhct_id": 1570,
+    "name": "Glamorous Gladiator",
+    "id": 1083
+  },
+  {
+    "mhct_id": 1452,
+    "name": "Glazy",
+    "id": 958
+  },
+  {
+    "mhct_id": 978,
+    "name": "Glitchpaw",
+    "id": 85
+  },
+  {
+    "mhct_id": 574,
+    "name": "Gluttonous Zombie",
+    "id": 512
+  },
+  {
+    "mhct_id": 586,
+    "name": "Goliath Field",
+    "id": 558
+  },
+  {
+    "mhct_id": 783,
+    "name": "Gourd Ghoul",
+    "id": 791
+  },
+  {
+    "mhct_id": 798,
+    "name": "Gourdborg",
+    "id": 281
+  },
+  {
+    "mhct_id": 997,
+    "name": "Grampa Golem",
+    "id": 931
+  },
+  {
+    "mhct_id": 992,
+    "name": "Granny Spice",
+    "id": 944
+  },
+  {
+    "mhct_id": 618,
+    "name": "Grave Robber",
+    "id": 337
+  },
+  {
+    "mhct_id": 1565,
+    "name": "Great Giftnapper",
+    "id": 1071
+  },
+  {
+    "mhct_id": 853,
+    "name": "Great Winter Hunt Impostor",
+    "id": 853
+  },
+  {
+    "mhct_id": 854,
+    "name": "Greedy Al",
+    "id": 446
+  },
+  {
+    "mhct_id": 1609,
+    "name": "Greenbeard",
+    "id": 1100
+  },
+  {
+    "mhct_id": 781,
+    "name": "Grey Recluse",
+    "id": 672
+  },
+  {
+    "mhct_id": 1585,
+    "name": "Grit Grifter",
+    "id": 1101
+  },
+  {
+    "mhct_id": 1530,
+    "name": "Ground Gavaleer",
+    "id": 1032
+  },
+  {
+    "mhct_id": 609,
+    "name": "Grubling",
+    "id": 426
+  },
+  {
+    "mhct_id": 621,
+    "name": "Guppy",
+    "id": 600
+  },
+  {
+    "mhct_id": 724,
+    "name": "Guqin Player",
+    "id": 95
+  },
+  {
+    "mhct_id": 1515,
+    "name": "Gyrologer",
+    "id": 1033
+  },
+  {
+    "mhct_id": 1604,
+    "name": "Hans Cheesetian Squeakersen",
+    "id": 1102
+  },
+  {
+    "mhct_id": 648,
+    "name": "Hapless Marionette",
+    "id": 30
+  },
+  {
+    "mhct_id": 706,
+    "name": "Harbinger of Death",
+    "id": 876
+  },
+  {
+    "mhct_id": 598,
+    "name": "Harvest Harrier",
+    "id": 247
+  },
+  {
+    "mhct_id": 601,
+    "name": "Harvester",
+    "id": 248
+  },
+  {
+    "mhct_id": 741,
+    "name": "Hazmat",
+    "id": 525
+  },
+  {
+    "mhct_id": 1534,
+    "name": "Herc",
+    "id": 1034
+  },
+  {
+    "mhct_id": 815,
+    "name": "Hoarder",
+    "id": 680
+  },
+  {
+    "mhct_id": 779,
+    "name": "Hollowed",
+    "id": 673
+  },
+  {
+    "mhct_id": 785,
+    "name": "Hollowed Minion",
+    "id": 792
+  },
+  {
+    "mhct_id": 780,
+    "name": "Hollowhead",
+    "id": 99
+  },
+  {
+    "mhct_id": 752,
+    "name": "Homeopathic Apothecary",
+    "id": 892
+  },
+  {
+    "mhct_id": 1461,
+    "name": "Horned Cork Hoarder",
+    "id": 966
+  },
+  {
+    "mhct_id": 570,
+    "name": "Hot Head",
+    "id": 249
+  },
+  {
+    "mhct_id": 1597,
+    "name": "Humphrey Dumphrey",
+    "id": 1103
+  },
+  {
+    "mhct_id": 938,
+    "name": "Hurdle",
+    "id": 397
+  },
+  {
+    "mhct_id": 1615,
+    "name": "Ice Regent",
+    "id": 1104
+  },
+  {
+    "mhct_id": 1453,
+    "name": "Iceberg Sculptor",
+    "id": 959
+  },
+  {
+    "mhct_id": 1473,
+    "name": "Ignatia",
+    "id": 973
+  },
+  {
+    "mhct_id": 592,
+    "name": "Incompetent Ice Climber",
+    "id": 367
+  },
+  {
+    "mhct_id": 1000,
+    "name": "Inferna, The Engulfed",
+    "id": 948
+  },
+  {
+    "mhct_id": 628,
+    "name": "Jellyfish",
+    "id": 602
+  },
+  {
+    "mhct_id": 825,
+    "name": "Joy",
+    "id": 852
+  },
+  {
+    "mhct_id": 947,
+    "name": "Juliyes",
+    "id": 297
+  },
+  {
+    "mhct_id": 1477,
+    "name": "Kalor'ignis of the Geyser",
+    "id": 979
+  },
+  {
+    "mhct_id": 734,
+    "name": "King Scarab",
+    "id": 453
+  },
+  {
+    "mhct_id": 1512,
+    "name": "Kite Flyer",
+    "id": 1036
+  },
+  {
+    "mhct_id": 642,
+    "name": "Koimaid",
+    "id": 603
+  },
+  {
+    "mhct_id": 738,
+    "name": "Lab Technician",
+    "id": 526
+  },
+  {
+    "mhct_id": 1519,
+    "name": "Lancer Guard",
+    "id": 1028
+  },
+  {
+    "mhct_id": 1588,
+    "name": "Land Loafer",
+    "id": 1105
+  },
+  {
+    "mhct_id": 1510,
+    "name": "Launchpad Labourer",
+    "id": 1037
+  },
+  {
+    "mhct_id": 1531,
+    "name": "Lawbender",
+    "id": 1039
+  },
+  {
+    "mhct_id": 1594,
+    "name": "Little Bo Squeak",
+    "id": 1106
+  },
+  {
+    "mhct_id": 1599,
+    "name": "Little Miss Fluffet",
+    "id": 1107
+  },
+  {
+    "mhct_id": 1616,
+    "name": "Loathsome Locust",
+    "id": 1108
+  },
+  {
+    "mhct_id": 948,
+    "name": "Lovely Sports",
+    "id": 545
+  },
+  {
+    "mhct_id": 976,
+    "name": "Lucky",
+    "id": 395
+  },
+  {
+    "mhct_id": 1485,
+    "name": "Lumi-lancer",
+    "id": 994
+  },
+  {
+    "mhct_id": 929,
+    "name": "Lunar Red Candle Maker",
+    "id": 922
+  },
+  {
+    "mhct_id": 831,
+    "name": "Mad Elf",
+    "id": 358
+  },
+  {
+    "mhct_id": 1608,
+    "name": "Madame d'Ormouse",
+    "id": 1109
+  },
+  {
+    "mhct_id": 733,
+    "name": "Magic",
+    "id": 233
+  },
+  {
+    "mhct_id": 1498,
+    "name": "Magic Champion",
+    "id": 997
+  },
+  {
+    "mhct_id": 671,
+    "name": "Magmatic Golem",
+    "id": 497
+  },
+  {
+    "mhct_id": 1561,
+    "name": "Mairitime Pirate",
+    "id": 1040
+  },
+  {
+    "mhct_id": 789,
+    "name": "Maize Harvester",
+    "id": 794
+  },
+  {
+    "mhct_id": 677,
+    "name": "Mammoth",
+    "id": 388
+  },
+  {
+    "mhct_id": 630,
+    "name": "Manatee",
+    "id": 604
+  },
+  {
+    "mhct_id": 1487,
+    "name": "Martial",
+    "id": 998
+  },
+  {
+    "mhct_id": 1600,
+    "name": "Matriarch Gander",
+    "id": 1110
+  },
+  {
+    "mhct_id": 617,
+    "name": "Mecha Tail",
+    "id": 651
+  },
+  {
+    "mhct_id": 1595,
+    "name": "Melodramatic Minnow",
+    "id": 1111
+  },
+  {
+    "mhct_id": 620,
+    "name": "Mermousette",
+    "id": 605
+  },
+  {
+    "mhct_id": 622,
+    "name": "Mershark",
+    "id": 606
+  },
+  {
+    "mhct_id": 666,
+    "name": "Micro",
+    "id": 567
+  },
+  {
+    "mhct_id": 1607,
+    "name": "Mighty Mite",
+    "id": 1112
+  },
+  {
+    "mhct_id": 1474,
+    "name": "Mild Spicekin",
+    "id": 977
+  },
+  {
+    "mhct_id": 821,
+    "name": "Miser",
+    "id": 681
+  },
+  {
+    "mhct_id": 828,
+    "name": "Missile Toe",
+    "id": 288
+  },
+  {
+    "mhct_id": 1551,
+    "name": "Mist Maker",
+    "id": 1041
+  },
+  {
+    "mhct_id": 718,
+    "name": "Mlounder Flounder",
+    "id": 607
+  },
+  {
+    "mhct_id": 569,
+    "name": "Monarch",
+    "id": 252
+  },
+  {
+    "mhct_id": 765,
+    "name": "Monsoon Maker",
+    "id": 893
+  },
+  {
+    "mhct_id": 1618,
+    "name": "Monstrous Midge",
+    "id": 1124
+  },
+  {
+    "mhct_id": 807,
+    "name": "Mountain",
+    "id": 915
+  },
+  {
+    "mhct_id": 784,
+    "name": "Mousataur Priestess",
+    "id": 674
+  },
+  {
+    "mhct_id": 1489,
+    "name": "Mouse of Elements",
+    "id": 996
+  },
+  {
+    "mhct_id": 844,
+    "name": "Mouse of Winter Future",
+    "id": 293
+  },
+  {
+    "mhct_id": 859,
+    "name": "Mouse of Winter Past",
+    "id": 294
+  },
+  {
+    "mhct_id": 864,
+    "name": "Mouse of Winter Present",
+    "id": 295
+  },
+  {
+    "mhct_id": 792,
+    "name": "Mousevina von Vermin",
+    "id": 351
+  },
+  {
+    "mhct_id": 744,
+    "name": "Moussile",
+    "id": 552
+  },
+  {
+    "mhct_id": 743,
+    "name": "Mutated Behemoth",
+    "id": 521
+  },
+  {
+    "mhct_id": 1284,
+    "name": "Mutated Mole",
+    "id": 955
+  },
+  {
+    "mhct_id": 606,
+    "name": "Mystic King",
+    "id": 254
+  },
+  {
+    "mhct_id": 1617,
+    "name": "Mythweaver",
+    "id": 1113
+  },
+  {
+    "mhct_id": 991,
+    "name": "Nachore Golem",
+    "id": 932
+  },
+  {
+    "mhct_id": 1001,
+    "name": "Nachous, The Molten",
+    "id": 933
+  },
+  {
+    "mhct_id": 658,
+    "name": "Naturalist",
+    "id": 691
+  },
+  {
+    "mhct_id": 869,
+    "name": "Naughty Nougat",
+    "id": 920
+  },
+  {
+    "mhct_id": 747,
+    "name": "Necromancer",
+    "id": 138
+  },
+  {
+    "mhct_id": 1602,
+    "name": "Nefarious Nautilus",
+    "id": 1114
+  },
+  {
+    "mhct_id": 886,
+    "name": "New Year's",
+    "id": 141
+  },
+  {
+    "mhct_id": 836,
+    "name": "Nice Knitting",
+    "id": 918
+  },
+  {
+    "mhct_id": 756,
+    "name": "Nightshade Flower Girl",
+    "id": 894
+  },
+  {
+    "mhct_id": 761,
+    "name": "Nightshade Maiden",
+    "id": 895
+  },
+  {
+    "mhct_id": 1524,
+    "name": "Nimbomancer",
+    "id": 1042
+  },
+  {
+    "mhct_id": 827,
+    "name": "Nitro Racer",
+    "id": 801
+  },
+  {
+    "mhct_id": 855,
+    "name": "Nutcracker",
+    "id": 146
+  },
+  {
+    "mhct_id": 624,
+    "name": "Octomermaid",
+    "id": 608
+  },
+  {
+    "mhct_id": 1583,
+    "name": "Ol' King Coal",
+    "id": 1089
+  },
+  {
+    "mhct_id": 679,
+    "name": "Old One",
+    "id": 609
+  },
+  {
+    "mhct_id": 986,
+    "name": "Old Spice Collector",
+    "id": 941
+  },
+  {
+    "mhct_id": 1488,
+    "name": "One-Mouse Band",
+    "id": 985
+  },
+  {
+    "mhct_id": 988,
+    "name": "Ore Chipper",
+    "id": 934
+  },
+  {
+    "mhct_id": 856,
+    "name": "Ornament",
+    "id": 148
+  },
+  {
+    "mhct_id": 682,
+    "name": "Outlaw",
+    "id": 474
+  },
+  {
+    "mhct_id": 1528,
+    "name": "Overcaster",
+    "id": 1043
+  },
+  {
+    "mhct_id": 575,
+    "name": "Pack",
+    "id": 149
+  },
+  {
+    "mhct_id": 608,
+    "name": "Paladin Weapon Master",
+    "id": 766
+  },
+  {
+    "mhct_id": 967,
+    "name": "Para Para Dancer",
+    "id": 551
+  },
+  {
+    "mhct_id": 1552,
+    "name": "Paragon of Arcane",
+    "id": 1016
+  },
+  {
+    "mhct_id": 1557,
+    "name": "Paragon of Dragons",
+    "id": 1026
+  },
+  {
+    "mhct_id": 1543,
+    "name": "Paragon of Forgotten",
+    "id": 1030
+  },
+  {
+    "mhct_id": 1555,
+    "name": "Paragon of Shadow",
+    "id": 1050
+  },
+  {
+    "mhct_id": 1547,
+    "name": "Paragon of Strength",
+    "id": 1044
+  },
+  {
+    "mhct_id": 1554,
+    "name": "Paragon of Tactics",
+    "id": 1067
+  },
+  {
+    "mhct_id": 1550,
+    "name": "Paragon of the Lawless",
+    "id": 1038
+  },
+  {
+    "mhct_id": 1553,
+    "name": "Paragon of Water",
+    "id": 1035
+  },
+  {
+    "mhct_id": 885,
+    "name": "Party Head",
+    "id": 359
+  },
+  {
+    "mhct_id": 637,
+    "name": "Pearl",
+    "id": 611
+  },
+  {
+    "mhct_id": 639,
+    "name": "Pearl Diver",
+    "id": 612
+  },
+  {
+    "mhct_id": 1580,
+    "name": "Peggy the Plunderer",
+    "id": 1084
+  },
+  {
+    "mhct_id": 1612,
+    "name": "Pinkielina",
+    "id": 1115
+  },
+  {
+    "mhct_id": 957,
+    "name": "Pintail",
+    "id": 299
+  },
+  {
+    "mhct_id": 654,
+    "name": "Pirate Anchor",
+    "id": 613
+  },
+  {
+    "mhct_id": 1591,
+    "name": "Pompous Perch",
+    "id": 1116
+  },
+  {
+    "mhct_id": 688,
+    "name": "Portal Paladin",
+    "id": 868
+  },
+  {
+    "mhct_id": 691,
+    "name": "Portal Plunderer",
+    "id": 877
+  },
+  {
+    "mhct_id": 699,
+    "name": "Portal Pursuer",
+    "id": 882
+  },
+  {
+    "mhct_id": 1492,
+    "name": "Possessed Armaments",
+    "id": 1004
+  },
+  {
+    "mhct_id": 1497,
+    "name": "Praetorian Champion",
+    "id": 999
+  },
+  {
+    "mhct_id": 837,
+    "name": "Present",
+    "id": 157
+  },
+  {
+    "mhct_id": 1501,
+    "name": "Prestigious Adventurer",
+    "id": 1005
+  },
+  {
+    "mhct_id": 1613,
+    "name": "Princess and the Olive",
+    "id": 1117
+  },
+  {
+    "mhct_id": 571,
+    "name": "Protector",
+    "id": 159
+  },
+  {
+    "mhct_id": 635,
+    "name": "Puffer",
+    "id": 614
+  },
+  {
+    "mhct_id": 981,
+    "name": "Pump Raider",
+    "id": 935
+  },
+  {
+    "mhct_id": 596,
+    "name": "Pumpkin Head",
+    "id": 262
+  },
+  {
+    "mhct_id": 793,
+    "name": "Pumpkin Hoarder",
+    "id": 353
+  },
+  {
+    "mhct_id": 1495,
+    "name": "Puppet Champion",
+    "id": 1007
+  },
+  {
+    "mhct_id": 732,
+    "name": "Puppet Master",
+    "id": 160
+  },
+  {
+    "mhct_id": 1482,
+    "name": "Puppetto",
+    "id": 1006
+  },
+  {
+    "mhct_id": 588,
+    "name": "Pygmy Wrangler",
+    "id": 363
+  },
+  {
+    "mhct_id": 1465,
+    "name": "Pyrehyde",
+    "id": 980
+  },
+  {
+    "mhct_id": 683,
+    "name": "Pyrite",
+    "id": 477
+  },
+  {
+    "mhct_id": 1002,
+    "name": "Queen Quesada",
+    "id": 937
+  },
+  {
+    "mhct_id": 979,
+    "name": "Queso Extractor",
+    "id": 936
+  },
+  {
+    "mhct_id": 636,
+    "name": "Radioactive Ooze",
+    "id": 664
+  },
+  {
+    "mhct_id": 762,
+    "name": "Rain Collector",
+    "id": 896
+  },
+  {
+    "mhct_id": 763,
+    "name": "Rain Summoner",
+    "id": 901
+  },
+  {
+    "mhct_id": 758,
+    "name": "Rain Wallower",
+    "id": 898
+  },
+  {
+    "mhct_id": 851,
+    "name": "Rainbow Racer",
+    "id": 804
+  },
+  {
+    "mhct_id": 767,
+    "name": "Rainmancer",
+    "id": 899
+  },
+  {
+    "mhct_id": 754,
+    "name": "Rainwater Purifier",
+    "id": 897
+  },
+  {
+    "mhct_id": 1464,
+    "name": "Rambunctious Rain Rumbler",
+    "id": 965
+  },
+  {
+    "mhct_id": 952,
+    "name": "Reality Restitch",
+    "id": 923
+  },
+  {
+    "mhct_id": 690,
+    "name": "Record Keeper",
+    "id": 871
+  },
+  {
+    "mhct_id": 693,
+    "name": "Record Keeper's Assistant",
+    "id": 872
+  },
+  {
+    "mhct_id": 672,
+    "name": "Red Coat Bear",
+    "id": 686
+  },
+  {
+    "mhct_id": 928,
+    "name": "Red Envelope",
+    "id": 163
+  },
+  {
+    "mhct_id": 1549,
+    "name": "Regal Spearman",
+    "id": 1046
+  },
+  {
+    "mhct_id": 847,
+    "name": "Reinbo",
+    "id": 519
+  },
+  {
+    "mhct_id": 681,
+    "name": "Retired Minotaur",
+    "id": 782
+  },
+  {
+    "mhct_id": 816,
+    "name": "Ribbon",
+    "id": 447
+  },
+  {
+    "mhct_id": 1564,
+    "name": "Richard the Rich",
+    "id": 1047
+  },
+  {
+    "mhct_id": 817,
+    "name": "Ridiculous Sweater",
+    "id": 448
+  },
+  {
+    "mhct_id": 602,
+    "name": "Rift Bio Engineer",
+    "id": 639
+  },
+  {
+    "mhct_id": 1571,
+    "name": "Rocketeer",
+    "id": 1086
+  },
+  {
+    "mhct_id": 745,
+    "name": "Rockstar",
+    "id": 106
+  },
+  {
+    "mhct_id": 736,
+    "name": "Rogue",
+    "id": 167
+  },
+  {
+    "mhct_id": 945,
+    "name": "Romeno",
+    "id": 168
+  },
+  {
+    "mhct_id": 943,
+    "name": "Romeo",
+    "id": 169
+  },
+  {
+    "mhct_id": 1586,
+    "name": "Root Rummager",
+    "id": 1118
+  },
+  {
+    "mhct_id": 993,
+    "name": "Rubble Rouser",
+    "id": 938
+  },
+  {
+    "mhct_id": 989,
+    "name": "Rubble Rummager",
+    "id": 939
+  },
+  {
+    "mhct_id": 857,
+    "name": "S.N.O.W. Golem",
+    "id": 516
+  },
+  {
+    "mhct_id": 638,
+    "name": "Saltwater Axolotl",
+    "id": 615
+  },
+  {
+    "mhct_id": 717,
+    "name": "Sand Dollar Diver",
+    "id": 616
+  },
+  {
+    "mhct_id": 641,
+    "name": "Sand Dollar Queen",
+    "id": 617
+  },
+  {
+    "mhct_id": 1589,
+    "name": "Sand Sifter",
+    "id": 1119
+  },
+  {
+    "mhct_id": 799,
+    "name": "Sandmouse",
+    "id": 827
+  },
+  {
+    "mhct_id": 595,
+    "name": "Scarecrow",
+    "id": 263
+  },
+  {
+    "mhct_id": 1563,
+    "name": "Scarlet Revenger",
+    "id": 1048
+  },
+  {
+    "mhct_id": 720,
+    "name": "School of Mish",
+    "id": 618
+  },
+  {
+    "mhct_id": 782,
+    "name": "Scorned Pirate",
+    "id": 912
+  },
+  {
+    "mhct_id": 858,
+    "name": "Scrooge",
+    "id": 175
+  },
+  {
+    "mhct_id": 625,
+    "name": "Seadragon",
+    "id": 619
+  },
+  {
+    "mhct_id": 1520,
+    "name": "Seasoned Islandographer",
+    "id": 1049
+  },
+  {
+    "mhct_id": 692,
+    "name": "Sentient Slime",
+    "id": 874
+  },
+  {
+    "mhct_id": 687,
+    "name": "Serpent Monster",
+    "id": 620
+  },
+  {
+    "mhct_id": 701,
+    "name": "Shackled Servant",
+    "id": 880
+  },
+  {
+    "mhct_id": 1493,
+    "name": "Shade of the Eclipse",
+    "id": 989
+  },
+  {
+    "mhct_id": 1545,
+    "name": "Shadow Sage",
+    "id": 1051
+  },
+  {
+    "mhct_id": 729,
+    "name": "Shelder",
+    "id": 178
+  },
+  {
+    "mhct_id": 794,
+    "name": "Shortcut",
+    "id": 675
+  },
+  {
+    "mhct_id": 1505,
+    "name": "Shorts-All-Year",
+    "id": 1011
+  },
+  {
+    "mhct_id": 1598,
+    "name": "Sinister Squid",
+    "id": 1120
+  },
+  {
+    "mhct_id": 1468,
+    "name": "Sizzle Pup",
+    "id": 978
+  },
+  {
+    "mhct_id": 695,
+    "name": "Skeletal Champion",
+    "id": 878
+  },
+  {
+    "mhct_id": 1525,
+    "name": "Sky Dancer",
+    "id": 1052
+  },
+  {
+    "mhct_id": 1532,
+    "name": "Sky Glass Glazier",
+    "id": 1053
+  },
+  {
+    "mhct_id": 1533,
+    "name": "Sky Glass Sorcerer",
+    "id": 1054
+  },
+  {
+    "mhct_id": 1573,
+    "name": "Sky Glider",
+    "id": 1074
+  },
+  {
+    "mhct_id": 1511,
+    "name": "Sky Greaser",
+    "id": 1055
+  },
+  {
+    "mhct_id": 1546,
+    "name": "Sky Highborne",
+    "id": 1056
+  },
+  {
+    "mhct_id": 1544,
+    "name": "Sky Squire",
+    "id": 1057
+  },
+  {
+    "mhct_id": 1526,
+    "name": "Sky Surfer",
+    "id": 1058
+  },
+  {
+    "mhct_id": 1518,
+    "name": "Sky Swordsman",
+    "id": 1059
+  },
+  {
+    "mhct_id": 1508,
+    "name": "Skydiver",
+    "id": 1060
+  },
+  {
+    "mhct_id": 852,
+    "name": "Slay Ride",
+    "id": 289
+  },
+  {
+    "mhct_id": 956,
+    "name": "Sleepwalker",
+    "id": 300
+  },
+  {
+    "mhct_id": 982,
+    "name": "Sleepy Merchant",
+    "id": 940
+  },
+  {
+    "mhct_id": 809,
+    "name": "Slope Swimmer",
+    "id": 916
+  },
+  {
+    "mhct_id": 1074,
+    "name": "Sludge Scientist",
+    "id": 956
+  },
+  {
+    "mhct_id": 740,
+    "name": "Sludge Soaker",
+    "id": 537
+  },
+  {
+    "mhct_id": 742,
+    "name": "Sludge Swimmer",
+    "id": 538
+  },
+  {
+    "mhct_id": 1471,
+    "name": "Smoldersnap",
+    "id": 976
+  },
+  {
+    "mhct_id": 818,
+    "name": "Snow Boulder",
+    "id": 517
+  },
+  {
+    "mhct_id": 839,
+    "name": "Snow Fort",
+    "id": 290
+  },
+  {
+    "mhct_id": 838,
+    "name": "Snow Golem Architect",
+    "id": 919
+  },
+  {
+    "mhct_id": 860,
+    "name": "Snow Golem Jockey",
+    "id": 917
+  },
+  {
+    "mhct_id": 834,
+    "name": "Snow Scavenger",
+    "id": 356
+  },
+  {
+    "mhct_id": 863,
+    "name": "Snow Sorceress",
+    "id": 518
+  },
+  {
+    "mhct_id": 832,
+    "name": "Snowball Hoarder",
+    "id": 520
+  },
+  {
+    "mhct_id": 848,
+    "name": "Snowblower",
+    "id": 449
+  },
+  {
+    "mhct_id": 833,
+    "name": "Snowflake",
+    "id": 355
+  },
+  {
+    "mhct_id": 850,
+    "name": "Snowglobe",
+    "id": 450
+  },
+  {
+    "mhct_id": 715,
+    "name": "Sock Puppet Ghost",
+    "id": 184
+  },
+  {
+    "mhct_id": 1502,
+    "name": "Soldier of the Shade",
+    "id": 1003
+  },
+  {
+    "mhct_id": 590,
+    "name": "Soul Binder",
+    "id": 786
+  },
+  {
+    "mhct_id": 1567,
+    "name": "Space Party-Time Plumber",
+    "id": 1073
+  },
+  {
+    "mhct_id": 709,
+    "name": "Spear Fisher",
+    "id": 621
+  },
+  {
+    "mhct_id": 795,
+    "name": "Spectral Butler",
+    "id": 795
+  },
+  {
+    "mhct_id": 787,
+    "name": "Spectral Swashbuckler",
+    "id": 913
+  },
+  {
+    "mhct_id": 619,
+    "name": "Speedy",
+    "id": 229
+  },
+  {
+    "mhct_id": 1542,
+    "name": "Spheric Diviner",
+    "id": 1061
+  },
+  {
+    "mhct_id": 990,
+    "name": "Spice Farmer",
+    "id": 942
+  },
+  {
+    "mhct_id": 995,
+    "name": "Spice Finder",
+    "id": 943
+  },
+  {
+    "mhct_id": 999,
+    "name": "Spice Raider",
+    "id": 945
+  },
+  {
+    "mhct_id": 996,
+    "name": "Spice Reaper",
+    "id": 946
+  },
+  {
+    "mhct_id": 984,
+    "name": "Spice Seer",
+    "id": 947
+  },
+  {
+    "mhct_id": 994,
+    "name": "Spice Sovereign",
+    "id": 949
+  },
+  {
+    "mhct_id": 800,
+    "name": "Spirit Light",
+    "id": 404
+  },
+  {
+    "mhct_id": 757,
+    "name": "Spore Salesman",
+    "id": 900
+  },
+  {
+    "mhct_id": 842,
+    "name": "Sporty Ski Instructor",
+    "id": 802
+  },
+  {
+    "mhct_id": 731,
+    "name": "Spring Familiar",
+    "id": 264
+  },
+  {
+    "mhct_id": 977,
+    "name": "Spring Sprig",
+    "id": 927
+  },
+  {
+    "mhct_id": 974,
+    "name": "Sprinkly Sweet Cupcake Cook",
+    "id": 856
+  },
+  {
+    "mhct_id": 1536,
+    "name": "Spry Sky Explorer",
+    "id": 1062
+  },
+  {
+    "mhct_id": 1516,
+    "name": "Spry Sky Seer",
+    "id": 1063
+  },
+  {
+    "mhct_id": 1104,
+    "name": "Squeaker Bot",
+    "id": 957
+  },
+  {
+    "mhct_id": 840,
+    "name": "Squeaker Claws",
+    "id": 291
+  },
+  {
+    "mhct_id": 1535,
+    "name": "Stack of Thieves",
+    "id": 1064
+  },
+  {
+    "mhct_id": 749,
+    "name": "Stagecoach Driver",
+    "id": 481
+  },
+  {
+    "mhct_id": 1466,
+    "name": "Steam Sailor",
+    "id": 983
+  },
+  {
+    "mhct_id": 565,
+    "name": "Stinger",
+    "id": 265
+  },
+  {
+    "mhct_id": 633,
+    "name": "Stingray",
+    "id": 622
+  },
+  {
+    "mhct_id": 819,
+    "name": "Stocking",
+    "id": 193
+  },
+  {
+    "mhct_id": 1478,
+    "name": "Stormsurge, the Vile Tempest",
+    "id": 971
+  },
+  {
+    "mhct_id": 1529,
+    "name": "Stratocaster",
+    "id": 1065
+  },
+  {
+    "mhct_id": 880,
+    "name": "Stuck Snowball",
+    "id": 682
+  },
+  {
+    "mhct_id": 566,
+    "name": "Student of the Cheese Claw",
+    "id": 197
+  },
+  {
+    "mhct_id": 1558,
+    "name": "Suave Pirate",
+    "id": 1066
+  },
+  {
+    "mhct_id": 801,
+    "name": "Sugar Rush",
+    "id": 515
+  },
+  {
+    "mhct_id": 587,
+    "name": "Summer Mage",
+    "id": 266
+  },
+  {
+    "mhct_id": 673,
+    "name": "Sunken Banshee",
+    "id": 623
+  },
+  {
+    "mhct_id": 964,
+    "name": "Super FighterBot MegaSupreme",
+    "id": 462
+  },
+  {
+    "mhct_id": 657,
+    "name": "Supernatural",
+    "id": 565
+  },
+  {
+    "mhct_id": 616,
+    "name": "Surgeon Bot",
+    "id": 665
+  },
+  {
+    "mhct_id": 791,
+    "name": "Swamp Thang",
+    "id": 403
+  },
+  {
+    "mhct_id": 674,
+    "name": "Swashblade",
+    "id": 625
+  },
+  {
+    "mhct_id": 1596,
+    "name": "Tackle Tracker",
+    "id": 1121
+  },
+  {
+    "mhct_id": 623,
+    "name": "Tadpole",
+    "id": 626
+  },
+  {
+    "mhct_id": 788,
+    "name": "Teenage Vampire",
+    "id": 796
+  },
+  {
+    "mhct_id": 739,
+    "name": "Telekinetic Mutant",
+    "id": 541
+  },
+  {
+    "mhct_id": 955,
+    "name": "Terrible Twos",
+    "id": 204
+  },
+  {
+    "mhct_id": 1484,
+    "name": "Terrified Adventurer",
+    "id": 1008
+  },
+  {
+    "mhct_id": 1504,
+    "name": "The Total Eclipse",
+    "id": 992
+  },
+  {
+    "mhct_id": 772,
+    "name": "Thunder Strike",
+    "id": 904
+  },
+  {
+    "mhct_id": 768,
+    "name": "Thundering Watcher",
+    "id": 902
+  },
+  {
+    "mhct_id": 812,
+    "name": "Tidal Fisher",
+    "id": 280
+  },
+  {
+    "mhct_id": 953,
+    "name": "Time Punk",
+    "id": 924
+  },
+  {
+    "mhct_id": 954,
+    "name": "Time Tailor",
+    "id": 925
+  },
+  {
+    "mhct_id": 975,
+    "name": "Time Thief",
+    "id": 926
+  },
+  {
+    "mhct_id": 705,
+    "name": "Timeless Lich",
+    "id": 873
+  },
+  {
+    "mhct_id": 698,
+    "name": "Timelost Thaumaturge",
+    "id": 879
+  },
+  {
+    "mhct_id": 697,
+    "name": "Timeslither Pythoness",
+    "id": 870
+  },
+  {
+    "mhct_id": 1480,
+    "name": "Timid Explorer",
+    "id": 990
+  },
+  {
+    "mhct_id": 1522,
+    "name": "Tiny Dragonfly",
+    "id": 1068
+  },
+  {
+    "mhct_id": 980,
+    "name": "Tiny Saboteur",
+    "id": 950
+  },
+  {
+    "mhct_id": 985,
+    "name": "Tiny Toppler",
+    "id": 951
+  },
+  {
+    "mhct_id": 803,
+    "name": "Titanic Brain-Taker",
+    "id": 513
+  },
+  {
+    "mhct_id": 824,
+    "name": "Toboggan Technician",
+    "id": 803
+  },
+  {
+    "mhct_id": 613,
+    "name": "Tomb Exhumer",
+    "id": 864
+  },
+  {
+    "mhct_id": 585,
+    "name": "Tonic Salesman",
+    "id": 483
+  },
+  {
+    "mhct_id": 944,
+    "name": "Totally Not Bitter",
+    "id": 456
+  },
+  {
+    "mhct_id": 589,
+    "name": "Toxic Avenger",
+    "id": 667
+  },
+  {
+    "mhct_id": 820,
+    "name": "Toy",
+    "id": 207
+  },
+  {
+    "mhct_id": 714,
+    "name": "Toy Sylvan",
+    "id": 208
+  },
+  {
+    "mhct_id": 829,
+    "name": "Toy Tinkerer",
+    "id": 357
+  },
+  {
+    "mhct_id": 939,
+    "name": "Trampoline",
+    "id": 399
+  },
+  {
+    "mhct_id": 660,
+    "name": "Treant Queen",
+    "id": 694
+  },
+  {
+    "mhct_id": 667,
+    "name": "Treasure Hoarder",
+    "id": 627
+  },
+  {
+    "mhct_id": 668,
+    "name": "Treasure Keeper",
+    "id": 628
+  },
+  {
+    "mhct_id": 786,
+    "name": "Treat",
+    "id": 282
+  },
+  {
+    "mhct_id": 778,
+    "name": "Trick",
+    "id": 283
+  },
+  {
+    "mhct_id": 777,
+    "name": "Tricky Witch",
+    "id": 676
+  },
+  {
+    "mhct_id": 822,
+    "name": "Triple Lutz",
+    "id": 451
+  },
+  {
+    "mhct_id": 646,
+    "name": "Tritus",
+    "id": 629
+  },
+  {
+    "mhct_id": 846,
+    "name": "Tundra Huntress",
+    "id": 683
+  },
+  {
+    "mhct_id": 665,
+    "name": "Turret Guard",
+    "id": 630
+  },
+  {
+    "mhct_id": 678,
+    "name": "Undertaker",
+    "id": 485
+  },
+  {
+    "mhct_id": 1481,
+    "name": "Unwavering Adventurer",
+    "id": 993
+  },
+  {
+    "mhct_id": 584,
+    "name": "Upper Class Lady",
+    "id": 486
+  },
+  {
+    "mhct_id": 664,
+    "name": "Urchin King",
+    "id": 631
+  },
+  {
+    "mhct_id": 578,
+    "name": "Vanquisher",
+    "id": 214
+  },
+  {
+    "mhct_id": 1469,
+    "name": "Vaporior",
+    "id": 981
+  }
+]
