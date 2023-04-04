@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Head from 'next/head'
 
 import Layout from '../components/Layout'
@@ -39,10 +39,10 @@ const flattenMinLucksByValue = (minluck) => {
 
 export default function Minlucks() {
   const [filter, setFilter] = useState('');
-  const inputRef = React.useRef(null);
-  const [focused, setFocused] = React.useState(false); // eslint-disable-line no-unused-vars
+  const inputRef = useRef(null);
+  const [focused, setFocused] = useState(false); // eslint-disable-line no-unused-vars
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleKeyDown = (nativeEvent) => {
       if (nativeEvent.defaultPrevented) {
         return;
