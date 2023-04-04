@@ -3,7 +3,6 @@ import Head from 'next/head'
 
 import Layout from '../components/Layout'
 import ColorScaleBadge from '../components/ColorScaleBadge';
-// import PowerTypeBadge from '../components/PowerTypeBadge';
 
 import minlucks from '../data/minlucks.json'
 
@@ -63,6 +62,8 @@ export default function Minlucks() {
       }
     };
 
+    inputRef.current.focus();
+
     document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
@@ -105,8 +106,12 @@ export default function Minlucks() {
               </div>
             </div>
             <div className="overflow-hidden">
-              <ul role="list" className="divide-y divide-slate-200 even:bg-grey">
-                {minlucks.filter((minluck) => minluck.name.toLowerCase().includes(filter.toLowerCase())).map((minluck) => (
+              <ul role="list" className="divide-y divide-slate-200">
+                {minlucks.filter((minluck) =>
+                  minluck.name.toLowerCase().includes(filter.toLowerCase()) ||
+                  minluck.group.toLowerCase().includes(filter.toLowerCase()) ||
+                  minluck.subgroup.toLowerCase().includes(filter.toLowerCase())
+                ).map((minluck) => (
                   <li key={minluck.name} className="even:bg-slate-100">
                     <div className="px-2 py-2 sm:px-3">
                       <div className="flex items-center justify-between flex-1 min-w-0">
@@ -125,6 +130,10 @@ export default function Minlucks() {
                               {minluck.types.length < 8 && (
                                 <div className="text-sm font-light text-slate-500 w-auto mr-2 text-right">
                                   {minluck.types.join(', ')}
+                                </div>
+                              ) || (
+                                <div className="text-xs font-light text-slate-400 w-auto mr-2 text-right">
+                                  Any
                                 </div>
                               )}
                               <ColorScaleBadge value={minluck.value} />
