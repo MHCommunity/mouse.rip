@@ -286,27 +286,6 @@
     "tags": ["quality-of-life"],
     "icon": "Cube"
   },
-  // {
-  //   "name": "Fancy King's Reward",
-  //   "description": "",
-  //   "url": "https://greasyfork.org/en/scripts/459629-mousehunt-fancy-king-s-reward",
-  //   "tags": [],
-  //   "icon": ""
-  // },
-  // {
-  //   "name": "Rank-up Forecaster",
-  //   "description": "",
-  //   "url": "https://greasyfork.org/en/scripts/428461-mh-rank-up-forecaster-v2-0",
-  //   "tags": [],
-  //   "icon": ""
-  // },
-  // {
-  //   "name": "Inventory History",
-  //   "description": "https://greasyfork.org/en/scripts/421745-mh-inventory-history",
-  //   "url": "",
-  //   "tags": [],
-  //   "icon": ""
-  // },
   {
     "name": "Shields",
     "description": "Change the shield to an event one or a fun custom one!",
@@ -334,19 +313,5 @@
     "url": "",
     "tags": ["maps", "location", "valour-rift"],
     "icon": "Swatch"
-  },
-  // {
-  //   "name": "",
-  //   "description": "",
-  //   "url": "",
-  //   "tags": [],
-  //   "icon": ""
-  // },
-  // {
-  //   "name": "",
-  //   "description": "",
-  //   "url": "",
-  //   "tags": [],
-  //   "icon": ""
-  // }
+  }
 ]
