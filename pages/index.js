@@ -57,21 +57,7 @@ const mainNav = [
 ]
 
 const secondaryNav = [
-  {
-    name: 'About',
-    href: '/about',
-    icon: NewspaperIcon,
-  },
-  {
-    name: 'Challenges',
-    href: '/challenges',
-    icon: HandThumbUpIcon,
-  },
-  {
-    name: 'Contributing',
-    href: '/contributing',
-    icon: ChatBubbleBottomCenterIcon,
-  },
+
 ]
 
 export default function Home() {
