@@ -1,6 +1,6 @@
 import { Badge } from '@/components/badge';
 import { Link } from '@/components/link';
-import { getItem } from '@/data';
+import { getItem, getItems } from '@/data';
 import { notFound } from 'next/navigation';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 
@@ -12,6 +12,14 @@ export async function generateMetadata({ params }) {
     title: '{item.name} Userscript for MouseHunt',
     description: item.description,
   };
+}
+
+export function generateStaticParams() {
+  const paths = getItems().filter((item) => item.category === 'userscript').map((item) => ({
+    id: item.id,
+  }));
+
+  return paths;
 }
 
 export default async function Location({ params }) {

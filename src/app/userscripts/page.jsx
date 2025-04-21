@@ -7,7 +7,7 @@ export const metadata = {
 };
 
 export default async function Userscripts() {
-  const items = await getItemsByCategory('userscript');
+  const items = getItemsByCategory('userscript');
 
   return (
     <>

@@ -493,7 +493,7 @@ function getItems() {
       todo: 'maybe remove @todo',
     },
     {
-      id: 'hween-2021-trick/treat-map-colour-coder',
+      id: 'hween-2021-trick-treat-map-colour-coder',
       name: 'Hween 2021 Trick/Treat map colour coder',
       description: 'Colour codes mice on trick/treat maps according to type.',
       url: 'https://greasyfork.org/en/scripts/433865-mousehunt-hween-2021-trick-treat-map-colour-coder',

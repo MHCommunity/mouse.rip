@@ -1,5 +1,5 @@
 import { Heading } from '@/components/heading';
-import { getItemsByLocation, getLocation } from '@/data';
+import { getItemsByLocation, getLocation, getLocations } from '@/data';
 import { notFound } from 'next/navigation';
 import { Item } from '@/components/item';
 
@@ -11,6 +11,23 @@ export async function generateMetadata({ params }) {
   return {
     title: location.name,
   };
+}
+
+export function generateStaticParams() {
+  const locations = getLocations();
+  if (! locations) {
+    return [];
+  }
+
+  const paths = locations.map((location) => {
+    return location.locations.map((location) => {
+      return {
+        id: location.id,
+      };
+    });
+  });
+
+  return paths.flat();
 }
 
 export default async function Location({ params }) {
