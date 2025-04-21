@@ -33,7 +33,6 @@
     "import/no-absolute-path": "error",
     "import/no-cycle": "error",
     "import/no-named-as-default": "error",
-    "import/no-unassigned-import": "error",
     "import/no-unresolved": ["error", { "ignore": ["^@/", "@data", "@utils"] }],
     "import/no-useless-path-segments": "error",
     "indent": ["error", 2],
@@ -57,6 +56,8 @@
     "space-before-function-paren": ["error", { "anonymous": "always", "named": "never", "asyncArrow": "always" }],
     "space-in-parens": ["error", "never"],
     "spaced-comment": ["error", "always"],
-    "template-curly-spacing": ["error", "never"]
+    "template-curly-spacing": ["error", "never"],
+    "no-nested-ternary": 1,
+    "jsdoc/require-param": 1
   }
 }
