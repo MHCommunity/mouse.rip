@@ -1,7 +1,7 @@
-import { Heading } from '@/components/heading';
-import { getItems } from '@/data';
-import { Item } from '@/components/item';
 import { Input, InputGroup } from '@/components/input';
+import { getItems } from '@/data';
+import { Heading } from '@/components/heading';
+import { Item } from '@/components/item';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 
 export default async function Home() {

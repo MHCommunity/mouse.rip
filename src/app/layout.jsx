@@ -1,7 +1,7 @@
-import { getItems } from '@/data';
 import '@/styles/tailwind.css';
 
 import { ApplicationLayout } from './application-layout';
+import { getItems } from '@/data';
 
 export const metadata = {
   title: {

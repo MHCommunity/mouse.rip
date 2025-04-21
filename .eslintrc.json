@@ -1,0 +1,62 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@next/next/recommended",
+    "prettier",
+    "plugin:@wordpress/eslint-plugin/recommended-with-formatting",
+    "plugin:import/recommended",
+    "plugin:eslint-comments/recommended",
+    "plugin:promise/recommended"
+  ],
+  "plugins": ["import-newlines"],
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
+  "rules": {
+    "@next/next/no-img-element": "off",
+    "array-bracket-spacing": ["error", "never"],
+    "block-spacing": ["error", "always"],
+    "comma-dangle": ["error", { "arrays": "only-multiline", "objects": "only-multiline", "imports": "never", "exports": "never", "functions": "never" }],
+    "comma-spacing": ["error", { "before": false, "after": true }],
+    "computed-property-spacing": ["error", "never"],
+    "eol-last": ["error", "always"],
+    "import-newlines/enforce": "error",
+    "import/exports-last": "error",
+    "import/first": "error",
+    "import/no-absolute-path": "error",
+    "import/no-cycle": "error",
+    "import/no-named-as-default": "error",
+    "import/no-unassigned-import": "error",
+    "import/no-unresolved": ["error", { "ignore": ["^@/", "@data", "@utils"] }],
+    "import/no-useless-path-segments": "error",
+    "indent": ["error", 2],
+    "jsx-quotes": ["error", "prefer-double"],
+    "linebreak-style": ["error", "unix"],
+    "no-alert": "error",
+    "no-console": "error",
+    "no-eval": "error",
+    "no-implied-eval": "error",
+    "no-template-curly-in-string": "error",
+    "no-undef": 0,
+    "no-unused-labels": 0,
+    "no-useless-concat": "error",
+    "object-curly-spacing": ["error", "always"],
+    "promise/always-return": ["error", { "ignoreLastCallback": true }],
+    "quotes": ["error", "single"],
+    "react/jsx-indent-props": [2, 2],
+    "react/jsx-indent": [2, 2],
+    "react/jsx-curly-spacing": ["error", { "when": "never", "children": true }],
+    "semi": ["error", "always"],
+    "space-before-function-paren": ["error", { "anonymous": "always", "named": "never", "asyncArrow": "always" }],
+    "space-in-parens": ["error", "never"],
+    "spaced-comment": ["error", "always"],
+    "template-curly-spacing": ["error", "never"]
+  }
+}

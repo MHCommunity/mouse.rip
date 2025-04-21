@@ -1,8 +1,9 @@
+import { notFound } from 'next/navigation';
+
+import { getItem, getItems } from '@/data';
+import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Badge } from '@/components/badge';
 import { Link } from '@/components/link';
-import { getItem, getItems } from '@/data';
-import { notFound } from 'next/navigation';
-import { ArrowRightIcon } from '@heroicons/react/20/solid';
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
@@ -26,7 +27,7 @@ export default async function Location({ params }) {
   const { id } = await params;
   const item = await getItem(id);
 
-  if (!item) {
+  if (! item) {
     notFound();
   }
 

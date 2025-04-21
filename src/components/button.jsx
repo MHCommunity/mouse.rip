@@ -1,5 +1,6 @@
 import * as Headless from '@headlessui/react';
 import clsx from 'clsx';
+
 import { forwardRef } from 'react';
 import { Link } from './link';
 
@@ -178,8 +179,6 @@ export const Button = forwardRef(function Button({ color, outline, plain, classN
 
 /**
  * Expand the hit area to at least 44×44px on touch devices
- * @param root0
- * @param root0.children
  */
 export function TouchTarget({ children }) {
   return (

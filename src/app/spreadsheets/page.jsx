@@ -1,5 +1,5 @@
+import { getItemsByCategory } from '@/data';
 import { Heading } from '@/components/heading';
-import { getItems, getItemsByCategory } from '@/data';
 import { Item } from '@/components/item';
 
 export const metadata = {

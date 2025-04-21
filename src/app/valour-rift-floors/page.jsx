@@ -1,9 +1,10 @@
 'use client';
 
 import { useRef, useState } from 'react';
+
+import { Input, InputGroup } from '@/components/input';
 import { Divider } from '@/components/divider';
 import { Heading } from '@/components/heading';
-import { Input, InputGroup } from '@/components/input';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 
 export default function ValourRiftFloors() {
@@ -26,7 +27,7 @@ export default function ValourRiftFloors() {
     const input = parseInt(e.target.value, 10);
     setCurrentFloor(e.target.value);
 
-    if (!isNaN(input) && input > 0) {
+    if (! isNaN(input) && input > 0) {
       const index = (input - 1) % orderUpcomingFloors.length;
       const reordered = [
         ...orderUpcomingFloors.slice(index),
@@ -65,16 +66,9 @@ export default function ValourRiftFloors() {
         </InputGroup>
       </div>
       <div className="overflow-hidden">
-        <ul role="list">
+        <ul>
           {reorderedFloors.map((floor, index) => (
-            <li
-              key={index} className="relative flex items-center justify-center gap-x-6 rounded-xl p-4 hover:bg-gray-100 flex-col"
-              onClick={() => {
-                setCurrentFloor((index + 1).toString());
-                handleInputChange({ target: { value: (index + 1).toString() } });
-              }
-              }
-            >
+            <li key={index} className="relative flex items-center justify-center gap-x-6 rounded-xl p-4 hover:bg-gray-100 flex-col">
               <div className="text-xl font-semibold tracking-tight text-balance text-gray-900 sm:text-3xl">
                 {floor}
               </div>

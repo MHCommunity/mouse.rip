@@ -2,10 +2,12 @@
 
 import * as Headless from '@headlessui/react';
 import clsx from 'clsx';
-import { LayoutGroup, motion } from 'framer-motion';
+
 import { forwardRef, useId } from 'react';
-import { TouchTarget } from './button';
+import { LayoutGroup, motion } from 'framer-motion';
+
 import { Link } from './link';
+import { TouchTarget } from './button';
 
 export function Navbar({ className, ...props }) {
   return <nav {...props} className={clsx(className, 'flex flex-1 items-center gap-4 py-2.5')} />;

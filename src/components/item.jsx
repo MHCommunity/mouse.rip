@@ -1,8 +1,10 @@
-import Link from 'next/link';
 import clsx from 'clsx';
-import { Badge } from '@/components/badge';
-import { ArrowRightIcon } from '@heroicons/react/20/solid';
+import Link from 'next/link';
+
 import colors from './colors';
+
+import { ArrowRightIcon } from '@heroicons/react/20/solid';
+import { Badge } from '@/components/badge';
 
 export function Item({ item, ...props }) {
   return (

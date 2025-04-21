@@ -2,6 +2,8 @@ import * as Headless from '@headlessui/react';
 import clsx from 'clsx';
 import { forwardRef } from 'react';
 
+const dateTypes = ['date', 'datetime-local', 'month', 'time', 'week'];
+
 export function InputGroup({ children }) {
   return (
     <span
@@ -18,8 +20,6 @@ export function InputGroup({ children }) {
     </span>
   );
 }
-
-const dateTypes = ['date', 'datetime-local', 'month', 'time', 'week'];
 
 export const Input = forwardRef(function Input(
   { className, ...props },

@@ -2,10 +2,12 @@
 
 import * as Headless from '@headlessui/react';
 import clsx from 'clsx';
-import { LayoutGroup, motion } from 'framer-motion';
+
 import { Fragment, forwardRef, useId } from 'react';
-import { TouchTarget } from './button';
+import { LayoutGroup, motion } from 'framer-motion';
+
 import { Link } from './link';
+import { TouchTarget } from './button';
 
 export function Sidebar({ className, ...props }) {
   return <nav {...props} className={clsx(className, 'flex h-full min-h-0 flex-col')} />;
@@ -67,7 +69,9 @@ export function SidebarSpacer({ className, ...props }) {
 
 export function SidebarHeading({ className, ...props }) {
   return (
-    <h3 {...props} className={clsx(className, 'mb-1 px-2 text-xs/6 font-medium text-zinc-500 dark:text-zinc-400')} />
+    <h3 {...props} className={clsx(className, 'mb-1 px-2 text-xs/6 font-medium text-zinc-500 dark:text-zinc-400')}>
+      {props.children}
+    </h3>
   );
 }
 

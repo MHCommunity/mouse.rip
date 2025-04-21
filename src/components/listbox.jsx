@@ -2,13 +2,13 @@
 
 import * as Headless from '@headlessui/react';
 import clsx from 'clsx';
+
 import { Fragment } from 'react';
 
 export function Listbox({ className, placeholder, autoFocus, 'aria-label': ariaLabel, children: options, ...props }) {
   return (
     <Headless.Listbox {...props} multiple={false}>
       <Headless.ListboxButton
-        autoFocus={autoFocus}
         data-slot="control"
         aria-label={ariaLabel}
         className={clsx([

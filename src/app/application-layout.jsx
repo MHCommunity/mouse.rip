@@ -1,37 +1,36 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import { Logo } from '@/components/logo';
+
 import { Navbar, NavbarItem, NavbarSection, NavbarSpacer } from '@/components/navbar';
 import {
   Sidebar,
   SidebarBody,
   SidebarDivider,
-  SidebarFooter,
   SidebarHeader,
   SidebarHeading,
   SidebarItem,
   SidebarLabel,
   SidebarSection,
-  SidebarSmallItem,
-  SidebarSpacer
+  SidebarSmallItem
 } from '@/components/sidebar';
+import { Logo } from '@/components/logo';
 import { SidebarLayout } from '@/components/sidebar-layout';
+
+import { getLocations } from '@/data';
 
 import {
   AcademicCapIcon,
   BoltIcon,
   HomeIcon,
   QuestionMarkCircleIcon,
-  SparklesIcon,
   SwatchIcon,
   TableCellsIcon,
   WrenchIcon
 } from '@heroicons/react/20/solid';
-import { getLocations } from '@/data';
-import { Avatar } from '@/components/avatar';
 import { DiscordIcon, GitHubIcon } from '@/components/social-icon';
+import { Avatar } from '@/components/avatar';
 
-export function ApplicationLayout({ events, children }) {
+export function ApplicationLayout({ children }) {
   const pathname = usePathname();
   const locations = getLocations();
 

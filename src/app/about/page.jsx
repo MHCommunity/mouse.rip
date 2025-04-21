@@ -1,6 +1,7 @@
-import { Divider } from '@/components/divider';
-import { Heading, Subheading } from '@/components/heading';
 import Link from 'next/link';
+
+import { Heading, Subheading } from '@/components/heading';
+import { Divider } from '@/components/divider';
 
 export const metadata = {
   title: 'About',

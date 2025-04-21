@@ -1,6 +1,7 @@
-import { Heading } from '@/components/heading';
-import { getItemsByLocation, getLocation, getLocations } from '@/data';
 import { notFound } from 'next/navigation';
+
+import { getItemsByLocation, getLocation, getLocations } from '@/data';
+import { Heading } from '@/components/heading';
 import { Item } from '@/components/item';
 
 let location;
@@ -15,14 +16,14 @@ export async function generateMetadata({ params }) {
 
 export function generateStaticParams() {
   const locations = getLocations();
-  if (!locations) {
+  if (! locations) {
     return [];
   }
 
-  const paths = locations.map((location) => {
-    return location.locations.map((location) => {
+  const paths = locations.map((region) => {
+    return region.locations.map((environment) => {
       return {
-        id: location.id,
+        id: environment.id,
       };
     });
   });
@@ -34,7 +35,7 @@ export default async function Location({ params }) {
   location = location || await getLocation(params.id);
   const items = await getItemsByLocation(params.id);
 
-  if (!location || !items) {
+  if (! location || ! items) {
     notFound();
   }
 
