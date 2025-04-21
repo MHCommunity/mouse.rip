@@ -15,7 +15,7 @@ export async function generateMetadata({ params }) {
 
 export function generateStaticParams() {
   const locations = getLocations();
-  if (! locations) {
+  if (!locations) {
     return [];
   }
 
@@ -34,18 +34,18 @@ export default async function Location({ params }) {
   location = location || await getLocation(params.id);
   const items = await getItemsByLocation(params.id);
 
-  if (! location || ! items) {
+  if (!location || !items) {
     notFound();
   }
 
   return (
     <>
-      <Heading>{ location.name }</Heading>
+      <Heading>{location.name}</Heading>
       <div className="relative grid md:grid-cols-2 xl:grid-cols-3 gap-5 mt-8">
-        { items.map((item) => (
-          <Item key={ item.id } item={ item } />
-        )) }
-	</div>
-	</>
+        {items.map((item) => (
+          <Item key={item.id} item={item} />
+        ))}
+      </div>
+    </>
   );
 }

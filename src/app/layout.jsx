@@ -20,8 +20,8 @@ export default async function RootLayout({ children }) {
       className="text-zinc-950 antialiased lg:bg-zinc-100 dark:bg-zinc-900 dark:text-white dark:lg:bg-zinc-950"
     >
       <body>
-        <ApplicationLayout events={ items }>{ children }</ApplicationLayout>
-	</body>
-	</html>
+        <ApplicationLayout events={items}>{children}</ApplicationLayout>
+      </body>
+    </html>
   );
 }

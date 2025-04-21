@@ -166,13 +166,13 @@ export const Button = forwardRef(function Button({ color, outline, plain, classN
   );
 
   return 'href' in props ? (
-    <Link { ...props } className={ classes } ref={ ref }>
-      <TouchTarget>{ children }</TouchTarget>
-	</Link>
+    <Link {...props} className={classes} ref={ref}>
+      <TouchTarget>{children}</TouchTarget>
+    </Link>
   ) : (
-    <Headless.Button { ...props } className={ clsx(classes, 'cursor-default') } ref={ ref }>
-      <TouchTarget>{ children }</TouchTarget>
-	</Headless.Button>
+    <Headless.Button {...props} className={clsx(classes, 'cursor-default')} ref={ref}>
+      <TouchTarget>{children}</TouchTarget>
+    </Headless.Button>
   );
 });
 
@@ -188,7 +188,7 @@ export function TouchTarget({ children }) {
         className="absolute left-1/2 top-1/2 size-[max(100%,2.75rem)] -translate-x-1/2 -translate-y-1/2 [@media(pointer:fine)]:hidden"
         aria-hidden="true"
       />
-      { children }
-	</>
+      {children}
+    </>
   );
 }

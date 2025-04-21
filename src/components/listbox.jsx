@@ -6,12 +6,12 @@ import { Fragment } from 'react';
 
 export function Listbox({ className, placeholder, autoFocus, 'aria-label': ariaLabel, children: options, ...props }) {
   return (
-    <Headless.Listbox { ...props } multiple={ false }>
+    <Headless.Listbox {...props} multiple={false}>
       <Headless.ListboxButton
-        autoFocus={ autoFocus }
+        autoFocus={autoFocus}
         data-slot="control"
-        aria-label={ ariaLabel }
-        className={ clsx([
+        aria-label={ariaLabel}
+        className={clsx([
           className,
           // Basic layout
           'group relative block w-full',
@@ -25,13 +25,13 @@ export function Listbox({ className, placeholder, autoFocus, 'aria-label': ariaL
           'after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:ring-inset after:ring-transparent after:data-[focus]:ring-2 after:data-[focus]:ring-blue-500',
           // Disabled state
           'data-[disabled]:opacity-50 before:data-[disabled]:bg-zinc-950/5 before:data-[disabled]:shadow-none',
-        ]) }
+        ])}
       >
         <Headless.ListboxSelectedOption
           as="span"
-          options={ options }
-          placeholder={ placeholder && <span className="block truncate text-zinc-500">{ placeholder }</span> }
-          className={ clsx([
+          options={options}
+          placeholder={placeholder && <span className="block truncate text-zinc-500">{placeholder}</span>}
+          className={clsx([
             // Basic layout
             'relative block w-full appearance-none rounded-lg py-[calc(theme(spacing[2.5])-1px)] sm:py-[calc(theme(spacing[1.5])-1px)]',
             // Set minimum height for when no value is selected
@@ -48,7 +48,7 @@ export function Listbox({ className, placeholder, autoFocus, 'aria-label': ariaL
             'group-data-[invalid]:border-red-500 group-data-[invalid]:group-data-[hover]:border-red-500 group-data-[invalid]:dark:border-red-600 group-data-[invalid]:data-[hover]:dark:border-red-600',
             // Disabled state
             'group-data-[disabled]:border-zinc-950/20 group-data-[disabled]:opacity-100 group-data-[disabled]:dark:border-white/15 group-data-[disabled]:dark:bg-white/[2.5%] dark:data-[hover]:group-data-[disabled]:border-white/15',
-          ]) }
+          ])}
         />
         <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
           <svg
@@ -57,11 +57,11 @@ export function Listbox({ className, placeholder, autoFocus, 'aria-label': ariaL
             aria-hidden="true"
             fill="none"
           >
-            <path d="M5.75 10.75L8 13L10.25 10.75" strokeWidth={ 1.5 } strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M10.25 5.25L8 3L5.75 5.25" strokeWidth={ 1.5 } strokeLinecap="round" strokeLinejoin="round" />
-	</svg>
-	</span>
-	</Headless.ListboxButton>
+            <path d="M5.75 10.75L8 13L10.25 10.75" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M10.25 5.25L8 3L5.75 5.25" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </span>
+      </Headless.ListboxButton>
       <Headless.Transition
         leave="transition-opacity duration-100 ease-in pointer-events-none"
         leaveFrom="opacity-100"
@@ -69,7 +69,7 @@ export function Listbox({ className, placeholder, autoFocus, 'aria-label': ariaL
       >
         <Headless.ListboxOptions
           anchor="selection start"
-          className={ clsx(
+          className={clsx(
             // Anchor positioning
             '[--anchor-offset:-1.625rem] [--anchor-padding:theme(spacing.4)] sm:[--anchor-offset:-1.375rem]',
             // Base styles
@@ -82,12 +82,12 @@ export function Listbox({ className, placeholder, autoFocus, 'aria-label': ariaL
             'bg-white/75 backdrop-blur-xl dark:bg-zinc-800/75',
             // Shadows
             'shadow-lg ring-1 ring-zinc-950/10 dark:ring-inset dark:ring-white/10'
-          ) }
+          )}
         >
-          { options }
-	</Headless.ListboxOptions>
-	</Headless.Transition>
-	</Headless.Listbox>
+          {options}
+        </Headless.ListboxOptions>
+      </Headless.Transition>
+    </Headless.Listbox>
   );
 }
 
@@ -104,15 +104,15 @@ export function ListboxOption({ children, className, ...props }) {
   );
 
   return (
-    <Headless.ListboxOption as={ Fragment } { ...props }>
-      { ({ selectedOption }) => {
+    <Headless.ListboxOption as={Fragment} {...props}>
+      {({ selectedOption }) => {
         if (selectedOption) {
-          return <div className={ clsx(className, sharedClasses) }>{ children }</div>;
+          return <div className={clsx(className, sharedClasses)}>{children}</div>;
         }
 
         return (
           <div
-            className={ clsx(
+            className={clsx(
               // Basic layout
               'group/option grid cursor-default grid-cols-[theme(spacing.5),1fr] items-baseline gap-x-2 rounded-lg py-2.5 pl-2 pr-3.5 sm:grid-cols-[theme(spacing.4),1fr] sm:py-1.5 sm:pl-1.5 sm:pr-3',
               // Typography
@@ -123,7 +123,7 @@ export function ListboxOption({ children, className, ...props }) {
               'forced-color-adjust-none forced-colors:data-[focus]:bg-[Highlight] forced-colors:data-[focus]:text-[HighlightText]',
               // Disabled
               'data-[disabled]:opacity-50'
-            ) }
+            )}
           >
             <svg
               className="relative hidden size-5 self-center stroke-current group-data-[selected]/option:inline sm:size-4"
@@ -131,30 +131,30 @@ export function ListboxOption({ children, className, ...props }) {
               fill="none"
               aria-hidden="true"
             >
-              <path d="M4 8.5l3 3L12 4" strokeWidth={ 1.5 } strokeLinecap="round" strokeLinejoin="round" />
-	</svg>
-            <span className={ clsx(className, sharedClasses, 'col-start-2') }>{ children }</span>
-	</div>
+              <path d="M4 8.5l3 3L12 4" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span className={clsx(className, sharedClasses, 'col-start-2')}>{children}</span>
+          </div>
         );
-      } }
-	</Headless.ListboxOption>
+      }}
+    </Headless.ListboxOption>
   );
 }
 
 export function ListboxLabel({ className, ...props }) {
-  return <span { ...props } className={ clsx(className, 'ml-2.5 truncate first:ml-0 sm:ml-2 sm:first:ml-0') } />;
+  return <span {...props} className={clsx(className, 'ml-2.5 truncate first:ml-0 sm:ml-2 sm:first:ml-0')} />;
 }
 
 export function ListboxDescription({ className, children, ...props }) {
   return (
     <span
-      { ...props }
-      className={ clsx(
+      {...props}
+      className={clsx(
         className,
         'flex flex-1 overflow-hidden text-zinc-500 before:w-2 before:min-w-0 before:shrink group-data-[focus]/option:text-white dark:text-zinc-400'
-      ) }
+      )}
     >
-      <span className="flex-1 truncate">{ children }</span>
-	</span>
+      <span className="flex-1 truncate">{children}</span>
+    </span>
   );
 }

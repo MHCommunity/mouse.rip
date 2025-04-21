@@ -26,7 +26,7 @@ export default function ValourRiftFloors() {
     const input = parseInt(e.target.value, 10);
     setCurrentFloor(e.target.value);
 
-    if (! isNaN(input) && input > 0) {
+    if (!isNaN(input) && input > 0) {
       const index = (input - 1) % orderUpcomingFloors.length;
       const reordered = [
         ...orderUpcomingFloors.slice(index),
@@ -48,44 +48,44 @@ export default function ValourRiftFloors() {
           <Input
             placeholder="1, 2, 3, …"
             className="flex rounded-md bg-white outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600"
-            onFocus={ () => inputRef.current?.focus() }
-            onBlur={ () => inputRef.current?.blur() }
-            onKeyDown={ (e) => {
+            onFocus={() => inputRef.current?.focus()}
+            onBlur={() => inputRef.current?.blur()}
+            onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 handleInputChange(e);
               }
-            } }
-            ref={ inputRef }
-            onChange={ handleInputChange }
-            value={ currentFloor }
+            }}
+            ref={inputRef}
+            onChange={handleInputChange}
+            value={currentFloor}
           />
           <label htmlFor="search" className="block text-sm font-medium text-gray-700">
-		Enter a floor number to reorder the list.
+            Enter a floor number to reorder the list.
           </label>
-	</InputGroup>
-	</div>
+        </InputGroup>
+      </div>
       <div className="overflow-hidden">
         <ul role="list">
-          { reorderedFloors.map((floor, index) => (
+          {reorderedFloors.map((floor, index) => (
             <li
-              key={ index } className="relative flex items-center justify-center gap-x-6 rounded-xl p-4 hover:bg-gray-100 flex-col"
-              onClick={ () => {
+              key={index} className="relative flex items-center justify-center gap-x-6 rounded-xl p-4 hover:bg-gray-100 flex-col"
+              onClick={() => {
                 setCurrentFloor((index + 1).toString());
                 handleInputChange({ target: { value: (index + 1).toString() } });
               }
               }
             >
               <div className="text-xl font-semibold tracking-tight text-balance text-gray-900 sm:text-3xl">
-                { floor }
-	</div>
+                {floor}
+              </div>
               <div className="text-sm text-slate-500">
-		Floors { index + 1 }, { index + 9 }, { index + 17 }
-	</div>
-	</li>
-          )) }
-	</ul>
+                Floors {index + 1}, {index + 9}, {index + 17}
+              </div>
+            </li>
+          ))}
+        </ul>
         <Divider className="my-4" />
-	</div>
-	</div>
+      </div>
+    </div>
   );
 }

@@ -6,7 +6,7 @@ export const Textarea = forwardRef(function Textarea({ className, resizable = tr
   return (
     <span
       data-slot="control"
-      className={ clsx([
+      className={clsx([
         className,
         // Basic layout
         'relative block w-full',
@@ -18,12 +18,12 @@ export const Textarea = forwardRef(function Textarea({ className, resizable = tr
         'after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:ring-inset after:ring-transparent sm:after:focus-within:ring-2 sm:after:focus-within:ring-blue-500',
         // Disabled state
         'has-[[data-disabled]]:opacity-50 before:has-[[data-disabled]]:bg-zinc-950/5 before:has-[[data-disabled]]:shadow-none',
-      ]) }
+      ])}
     >
       <Headless.Textarea
-        ref={ ref }
-        { ...props }
-        className={ clsx([
+        ref={ref}
+        {...props}
+        className={clsx([
           // Basic layout
           'relative block h-full w-full appearance-none rounded-lg px-[calc(theme(spacing[3.5])-1px)] py-[calc(theme(spacing[2.5])-1px)] sm:px-[calc(theme(spacing.3)-1px)] sm:py-[calc(theme(spacing[1.5])-1px)]',
           // Typography
@@ -40,8 +40,8 @@ export const Textarea = forwardRef(function Textarea({ className, resizable = tr
           'disabled:border-zinc-950/20 disabled:dark:border-white/15 disabled:dark:bg-white/[2.5%] dark:data-[hover]:disabled:border-white/15',
           // Resizable
           resizable ? 'resize-y' : 'resize-none',
-        ]) }
+        ])}
       />
-	</span>
+    </span>
   );
 });

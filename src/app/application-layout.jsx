@@ -41,93 +41,93 @@ export function ApplicationLayout({ events, children }) {
         <Navbar>
           <NavbarSpacer />
           <NavbarSection>
-            <NavbarItem href="/" current={ pathname === '/' }>
+            <NavbarItem href="/" current={pathname === '/'}>
               <Logo />
               <span className="text-2xl text-pink-800 dark:text-pink-200 hover:text-pink-900 dark:hover:text-pink-300">
-		mouse.rip
+                mouse.rip
               </span>
-	</NavbarItem>
-	</NavbarSection>
-	</Navbar>
+            </NavbarItem>
+          </NavbarSection>
+        </Navbar>
       }
       sidebar={
         <Sidebar>
           <SidebarHeader>
             <SidebarItem href="/">
-		<Logo />
-		<SidebarLabel className="text-2xl text-pink-800 dark:text-pink-200 hover:text-pink-900 dark:hover:text-pink-300">
-	mouse.rip
+              <Logo />
+              <SidebarLabel className="text-2xl text-pink-800 dark:text-pink-200 hover:text-pink-900 dark:hover:text-pink-300">
+                mouse.rip
               </SidebarLabel>
-	</SidebarItem>
-	</SidebarHeader>
+            </SidebarItem>
+          </SidebarHeader>
 
           <SidebarBody>
             <SidebarSection>
-              <SidebarItem href="/" current={ pathname === '/' }>
+              <SidebarItem href="/" current={pathname === '/'}>
                 <HomeIcon />
                 <SidebarLabel>Home</SidebarLabel>
-	</SidebarItem>
-              <SidebarItem href="/guides" current={ pathname.startsWith('/guide') }>
+              </SidebarItem>
+              <SidebarItem href="/guides" current={pathname.startsWith('/guide')}>
                 <AcademicCapIcon />
                 <SidebarLabel className="text-pink-800 dark:text-pink-200 hover:text-pink-900 dark:hover:text-pink-300">Guides</SidebarLabel>
-	</SidebarItem>
-              <SidebarItem href="/extensions" current={ pathname.startsWith('/extension') }>
+              </SidebarItem>
+              <SidebarItem href="/extensions" current={pathname.startsWith('/extension')}>
                 <BoltIcon />
                 <SidebarLabel className="text-cyan-800 dark:text-cyan-200 hover:text-cyan-900 dark:hover:text-cyan-300">Extensions</SidebarLabel>
-	</SidebarItem>
-              <SidebarItem href="/spreadsheets" current={ pathname.startsWith('/spreadsheet') }>
+              </SidebarItem>
+              <SidebarItem href="/spreadsheets" current={pathname.startsWith('/spreadsheet')}>
                 <TableCellsIcon />
                 <SidebarLabel className="text-blue-800 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-300">Spreadsheets</SidebarLabel>
-	</SidebarItem>
-              <SidebarItem href="/tools" current={ pathname.startsWith('/tool') }>
+              </SidebarItem>
+              <SidebarItem href="/tools" current={pathname.startsWith('/tool')}>
                 <WrenchIcon />
                 <SidebarLabel className="text-green-800 dark:text-green-200 hover:text-green-900 dark:hover:text-green-300">Tools</SidebarLabel>
-	</SidebarItem>
-              <SidebarItem href="/userscripts" current={ pathname.startsWith('/userscript') }>
+              </SidebarItem>
+              <SidebarItem href="/userscripts" current={pathname.startsWith('/userscript')}>
                 <SwatchIcon />
                 <SidebarLabel className="text-purple-800 dark:text-purple-200 hover:text-purple-900 dark:hover:text-purple-300">Userscripts</SidebarLabel>
-	</SidebarItem>
-	</SidebarSection>
+              </SidebarItem>
+            </SidebarSection>
 
             <SidebarDivider />
             <SidebarSection>
-              { locations.map((region) => (
-                <div key={ region.id }>
+              {locations.map((region) => (
+                <div key={region.id}>
                   <SidebarHeading className="text-xs font-semibold text-gray-400">
-                    { region.name }
-	</SidebarHeading>
+                    {region.name}
+                  </SidebarHeading>
                   <div>
-                    { region.locations.map((location) => (
-		<SidebarSmallItem key={ location.id } href={ `/locations/${location.id}` } current={ pathname === `/location/${location.id}` } className="text-xs font-semibold text-gray-400 rounded-md hover:text-white hover:bg-gray-800">
-	<Avatar slot="icon" src={ `/locations/${location.id}.png` } alt={ location.name } square />
-	{ location.name }
+                    {region.locations.map((location) => (
+                      <SidebarSmallItem key={location.id} href={`/locations/${location.id}`} current={pathname === `/location/${location.id}`} className="text-xs font-semibold text-gray-400 rounded-md hover:text-white hover:bg-gray-800">
+                        <Avatar slot="icon" src={`/locations/${location.id}.png`} alt={location.name} square />
+                        {location.name}
                       </SidebarSmallItem>
-                    )) }
-	</div>
+                    ))}
+                  </div>
                   <div className="mt-4 flex-1" aria-hidden="true" />
-	</div>
-              )) }
-	</SidebarSection>
+                </div>
+              ))}
+            </SidebarSection>
 
             <SidebarSection>
-              <SidebarItem href="/about" current={ pathname.startsWith('/about') }>
+              <SidebarItem href="/about" current={pathname.startsWith('/about')}>
                 <QuestionMarkCircleIcon />
                 <SidebarLabel>About</SidebarLabel>
-	</SidebarItem>
+              </SidebarItem>
               <SidebarItem href="https://github.com/MHCommunity">
                 <GitHubIcon />
                 <SidebarLabel>GitHub</SidebarLabel>
-	</SidebarItem>
-              <SidebarItem href="https://discordapp.com/invite/Ya9zEdk">
+              </SidebarItem>
+              <SidebarItem href="https://discord.gg/mousehunt">
                 <DiscordIcon />
                 <SidebarLabel>Discord</SidebarLabel>
-	</SidebarItem>
-	</SidebarSection>
-	</SidebarBody>
-	</Sidebar>
+              </SidebarItem>
+            </SidebarSection>
+          </SidebarBody>
+        </Sidebar>
       }
     >
-      { children }
-	</SidebarLayout>
+      {children}
+    </SidebarLayout>
   );
 }

@@ -13,10 +13,10 @@ export default async function Extensions() {
     <>
       <Heading>MouseHunt Browser Extensions</Heading>
       <div className="relative grid md:grid-cols-2 xl:grid-cols-3 gap-5 mt-8">
-        { items.map((item) => (
-          <Item key={ item.id } item={ item } />
-        )) }
-	</div>
-	</>
+        {items.map((item) => (
+          <Item key={item.id} item={item} />
+        ))}
+      </div>
+    </>
   );
 }

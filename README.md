@@ -1,7 +1,7 @@
 # 🐭️ MouseHunt Guides, Tools, and Resources - [mouse.rip](https://mouse.rip)
 
 <p>
-   <a href="https://discord.gg/Z9sxnD5reB/">
+   <a href="https://discord.gg/mousehunt">
   <img src="https://img.shields.io/badge/mousehunt-discord-blue" alt="Discord">
  </a>
  <a href="https://choosealicense.com/licenses/mit/">

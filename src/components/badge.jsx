@@ -8,12 +8,12 @@ import colors from './colors';
 export function Badge({ color = 'zinc', className, ...props }) {
   return (
     <span
-      { ...props }
-      className={ clsx(
+      {...props}
+      className={clsx(
         className,
         'inline-flex items-center gap-x-1.5 rounded-md px-1.5 py-0.5 text-sm/5 font-medium forced-colors:outline',
         colors[color]
-      ) }
+      )}
     />
   );
 }
@@ -29,16 +29,16 @@ export const BadgeButton = forwardRef(function BadgeButton(
   );
 
   return 'href' in props ? (
-    <Link { ...props } className={ classes } ref={ ref }>
+    <Link {...props} className={classes} ref={ref}>
       <TouchTarget>
-        <Badge color={ color }>{ children }</Badge>
-	</TouchTarget>
-	</Link>
+        <Badge color={color}>{children}</Badge>
+      </TouchTarget>
+    </Link>
   ) : (
-    <Headless.Button { ...props } className={ classes } ref={ ref }>
+    <Headless.Button {...props} className={classes} ref={ref}>
       <TouchTarget>
-        <Badge color={ color }>{ children }</Badge>
-	</TouchTarget>
-	</Headless.Button>
+        <Badge color={color}>{children}</Badge>
+      </TouchTarget>
+    </Headless.Button>
   );
 });
