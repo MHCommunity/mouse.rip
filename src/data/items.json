@@ -1,0 +1,192 @@
+[
+    {
+        "id": "mousehunt-improved",
+        "name": "MouseHunt Improved",
+        "description": "A collection of improvements for MouseHunt.",
+        "url": "https://github.com/MHCommunity/mousehunt-improved",
+        "source": "GitHub",
+        "category": "extension",
+        "locations": [
+            "all"
+        ],
+        "priority": 1
+    },
+    {
+        "id": "mhct-extension",
+        "name": "MHCT MouseHunt Helper",
+        "description": "Provides useful links and tracks game data for tools like catch rate calculators.",
+        "url": "https://github.com/m-h-c-t/mh-helper-extension",
+        "source": "GitHub",
+        "category": "extension",
+        "locations": [
+            "all"
+        ],
+        "priority": 3
+    },
+    {
+        "id": "mousehunt-essentials-guide",
+        "name": "MouseHunt Essentials Guide",
+        "description": "An up-to-date guide for all things MouseHunt.",
+        "url": "https://guide.mouse.rip/",
+        "source": "guide.mouse.rip",
+        "category": "guide",
+        "locations": [
+            "meadow",
+            "town-of-gnawnia",
+            "windmill",
+            "harbour",
+            "mountain",
+            "calm-clearing",
+            "great-gnarled-tree",
+            "lagoon",
+            "laboratory",
+            "mousoleum",
+            "bazaar",
+            "training-grounds",
+            "dojo",
+            "meditation-room",
+            "pinnacle-chamber",
+            "catacombs",
+            "acolyte-realm",
+            "forbidden-grove",
+            "cape-clawed",
+            "elub-shore",
+            "nerg-plains",
+            "derr-dunes",
+            "jungle-of-dread",
+            "dracano",
+            "claw-shot-city",
+            "fort-rox",
+            "fiery-warpath",
+            "muridae-market",
+            "living-garden",
+            "ss-huntington-iv",
+            "seasonal-garden",
+            "zugzwangs-tower",
+            "slushy-shoreline",
+            "iceberg",
+            "sunken-city",
+            "queso-river",
+            "prickly-plains",
+            "cantera-quarry",
+            "queso-geyser",
+            "gnawnia-rift"
+        ],
+        "priority": 2
+    },
+    {
+        "id": "minimum-luck-values",
+        "name": "Minimum Luck Values",
+        "description": "Minluck values for all mice.",
+        "url": "https://docs.google.com/spreadsheets/d/13hKjNDFTFR3rTkmQzyi3d4ZDOlQJUvTfWPDQemmFW_Y/edit#gid=824520716",
+        "source": "Google Docs",
+        "category": "spreadsheet"
+    },
+    {
+        "id": "wisdom-values",
+        "name": "Wisdom Values",
+        "description": "It's not experience, it's wisdom!",
+        "url": "https://docs.google.com/spreadsheets/d/1nzD6iiHauMMwD2eHBuAyRziYJtCVnNwSYzCKbBnrRgc/edit#gid=1426419522",
+        "source": "Google Docs",
+        "category": "spreadsheet"
+    },
+    {
+        "id": "mousehunt-crown-tracker",
+        "name": "MouseHunt Crown Tracker",
+        "description": "Silvermane's Crown Tracker Worksheet",
+        "url": "https://docs.google.com/spreadsheets/d/1Al1zqq3sYt5vDI-NJCGARDNnoswv7t99c4MaZGuoAkY/edit#gid=1010310312",
+        "source": "Google Docs",
+        "category": "spreadsheet"
+    },
+    {
+        "id": "location-specific-trap-effects",
+        "name": "Location Specific Trap Effects",
+        "description": "Effects of traps and bases that are location-specific.",
+        "url": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRg_s_It1mDCefWgwc-7Gexr5Hc7lKBztFue9kYZidI76iodSUan3BoGsagLCI1M26U_zG7uVMe9kgK/pubhtml?gid=0&single=true",
+        "source": "Google Docs",
+        "category": "spreadsheet"
+    },
+    {
+        "id": "most-mice-caught-in-a-row",
+        "name": "Most Mice Caught in a Row",
+        "description": "How many mice of the same mouse can you catch in a row?",
+        "url": "https://docs.google.com/spreadsheets/d/1AaZ7Fm_wpT_QNyvNoMLhcUdW7Z9MIJhGqlWGWAZmBjw/edit?authkey=CIT9pL4M&authkey=CIT9pL4M",
+        "source": "Google Docs",
+        "category": "spreadsheet"
+    },
+    {
+        "id": "mousehunt-item-db",
+        "name": "MouseHunt Item DB",
+        "description": "Item IDs, types, stats, and more.",
+        "url": "https://docs.google.com/spreadsheets/d/1xWFQgV3T2NOvfN_I8kvFxWHbH9i240rp2UFi2SEi6Zc/edit#gid=1624144283",
+        "source": "Google Docs",
+        "category": "spreadsheet"
+    },
+    {
+        "id": "mousehunt-community-tools",
+        "name": "MouseHunt Community Tools",
+        "description": "A collection of tools for MouseHunt.",
+        "url": "https://mhct.win/",
+        "source": "mhct.win",
+        "category": "tool"
+    },
+    {
+        "id": "catch-rate-estimator",
+        "name": "Catch Rate Estimator",
+        "description": "Calculate your catch rate, based on setup.",
+        "url": "https://tsitu.github.io/MH-Tools/cre.html",
+        "source": "tsitu.github.io",
+        "category": "tool"
+    },
+    {
+        "id": "markethunt",
+        "name": "Markethunt",
+        "description": "A tool for tracking the prices of items in the MouseHunt market.",
+        "url": "https://markethunt.win/",
+        "source": "markethunt.win",
+        "category": "tool"
+    },
+    {
+        "id": "mousehunt-api",
+        "name": "MouseHunt API",
+        "description": "An unofficial API for MouseHunt.",
+        "url": "https://api.mouse.rip/",
+        "source": "api.mouse.rip",
+        "category": "tool"
+    },
+    {
+        "id": "mouse-an-item-drops",
+        "name": "Mouse & Item Drops",
+        "description": "View what items mice drop, how likely, and how much.",
+        "url": "https://public.tableau.com/app/profile/alex.claxton/viz/MH-by-mouse-ID2/MouseDroppingsandItemDroppers",
+        "category": "tool",
+        "source": "Tableau"
+    },
+    {
+        "id": "salt-calculator",
+        "name": "Salt Calculator",
+        "description": "Calculate 'Optimal' Saltiness for King Grub.",
+        "url": "https://m-h-c-t.github.io/mh-info/calculators/salt.html",
+        "tags": [
+            "calculator"
+        ],
+        "locations": [
+            "sand-dunes"
+        ],
+        "category": "tool"
+    },
+    {
+        "id": "valour-rift-floors",
+        "name": "Valour Rift Floors",
+        "description": "Easily see what floors are coming up in your Valour Rift runs.",
+        "url": "/valour-rift-floors",
+        "category": "tool",
+        "tags": [
+            "location",
+            "calculator"
+        ],
+        "locations": [
+            "valour-rift"
+        ]
+    }
+]
