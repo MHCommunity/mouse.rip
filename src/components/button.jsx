@@ -160,10 +160,19 @@ const styles = {
 };
 
 export const Button = forwardRef(function Button({ color, outline, plain, className, children, ...props }, ref) {
+  let styleVariant;
+  if (outline) {
+    styleVariant = styles.outline;
+  } else if (plain) {
+    styleVariant = styles.plain;
+  } else {
+    styleVariant = clsx(styles.solid, styles.colors[color ?? 'dark/zinc']);
+  }
+
   const classes = clsx(
     className,
     styles.base,
-    outline ? styles.outline : plain ? styles.plain : clsx(styles.solid, styles.colors[color ?? 'dark/zinc'])
+    styleVariant
   );
 
   return 'href' in props ? (
@@ -177,9 +186,7 @@ export const Button = forwardRef(function Button({ color, outline, plain, classN
   );
 });
 
-/**
- * Expand the hit area to at least 44×44px on touch devices
- */
+
 export function TouchTarget({ children }) {
   return (
     <>

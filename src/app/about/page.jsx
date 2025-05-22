@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 import { Heading, Subheading } from '@/components/heading';
 import { Divider } from '@/components/divider';
+import { PageLink } from '@/components/page-link';
 
 export const metadata = {
   title: 'About',
@@ -12,14 +13,6 @@ export default async function About() {
     return (
       <Link href="/" className="text-pink-800 dark:text-pink-200 hover:text-pink-900 dark:hover:text-pink-300">
         mouse.rip
-      </Link>
-    );
-  };
-
-  const PageLink = ({ href, children }) => {
-    return (
-      <Link href={href} className="text-sky-600 dark:text-sky-200 hover:text-sky-700 dark:hover:text-sky-300">
-        {children}
       </Link>
     );
   };
