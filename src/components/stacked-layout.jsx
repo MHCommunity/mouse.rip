@@ -44,9 +44,9 @@ function MobileSidebar({ open, close, children }) {
           leaveFrom="translate-x-0"
           leaveTo="-translate-x-full"
         >
-          <Headless.DialogPanel className="fixed inset-y-0 w-full max-w-80 p-2 transition">
-            <div className="flex h-full flex-col rounded-lg bg-white shadow-sm ring-1 ring-zinc-950/5 dark:bg-zinc-900 dark:ring-white/10">
-              <div className="-mb-3 px-4 pt-3">
+          <Headless.DialogPanel className="fixed inset-y-0 w-full p-2 transition max-w-80">
+            <div className="flex flex-col h-full bg-white rounded-lg shadow-sm ring-1 ring-zinc-950/5 dark:bg-zinc-900 dark:ring-white/10">
+              <div className="px-4 pt-3 -mb-3">
                 <Headless.CloseButton as={NavbarItem} aria-label="Close navigation">
                   <CloseMenuIcon />
                 </Headless.CloseButton>
@@ -64,7 +64,7 @@ export function StackedLayout({ navbar, sidebar, children }) {
   const [showSidebar, setShowSidebar] = useState(false);
 
   return (
-    <div className="relative isolate flex min-h-svh w-full flex-col bg-white lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950">
+    <div className="relative flex flex-col w-full bg-white isolate min-h-svh lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950">
       {/* Sidebar on mobile */}
       <MobileSidebar open={showSidebar} close={() => setShowSidebar(false)}>
         {sidebar}
@@ -77,13 +77,13 @@ export function StackedLayout({ navbar, sidebar, children }) {
             <OpenMenuIcon />
           </NavbarItem>
         </div>
-        <div className="min-w-0 flex-1">{navbar}</div>
+        <div className="flex-1 min-w-0">{navbar}</div>
       </header>
 
       {/* Content */}
-      <main className="flex flex-1 flex-col pb-2 lg:px-2">
-        <div className="grow p-6 lg:rounded-lg lg:bg-white lg:p-10 lg:shadow-sm lg:ring-1 lg:ring-zinc-950/5 dark:lg:bg-zinc-900 dark:lg:ring-white/10">
-          <div className="mx-auto max-w-6xl">{children}</div>
+      <main className="flex flex-col flex-1 pb-2 lg:px-2">
+        <div className="p-6 grow lg:rounded-lg">
+          <div className="max-w-6xl mx-auto">{children}</div>
         </div>
       </main>
     </div>

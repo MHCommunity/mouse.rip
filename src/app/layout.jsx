@@ -5,7 +5,7 @@ import { getItems } from '@/data';
 
 export const metadata = {
   title: {
-    template: '%s - mouse.rip',
+    template: '%s | mouse.rip',
     default: 'mouse.rip',
   },
   description: '',
@@ -17,9 +17,9 @@ export default async function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className="text-zinc-950 antialiased lg:bg-zinc-100 dark:bg-zinc-900 dark:text-white dark:lg:bg-zinc-950"
+      className="antialiased text-zinc-950 bg-gradient-to-br from-blue-50 to-blue-100 dark:bg-gradient-to-br dark:from-zinc-900 dark:to-zinc-950"
     >
-      <body>
+      <body className="text-gray-800 ">
         <ApplicationLayout events={items}>{children}</ApplicationLayout>
       </body>
     </html>

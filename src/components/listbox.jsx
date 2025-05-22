@@ -50,7 +50,7 @@ export function Listbox({ className, placeholder, autoFocus, 'aria-label': ariaL
             'group-data-[disabled]:border-zinc-950/20 group-data-[disabled]:opacity-100 group-data-[disabled]:dark:border-white/15 group-data-[disabled]:dark:bg-white/[2.5%] dark:data-[hover]:group-data-[disabled]:border-white/15',
           ])}
         />
-        <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+        <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
           <svg
             className="size-5 stroke-zinc-500 group-data-[disabled]:stroke-zinc-600 sm:size-4 dark:stroke-zinc-400 forced-colors:stroke-[CanvasText]"
             viewBox="0 0 16 16"

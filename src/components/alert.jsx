@@ -27,10 +27,10 @@ export function Alert({ open, onClose, size = 'md', className, children, ...prop
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 flex w-screen justify-center overflow-y-auto bg-zinc-950/15 px-2 py-2 focus:outline-0 sm:px-6 sm:py-8 lg:px-8 lg:py-16 dark:bg-zinc-950/50" />
+          <div className="fixed inset-0 flex justify-center w-screen px-2 py-2 overflow-y-auto bg-zinc-950/15 focus:outline-0 sm:px-6 sm:py-8 lg:px-8 lg:py-16 dark:bg-zinc-950/50" />
         </Headless.TransitionChild>
 
-        <div className="fixed inset-0 w-screen overflow-y-auto pt-6 sm:pt-0">
+        <div className="fixed inset-0 w-screen pt-6 overflow-y-auto sm:pt-0">
           <div className="grid min-h-full grid-rows-[1fr_auto_1fr] justify-items-center p-8 sm:grid-rows-[1fr_auto_3fr] sm:p-4">
             <Headless.TransitionChild
               enter="ease-out duration-100"

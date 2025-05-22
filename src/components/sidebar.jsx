@@ -19,7 +19,7 @@ export function SidebarHeader({ className, ...props }) {
       {...props}
       className={clsx(
         className,
-        'flex flex-col border-b border-zinc-950/5 p-4 dark:border-white/5 [&>[data-slot=section]+[data-slot=section]]:mt-2.5'
+        'flex flex-col p-4 [&>[data-slot=section]+[data-slot=section]]:mt-2.5 border-b border-zinc-200 dark:bg-zinc-900 dark:border-zinc-800'
       )}
     />
   );

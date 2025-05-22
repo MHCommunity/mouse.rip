@@ -103,7 +103,7 @@ export function ApplicationLayout({ children }) {
                       </SidebarSmallItem>
                     ))}
                   </div>
-                  <div className="mt-4 flex-1" aria-hidden="true" />
+                  <div className="flex-1 mt-4" aria-hidden="true" />
                 </div>
               ))}
             </SidebarSection>
