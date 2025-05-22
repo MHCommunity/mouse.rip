@@ -1,9 +1,9 @@
 import { getItemsByCategory } from '@/data';
 import { Heading } from '@/components/heading';
-import { Item } from '@/components/item';
+import { ItemList } from '@/components/item-list';
 
 export const metadata = {
-  title: 'Userscripts',
+  title: 'MouseHunt User Scripts | mouse.rip',
 };
 
 export default async function Userscripts() {
@@ -11,12 +11,8 @@ export default async function Userscripts() {
 
   return (
     <>
-      <Heading>MouseHunt Userscripts</Heading>
-      <div className="relative grid md:grid-cols-2 xl:grid-cols-3 gap-5 mt-8">
-        {items.map((item) => (
-          <Item key={item.id} item={item} />
-        ))}
-      </div>
+      <Heading>MouseHunt User Scripts</Heading>
+      <ItemList items={items} />
     </>
   );
 }

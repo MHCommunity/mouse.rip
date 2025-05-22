@@ -1,26 +1,29 @@
 import { Input, InputGroup } from '@/components/input';
-import { getItems } from '@/data';
+import { getItemsWithoutUserscripts } from '@/data';
 import { Heading } from '@/components/heading';
-import { Item } from '@/components/item';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
+import { ItemList } from '@/components/item-list';
+
+export const metadata = {
+  title: 'MouseHunt Guides, Extensions, Spreadsheets, Tools, and User scripts | mouse.rip',
+};
 
 export default async function Home() {
-  const items = getItems();
+  const items = getItemsWithoutUserscripts();
 
   return (
     <>
       <Heading className="mb-5">
-        MouseHunt Guides, Extensions, Spreadsheets, Tools, and Userscripts
+        MouseHunt Guides, Extensions, Spreadsheets, Tools, and User scripts
       </Heading>
       <InputGroup>
         <MagnifyingGlassIcon />
-        <Input placeholder="Search for mice, items, locations, or more." className="flex rounded-md bg-white outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600" />
+        <Input
+          placeholder="Search for mice, items, locations, or more…"
+          className="flex bg-white rounded-md outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-pink-400"
+        />
       </InputGroup>
-      <div className="relative grid md:grid-cols-2 xl:grid-cols-3 gap-5 mt-8">
-        {items.map((item) => (
-          <Item key={item.id} item={item} />
-        ))}
-      </div>
+      <ItemList items={items} />
     </>
   );
 }

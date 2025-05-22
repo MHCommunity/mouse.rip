@@ -1,15 +1,3 @@
-function getItem(id) {
-  return (getItems()).find((item) => item.id.toString() === id);
-}
-
-function getItemsByCategory(category) {
-  return (getItems()).filter((item) => item.category === 'all' || item.category === category);
-}
-
-function getItemsByLocation(location) {
-  return (getItems()).filter((item) => item.locations?.includes('all') || item.locations?.includes(location));
-}
-
 function getItems() {
   const items = [
     {
@@ -27,6 +15,7 @@ function getItems() {
       name: 'MHCT MouseHunt Helper',
       description: 'Provides useful links and tracks game data for tools like catch rate calculators.',
       url: 'https://github.com/m-h-c-t/mh-helper-extension',
+      source: 'GitHub',
       category: 'extension',
       locations: ['all'],
       priority: 3
@@ -135,6 +124,7 @@ function getItems() {
       name: 'MouseHunt Community Tools',
       description: 'A collection of tools for MouseHunt.',
       url: 'https://mhct.win/',
+      source: 'mhct.win',
       category: 'tool'
     },
     {
@@ -142,13 +132,15 @@ function getItems() {
       name: 'Catch Rate Estimator',
       description: 'Calculate your catch rate, based on setup.',
       url: 'https://tsitu.github.io/MH-Tools/cre.html',
+      source: 'tsitu.github.io',
       category: 'tool'
     },
     {
       id: 'markethunt',
       name: 'Markethunt',
       description: 'A tool for tracking the prices of items in the MouseHunt market.',
-      url: 'https://markethunt.vsong.ca/',
+      url: 'https://markethunt.win/',
+      source: 'markethunt.win',
       category: 'tool'
     },
     {
@@ -156,6 +148,7 @@ function getItems() {
       name: 'MouseHunt API',
       description: 'An unofficial API for MouseHunt.',
       url: 'https://api.mouse.rip/',
+      source: 'api.mouse.rip',
       category: 'tool'
     },
     {
@@ -688,4 +681,20 @@ function getLocations() {
   ];
 }
 
-export { getItem, getItems, getItemsByCategory, getItemsByLocation, getLocation, getLocations };
+function getItem(id) {
+  return (getItems()).find((item) => item.id.toString() === id);
+}
+
+function getItemsByCategory(category) {
+  return (getItems()).filter((item) => item.category === 'all' || item.category === category);
+}
+
+function getItemsByLocation(location) {
+  return (getItems()).filter((item) => item.locations?.includes('all') || item.locations?.includes(location));
+}
+
+function getItemsWithoutUserscripts() {
+  return (getItems()).filter((item) => item.category !== 'userscript');
+}
+
+export { getItem, getItems, getItemsByCategory, getItemsByLocation, getItemsWithoutUserscripts, getLocation, getLocations };

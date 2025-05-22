@@ -40,15 +40,15 @@ export default function ValourRiftFloors() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="max-w-4xl mx-auto">
       <Heading>Valour Rift Floors</Heading>
 
-      <div className="relative flex items-center justify-center mt-2 mb-3 flex-col">
+      <div className="relative flex flex-col items-center justify-center mt-2 mb-3">
         <InputGroup>
           <MagnifyingGlassIcon />
           <Input
             placeholder="1, 2, 3, …"
-            className="flex rounded-md bg-white outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600"
+            className="flex bg-white rounded-md outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600"
             onFocus={() => inputRef.current?.focus()}
             onBlur={() => inputRef.current?.blur()}
             onKeyDown={(e) => {
@@ -68,8 +68,8 @@ export default function ValourRiftFloors() {
       <div className="overflow-hidden">
         <ul>
           {reorderedFloors.map((floor, index) => (
-            <li key={index} className="relative flex items-center justify-center gap-x-6 rounded-xl p-4 hover:bg-gray-100 flex-col">
-              <div className="text-xl font-semibold tracking-tight text-balance text-gray-900 sm:text-3xl">
+            <li key={index} className="relative flex flex-col items-center justify-center p-4 gap-x-6 rounded-xl hover:bg-gray-100">
+              <div className="text-xl font-semibold tracking-tight text-gray-900 text-balance sm:text-3xl">
                 {floor}
               </div>
               <div className="text-sm text-slate-500">
