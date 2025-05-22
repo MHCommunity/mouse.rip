@@ -7,7 +7,8 @@
     "export": "next build && next export",
     "start": "next start",
     "lint": "next lint",
-    "lint:fix": "next lint --fix"
+    "lint:fix": "next lint --fix",
+    "update-data": "bun ./scripts/update-data.js"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.2",
