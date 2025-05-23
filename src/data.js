@@ -38,4 +38,8 @@ function getItemsWithoutUserscripts() {
   return (getItems()).filter((item) => item.category !== 'userscript');
 }
 
-export { getItem, getItems, getItemsByCategory, getItemsByLocation, getItemsWithoutUserscripts, getLocation, getLocations };
+function getPopularItems() {
+  return (getItems()).filter((item) => item.highlight);
+}
+
+export { getItem, getItems, getItemsByCategory, getItemsByLocation, getItemsWithoutUserscripts, getLocation, getLocations, getPopularItems };

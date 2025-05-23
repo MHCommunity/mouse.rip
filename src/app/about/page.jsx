@@ -50,6 +50,10 @@ export default async function About() {
       <p className="mb-4 text-gray-700 dark:text-gray-300">
         Join us on <PageLink href="https://github.com/MHCommunity">GitHub</PageLink> or <PageLink href="https://discordapp.com/invite/Ya9zEdk">Discord</PageLink> to connect with other hunters, ask questions, share your ideas, and contribute to the community.
       </p>
+      <Divider className="my-10" />
+      <p className="text-sm text-center text-gray-500 dark:text-gray-400">
+        mouse.rip is a fan-made resource hub. Not affiliated with HitGrab.
+      </p>
     </div>
   );
 }

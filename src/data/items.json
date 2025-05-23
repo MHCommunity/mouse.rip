@@ -7,7 +7,8 @@
     "source": "GitHub",
     "category": "extension",
     "locations": ["all"],
-    "priority": 1
+    "priority": 1,
+    "highlight": true
   },
   {
     "id": "mousehunt-essentials-guide",
@@ -58,7 +59,8 @@
       "queso-geyser",
       "gnawnia-rift"
     ],
-    "priority": 2
+    "priority": 2,
+    "highlight": true
   },
   {
     "id": "mhct-extension",
@@ -67,8 +69,7 @@
     "url": "https://github.com/m-h-c-t/mh-helper-extension",
     "source": "GitHub",
     "category": "extension",
-    "locations": ["all"],
-    "priority": 3
+    "locations": ["all"]
   },
   {
     "id": "minimum-luck-values",
@@ -76,7 +77,8 @@
     "description": "Minluck values for all mice.",
     "url": "https://docs.google.com/spreadsheets/d/13hKjNDFTFR3rTkmQzyi3d4ZDOlQJUvTfWPDQemmFW_Y/edit#gid=824520716",
     "source": "Google Docs",
-    "category": "spreadsheet"
+    "category": "spreadsheet",
+    "highlight": true
   },
   {
     "id": "wisdom-values",
@@ -124,7 +126,9 @@
     "description": "A collection of tools for MouseHunt.",
     "url": "https://mhct.win/",
     "source": "mhct.win",
-    "category": "tool"
+    "category": "tool",
+    "priority": 3,
+    "highlight": true
   },
   {
     "id": "catch-rate-estimator",
@@ -132,7 +136,8 @@
     "description": "Calculate your catch rate, based on setup.",
     "url": "https://tsitu.github.io/MH-Tools/cre.html",
     "source": "tsitu.github.io",
-    "category": "tool"
+    "category": "tool",
+    "highlight": true
   },
   {
     "id": "markethunt",
@@ -140,7 +145,8 @@
     "description": "A tool for tracking the prices of items in the MouseHunt market.",
     "url": "https://markethunt.win/",
     "source": "markethunt.win",
-    "category": "tool"
+    "category": "tool",
+    "highlight": true
   },
   {
     "id": "mousehunt-api",

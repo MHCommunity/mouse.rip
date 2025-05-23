@@ -74,13 +74,13 @@ export function ApplicationLayout({ children }) {
                 <BoltIcon />
                 <SidebarLabel className="text-cyan-800 dark:text-cyan-200 hover:text-cyan-900 dark:hover:text-cyan-300">Extensions</SidebarLabel>
               </SidebarItem>
-              <SidebarItem href="/spreadsheets" current={pathname.startsWith('/spreadsheet')}>
-                <TableCellsIcon />
-                <SidebarLabel className="text-blue-800 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-300">Spreadsheets</SidebarLabel>
-              </SidebarItem>
               <SidebarItem href="/tools" current={pathname.startsWith('/tool')}>
                 <WrenchIcon />
                 <SidebarLabel className="text-green-800 dark:text-green-200 hover:text-green-900 dark:hover:text-green-300">Tools</SidebarLabel>
+              </SidebarItem>
+              <SidebarItem href="/spreadsheets" current={pathname.startsWith('/spreadsheet')}>
+                <TableCellsIcon />
+                <SidebarLabel className="text-blue-800 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-300">Spreadsheets</SidebarLabel>
               </SidebarItem>
               <SidebarItem href="/userscripts" current={pathname.startsWith('/userscript')}>
                 <SwatchIcon />
