@@ -17,9 +17,9 @@ export default async function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className="antialiased text-zinc-950 bg-gradient-to-br from-blue-50 to-blue-100 dark:bg-gradient-to-br dark:from-zinc-900 dark:to-zinc-950"
+      className="antialiased text-zinc-950 bg-gradient-to-br from-sky-50 to-sky-400 dark:bg-gradient-to-br dark:from-zinc-900 dark:to-zinc-950"
     >
-      <body className="text-gray-800 ">
+      <body className="min-h-screen flex flex-col">
         <ApplicationLayout events={items}>{children}</ApplicationLayout>
       </body>
     </html>

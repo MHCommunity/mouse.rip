@@ -5,7 +5,7 @@ import { forwardRef } from 'react';
 import { Link } from './link';
 import { TouchTarget } from './button';
 
-export function Avatar({ src = null, square = false, initials, alt = '', className, ...props }) {
+export function Avatar({ src = null, square = false, initials, alt = '', icon, className, ...props }) {
   return (
     <span
       data-slot="avatar"
@@ -19,7 +19,12 @@ export function Avatar({ src = null, square = false, initials, alt = '', classNa
         square ? 'rounded-[--avatar-radius] *:rounded-[--avatar-radius]' : 'rounded-full *:rounded-full'
       )}
     >
-      {initials && (
+      {icon && (
+        <span className="size-full flex items-center justify-center text-[48px]">
+          {icon}
+        </span>
+      )}
+      {! icon && initials && (
         <svg
           className="size-full select-none fill-current p-[5%] text-[48px] font-medium uppercase"
           viewBox="0 0 100 100"

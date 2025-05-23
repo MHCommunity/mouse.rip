@@ -14,7 +14,7 @@ export function Badge({ color = 'zinc', className, ...props }) {
       className={clsx(
         className,
         'inline-flex items-center gap-x-1.5 rounded-md px-1.5 py-0.5 text-sm/5 font-medium forced-colors:outline',
-        colors[color]
+        colors[`${color}Badge`]
       )}
     />
   );

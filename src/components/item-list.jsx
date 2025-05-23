@@ -4,7 +4,7 @@ export function ItemList({ items, ...props }) {
   return (
     <div className="relative grid gap-5 mt-8 md:grid-cols-2 xl:grid-cols-3" {...props}>
       {items.map((item) => (
-        <Item key={item.id} item={item} />
+        <Item key={item.id} item={item} showtags={props.showtags ? 'true' : 'false'} />
       ))}
     </div>
   );

@@ -23,9 +23,6 @@ export default async function About() {
 
       <Divider className="my-10 mt-6" />
 
-      <Subheading className="mt-6 mb-3">
-        Our mission
-      </Subheading>
       <p className="mb-4 text-gray-700 dark:text-gray-300">
         Welcome to <MouseRipLink />. We are here to provide you with the tools, guides, and information you need to become a successful hunter and navigate the world of Gnawnia.
       </p>
@@ -46,7 +43,7 @@ export default async function About() {
           <PageLink href="/tools">Tools</PageLink> - Various tools to assist with calculations, information lookup, simulations, and more.
         </li>
         <li className="my-2">
-          <PageLink href="/userscripts">User scripts</PageLink> - Custom scripts to customize your MouseHunt interface and enhance the user experience.
+          <PageLink href="/userscripts">Userscripts</PageLink> - Custom scripts to customize your MouseHunt interface and enhance the user experience.
         </li>
       </ul>
       <Subheading className="mt-6 mb-3">Connect with Us</Subheading>

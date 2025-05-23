@@ -3,14 +3,15 @@ import { notFound } from 'next/navigation';
 import { getItemsByLocation, getLocation, getLocations } from '@/data';
 import { Heading } from '@/components/heading';
 import { ItemList } from '@/components/item-list';
+import { Avatar } from '@/components/avatar';
 
 let location;
 
 export async function generateMetadata({ params }) {
-  location = location || await getLocation(params.id);
+  location = getLocation(params.id);
 
   return {
-    title: `MouseHunt Guides, Extensions, Spreadsheets, Tools, and User scripts for ${location.name} | mouse.rip`,
+    title: `MouseHunt Resources for ${location.article ? location.article : location.name} | mouse.rip`,
   };
 }
 
@@ -32,7 +33,7 @@ export function generateStaticParams() {
 }
 
 export default async function Location({ params }) {
-  location = location || await getLocation(params.id);
+  location = getLocation(params.id);
   const items = await getItemsByLocation(params.id);
 
   if (! location || ! items) {
@@ -41,7 +42,16 @@ export default async function Location({ params }) {
 
   return (
     <>
-      <Heading>MouseHunt Guides, Extensions, Spreadsheets, Tools, and User scripts for {location.name}</Heading>
+      <Heading>
+        <Avatar
+          src={location.image}
+          alt={location.name}
+          width={32}
+          height={32}
+          className="mr-2"
+        />
+        MouseHunt Resources for {location.article ? location.article : location.name}
+      </Heading>
       <ItemList items={items} />
     </>
   );

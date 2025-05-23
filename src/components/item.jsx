@@ -12,7 +12,7 @@ export function Item({ item, ...props }) {
   return (
     <div
       className={clsx(
-        'text-sm font-medium text-gray-700 border border-gray-400/50 rounded-md shadow-sm hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700',
+        'text-sm font-medium text-gray-700 border border-gray-400/50 rounded-md shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700',
         colors[item.category]
       )}
       {...props}
@@ -26,10 +26,10 @@ export function Item({ item, ...props }) {
             {item.name}
           </h1>
         </a>
-        <div className="text-gray-700 dark:text-gray-300">
+        <div className="text-gray-700 dark:text-zinc-200">
           {item.description}
         </div>
-        {item.tags && (
+        {item.tags && props.showtags && (
           <div className="flex flex-wrap items-end gap-x-2">
             {item.tags.map((tag) => (
               <Badge key={tag} id={tag} color="zinc">

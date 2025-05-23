@@ -5,7 +5,7 @@ import { Heading } from '@/components/heading';
 import { ItemList } from '@/components/item-list';
 
 export const metadata = {
-  title: 'MouseHunt Guides, Extensions, Spreadsheets, Tools, and User scripts | mouse.rip',
+  title: 'MouseHunt Guides, Extensions, Spreadsheets, Tools, and Userscripts | mouse.rip',
 };
 
 export default async function Home() {
@@ -14,7 +14,7 @@ export default async function Home() {
   return (
     <>
       <Heading className="mb-5">
-        MouseHunt Guides, Extensions, Spreadsheets, Tools, and User scripts
+        MouseHunt Guides, Extensions, Spreadsheets, Tools, and Userscripts
       </Heading>
       {/* <InputGroup>
         <MagnifyingGlassIcon />

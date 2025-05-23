@@ -5,11 +5,10 @@ import userscriptsData from '../src/data/userscripts.json';
 
 /* eslint-disable no-console */
 const updateUserScripts = async () => {
-  console.log(`Updating ${userscriptsData.length} user scripts...`);
+  console.log(`Updating ${userscriptsData.length} userscripts...`);
 
   const userscripts = userscriptsData;
 
-  let count = 0;
   for (const script of userscripts) {
     if (! script.url.includes('https://greasyfork.org/en/scripts/')) {
       return;
@@ -102,11 +101,9 @@ const updateUserScripts = async () => {
 
     const filePath = path.join(__dirname, '../src/data/userscripts.json');
     fs.writeFileSync(filePath, JSON.stringify(userscripts, null, 2), 'utf-8');
-
-    console.log(`${scriptJson.name}: ${installsLastMonth} last month, ${installsLast3Months} last 3 months, ${estimatedActiveUsers} active users. [${count++}/${userscripts.length}]`);
   }
 
-  console.log(`Updated ${userscripts.length} user scripts.`);
+  console.log(`Updated ${userscripts.length} userscripts.`);
 };
 
 /* eslint-enable no-console */

@@ -11,7 +11,7 @@ export async function generateMetadata({ params }) {
   const item = await getItem(id);
 
   return {
-    title: `${item.name} User script for MouseHunt | mouse.rip`,
+    title: `${item.name} Userscript for MouseHunt | mouse.rip`,
     description: item.description,
   };
 }
@@ -88,7 +88,7 @@ export default async function Userscript({ params }) {
       {item.tags && item.tags.length > 0 && (
         <div className="flex flex-wrap gap-2 mt-2">
           {item.tags.map((tag) => (
-            <Badge key={tag} id={tag} color="zinc">
+            <Badge key={tag} id={tag} color="userscript">
               {tag}
             </Badge>
           ))}
@@ -98,10 +98,10 @@ export default async function Userscript({ params }) {
       {/* How to Use Section */}
       <div className="p-6 mt-8 border border-gray-200 rounded-lg shadow-sm bg-gray-50 text-sm/6 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300">
         <h2 className="mb-2 text-2xl font-semibold text-gray-900 dark:text-gray-100">
-          How to use User scripts for MouseHunt
+          How to use Userscripts for MouseHunt
         </h2>
         <p className="mb-4 text-gray-700 dark:text-gray-300">
-          User scripts are small pieces of code that can be installed in your browser to modify the behavior of websites. They can be used to add new features, fix bugs, or update styles on websites like MouseHunt. If you want to use this user script, follow these steps:
+          Userscripts are small pieces of code that can be installed in your browser to modify the behavior of websites. They can be used to add new features, fix bugs, or update styles on websites like MouseHunt. If you want to use this userscript, follow these steps:
         </p>
         <ol className="ml-4 space-y-2 text-gray-700 list-decimal list-inside dark:text-gray-300">
           <li>
@@ -122,7 +122,7 @@ export default async function Userscript({ params }) {
             Click the <strong>Install this script</strong> button above.
           </li>
           <li>
-            Follow the prompts to install the user script.
+            Follow the prompts to install the userscript.
           </li>
           <li>
             Refresh the page to see the changes.

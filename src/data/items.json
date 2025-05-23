@@ -12,18 +12,6 @@
         "priority": 1
     },
     {
-        "id": "mhct-extension",
-        "name": "MHCT MouseHunt Helper",
-        "description": "Provides useful links and tracks game data for tools like catch rate calculators.",
-        "url": "https://github.com/m-h-c-t/mh-helper-extension",
-        "source": "GitHub",
-        "category": "extension",
-        "locations": [
-            "all"
-        ],
-        "priority": 3
-    },
-    {
         "id": "mousehunt-essentials-guide",
         "name": "MouseHunt Essentials Guide",
         "description": "An up-to-date guide for all things MouseHunt.",
@@ -73,6 +61,18 @@
             "gnawnia-rift"
         ],
         "priority": 2
+    },
+        {
+        "id": "mhct-extension",
+        "name": "MHCT MouseHunt Helper",
+        "description": "Provides useful links and tracks game data for tools like catch rate calculators.",
+        "url": "https://github.com/m-h-c-t/mh-helper-extension",
+        "source": "GitHub",
+        "category": "extension",
+        "locations": [
+            "all"
+        ],
+        "priority": 3
     },
     {
         "id": "minimum-luck-values",

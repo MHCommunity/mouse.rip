@@ -1,15 +1,21 @@
 import items from './data/items.json';
 import userscripts from './data/userscripts.json';
 import locations from './data/locations.json';
+import environments from './data/environments.json';
 
 function getItems() {
   return [...items, ...userscripts];
 }
 
-async function getLocation(id) {
-  return (await getLocations()).find((location) =>
-    location.locations.some((innerLocation) => innerLocation.id === id)
-  );
+function getLocation(id) {
+  for (const region of locations) {
+    const found = region.locations.find((location) => location.id.toString() === id);
+    if (found) {
+      return environments.find((env) => env.name === found.name) || found;
+    }
+  }
+
+  return undefined;
 }
 
 function getLocations() {
