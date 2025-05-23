@@ -11,7 +11,7 @@ const colors = {
   cyan: 'bg-cyan-400 text-cyan-700 hover:bg-cyan-200 dark:bg-cyan-800 dark:text-cyan-300 dark:hover:bg-cyan-700',
   cyanBadge: 'bg-cyan-200 text-cyan-700 dark:bg-cyan-700 dark:text-cyan-400',
   sky: 'bg-sky-500 text-sky-700 hover:bg-sky-500 dark:bg-sky-500 dark:text-sky-300 dark:hover:bg-sky-500',
-  blue: 'bg-blue-400 text-blue-700 hover:bg-blue-300 dark:bg-blue-800 dark:text-blue-400 dark:hover:bg-blue-700',
+  blue: 'bg-blue-300 text-blue-900 hover:bg-blue-300 dark:bg-blue-800 dark:text-blue-400 dark:hover:bg-blue-700',
   blueBadge: 'bg-blue-200 text-blue-700 dark:bg-blue-700 dark:text-blue-300',
   indigo: 'bg-indigo-500 text-indigo-700 hover:bg-indigo-500 dark:text-indigo-400 dark:hover:bg-indigo-500',
   violet: 'bg-violet-500 text-violet-700 hover:bg-violet-500 dark:bg-violet-500 dark:text-violet-400 dark:hover:bg-violet-500',

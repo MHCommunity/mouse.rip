@@ -22,7 +22,7 @@ export default function ValourRiftFloors() {
   const inputRef = useRef(null);
 
   const reorderFloors = (floorNum) => {
-    if (! floorNum || isNaN(floorNum) || floorNum < 1) {
+    if (!floorNum || isNaN(floorNum) || floorNum < 1) {
       setReorderedFloors(FLOOR_ORDER);
       return;
     }
@@ -44,12 +44,11 @@ export default function ValourRiftFloors() {
       <Heading>Valour Rift Floors</Heading>
       <div className="relative flex flex-col items-center justify-center mt-2 mb-3">
         <InputGroup>
-          <MagnifyingGlassIcon />
           <Input
             id="floor-search"
             type="number"
             placeholder="1, 2, 3, …"
-            className="flex p-6 bg-white rounded-md outline outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 dark:bg-gray-800 dark:outline-gray-700 dark:focus:outline-indigo-500"
+            className="flex bg-white rounded-md outline outline-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 dark:bg-gray-800 dark:outline-gray-700 dark:focus:outline-indigo-500"
             ref={inputRef}
             onChange={handleInputChange}
             value={currentFloor}
@@ -57,10 +56,10 @@ export default function ValourRiftFloors() {
             pattern="[0-9]*"
             aria-label="Floor number"
           />
+          <label htmlFor="floor-search" className="block mt-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+            Enter a floor number to reorder the list.
+          </label>
         </InputGroup>
-        <label htmlFor="floor-search" className="block mt-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-          Enter a floor number to reorder the list.
-        </label>
       </div>
       <div className="overflow-hidden">
         <ul>
