@@ -23,12 +23,16 @@ export default async function About() {
 
       <Divider className="my-10 mt-6" />
 
-      <Subheading className="mt-6 mb-3">Our mission</Subheading>
-      <p className="mb-4">
+      <Subheading className="mt-6 mb-3">
+        Our mission
+      </Subheading>
+      <p className="mb-4 text-gray-700 dark:text-gray-300">
         Welcome to <MouseRipLink />. We are here to provide you with the tools, guides, and information you need to become a successful hunter and navigate the world of Gnawnia.
       </p>
-      <Subheading className="mt-6 mb-3">Our Features</Subheading>
-      <ul className="mb-4 list-disc list-inside">
+      <Subheading className="mt-6 mb-3">
+        Our Features
+        </Subheading>
+      <ul className="mb-4 list-disc list-inside text-gray-700 dark:text-gray-300">
         <li className="my-2">
           <PageLink href="/guides">Guides</PageLink> - Detailed guides covering all aspects of MouseHunt, from beginner tips to advanced strategies.
         </li>
@@ -46,15 +50,8 @@ export default async function About() {
         </li>
       </ul>
       <Subheading className="mt-6 mb-3">Connect with Us</Subheading>
-      <p className="mb-4">
+      <p className="mb-4 text-gray-700 dark:text-gray-300">
         Join us on <PageLink href="https://github.com/MHCommunity">GitHub</PageLink> or <PageLink href="https://discordapp.com/invite/Ya9zEdk">Discord</PageLink> to connect with other hunters, ask questions, share your ideas, and contribute to the community.
-      </p>
-      <Subheading className="mt-6 mb-3">Support Us</Subheading>
-      <p className="mb-4">
-        <MouseRipLink /> is maintained by a dedicated team of volunteers. If you find our resources helpful and would like to support us, please consider contributing to our development or making a donation. Your support helps us keep the site running and continuously improve our offerings.
-      </p>
-      <p className="mb-4">
-        Thank you for visiting <MouseRipLink />. Happy hunting!
       </p>
     </div>
   );

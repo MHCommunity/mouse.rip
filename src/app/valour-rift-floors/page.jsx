@@ -1,79 +1,79 @@
 'use client';
 
 import { useRef, useState } from 'react';
-
 import { Input, InputGroup } from '@/components/input';
 import { Divider } from '@/components/divider';
 import { Heading } from '@/components/heading';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 
-export default function ValourRiftFloors() {
-  const orderUpcomingFloors = [
-    'Puppetry', // Floor 1, 9, 17...
-    'Thievery', // Floor 2, 10, 18...
-    'Melee', // Floor 3, 11, 19...
-    'Bard', // Floor 4, 12, 20...
-    'Magic', // Floor 5, 13, 21...
-    'Noble', // Floor 6, 14, 22...
-    'Dusty', // Floor 7, 15, 23...
-    'Eclipse', // Floor 8, 16, 24...
-  ];
+const FLOOR_ORDER = [
+  { name: 'Puppetry', floors: [1, 9, 17] },
+  { name: 'Thievery', floors: [2, 10, 18] },
+  { name: 'Melee', floors: [3, 11, 19] },
+  { name: 'Bard', floors: [4, 12, 20] },
+  { name: 'Magic', floors: [5, 13, 21] },
+  { name: 'Noble', floors: [6, 14, 22] },
+  { name: 'Dusty', floors: [7, 15, 23] },
+  { name: 'Eclipse', floors: [8, 16, 24] },
+];
 
+export default function ValourRiftFloors() {
   const [currentFloor, setCurrentFloor] = useState('');
-  const [reorderedFloors, setReorderedFloors] = useState(orderUpcomingFloors);
+  const [reorderedFloors, setReorderedFloors] = useState(FLOOR_ORDER);
   const inputRef = useRef(null);
 
-  const handleInputChange = (e) => {
-    const input = parseInt(e.target.value, 10);
-    setCurrentFloor(e.target.value);
-
-    if (! isNaN(input) && input > 0) {
-      const index = (input - 1) % orderUpcomingFloors.length;
-      const reordered = [
-        ...orderUpcomingFloors.slice(index),
-        ...orderUpcomingFloors.slice(0, index),
-      ];
-      setReorderedFloors(reordered);
-    } else {
-      setReorderedFloors(orderUpcomingFloors);
+  const reorderFloors = (floorNum) => {
+    if (!floorNum || isNaN(floorNum) || floorNum < 1) {
+      setReorderedFloors(FLOOR_ORDER);
+      return;
     }
+    const index = (floorNum - 1) % FLOOR_ORDER.length;
+    setReorderedFloors([
+      ...FLOOR_ORDER.slice(index),
+      ...FLOOR_ORDER.slice(0, index),
+    ]);
+  };
+
+  const handleInputChange = (e) => {
+    const value = e.target.value.replace(/\D/g, ''); // Only digits
+    setCurrentFloor(value);
+    reorderFloors(Number(value));
   };
 
   return (
     <div className="max-w-4xl mx-auto">
       <Heading>Valour Rift Floors</Heading>
-
       <div className="relative flex flex-col items-center justify-center mt-2 mb-3">
         <InputGroup>
           <MagnifyingGlassIcon />
           <Input
+            id="floor-search"
             placeholder="1, 2, 3, …"
-            className="flex bg-white rounded-md outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600"
-            onFocus={() => inputRef.current?.focus()}
-            onBlur={() => inputRef.current?.blur()}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleInputChange(e);
-              }
-            }}
+            className="flex bg-white rounded-md outline outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 dark:bg-gray-800 dark:outline-gray-700 dark:focus:outline-indigo-500"
             ref={inputRef}
             onChange={handleInputChange}
             value={currentFloor}
+            inputMode="numeric"
+            pattern="[0-9]*"
+            aria-label="Floor number"
           />
-          <label htmlFor="search" className="block text-sm font-medium text-gray-700">
-            Enter a floor number to reorder the list.
-          </label>
         </InputGroup>
+        <label htmlFor="floor-search" className="block mt-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+          Enter a floor number to reorder the list.
+        </label>
       </div>
       <div className="overflow-hidden">
         <ul>
           {reorderedFloors.map((floor, index) => (
-            <li key={index} className="relative flex flex-col items-center justify-center p-4 gap-x-6 rounded-xl hover:bg-gray-100">
-              <div className="text-xl font-semibold tracking-tight text-gray-900 text-balance sm:text-3xl">
-                {floor}
+            <li
+              key={floor.name}
+              className="relative flex flex-col items-center justify-center p-4 gap-x-6 rounded-xl"
+            >
+              <div className="text-xl font-semibold tracking-tight text-gray-900 text-balance sm:text-3xl dark:text-gray-100">
+                {floor.name}
               </div>
-              <div className="text-sm text-slate-500">
-                Floors {index + 1}, {index + 9}, {index + 17}
+              <div className="text-sm text-slate-500 dark:text-slate-400">
+                Floors: {floor.floors.join(', ')}
               </div>
             </li>
           ))}
