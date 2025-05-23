@@ -5,11 +5,7 @@
     "description": "View the minluck and catch rate estimate, right on the camp page.",
     "url": "https://greasyfork.org/en/scripts/449334-mousehunt-minluck-catch-rate-estimate",
     "category": "userscript",
-    "tags": [
-      "hunting",
-      "catch-rate",
-      "minluck"
-    ],
+    "tags": ["hunting", "catch-rate", "minluck"],
     "source": "GreasyFork",
     "data": {
       "name": "🐭️ MouseHunt - Minluck & Catch Rate Estimate",
@@ -35,10 +31,7 @@
     "description": "Shows hunt statistics on the camp page.",
     "url": "https://greasyfork.org/en/scripts/447193-mh-minluck-cre-tool-v2-0-new",
     "category": "userscript",
-    "tags": [
-      "stats",
-      "hunting"
-    ],
+    "tags": ["stats", "hunting"],
     "source": "GreasyFork",
     "data": {
       "name": "MH - Minluck & CRE tool v2.0 (new)",
@@ -64,10 +57,7 @@
     "description": "Adds a price chart and Markethunt integration to the MH marketplace screen.",
     "url": "https://greasyfork.org/en/scripts/441382-markethunt-plugin-for-mousehunt",
     "category": "userscript",
-    "tags": [
-      "items",
-      "marketplace"
-    ],
+    "tags": ["items", "marketplace"],
     "source": "GreasyFork",
     "data": {
       "name": "Markethunt plugin for Mousehunt",
@@ -93,10 +83,7 @@
     "name": "Snowball Showdown Helper",
     "description": "Tool to help with Snowball Showdown puzzle boards.",
     "category": "userscript",
-    "tags": [
-      "event",
-      "gwh"
-    ],
+    "tags": ["event", "gwh"],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - Snowball Showdown Helper",
@@ -122,10 +109,7 @@
     "description": "Make the Spring Egg Hunt / Eggscavator interface better.",
     "url": "https://greasyfork.org/en/scripts/462034-mousehunt-spring-egg-hunt-helper",
     "category": "userscript",
-    "tags": [
-      "event",
-      "seh"
-    ],
+    "tags": ["event", "seh"],
     "source": "GreasyFork",
     "data": {
       "name": "🐭️ MouseHunt - Spring Egg Hunt Helper",
@@ -151,10 +135,7 @@
     "description": "Tool to help with SEH Eggsweeper puzzle boards.",
     "url": "https://greasyfork.org/en/scripts/381797-mousehunt-eggsweeper-helper",
     "category": "userscript",
-    "tags": [
-      "event",
-      "seh"
-    ],
+    "tags": ["event", "seh"],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - Eggsweeper Helper",
@@ -180,10 +161,7 @@
     "description": "Play Spooky Shuffle more easily.",
     "url": "https://greasyfork.org/en/scripts/453305-mousehunt-better-spooky-shuffle-tracker",
     "category": "userscript",
-    "tags": [
-      "event",
-      "halloween"
-    ],
+    "tags": ["event", "halloween"],
     "source": "GreasyFork",
     "data": {
       "name": "🐭️ MouseHunt - Better Spooky Shuffle Tracker",
@@ -209,9 +187,7 @@
     "description": "Displays your wisdom stats in the HUD.",
     "url": "https://greasyfork.org/en/scripts/381219-mousehunt-wisdom-stats",
     "category": "userscript",
-    "tags": [
-      "stats"
-    ],
+    "tags": ["stats"],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - Wisdom Stats",
@@ -237,10 +213,7 @@
     "name": "Rank-up Forecaster",
     "description": "Records wisdom data over time and predict rank-ups.",
     "category": "userscript",
-    "tags": [
-      "stats",
-      "wisdom"
-    ],
+    "tags": ["stats", "wisdom"],
     "data": {
       "name": "MH - Rank-up Forecaster (v2.0)",
       "description": "Records wisdom data over time and predict rank-ups!",
@@ -265,9 +238,7 @@
     "description": "See the timers for all locations in one place.",
     "url": "https://greasyfork.org/en/scripts/388058-mh-timers",
     "category": "userscript",
-    "tags": [
-      "quality-of-life"
-    ],
+    "tags": ["quality-of-life"],
     "source": "GreasyFork",
     "data": {
       "name": "MH Timers+",
@@ -293,9 +264,7 @@
     "description": "Community requested features for the tabs on your MH profile.",
     "url": "https://greasyfork.org/en/scripts/381389-mh-profile",
     "category": "userscript",
-    "tags": [
-      "quality-of-life"
-    ],
+    "tags": ["quality-of-life"],
     "source": "GreasyFork",
     "data": {
       "name": "MH: Profile+",
@@ -321,9 +290,7 @@
     "description": "Tweaks and improves the Marketplace UI.",
     "url": "https://greasyfork.org/en/scripts/378990-mousehunt-marketplace-ui-tweaks",
     "category": "userscript",
-    "tags": [
-      "quality-of-life"
-    ],
+    "tags": ["quality-of-life"],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - Marketplace UI Tweaks",
@@ -349,10 +316,7 @@
     "description": "Automatically converts \"Begins in:\" to your local time as well as adding the end time for tournaments.",
     "url": "https://greasyfork.org/en/scripts/37146-mousehunt-tournament-time-helper",
     "category": "userscript",
-    "tags": [
-      "quality-of-life",
-      "ui"
-    ],
+    "tags": ["quality-of-life", "ui"],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - Tournament Time Helper",
@@ -378,9 +342,7 @@
     "description": "Miscellaneous utilities to turbo-charge your MH experience.",
     "url": "https://greasyfork.org/en/scripts/405334-mousehunt-qol-utilities",
     "category": "userscript",
-    "tags": [
-      "quality-of-life"
-    ],
+    "tags": ["quality-of-life"],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - QoL Utilities",
@@ -406,9 +368,7 @@
     "name": "Better Gifts / Gift Buttons",
     "description": "Adds buttons to easily accept and return all daily gifts.",
     "category": "userscript",
-    "tags": [
-      "quality-of-life"
-    ],
+    "tags": ["quality-of-life"],
     "data": {
       "name": "🐭️ MouseHunt - Better Gifts / Gift Buttons",
       "description": "Adds buttons to easily accept and return all daily gifts.",
@@ -433,9 +393,7 @@
     "description": "ds buttons to easily accept and return all daily gifts.",
     "url": "https://greasyfork.org/en/scripts/376572-mousehunt-gifting-buttons",
     "category": "userscript",
-    "tags": [
-      "quality-of-life"
-    ],
+    "tags": ["quality-of-life"],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - Gifting Buttons",
@@ -461,9 +419,7 @@
     "description": "Adds a search bar to make sending supplies easier.",
     "url": "https://greasyfork.org/en/scripts/396714-mousehunt-send-supplies-search-bar",
     "category": "userscript",
-    "tags": [
-      "quality-of-life"
-    ],
+    "tags": ["quality-of-life"],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - Send Supplies Search Bar",
@@ -489,9 +445,7 @@
     "description": "Improve the search logic of search bars in the game.",
     "url": "https://greasyfork.org/en/scripts/446436-mousehunt-enhanced-search-beta",
     "category": "userscript",
-    "tags": [
-      "quality-of-life"
-    ],
+    "tags": ["quality-of-life"],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt Enhanced Search (Beta)",
@@ -517,9 +471,7 @@
     "description": "Adds catch/crown statistics next to mouse names on the TEM.",
     "url": "https://greasyfork.org/en/scripts/376770-mousehunt-tem-catch-stats",
     "category": "userscript",
-    "tags": [
-      "stats"
-    ],
+    "tags": ["stats"],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - TEM Catch Stats",
@@ -545,9 +497,7 @@
     "description": "Adds the ability to one click travel to the next M400 assigment location.",
     "url": "https://greasyfork.org/en/scripts/429044-mh-m400-hunting-helper",
     "category": "userscript",
-    "tags": [
-      "quality-of-life"
-    ],
+    "tags": ["quality-of-life"],
     "source": "GreasyFork",
     "data": {
       "name": "MH: M400 Hunting Helper",
@@ -573,9 +523,7 @@
     "description": "Colour code your maps.",
     "url": "https://greasyfork.org/en/scripts/428959-mh-consolidated-map-colour-coder",
     "category": "userscript",
-    "tags": [
-      "maps"
-    ],
+    "tags": ["maps"],
     "source": "GreasyFork",
     "data": {
       "name": "MH - Consolidated Map Colour Coder",
@@ -601,9 +549,7 @@
     "description": "Adds map improvements, such as invite via Hunter ID, and directly send SB+.",
     "url": "https://greasyfork.org/en/scripts/384275-mousehunt-mapping-helper",
     "category": "userscript",
-    "tags": [
-      "quality-of-life"
-    ],
+    "tags": ["quality-of-life"],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - Mapping Helper",
@@ -629,10 +575,7 @@
     "description": "Helps you return tradables from a chest.",
     "url": "https://greasyfork.org/en/scripts/452655-flrt-tool",
     "category": "userscript",
-    "tags": [
-      "quality-of-life",
-      "maps"
-    ],
+    "tags": ["quality-of-life", "maps"],
     "source": "GreasyFork",
     "data": {
       "name": "MH - FLRT Tool",
@@ -658,13 +601,8 @@
     "description": "Calculates the best island to go to.",
     "url": "https://greasyfork.org/en/scripts/411180-mousehunt-floting-islands-priority-calculator",
     "category": "userscript",
-    "tags": [
-      "location",
-      "calculator"
-    ],
-    "locations": [
-      "floating-islands"
-    ],
+    "tags": ["location", "calculator"],
+    "locations": ["floating-islands"],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - Floting Islands Priority Calculator",
@@ -690,13 +628,8 @@
     "description": "Quick travel buttons for the Living Garden area locations.",
     "url": "https://greasyfork.org/en/scripts/407059-mh-living-garden-hud-enhancer",
     "category": "userscript",
-    "tags": [
-      "location",
-      "travel"
-    ],
-    "locations": [
-      "living-garden"
-    ],
+    "tags": ["location", "travel"],
+    "locations": ["living-garden"],
     "source": "GreasyFork",
     "data": {
       "name": "MH: Living Garden HUD Enhancer",
@@ -722,13 +655,8 @@
     "description": "Keeps track of remaining wave mice to help you manage the wave.",
     "url": "https://greasyfork.org/en/scripts/390221-mh-warpath-wave-calculator",
     "category": "userscript",
-    "tags": [
-      "location",
-      "calculator"
-    ],
-    "locations": [
-      "fiery-warpath"
-    ],
+    "tags": ["location", "calculator"],
+    "locations": ["fiery-warpath"],
     "source": "GreasyFork",
     "data": {
       "name": "MH: Warpath Wave Calculator",
@@ -754,13 +682,8 @@
     "description": "Helps you check if you have failed a Deep Run.",
     "url": "https://greasyfork.org/en/scripts/380861-mousehunt-deep-run-assistant",
     "category": "userscript",
-    "tags": [
-      "location",
-      "quality-of-life"
-    ],
-    "locations": [
-      "iceberg"
-    ],
+    "tags": ["location", "quality-of-life"],
+    "locations": ["iceberg"],
     "source": "GreasyFork",
     "data": {
       "name": "Mousehunt Deep Run Assistant",
@@ -786,10 +709,7 @@
     "description": "Counts the number of unique loot you have in your daily hunting log.",
     "url": "https://greasyfork.org/en/scripts/381058-mousehunt-seh-loot-counter-for-hunting-log",
     "category": "userscript",
-    "tags": [
-      "event",
-      "seh"
-    ],
+    "tags": ["event", "seh"],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - SEH Loot Counter for Hunting Log",
@@ -815,10 +735,7 @@
     "name": "Halloween Brew Helper",
     "description": "Convenient buttons to help you instantly brew Evil Extract.",
     "category": "userscript",
-    "tags": [
-      "event",
-      "halloween"
-    ],
+    "tags": ["event", "halloween"],
     "data": {
       "name": "MH: Halloween Brew Helper",
       "description": "Convenient buttons to help you instantly brew Evil Extract.",
@@ -843,9 +760,7 @@
     "description": "Adds an open \"all but one\" button to your convertibles you have multiple of.",
     "url": "https://greasyfork.org/en/scripts/382479-mousehunt-open-all-but-one-kits-spring-eggs",
     "category": "userscript",
-    "tags": [
-      "quality-of-life"
-    ],
+    "tags": ["quality-of-life"],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - Open \"All but One\" Kits/Spring Eggs",
@@ -871,10 +786,7 @@
     "description": "Adds a toggle button at top of journal to blur out names in journal entries. For privacy-conscious screenshots.",
     "url": "https://greasyfork.org/en/scripts/445553-mh-censor-journal-names",
     "category": "userscript",
-    "tags": [
-      "ui",
-      "journal"
-    ],
+    "tags": ["ui", "journal"],
     "source": "GreasyFork",
     "data": {
       "name": "MH - Censor Journal Names",
@@ -900,9 +812,7 @@
     "description": "Turn any trap or skin you own, into a skin for your current setup.",
     "url": "https://greasyfork.org/en/scripts/484756-mh-anytrapanyskin",
     "category": "userscript",
-    "tags": [
-      "fun"
-    ],
+    "tags": ["fun"],
     "source": "GreasyFork",
     "data": {
       "name": "MH - AnyTrapAnySkin",
