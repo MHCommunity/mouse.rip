@@ -103,7 +103,7 @@ export function ApplicationLayout({ children }) {
                         current={pathname === `/locations/${location.id}`}
                         className="text-xs font-semibold text-gray-400 rounded-md hover:text-white hover:bg-gray-800"
                       >
-                        <Avatar slot="icon" src={`/locations/${location.id}.png`} alt={location.name} square />
+                        <Avatar slot="icon" src={`/images/locations/${location.id}.png`} alt={location.name} square />
                         {location.name}
                       </SidebarSmallItem>
                     ))}

@@ -48,6 +48,7 @@ export default async function Location({ params }) {
           alt={location.name}
           width={32}
           height={32}
+          square
           className="mr-2"
         />
         MouseHunt Resources for {location.article ? location.article : location.name}
