@@ -31,7 +31,7 @@ export default async function About() {
       </p>
       <Subheading className="mt-6 mb-3">
         Our Features
-        </Subheading>
+      </Subheading>
       <ul className="mb-4 list-disc list-inside text-gray-700 dark:text-gray-300">
         <li className="my-2">
           <PageLink href="/guides">Guides</PageLink> - Detailed guides covering all aspects of MouseHunt, from beginner tips to advanced strategies.

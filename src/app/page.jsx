@@ -1,7 +1,7 @@
-import { Input, InputGroup } from '@/components/input';
+// import { Input, InputGroup } from '@/components/input';
 import { getItemsWithoutUserscripts } from '@/data';
 import { Heading } from '@/components/heading';
-import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
+// import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import { ItemList } from '@/components/item-list';
 
 export const metadata = {

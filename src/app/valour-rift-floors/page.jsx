@@ -23,7 +23,7 @@ export default function ValourRiftFloors() {
   const inputRef = useRef(null);
 
   const reorderFloors = (floorNum) => {
-    if (!floorNum || isNaN(floorNum) || floorNum < 1) {
+    if (! floorNum || isNaN(floorNum) || floorNum < 1) {
       setReorderedFloors(FLOOR_ORDER);
       return;
     }
@@ -65,7 +65,7 @@ export default function ValourRiftFloors() {
       </div>
       <div className="overflow-hidden">
         <ul>
-          {reorderedFloors.map((floor, index) => (
+          {reorderedFloors.map((floor) => (
             <li
               key={floor.name}
               className="relative flex flex-col items-center justify-center p-4 gap-x-6 rounded-xl"

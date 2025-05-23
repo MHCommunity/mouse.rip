@@ -6,4 +6,4 @@ export function PageLink({ href, children }) {
       {children}
     </Link>
   );
-};
+}
