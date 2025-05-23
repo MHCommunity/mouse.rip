@@ -48,6 +48,7 @@ export default function ValourRiftFloors() {
           <MagnifyingGlassIcon />
           <Input
             id="floor-search"
+            type="number"
             placeholder="1, 2, 3, …"
             className="flex bg-white rounded-md outline outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 dark:bg-gray-800 dark:outline-gray-700 dark:focus:outline-indigo-500"
             ref={inputRef}
