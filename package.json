@@ -11,7 +11,7 @@
     "update-data": "bun ./scripts/update-data.js"
   },
   "dependencies": {
-    "@headlessui/react": "^2.2.2",
+    "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.2.0",
     "clsx": "^2.1.1",
     "framer-motion": "^11.18.2",
@@ -20,16 +20,16 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^15.3.1",
-    "@wordpress/eslint-plugin": "^22.8.0",
+    "@next/eslint-plugin-next": "^15.3.2",
+    "@wordpress/eslint-plugin": "^22.10.0",
     "autoprefixer": "^10.4.21",
     "eslint": "^8.57.1",
     "eslint-config-next": "14.2.3",
-    "eslint-config-prettier": "^10.1.2",
+    "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-import-newlines": "^1.4.0",
-    "eslint-plugin-jsdoc": "^50.6.9",
+    "eslint-plugin-jsdoc": "^50.6.17",
     "eslint-plugin-json": "^4.0.1",
     "eslint-plugin-markdownlint": "^0.6.0",
     "eslint-plugin-package-json": "^0.29.1",
