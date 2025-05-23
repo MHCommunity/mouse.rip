@@ -1,7 +1,7 @@
 import items from './data/items.json';
 import userscripts from './data/userscripts.json';
 import locations from './data/locations.json';
-import environments from './data/environments.json';
+import environments from './data/generated/environments.json';
 
 function getItems() {
   return [...items, ...userscripts];

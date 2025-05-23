@@ -106,5 +106,33 @@ const updateUserScripts = async () => {
   console.log(`Updated ${userscripts.length} userscripts.`);
 };
 
+const updateDataFiles = async () => {
+  const files = [
+    'environments',
+  ];
+
+  // For each file, fetch it from api.mouse.rip and save it to the data folder
+  for (const file of files) {
+    const apiUrl = `https://api.mouse.rip/${file}`;
+
+    const data = await fetch(apiUrl);
+    if (! data.ok) {
+      console.error(`Failed to fetch data for ${file}`);
+      return;
+    }
+
+    const json = await data.json();
+    if (! json) {
+      console.error(`Failed to parse JSON for ${file}`);
+      return;
+    }
+
+    const filePath = path.join(__dirname, `../src/data/generated/${file}.json`);
+    fs.writeFileSync(filePath, JSON.stringify(json, null, 2), 'utf-8');
+  }
+};
+
 /* eslint-enable no-console */
+
+updateDataFiles();
 updateUserScripts();
