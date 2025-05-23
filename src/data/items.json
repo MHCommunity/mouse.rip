@@ -185,5 +185,14 @@
     "category": "tool",
     "tags": ["location", "calculator"],
     "locations": ["valour-rift"]
+  },
+  {
+    "id": "essence-calculator",
+    "name": "Essence Calculator",
+    "description": "Calculate the amount of essences you can craft.",
+    "url": "/essence-calculator",
+    "category": "tool",
+    "tags": ["calculator"],
+    "locations": ["living-garden", "lost-city", "sand-dunes"]
   }
 ]
