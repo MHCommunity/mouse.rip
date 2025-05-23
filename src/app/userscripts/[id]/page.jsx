@@ -34,17 +34,18 @@ export default async function Userscript({ params }) {
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
-      {/* Script Name */}
-      <h1 className="text-3xl font-extrabold text-gray-900 mb-2">{item.name}</h1>
+      <h1 className="mb-2 text-3xl font-extrabold text-gray-900 dark:text-gray-100">
+        {item.name}
+      </h1>
 
-      {/* Description */}
-      <div className="text-lg text-gray-700 mb-4">{item.description}</div>
+      <div className="mb-4 text-lg text-gray-700 dark:text-gray-300">
+        {item.description}
+      </div>
 
-      {/* Install/View Button */}
       <div className="mb-6">
         <Link
           href={item.url}
-          className="inline-flex items-center px-4 py-2 text-base font-semibold text-white bg-blue-600 rounded hover:bg-blue-700 transition"
+          className="inline-flex items-center px-4 py-2 text-base font-semibold text-white rounded bg-sky-600 hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 dark:focus:ring-offset-gray-800"
         >
           {item.source ? `Install via ${item.source}` : 'Install Script'}
           <ArrowRightIcon className="w-5 h-5 ml-2" aria-hidden="true" />
@@ -52,28 +53,28 @@ export default async function Userscript({ params }) {
       </div>
 
       {/* Info Box */}
-      <div className="flex flex-wrap p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm justify-between gap-4">
+      <div className="flex flex-wrap justify-between gap-4 p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300">
         <div>
-          <div className="text-xs text-gray-500">Installs</div>
-          <div className="font-semibold text-gray-800">
+          <div className="text-xs text-gray-500 dark:text-gray-400">Installs</div>
+          <div className="font-semibold text-gray-800 dark:text-gray-200">
             {item.data.installs ? item.data.installs.toLocaleString() : '?'}
           </div>
         </div>
         <div>
-          <div className="text-xs text-gray-500">Active Users</div>
-          <div className="font-semibold text-gray-800">
+          <div className="text-xs text-gray-500 dark:text-gray-400">Active Users</div>
+          <div className="font-semibold text-gray-800 dark:text-gray-200">
             {item.data.active_users ? `~${item.data.active_users.toLocaleString()}` : '?'}
           </div>
         </div>
         <div>
-          <div className="text-xs text-gray-500">Version</div>
-          <div className="font-semibold text-gray-800">
+          <div className="text-xs text-gray-500 dark:text-gray-400">Version</div>
+          <div className="font-semibold text-gray-800 dark:text-gray-200">
             {item.data.version ? item.data.version : '-'}
           </div>
         </div>
         <div>
-          <div className="text-xs text-gray-500">Updated</div>
-          <div className="font-semibold text-gray-800">
+          <div className="text-xs text-gray-500 dark:text-gray-400">Updated</div>
+          <div className="font-semibold text-gray-800 dark:text-gray-200">
             {item.data.updated_at ? new Date(item.data.updated_at).toLocaleDateString(undefined, {
               year: 'numeric',
               month: 'long',
@@ -95,14 +96,14 @@ export default async function Userscript({ params }) {
       )}
 
       {/* How to Use Section */}
-      <div className="p-6 mt-8 bg-gray-50 border border-gray-200 shadow-sm rounded-lg text-sm/6">
-        <h2 className="mb-2 text-2xl font-semibold text-gray-900">
+      <div className="p-6 mt-8 border border-gray-200 rounded-lg shadow-sm bg-gray-50 text-sm/6 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300">
+        <h2 className="mb-2 text-2xl font-semibold text-gray-900 dark:text-gray-100">
           How to use User scripts for MouseHunt
         </h2>
-        <p className="mb-4 text-gray-700">
+        <p className="mb-4 text-gray-700 dark:text-gray-300">
           User scripts are small pieces of code that can be installed in your browser to modify the behavior of websites. They can be used to add new features, fix bugs, or update styles on websites like MouseHunt. If you want to use this user script, follow these steps:
         </p>
-        <ol className="ml-4 space-y-2 text-gray-700 list-decimal list-inside">
+        <ol className="ml-4 space-y-2 text-gray-700 list-decimal list-inside dark:text-gray-300">
           <li>
             Install a userscript manager for your browser:
             <ul className="ml-4 list-disc list-inside">
