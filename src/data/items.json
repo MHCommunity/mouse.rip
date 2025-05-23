@@ -200,5 +200,58 @@
     "category": "tool",
     "tags": ["calculator"],
     "locations": ["living-garden", "lost-city", "sand-dunes"]
+  },
+  {
+    "id": "trap-progression-guide",
+    "name": "Trap Progression Guide",
+    "description": "Optimal trap and base progression from Novice to Viceroy.",
+    "url": "https://pastebin.com/BDTXTGMC",
+    "category": "guide"
+  },
+  {
+    "id": "ranks-beyond-mhbasics",
+    "name": "'Shellnut' Guide",
+    "description": "A guide from Baron rank onwards, outlining key traps, bases, and areas to focus on.",
+    "url": "https://pastebin.com/mfXiFLYA",
+    "category": "guide"
+  },
+  {
+    "id": "shellnut-checklist",
+    "name": "Shellnut Checklist",
+    "description": "A checklist of key things to complete from Baron to Archduke/duchess ranks.",
+    "url": "https://pastebin.com/bNr3v7Ws",
+    "category": "guide",
+    "tags": ["checklist", "progression", "equipment"]
+  },
+  {
+    "id": "valour-rift-guide",
+    "name": "Valour Rift Guide",
+    "description": "Valour Rift gift - including Ultimate Umbra runs, upgrade strategies, and trap recommendations.",
+    "url": "https://pastebin.com/UCAqCgGg",
+    "category": "guide",
+    "locations": ["valour-rift"]
+  },
+  {
+    "id": "valour-rift-additional-info",
+    "name": "Valour Rift Additional Info",
+    "description": "Valour Rift supplementary info, including upgrade orders, simulator tools, and optimization tips.",
+    "url": "https://pastebin.com/3E59L69r",
+    "category": "guide",
+    "locations": ["valour-rift"]
+  },
+  {
+    "id": "returning-players-guide",
+    "name": "Returning Players",
+    "description": "FAQ and guidance for returning players.",
+    "url": "https://samsolo.wixsite.com/mhrnr/returners",
+    "category": "guide"
+  },
+  {
+    "id": "rift-routes",
+    "name": "Rift Routes",
+    "description": "Overview of various progression routes through Rift areas, tailored for different player setups and goals.",
+    "url": "https://samsolo.wixsite.com/mhrnr/rift-routes",
+    "category": "guide",
+    "locations": ["gnawnia-rift", "burroughs-rift", "whisker-woods-rift", "bristle-woods-rift", "valour-rift"]
   }
 ]
