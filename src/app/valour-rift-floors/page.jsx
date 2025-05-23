@@ -2,7 +2,6 @@
 
 import { useRef, useState } from 'react';
 import { Input, InputGroup } from '@/components/input';
-import { Divider } from '@/components/divider';
 import { Heading } from '@/components/heading';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 
@@ -50,7 +49,7 @@ export default function ValourRiftFloors() {
             id="floor-search"
             type="number"
             placeholder="1, 2, 3, …"
-            className="flex bg-white rounded-md outline outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 dark:bg-gray-800 dark:outline-gray-700 dark:focus:outline-indigo-500"
+            className="flex p-6 bg-white rounded-md outline outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 dark:bg-gray-800 dark:outline-gray-700 dark:focus:outline-indigo-500"
             ref={inputRef}
             onChange={handleInputChange}
             value={currentFloor}
@@ -79,7 +78,6 @@ export default function ValourRiftFloors() {
             </li>
           ))}
         </ul>
-        <Divider className="my-4" />
       </div>
     </div>
   );
