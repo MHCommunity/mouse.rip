@@ -9,14 +9,11 @@ const updateUserScripts = async () => {
 
   const userscripts = userscriptsData;
 
+  let count = 0;
   for (const script of userscripts) {
-    // https://api.greasyfork.org/en/scripts/381219-mousehunt-wisdom-stats.json
-    // https://greasyfork.org/en/scripts/484756-mh-anytrapanyskin
     if (! script.url.includes('https://greasyfork.org/en/scripts/')) {
       return;
     }
-
-    console.log(`Updating ${script.name}...`);
 
     const scriptId = script.url.replace('https://greasyfork.org/en/scripts/', '');
     const apiUrl = `https://api.greasyfork.org/en/scripts/${scriptId}.json`;
@@ -46,11 +43,8 @@ const updateUserScripts = async () => {
       return;
     }
 
-    // Get the last 7 days of data
-    const updateDates = Object.keys(updateJson).sort(); // sort ascending
+    let updateDates = Object.keys(updateJson);
     const last7Days = updateDates.slice(-7);
-
-    // Sum update_checks for the last 7 days
     const totalUpdateChecks = last7Days.reduce((sum, date) => {
       const dayData = updateJson[date];
       return sum + (dayData.update_checks || 0);
@@ -61,6 +55,20 @@ const updateUserScripts = async () => {
     // Adjustment factor to account for users who check weekly.
     const adjustmentFactor = 1.87;
     const estimatedActiveUsers = Math.round(avg * adjustmentFactor);
+
+    updateDates = Object.keys(updateJson);
+    const last3Months = updateDates.slice(-90);
+    const installsLast3Months = last3Months.reduce((sum, date) => {
+      const dayData = updateJson[date];
+      return sum + (dayData.installs || 0);
+    }, 0);
+
+    updateDates = Object.keys(updateJson);
+    const lastMonth = updateDates.slice(-30);
+    const installsLastMonth = lastMonth.reduce((sum, date) => {
+      const dayData = updateJson[date];
+      return sum + (dayData.installs || 0);
+    }, 0);
 
     // Find the script in the userscripts array
     const scriptIndex = userscripts.findIndex((s) => s.id === script.id);
@@ -83,6 +91,8 @@ const updateUserScripts = async () => {
         description: scriptJson.description,
         installs: scriptJson.total_installs,
         active_users: estimatedActiveUsers,
+        installs_last_3_months: installsLast3Months,
+        installs_last_month: installsLastMonth,
         created_at: scriptJson.created_at,
         updated_at: scriptJson.code_updated_at,
         version: scriptJson.version,
@@ -90,12 +100,12 @@ const updateUserScripts = async () => {
       }
     };
 
-    console.log(`Updated ${script.name} with ${estimatedActiveUsers} active users.`);
+    const filePath = path.join(__dirname, '../src/data/userscripts.json');
+    fs.writeFileSync(filePath, JSON.stringify(userscripts, null, 2), 'utf-8');
+
+    console.log(`${scriptJson.name}: ${installsLastMonth} last month, ${installsLast3Months} last 3 months, ${estimatedActiveUsers} active users. [${count++}/${userscripts.length}]`);
   }
 
-  // Write the updated data back to the JSON file
-  const filePath = path.join(__dirname, '../src/data/userscripts.json');
-  fs.writeFileSync(filePath, JSON.stringify(userscripts, null, 2), 'utf-8');
   console.log(`Updated ${userscripts.length} user scripts.`);
 };
 
