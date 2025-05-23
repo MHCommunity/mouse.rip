@@ -3,7 +3,6 @@
 import { useRef, useState } from 'react';
 import { Input, InputGroup } from '@/components/input';
 import { Heading } from '@/components/heading';
-import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 
 const FLOOR_ORDER = [
   { name: 'Puppetry', floors: [1, 9, 17] },
@@ -22,7 +21,7 @@ export default function ValourRiftFloors() {
   const inputRef = useRef(null);
 
   const reorderFloors = (floorNum) => {
-    if (!floorNum || isNaN(floorNum) || floorNum < 1) {
+    if (! floorNum || isNaN(floorNum) || floorNum < 1) {
       setReorderedFloors(FLOOR_ORDER);
       return;
     }
