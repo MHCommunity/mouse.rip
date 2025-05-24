@@ -17,6 +17,7 @@ const updateUserScripts = async () => {
     const scriptId = script.url.replace('https://greasyfork.org/en/scripts/', '');
     const apiUrl = `https://api.greasyfork.org/en/scripts/${scriptId}.json`;
 
+    console.log(`Updating script ID ${scriptId}...`);
     const scriptData = await fetch(apiUrl);
     if (! scriptData.ok) {
       console.error(`Failed to fetch data for script ID ${script.id}`);
@@ -109,6 +110,14 @@ const updateUserScripts = async () => {
 const updateDataFiles = async () => {
   const files = [
     'environments',
+    'environments-events',
+    'mice',
+    'mice-groups',
+    'items',
+    'mhct-convertibles',
+    'mhct-reverse-convertibles',
+    'mhct-reverse-mapper',
+    'mice-attraction-rates',
   ];
 
   // For each file, fetch it from api.mouse.rip and save it to the data folder
@@ -127,12 +136,76 @@ const updateDataFiles = async () => {
       return;
     }
 
+    console.log(`Updating ${file}...`);
+
     const filePath = path.join(__dirname, `../src/data/generated/${file}.json`);
     fs.writeFileSync(filePath, JSON.stringify(json, null, 2), 'utf-8');
   }
 };
 
+const updateMiceImages = async () => {
+  const miceData = await fetch('https://api.mouse.rip/mice');
+  if (! miceData.ok) {
+    return;
+  }
+
+  const mice = await miceData.json();
+  if (! mice) {
+    return;
+  }
+
+  for (const mouse of mice) {
+    console.log(`Fetching images for ${mouse.type}...`);
+    const imageData = await fetch(mouse.images.large);
+    if (imageData.ok) {
+      const imageBuffer = Buffer.from(await imageData.arrayBuffer());
+      fs.writeFileSync(path.join(__dirname, `../public/images/mice/large/${mouse.type.replaceAll(/_/g, '-')}.png`), imageBuffer);
+    }
+
+    const thumbnailData = await fetch(mouse.images.thumbnail);
+    if (thumbnailData.ok) {
+      const thumbnailBuffer = Buffer.from(await thumbnailData.arrayBuffer());
+      fs.writeFileSync(path.join(__dirname, `../public/images/mice/thumbnail/${mouse.type.replaceAll(/_/g, '-')}.png`), thumbnailBuffer);
+    }
+  }
+};
+
+const updateItemImages = async () => {
+  const itemsData = await fetch('https://api.mouse.rip/items');
+  if (! itemsData.ok) {
+    return;
+  }
+
+  const items = await itemsData.json();
+  if (! items) {
+    return;
+  }
+
+  for (const item of items) {
+    console.log(`Fetching images for ${item.type}...`);
+    if (! item.images.large.length) {
+      item.images.large = item.images.thumbnail;
+    }
+    const imageData = await fetch(item.images.large);
+    if (imageData.ok) {
+      const imageBuffer = Buffer.from(await imageData.arrayBuffer());
+      fs.writeFileSync(path.join(__dirname, `../public/images/items/large/${item.type.replaceAll(/_/g, '-')}.png`), imageBuffer);
+    }
+
+    const thumbnailData = await fetch(item.images.thumbnail);
+    if (thumbnailData.ok) {
+      const thumbnailBuffer = Buffer.from(await thumbnailData.arrayBuffer());
+      fs.writeFileSync(path.join(__dirname, `../public/images/items/thumbnail/${item.type.replaceAll(/_/g, '-')}.png`), thumbnailBuffer);
+    }
+  }
+};
+
 /* eslint-enable no-console */
+
+if (false) { // eslint-disable-line no-constant-condition
+  updateItemImages();
+  updateMiceImages();
+}
 
 updateDataFiles();
 updateUserScripts();
