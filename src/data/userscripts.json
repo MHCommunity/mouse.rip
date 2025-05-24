@@ -5,13 +5,17 @@
     "description": "View the minluck and catch rate estimate, right on the camp page.",
     "url": "https://greasyfork.org/en/scripts/449334-mousehunt-minluck-catch-rate-estimate",
     "category": "userscript",
-    "tags": ["hunting", "catch-rate", "minluck"],
+    "tags": [
+      "hunting",
+      "catch-rate",
+      "minluck"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "🐭️ MouseHunt - Minluck & Catch Rate Estimate",
       "description": "View the minluck and catch rate estimate, right on the camp page.",
       "installs": 1858,
-      "active_users": 207,
+      "active_users": 212,
       "installs_last_3_months": 6,
       "installs_last_month": 1,
       "created_at": "2022-08-10T23:47:47.000Z",
@@ -31,15 +35,18 @@
     "description": "Shows hunt statistics on the camp page.",
     "url": "https://greasyfork.org/en/scripts/447193-mh-minluck-cre-tool-v2-0-new",
     "category": "userscript",
-    "tags": ["stats", "hunting"],
+    "tags": [
+      "stats",
+      "hunting"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MH - Minluck & CRE tool v2.0 (new)",
       "description": "Shows hunt statistics on the camp page",
-      "installs": 2076,
-      "active_users": 545,
-      "installs_last_3_months": 16,
-      "installs_last_month": 3,
+      "installs": 2077,
+      "active_users": 570,
+      "installs_last_3_months": 17,
+      "installs_last_month": 4,
       "created_at": "2022-06-28T20:34:49.000Z",
       "updated_at": "2024-10-23T06:39:29.000Z",
       "version": "5.2.0",
@@ -57,13 +64,16 @@
     "description": "Adds a price chart and Markethunt integration to the MH marketplace screen.",
     "url": "https://greasyfork.org/en/scripts/441382-markethunt-plugin-for-mousehunt",
     "category": "userscript",
-    "tags": ["items", "marketplace"],
+    "tags": [
+      "items",
+      "marketplace"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "Markethunt plugin for Mousehunt",
       "description": "Adds a price chart and Markethunt integration to the MH marketplace screen.",
       "installs": 1914,
-      "active_users": 547,
+      "active_users": 571,
       "installs_last_3_months": 20,
       "installs_last_month": 4,
       "created_at": "2022-03-12T06:10:10.000Z",
@@ -83,13 +93,16 @@
     "name": "Snowball Showdown Helper",
     "description": "Tool to help with Snowball Showdown puzzle boards.",
     "category": "userscript",
-    "tags": ["event", "gwh"],
+    "tags": [
+      "event",
+      "gwh"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - Snowball Showdown Helper",
       "description": "Tool to help with Snowball Showdown puzzle boards",
       "installs": 3996,
-      "active_users": 506,
+      "active_users": 522,
       "installs_last_3_months": 4,
       "installs_last_month": 1,
       "created_at": "2018-12-22T07:23:56.000Z",
@@ -109,13 +122,16 @@
     "description": "Make the Spring Egg Hunt / Eggscavator interface better.",
     "url": "https://greasyfork.org/en/scripts/462034-mousehunt-spring-egg-hunt-helper",
     "category": "userscript",
-    "tags": ["event", "seh"],
+    "tags": [
+      "event",
+      "seh"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "🐭️ MouseHunt - Spring Egg Hunt Helper",
       "description": "Make the Spring Egg Hunt / Eggscavator interface better.",
       "installs": 457,
-      "active_users": 83,
+      "active_users": 88,
       "installs_last_3_months": 6,
       "installs_last_month": 1,
       "created_at": "2023-03-17T16:15:00.000Z",
@@ -135,13 +151,16 @@
     "description": "Tool to help with SEH Eggsweeper puzzle boards.",
     "url": "https://greasyfork.org/en/scripts/381797-mousehunt-eggsweeper-helper",
     "category": "userscript",
-    "tags": ["event", "seh"],
+    "tags": [
+      "event",
+      "seh"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - Eggsweeper Helper",
       "description": "Tool to help with SEH Eggsweeper puzzle boards",
       "installs": 2295,
-      "active_users": 582,
+      "active_users": 515,
       "installs_last_3_months": 34,
       "installs_last_month": 6,
       "created_at": "2019-04-13T06:20:57.000Z",
@@ -161,13 +180,16 @@
     "description": "Play Spooky Shuffle more easily.",
     "url": "https://greasyfork.org/en/scripts/453305-mousehunt-better-spooky-shuffle-tracker",
     "category": "userscript",
-    "tags": ["event", "halloween"],
+    "tags": [
+      "event",
+      "halloween"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "🐭️ MouseHunt - Better Spooky Shuffle Tracker",
       "description": "Play Spooky Shuffle more easily.",
       "installs": 927,
-      "active_users": 187,
+      "active_users": 199,
       "installs_last_3_months": 1,
       "installs_last_month": 0,
       "created_at": "2022-10-18T18:44:16.000Z",
@@ -187,13 +209,15 @@
     "description": "Displays your wisdom stats in the HUD.",
     "url": "https://greasyfork.org/en/scripts/381219-mousehunt-wisdom-stats",
     "category": "userscript",
-    "tags": ["stats"],
+    "tags": [
+      "stats"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - Wisdom Stats",
       "description": "Displays your wisdom stats in the HUD",
       "installs": 1821,
-      "active_users": 185,
+      "active_users": 190,
       "installs_last_3_months": 6,
       "installs_last_month": 2,
       "created_at": "2019-03-31T23:57:07.000Z",
@@ -213,12 +237,15 @@
     "name": "Rank-up Forecaster",
     "description": "Records wisdom data over time and predict rank-ups.",
     "category": "userscript",
-    "tags": ["stats", "wisdom"],
+    "tags": [
+      "stats",
+      "wisdom"
+    ],
     "data": {
       "name": "MH - Rank-up Forecaster (v2.0)",
       "description": "Records wisdom data over time and predict rank-ups!",
       "installs": 430,
-      "active_users": 67,
+      "active_users": 59,
       "installs_last_3_months": 2,
       "installs_last_month": 1,
       "created_at": "2021-06-25T15:28:40.000Z",
@@ -238,13 +265,15 @@
     "description": "See the timers for all locations in one place.",
     "url": "https://greasyfork.org/en/scripts/388058-mh-timers",
     "category": "userscript",
-    "tags": ["quality-of-life"],
+    "tags": [
+      "quality-of-life"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MH Timers+",
       "description": "Handy script to keep track of the various MH location timers",
       "installs": 1420,
-      "active_users": 158,
+      "active_users": 138,
       "installs_last_3_months": 4,
       "installs_last_month": 0,
       "created_at": "2019-07-31T21:12:15.000Z",
@@ -264,13 +293,15 @@
     "description": "Community requested features for the tabs on your MH profile.",
     "url": "https://greasyfork.org/en/scripts/381389-mh-profile",
     "category": "userscript",
-    "tags": ["quality-of-life"],
+    "tags": [
+      "quality-of-life"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MH: Profile+",
       "description": "Community requested features for the tabs on your MH profile.",
       "installs": 1159,
-      "active_users": 157,
+      "active_users": 159,
       "installs_last_3_months": 8,
       "installs_last_month": 2,
       "created_at": "2019-04-04T20:15:27.000Z",
@@ -290,13 +321,15 @@
     "description": "Tweaks and improves the Marketplace UI.",
     "url": "https://greasyfork.org/en/scripts/378990-mousehunt-marketplace-ui-tweaks",
     "category": "userscript",
-    "tags": ["quality-of-life"],
+    "tags": [
+      "quality-of-life"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - Marketplace UI Tweaks",
       "description": "Adds useful features and tweaks to the Marketplace rework",
       "installs": 1873,
-      "active_users": 271,
+      "active_users": 238,
       "installs_last_3_months": 7,
       "installs_last_month": 2,
       "created_at": "2019-03-04T07:54:27.000Z",
@@ -316,13 +349,16 @@
     "description": "Automatically converts \"Begins in:\" to your local time as well as adding the end time for tournaments.",
     "url": "https://greasyfork.org/en/scripts/37146-mousehunt-tournament-time-helper",
     "category": "userscript",
-    "tags": ["quality-of-life", "ui"],
+    "tags": [
+      "quality-of-life",
+      "ui"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - Tournament Time Helper",
       "description": "Automatically converts \"Begins in:\" to your local time as well as adding the end time for tournaments.",
       "installs": 766,
-      "active_users": 52,
+      "active_users": 46,
       "installs_last_3_months": 5,
       "installs_last_month": 0,
       "created_at": "2018-01-07T17:45:55.000Z",
@@ -342,13 +378,15 @@
     "description": "Miscellaneous utilities to turbo-charge your MH experience.",
     "url": "https://greasyfork.org/en/scripts/405334-mousehunt-qol-utilities",
     "category": "userscript",
-    "tags": ["quality-of-life"],
+    "tags": [
+      "quality-of-life"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - QoL Utilities",
       "description": "Miscellaneous utilities to turbo-charge your MH experience",
       "installs": 1516,
-      "active_users": 202,
+      "active_users": 207,
       "installs_last_3_months": 5,
       "installs_last_month": 1,
       "created_at": "2020-06-14T21:25:13.000Z",
@@ -368,12 +406,14 @@
     "name": "Better Gifts / Gift Buttons",
     "description": "Adds buttons to easily accept and return all daily gifts.",
     "category": "userscript",
-    "tags": ["quality-of-life"],
+    "tags": [
+      "quality-of-life"
+    ],
     "data": {
       "name": "🐭️ MouseHunt - Better Gifts / Gift Buttons",
       "description": "Adds buttons to easily accept and return all daily gifts.",
       "installs": 560,
-      "active_users": 68,
+      "active_users": 70,
       "installs_last_3_months": 3,
       "installs_last_month": 0,
       "created_at": "2022-08-13T16:49:16.000Z",
@@ -393,13 +433,15 @@
     "description": "ds buttons to easily accept and return all daily gifts.",
     "url": "https://greasyfork.org/en/scripts/376572-mousehunt-gifting-buttons",
     "category": "userscript",
-    "tags": ["quality-of-life"],
+    "tags": [
+      "quality-of-life"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - Gifting Buttons",
       "description": "Adds buttons to easily ignore, accept, or return all free gifts",
       "installs": 2137,
-      "active_users": 262,
+      "active_users": 227,
       "installs_last_3_months": 10,
       "installs_last_month": 4,
       "created_at": "2019-01-11T06:57:36.000Z",
@@ -419,13 +461,15 @@
     "description": "Adds a search bar to make sending supplies easier.",
     "url": "https://greasyfork.org/en/scripts/396714-mousehunt-send-supplies-search-bar",
     "category": "userscript",
-    "tags": ["quality-of-life"],
+    "tags": [
+      "quality-of-life"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - Send Supplies Search Bar",
       "description": "Adds a search bar to make sending supplies easier",
       "installs": 538,
-      "active_users": 60,
+      "active_users": 61,
       "installs_last_3_months": 2,
       "installs_last_month": 0,
       "created_at": "2020-02-21T22:46:08.000Z",
@@ -445,13 +489,15 @@
     "description": "Improve the search logic of search bars in the game.",
     "url": "https://greasyfork.org/en/scripts/446436-mousehunt-enhanced-search-beta",
     "category": "userscript",
-    "tags": ["quality-of-life"],
+    "tags": [
+      "quality-of-life"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt Enhanced Search (Beta)",
       "description": "Improve the search logic of search bars in the game",
       "installs": 119,
-      "active_users": 23,
+      "active_users": 20,
       "installs_last_3_months": 0,
       "installs_last_month": 0,
       "created_at": "2022-06-13T18:51:48.000Z",
@@ -471,13 +517,15 @@
     "description": "Adds catch/crown statistics next to mouse names on the TEM.",
     "url": "https://greasyfork.org/en/scripts/376770-mousehunt-tem-catch-stats",
     "category": "userscript",
-    "tags": ["stats"],
+    "tags": [
+      "stats"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - TEM Catch Stats",
       "description": "Adds catch/crown statistics next to mouse names on the TEM",
       "installs": 1223,
-      "active_users": 108,
+      "active_users": 111,
       "installs_last_3_months": 1,
       "installs_last_month": 0,
       "created_at": "2019-01-16T05:09:42.000Z",
@@ -497,7 +545,9 @@
     "description": "Adds the ability to one click travel to the next M400 assigment location.",
     "url": "https://greasyfork.org/en/scripts/429044-mh-m400-hunting-helper",
     "category": "userscript",
-    "tags": ["quality-of-life"],
+    "tags": [
+      "quality-of-life"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MH: M400 Hunting Helper",
@@ -523,7 +573,9 @@
     "description": "Colour code your maps.",
     "url": "https://greasyfork.org/en/scripts/428959-mh-consolidated-map-colour-coder",
     "category": "userscript",
-    "tags": ["maps"],
+    "tags": [
+      "maps"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MH - Consolidated Map Colour Coder",
@@ -549,13 +601,15 @@
     "description": "Adds map improvements, such as invite via Hunter ID, and directly send SB+.",
     "url": "https://greasyfork.org/en/scripts/384275-mousehunt-mapping-helper",
     "category": "userscript",
-    "tags": ["quality-of-life"],
+    "tags": [
+      "quality-of-life"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - Mapping Helper",
       "description": "Map interface improvements (invite via Hunter ID, direct send SB+, TEM-based available uncaught map mice)",
       "installs": 2327,
-      "active_users": 266,
+      "active_users": 233,
       "installs_last_3_months": 5,
       "installs_last_month": 1,
       "created_at": "2019-06-03T06:56:03.000Z",
@@ -575,13 +629,16 @@
     "description": "Helps you return tradables from a chest.",
     "url": "https://greasyfork.org/en/scripts/452655-flrt-tool",
     "category": "userscript",
-    "tags": ["quality-of-life", "maps"],
+    "tags": [
+      "quality-of-life",
+      "maps"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MH - FLRT Tool",
       "description": "Free Leech Return Tradables",
       "installs": 137,
-      "active_users": 34,
+      "active_users": 37,
       "installs_last_3_months": 1,
       "installs_last_month": 1,
       "created_at": "2022-10-08T07:23:34.000Z",
@@ -601,14 +658,19 @@
     "description": "Calculates the best island to go to.",
     "url": "https://greasyfork.org/en/scripts/411180-mousehunt-floting-islands-priority-calculator",
     "category": "userscript",
-    "tags": ["location", "calculator"],
-    "locations": ["floating-islands"],
+    "tags": [
+      "location",
+      "calculator"
+    ],
+    "locations": [
+      "floating-islands"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - Floting Islands Priority Calculator",
       "description": "Floting Islands Priority Calculator",
       "installs": 1215,
-      "active_users": 118,
+      "active_users": 103,
       "installs_last_3_months": 4,
       "installs_last_month": 1,
       "created_at": "2020-09-10T14:41:59.000Z",
@@ -628,14 +690,19 @@
     "description": "Quick travel buttons for the Living Garden area locations.",
     "url": "https://greasyfork.org/en/scripts/407059-mh-living-garden-hud-enhancer",
     "category": "userscript",
-    "tags": ["location", "travel"],
-    "locations": ["living-garden"],
+    "tags": [
+      "location",
+      "travel"
+    ],
+    "locations": [
+      "living-garden"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MH: Living Garden HUD Enhancer",
       "description": "Quick travel buttons for the Living Garden area locations. More features comning soon.",
       "installs": 490,
-      "active_users": 65,
+      "active_users": 58,
       "installs_last_3_months": 5,
       "installs_last_month": 0,
       "created_at": "2020-07-14T17:14:12.000Z",
@@ -655,14 +722,19 @@
     "description": "Keeps track of remaining wave mice to help you manage the wave.",
     "url": "https://greasyfork.org/en/scripts/390221-mh-warpath-wave-calculator",
     "category": "userscript",
-    "tags": ["location", "calculator"],
-    "locations": ["fiery-warpath"],
+    "tags": [
+      "location",
+      "calculator"
+    ],
+    "locations": [
+      "fiery-warpath"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MH: Warpath Wave Calculator",
       "description": "Keeps track of remaining wave mice to help you manage the wave.",
       "installs": 489,
-      "active_users": 49,
+      "active_users": 50,
       "installs_last_3_months": 1,
       "installs_last_month": 0,
       "created_at": "2019-09-17T17:08:06.000Z",
@@ -682,14 +754,19 @@
     "description": "Helps you check if you have failed a Deep Run.",
     "url": "https://greasyfork.org/en/scripts/380861-mousehunt-deep-run-assistant",
     "category": "userscript",
-    "tags": ["location", "quality-of-life"],
-    "locations": ["iceberg"],
+    "tags": [
+      "location",
+      "quality-of-life"
+    ],
+    "locations": [
+      "iceberg"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "Mousehunt Deep Run Assistant",
       "description": "A userscript that helps you check if you have failed a Deep Run",
       "installs": 618,
-      "active_users": 64,
+      "active_users": 56,
       "installs_last_3_months": 2,
       "installs_last_month": 0,
       "created_at": "2019-03-24T11:31:46.000Z",
@@ -709,13 +786,16 @@
     "description": "Counts the number of unique loot you have in your daily hunting log.",
     "url": "https://greasyfork.org/en/scripts/381058-mousehunt-seh-loot-counter-for-hunting-log",
     "category": "userscript",
-    "tags": ["event", "seh"],
+    "tags": [
+      "event",
+      "seh"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - SEH Loot Counter for Hunting Log",
       "description": "Counts the number of unique loot you have in your daily hunting log.",
       "installs": 570,
-      "active_users": 53,
+      "active_users": 57,
       "installs_last_3_months": 3,
       "installs_last_month": 0,
       "created_at": "2019-03-28T10:35:53.000Z",
@@ -735,12 +815,15 @@
     "name": "Halloween Brew Helper",
     "description": "Convenient buttons to help you instantly brew Evil Extract.",
     "category": "userscript",
-    "tags": ["event", "halloween"],
+    "tags": [
+      "event",
+      "halloween"
+    ],
     "data": {
       "name": "MH: Halloween Brew Helper",
       "description": "Convenient buttons to help you instantly brew Evil Extract.",
       "installs": 566,
-      "active_users": 96,
+      "active_users": 84,
       "installs_last_3_months": 3,
       "installs_last_month": 0,
       "created_at": "2021-11-02T14:57:51.000Z",
@@ -760,13 +843,15 @@
     "description": "Adds an open \"all but one\" button to your convertibles you have multiple of.",
     "url": "https://greasyfork.org/en/scripts/382479-mousehunt-open-all-but-one-kits-spring-eggs",
     "category": "userscript",
-    "tags": ["quality-of-life"],
+    "tags": [
+      "quality-of-life"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MouseHunt - Open \"All but One\" Kits/Spring Eggs",
       "description": "Adds an open \"all but one\" button to your kits and spring eggs which have > 2 quantity.",
       "installs": 574,
-      "active_users": 58,
+      "active_users": 59,
       "installs_last_3_months": 5,
       "installs_last_month": 0,
       "created_at": "2019-05-02T09:42:10.000Z",
@@ -786,13 +871,16 @@
     "description": "Adds a toggle button at top of journal to blur out names in journal entries. For privacy-conscious screenshots.",
     "url": "https://greasyfork.org/en/scripts/445553-mh-censor-journal-names",
     "category": "userscript",
-    "tags": ["ui", "journal"],
+    "tags": [
+      "ui",
+      "journal"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MH - Censor Journal Names",
       "description": "Adds toggle button at top of journal to blur out names of friends/mapmates in *most* journal entries. For privacy-conscious screenshots!",
       "installs": 117,
-      "active_users": 17,
+      "active_users": 18,
       "installs_last_3_months": 0,
       "installs_last_month": 0,
       "created_at": "2022-05-25T21:48:13.000Z",
@@ -812,7 +900,9 @@
     "description": "Turn any trap or skin you own, into a skin for your current setup.",
     "url": "https://greasyfork.org/en/scripts/484756-mh-anytrapanyskin",
     "category": "userscript",
-    "tags": ["fun"],
+    "tags": [
+      "fun"
+    ],
     "source": "GreasyFork",
     "data": {
       "name": "MH - AnyTrapAnySkin",
