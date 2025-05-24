@@ -94,7 +94,7 @@ export default function EssenceCalculator() {
         {ESSENCES.map((essence, idx) => (
           <div key={essence} className="flex flex-wrap items-center gap-4">
             <img
-              src={`/images/essence-${essence.toLowerCase()}.png`}
+              src={`/images/essence/${essence.toLowerCase()}.png`}
               alt={`${essence} Essence`}
               className="w-12 h-12 mr-2"
               style={{ display: 'inline-block' }}
