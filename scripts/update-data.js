@@ -156,16 +156,22 @@ const updateMiceImages = async () => {
 
   for (const mouse of mice) {
     console.log(`Fetching images for ${mouse.type}...`);
-    const imageData = await fetch(mouse.images.large);
-    if (imageData.ok) {
-      const imageBuffer = Buffer.from(await imageData.arrayBuffer());
-      fs.writeFileSync(path.join(__dirname, `../public/images/mice/large/${mouse.type.replaceAll(/_/g, '-')}.png`), imageBuffer);
+    const largePath = path.join(__dirname, `../public/images/mice/large/${mouse.type.replaceAll(/_/g, '-')}.png`);
+    if (! fs.existsSync(largePath)) {
+      const imageData = await fetch(mouse.images.large);
+      if (imageData.ok) {
+        const imageBuffer = Buffer.from(await imageData.arrayBuffer());
+        fs.writeFileSync(largePath, imageBuffer);
+      }
     }
 
-    const thumbnailData = await fetch(mouse.images.thumbnail);
-    if (thumbnailData.ok) {
-      const thumbnailBuffer = Buffer.from(await thumbnailData.arrayBuffer());
-      fs.writeFileSync(path.join(__dirname, `../public/images/mice/thumbnail/${mouse.type.replaceAll(/_/g, '-')}.png`), thumbnailBuffer);
+    const thumbPath = path.join(__dirname, `../public/images/mice/thumbnail/${mouse.type.replaceAll(/_/g, '-')}.png`);
+    if (! fs.existsSync(thumbPath)) {
+      const thumbnailData = await fetch(mouse.images.thumbnail);
+      if (thumbnailData.ok) {
+        const thumbnailBuffer = Buffer.from(await thumbnailData.arrayBuffer());
+        fs.writeFileSync(thumbPath, thumbnailBuffer);
+      }
     }
   }
 };
@@ -186,16 +192,22 @@ const updateItemImages = async () => {
     if (! item.images.large.length) {
       item.images.large = item.images.thumbnail;
     }
-    const imageData = await fetch(item.images.large);
-    if (imageData.ok) {
-      const imageBuffer = Buffer.from(await imageData.arrayBuffer());
-      fs.writeFileSync(path.join(__dirname, `../public/images/items/large/${item.type.replaceAll(/_/g, '-')}.png`), imageBuffer);
+    const largePath = path.join(__dirname, `../public/images/items/large/${item.type.replaceAll(/_/g, '-')}.png`);
+    if (! fs.existsSync(largePath)) {
+      const imageData = await fetch(item.images.large);
+      if (imageData.ok) {
+        const imageBuffer = Buffer.from(await imageData.arrayBuffer());
+        fs.writeFileSync(largePath, imageBuffer);
+      }
     }
 
-    const thumbnailData = await fetch(item.images.thumbnail);
-    if (thumbnailData.ok) {
-      const thumbnailBuffer = Buffer.from(await thumbnailData.arrayBuffer());
-      fs.writeFileSync(path.join(__dirname, `../public/images/items/thumbnail/${item.type.replaceAll(/_/g, '-')}.png`), thumbnailBuffer);
+    const thumbPath = path.join(__dirname, `../public/images/items/thumbnail/${item.type.replaceAll(/_/g, '-')}.png`);
+    if (! fs.existsSync(thumbPath)) {
+      const thumbnailData = await fetch(item.images.thumbnail);
+      if (thumbnailData.ok) {
+        const thumbnailBuffer = Buffer.from(await thumbnailData.arrayBuffer());
+        fs.writeFileSync(thumbPath, thumbnailBuffer);
+      }
     }
   }
 };
