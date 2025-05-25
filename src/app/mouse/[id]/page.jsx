@@ -97,6 +97,58 @@ export default async function Mouse({ params }) {
     'Nice 2020 List',
     'Nice 2021 List',
     'Nice 2022 List',
+
+    /* Never had an entry */
+    '10th Birthday Event Map',
+    '10th Birthday Map',
+    '2012 Halloween Map',
+    '2014 Halloween Map',
+    '9th Birthday Cupcake List Map',
+    'Athletic Lunar List Map',
+    'Birthday Dance Hall List Map',
+    'Eerie Halloween Map',
+    'Elite Toxic Spill Map',
+    'Gilded 10th Birthday Map',
+    'Gilded Time Traveler\'s Map',
+    'Haunted Halloween Map',
+    'Lunar New Year Map',
+    'Medium Map Treasure Map',
+    'New Year\'s Party Map (2023)',
+    'Old Arduous Slayer Map (Retired)',
+    'Rift Stalkers Map (Old)',
+    'Rift Walkers Map (Old)',
+    'Seventh Birthday Cupcake List Map',
+    'Spooky Halloween Map',
+    'Terrifying Halloween Map',
+    'Time Traveler\'s Map',
+    'Tribal and Shelder Hunt Map (old)',
+    'Undead Map',
+    'Valentine\'s Map',
+
+    /* hasn't seen an open in 3+ years */
+    '11th Birthday Event Map',
+    'Gilded 11th Birthday Event Map',
+    'Golden Jade Map (Retired 2020)',
+    'Floating Isles Pirate Map',
+    'Easy Grand Ghostship Map',
+    'Lunar New Year Event Map',
+    'Party Size Rainbow Map',
+    'Eerie Halloween Event Map',
+
+    /* Replaced by new maps */
+    'Easy Toxic Spill Map',
+    'Hard Toxic Spill Map',
+    'Elaborate Toxic Spill Map',
+    'Medium Toxic Spill Map',
+    'Arduous Toxic Spill Map',
+
+    /* Retired maps */
+    'Party Size Elite Chrome Map (-09.2022)',
+    'Elite Slayer Map (-09.2022)',
+    'Elite Chrome Map (-09.2022)',
+    'Elite Chrome Slayer Map (-09.2022)',
+    'Elite Map (-09.2022)',
+    'Lantern Lighter Event Map (-2022)',
   ]);
 
   const baseMapName = (name) =>
@@ -111,9 +163,6 @@ export default async function Mouse({ params }) {
 
   // Step 2: Initial filter (remove retired, excluded, and under 1% maps)
   maps = maps.filter((map) => {
-    if (map.map.includes('(Retired)')) {
-      return false;
-    }
     if (EXCLUDED_MAPS.has(map.map)) {
       return false;
     }
