@@ -50,9 +50,25 @@ const updateItemImages = async () => {
     if (! item.images.large.length) {
       item.images.large = item.images.thumbnail;
     }
+
     const largePath = path.join(__dirname, `../public/images/items/large/${item.type.replaceAll(/_/g, '-')}.png`);
-    if (! fs.existsSync(largePath)) {
-      const imageData = await fetch(item.images.upscaled || item.images.large);
+    if (! fs.existsSync(largePath) && (item.images.upscaled || item.images.best || item.images.large)) {
+      const imageData = await fetch(item.images.upscaled || item.images.best || item.images.large);
+      if (imageData.ok) {
+        const imageBuffer = Buffer.from(await imageData.arrayBuffer());
+        fs.writeFileSync(largePath, imageBuffer);
+      }
+    }
+
+    if (
+      fs.existsSync(largePath) &&
+      item.classification &&
+      'base' !== item.classification &&
+      item.images.upscaled &&
+      item.images.upscaled !== item.images.large
+    ) {
+      console.log(`Updating large image for ${item.type}...`); // eslint-disable-line no-console
+      const imageData = await fetch(item.images.upscaled);
       if (imageData.ok) {
         const imageBuffer = Buffer.from(await imageData.arrayBuffer());
         fs.writeFileSync(largePath, imageBuffer);
