@@ -228,15 +228,15 @@ export default async function Mouse({ params }) {
 
           <div className="mt-4 text-sm text-gray-700 grid grid-cols-2 sm:grid-cols-3 gap-4 sm:mt-6 dark:text-gray-300">
             <div>
-              <span className="font-semibold">Points:</span>
+              <span className="font-semibold">Points: </span>
               {formatNumber(mouse.points)}
             </div>
             <div>
-              <span className="font-semibold">Gold:</span>
+              <span className="font-semibold">Gold: </span>
               {formatNumber(mouse.gold)}
             </div>
             <div>
-              <span className="font-semibold">Wisdom:</span>
+              <span className="font-semibold">Wisdom: </span>
               {formatNumber(mouse.wisdom)}
             </div>
           </div>
