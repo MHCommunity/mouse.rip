@@ -70,7 +70,7 @@ export default function MouseGroupPage({ params }) {
           href="/mice"
           className="inline-flex items-center mb-4 text-sm font-medium text-pink-600 transition-colors dark:text-pink-400 hover:text-pink-800 dark:hover:text-pink-200"
         >
-          ← Back to Mouse Groups
+          ← Back to Mice
         </Link>
 
         <div className="relative overflow-hidden bg-gray-100 rounded-lg h-36 dark:bg-gray-700">

@@ -188,13 +188,12 @@ export default async function Mouse({ params }) {
 
   return (
     <div className="max-w-4xl px-2 mx-auto sm:px-6">
-      {/* Back to mice list link */}
       <div className="mb-4">
         <Link
           href="/mice"
           className="inline-flex items-center text-sm font-medium text-pink-600 dark:text-pink-400 hover:text-pink-800 dark:hover:text-pink-200 transition-colors"
         >
-          ← Back to mice list
+          ← Back to Mice
         </Link>
         <span className="mx-2 text-gray-400">/</span>
         <Link
