@@ -4,7 +4,7 @@ import { ItemList } from '@/components/item-list';
 import { SwatchIcon } from '@heroicons/react/20/solid';
 
 export const metadata = {
-  title: 'MouseHunt Usercripts | mouse.rip',
+  title: 'MouseHunt Usercripts',
 };
 
 export default async function Userscripts() {

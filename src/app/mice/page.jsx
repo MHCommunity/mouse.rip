@@ -5,7 +5,8 @@ import miceGroups from '@/data/generated/mice-groups.json';
 import { Heading } from '@/components/heading';
 
 export const metadata = {
-  title: 'Mice',
+  title: 'MouseHunt Mouse Groups',
+  description: 'Explore all the different groups of mice in MouseHunt, from common rodents to legendary creatures.',
 };
 
 export default async function Mice() {

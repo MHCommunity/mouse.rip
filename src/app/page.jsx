@@ -6,7 +6,8 @@ import { getPopularItems } from '@/data';
 import { AcademicCapIcon, BoltIcon, TableCellsIcon, WrenchIcon } from '@heroicons/react/20/solid';
 
 export const metadata = {
-  title: 'MouseHunt Guides, Extensions, Tools, and Resources | mouse.rip',
+  title: 'MouseHunt Guides, Extensions, Tools, and Resources',
+  description: 'Your comprehensive resource for MouseHunt guides, browser extensions, tools, spreadsheets, and userscripts to enhance your MouseHunt experience.',
 };
 
 export default function Home() {

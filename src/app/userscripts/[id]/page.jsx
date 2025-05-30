@@ -11,7 +11,7 @@ export async function generateMetadata({ params }) {
   const item = await getItem(id);
 
   return {
-    title: `${item.name} Userscript for MouseHunt | mouse.rip`,
+    title: `${item.name} Userscript for MouseHunt`,
     description: item.description,
   };
 }

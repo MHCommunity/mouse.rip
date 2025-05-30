@@ -3,7 +3,7 @@ import { Heading } from '@/components/heading';
 import { ItemList } from '@/components/item-list';
 
 export const metadata = {
-  title: 'Locations',
+  title: 'MouseHunt Locations',
 };
 
 export default async function Locations() {

@@ -4,7 +4,7 @@ import { ItemList } from '@/components/item-list';
 import { AcademicCapIcon } from '@heroicons/react/20/solid';
 
 export const metadata = {
-  title: 'MouseHunt Guides | mouse.rip',
+  title: 'MouseHunt Guides',
 };
 
 export default async function Guides() {

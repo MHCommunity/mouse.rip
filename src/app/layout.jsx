@@ -6,9 +6,9 @@ import { getItems } from '@/data';
 export const metadata = {
   title: {
     template: '%s | mouse.rip',
-    default: 'mouse.rip',
+    default: 'MouseHunt Resources & Tools | mouse.rip',
   },
-  description: '',
+  description: 'Your comprehensive resource for MouseHunt guides, browser extensions, tools, spreadsheets, and userscripts to enhance your MouseHunt experience.',
 };
 
 export default async function RootLayout({ children }) {

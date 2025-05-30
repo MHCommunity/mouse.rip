@@ -5,7 +5,8 @@ import { Divider } from '@/components/divider';
 import { PageLink } from '@/components/page-link';
 
 export const metadata = {
-  title: 'About',
+  title: 'About mouse.rip - Your MouseHunt Resource Hub',
+  description: 'Learn more about mouse.rip, your comprehensive resource for MouseHunt guides, tools, and community-created content.',
 };
 
 export default async function About() {

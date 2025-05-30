@@ -4,7 +4,7 @@ import { ItemList } from '@/components/item-list';
 import { BoltIcon } from '@heroicons/react/20/solid';
 
 export const metadata = {
-  title: 'MouseHunt Browser Extensions | mouse.rip',
+  title: 'MouseHunt Browser Extensions',
 };
 
 export default async function Extensions() {

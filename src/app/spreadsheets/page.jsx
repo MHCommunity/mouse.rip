@@ -4,7 +4,7 @@ import { ItemList } from '@/components/item-list';
 import { TableCellsIcon } from '@heroicons/react/20/solid';
 
 export const metadata = {
-  title: 'MouseHunt Spreadsheets | mouse.rip',
+  title: 'MouseHunt Spreadsheets',
 };
 
 export default async function Spreadsheets() {

@@ -70,7 +70,7 @@ function getSortedAttractionData(attractionData) {
 export async function generateMetadata({ params }) {
   const mouse = mice.find((m) => m.type === params.id.replace(/-/g, '_'));
   return {
-    title: `${mouse?.name ?? 'Unknown Mouse'} | mouse.rip`,
+    title: `${mouse?.name ?? 'Unknown Mouse'}`,
   };
 }
 

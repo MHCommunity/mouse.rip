@@ -11,7 +11,7 @@ export async function generateMetadata({ params }) {
   location = getLocation(params.id);
 
   return {
-    title: `MouseHunt Resources for ${location.article ? location.article : location.name} | mouse.rip`,
+    title: `MouseHunt Resources for ${location.article ? location.article : location.name}`,
   };
 }
 

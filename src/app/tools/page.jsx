@@ -4,7 +4,7 @@ import { ItemList } from '@/components/item-list';
 import { WrenchIcon } from '@heroicons/react/20/solid';
 
 export const metadata = {
-  title: 'MouseHunt Tools | mouse.rip',
+  title: 'MouseHunt Tools',
 };
 
 export default async function Tools() {
