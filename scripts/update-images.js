@@ -52,7 +52,7 @@ const updateItemImages = async () => {
     }
     const largePath = path.join(__dirname, `../public/images/items/large/${item.type.replaceAll(/_/g, '-')}.png`);
     if (! fs.existsSync(largePath)) {
-      const imageData = await fetch(item.images.large);
+      const imageData = await fetch(item.images.upscaled || item.images.large);
       if (imageData.ok) {
         const imageBuffer = Buffer.from(await imageData.arrayBuffer());
         fs.writeFileSync(largePath, imageBuffer);

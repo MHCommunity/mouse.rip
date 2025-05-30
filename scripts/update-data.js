@@ -32,6 +32,11 @@ const updateDataFiles = async () => {
 
     console.log(`Updating ${file}...`); // eslint-disable-line no-console
 
+    if ('items' === file) {
+      // remove the 'charm_level_3_trinket_slot' id items;
+      json.items = json.items.filter((item) => item.id !== 'charm_level_3_trinket_slot');
+    }
+
     const filePath = path.join(__dirname, `../src/data/generated/${file}.json`);
     fs.writeFileSync(filePath, JSON.stringify(json, null, 2), 'utf-8');
   }
