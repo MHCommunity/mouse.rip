@@ -17,7 +17,7 @@ export function Item({ item, ...props }) {
       )}
       {...props}
     >
-      <div className="flex flex-col justify-between flex-1 h-full gap-2 p-3">
+      <div className="flex flex-col justify-between flex-1 h-full p-3 gap-2">
         <a
           href={itemLink}
           title={itemText}

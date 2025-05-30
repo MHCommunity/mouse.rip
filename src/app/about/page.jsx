@@ -27,7 +27,7 @@ export default async function About() {
         Our Features
       </Subheading>
 
-      <ul className="mb-4 list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2">
+      <ul className="mb-4 text-gray-700 list-disc list-inside dark:text-gray-300 space-y-2">
         <li className="my-2">
           <PageLink href="/guides">Guides</PageLink> - Detailed guides covering all aspects of MouseHunt, from beginner tips to advanced strategies.
         </li>
@@ -59,7 +59,7 @@ export default async function About() {
         Disclaimer
       </Subheading>
 
-      <p className="mb-4 text-gray-700 dark:text-gray-300 text-sm">
+      <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
         <PageLink href="/">mouse.rip</PageLink> is a fan-made resource hub created by and for the MouseHunt community.This website is not affiliated with, endorsed, or sponsored by HitGrab. All game content and materials belong to <PageLink href="https://hitgrab.com/">HitGrab</PageLink>.
       </p>
     </div>

@@ -13,7 +13,7 @@ export default async function Extensions() {
   return (
     <>
       <Heading>
-        <BoltIcon className="inline-grid w-12 h-12 mr-2 align-middle text-cyan-800 dark:text-cyan-200 hover:text-cyan-900 dark:hover:text-cyan-300 shrink-0" />
+        <BoltIcon className="w-12 h-12 mr-2 align-middle inline-grid text-cyan-800 dark:text-cyan-200 hover:text-cyan-900 dark:hover:text-cyan-300 shrink-0" />
         MouseHunt Browser Extensions
       </Heading>
       <ItemList items={items} />

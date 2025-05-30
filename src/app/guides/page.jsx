@@ -13,7 +13,7 @@ export default async function Guides() {
   return (
     <>
       <Heading>
-        <AcademicCapIcon className="inline-grid w-12 h-12 mr-2 text-pink-800 align-middle dark:text-pink-200 hover:text-pink-900 dark:hover:text-pink-300 shrink-0" />
+        <AcademicCapIcon className="w-12 h-12 mr-2 text-pink-800 align-middle inline-grid dark:text-pink-200 hover:text-pink-900 dark:hover:text-pink-300 shrink-0" />
         MouseHunt Guides
       </Heading>
       <ItemList items={items} />

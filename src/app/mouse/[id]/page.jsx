@@ -193,34 +193,34 @@ export default async function Mouse({ params }) {
   const hasAnyStage = sortedAttractionData.some((row) => row.stage);
 
   return (
-    <div className="max-w-4xl mx-auto px-2 sm:px-6">
+    <div className="max-w-4xl px-2 mx-auto sm:px-6">
       {/* Back to mice list link */}
       <div className="mb-4">
         <Link
           href="/mice"
-          className="inline-flex items-center text-sm text-sky-700 dark:text-sky-300 hover:underline"
+          className="inline-flex items-center text-sm font-medium text-pink-600 dark:text-pink-400 hover:text-pink-800 dark:hover:text-pink-200 transition-colors"
         >
           ← Back to mice list
         </Link>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-start">
-        <div className="flex justify-center md:block w-full md:w-auto">
+      <div className="flex flex-col items-start md:flex-row gap-6 md:gap-8">
+        <div className="flex justify-center w-full md:block md:w-auto">
           <Image
             src={`/images/mice/large/${mouse.type.replace(/_/g, '-')}.png`}
             alt={mouse.name}
             width={mouse.images.is_landscape ? 666 : 333}
             height={mouse.images.is_landscape ? 444 : 500}
-            className="w-40 sm:w-56 md:w-64 h-auto rounded-md shadow-md border border-gray-300 dark:border-gray-700"
+            className="w-40 h-auto border border-gray-300 shadow-md sm:w-56 md:w-64 rounded-md dark:border-gray-700"
             priority
           />
         </div>
 
-        <div className="flex-1 space-y-3 w-full">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 break-words">
+        <div className="flex-1 w-full space-y-3">
+          <h1 className="text-2xl font-bold text-gray-900 break-words sm:text-3xl md:text-4xl dark:text-gray-100">
             {mouse.name}
           </h1>
-          <h2 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-200 break-words">
+          <h2 className="text-lg font-semibold text-gray-800 break-words sm:text-xl dark:text-gray-200">
             {mouse.group}
             {mouse.subgroup && ` (${mouse.subgroup})`}
           </h2>
@@ -237,21 +237,21 @@ export default async function Mouse({ params }) {
             </div>
           </div>
 
-          <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line text-sm sm:text-base">
+          <p className="text-sm text-gray-700 whitespace-pre-line dark:text-gray-300 sm:text-base">
             {cleanDescription(mouse.description)}
           </p>
 
           {/* Weaknesses */}
           {mouse.weaknesses?.effective?.length > 0 && (
             <div className="mt-8">
-              <h2 className="text-base sm:text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">
+              <h2 className="mb-2 text-base font-semibold text-gray-900 sm:text-lg dark:text-gray-100">
                 Effective Power Types
               </h2>
               <ul className="flex flex-wrap gap-2">
                 {mouse.weaknesses.effective.map((type) => (
                   <li
                     key={type}
-                    className="px-3 py-1 bg-indigo-100 dark:bg-indigo-800 text-indigo-800 dark:text-white rounded-full text-xs sm:text-sm font-medium"
+                    className="px-3 py-1 text-xs font-medium text-indigo-800 bg-indigo-100 rounded-full dark:bg-indigo-800 dark:text-white sm:text-sm"
                   >
                     <Image
                       src={`/images/power-types/${type}.png`}
@@ -308,12 +308,12 @@ export default async function Mouse({ params }) {
       {sortedAttractionData.length > 0 && (
         <div className="mt-8 sm:mt-10">
           <div className="flex items-center justify-between ">
-            <h2 className="text-xl sm:text-2xl font-semibold mb-2 text-gray-900 dark:text-gray-100">
+            <h2 className="mb-2 text-xl font-semibold text-gray-900 sm:text-2xl dark:text-gray-100">
               Where to find {mouse.name}
             </h2>
             <Link
               href={`https://api.mouse.rip/mhct-redirect/${mouse.id}`}
-              className="inline-flex items-center text-sm text-sky-700 dark:text-sky-300 hover:underline"
+              className="inline-flex items-center text-sm font-medium text-pink-600 dark:text-pink-400 hover:text-pink-800 dark:hover:text-pink-200 transition-colors"
             >
               View on MHCT →
             </Link>
@@ -357,7 +357,7 @@ export default async function Mouse({ params }) {
 
       {/* Maps */}
       <div className="mt-8 sm:mt-10">
-        <h2 className="text-xl sm:text-2xl font-semibold mb-2 text-gray-900 dark:text-gray-100">
+        <h2 className="mb-2 text-xl font-semibold text-gray-900 sm:text-2xl dark:text-gray-100">
           Maps containing {mouse.name}
         </h2>
         {maps.length > 0 ? (
@@ -365,7 +365,7 @@ export default async function Mouse({ params }) {
             {maps.map((map) => (
               <li
                 key={map.map}
-                className="px-3 py-1 bg-pink-100 dark:bg-pink-900 text-pink-800 dark:text-pink-100 rounded-full text-xs sm:text-sm font-medium"
+                className="px-3 py-1 text-xs font-medium text-pink-800 bg-pink-100 rounded-full dark:bg-pink-900 dark:text-pink-100 sm:text-sm"
               >
                 <span className="font-semibold">{map.map}</span> ({Math.floor(map.rate / 100)}% chance)
               </li>
