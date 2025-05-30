@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "update-data": "bun ./scripts/update-data.js"
+    "update:data": "bun ./scripts/update-data.js",
+    "update:images": "bun ./scripts/update-images.js",
+    "update:userscripts": "bun ./scripts/update-userscripts.js"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.4",
