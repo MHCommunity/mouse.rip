@@ -54,7 +54,7 @@ export function ApplicationLayout({ children }) {
           <SidebarHeader>
             <SidebarItem href="/" aria-label="Home">
               <Logo aria-hidden="true" />
-              <SidebarLabel className="text-2xl text-pink-800 dark:text-pink-200 hover:text-pink-900 dark:hover:text-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-500 rounded">
+              <SidebarLabel className="text-2xl text-pink-800 rounded dark:text-pink-200 hover:text-pink-900 dark:hover:text-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-500">
                 mouse.rip
               </SidebarLabel>
             </SidebarItem>
@@ -66,7 +66,7 @@ export function ApplicationLayout({ children }) {
                 href="/"
                 current={pathname === '/'}
                 aria-label="Home"
-                className="focus:outline-none focus:ring-2 focus:ring-pink-500 rounded"
+                className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
               >
                 <HomeIcon aria-hidden="true" />
                 <SidebarLabel>Home</SidebarLabel>
@@ -75,7 +75,7 @@ export function ApplicationLayout({ children }) {
                 href="/guides"
                 current={pathname.startsWith('/guide')}
                 aria-label="Guides"
-                className="focus:outline-none focus:ring-2 focus:ring-pink-500 rounded"
+                className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
               >
                 <AcademicCapIcon aria-hidden="true" />
                 <SidebarLabel className="text-pink-800 dark:text-pink-200 hover:text-pink-900 dark:hover:text-pink-300">Guides</SidebarLabel>
@@ -84,7 +84,7 @@ export function ApplicationLayout({ children }) {
                 href="/extensions"
                 current={pathname.startsWith('/extension')}
                 aria-label="Extensions"
-                className="focus:outline-none focus:ring-2 focus:ring-cyan-500 rounded"
+                className="rounded focus:outline-none focus:ring-2 focus:ring-cyan-500"
               >
                 <BoltIcon aria-hidden="true" />
                 <SidebarLabel className="text-cyan-800 dark:text-cyan-200 hover:text-cyan-900 dark:hover:text-cyan-300">Extensions</SidebarLabel>
@@ -93,7 +93,7 @@ export function ApplicationLayout({ children }) {
                 href="/tools"
                 current={pathname.startsWith('/tool')}
                 aria-label="Tools"
-                className="focus:outline-none focus:ring-2 focus:ring-green-500 rounded"
+                className="rounded focus:outline-none focus:ring-2 focus:ring-green-500"
               >
                 <WrenchIcon aria-hidden="true" />
                 <SidebarLabel className="text-green-800 dark:text-green-200 hover:text-green-900 dark:hover:text-green-300">Tools</SidebarLabel>
@@ -102,7 +102,7 @@ export function ApplicationLayout({ children }) {
                 href="/spreadsheets"
                 current={pathname.startsWith('/spreadsheet')}
                 aria-label="Spreadsheets"
-                className="focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+                className="rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <TableCellsIcon aria-hidden="true" />
                 <SidebarLabel className="text-blue-800 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-300">Spreadsheets</SidebarLabel>
@@ -111,7 +111,7 @@ export function ApplicationLayout({ children }) {
                 href="/userscripts"
                 current={pathname.startsWith('/userscript')}
                 aria-label="Userscripts"
-                className="focus:outline-none focus:ring-2 focus:ring-purple-500 rounded"
+                className="rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
                 <SwatchIcon aria-hidden="true" />
                 <SidebarLabel className="text-purple-800 dark:text-purple-200 hover:text-purple-900 dark:hover:text-purple-300">Userscripts</SidebarLabel>
@@ -123,7 +123,7 @@ export function ApplicationLayout({ children }) {
               {locations.map((region) => (
                 <div key={region.id}>
                   <SidebarHeading
-                    className="text-xs font-semibold text-gray-600 dark:text-gray-400 px-4 py-2 uppercase tracking-wider"
+                    className="px-4 py-2 text-xs font-semibold tracking-wider text-gray-600 uppercase dark:text-gray-400"
                     aria-label={`${region.name} region`}
                   >
                     {region.name}

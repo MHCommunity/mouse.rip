@@ -5,6 +5,7 @@ import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Badge } from '@/components/badge';
 import { Link } from '@/components/link';
 import { PageLink } from '@/components/page-link';
+import { formatNumber } from '@/utils';
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
@@ -57,13 +58,13 @@ export default async function Userscript({ params }) {
         <div>
           <div className="text-xs text-gray-500 dark:text-gray-400">Installs</div>
           <div className="font-semibold text-gray-800 dark:text-gray-200">
-            {item.data.installs ? item.data.installs.toLocaleString() : '?'}
+            {formatNumber(item.data.installs) || '?'}
           </div>
         </div>
         <div>
           <div className="text-xs text-gray-500 dark:text-gray-400">Active Users</div>
           <div className="font-semibold text-gray-800 dark:text-gray-200">
-            {item.data.active_users ? `~${item.data.active_users.toLocaleString()}` : '?'}
+            {item.data.active_users ? `~${formatNumber(item.data.active_users)}` : '?'}
           </div>
         </div>
         <div>

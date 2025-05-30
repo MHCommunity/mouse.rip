@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Input } from '@/components/input';
 import { Heading } from '@/components/heading';
 import { PageLink } from '@/components/page-link';
+import { formatNumber } from '@/utils';
 
 const ESSENCES = [
   'Aleth',
@@ -81,7 +82,7 @@ export default function EssenceCalculator() {
       <Heading>Essence Calculator</Heading>
 
       <p className="p-4 mt-4 text-sm text-gray-800 rounded shadow bg-gray-50 dark:bg-gray-800 dark:text-gray-100">
-        Tip: You can copy your current amounts from the <PageLink href="https://www.mousehuntgame.com/inventory.php?tab=crafting&sub_tab=crafting_table">Crafting Table</PageLink> and hit paste to autofill the amounts.
+        Tip: You can copy your current amounts from the <PageLink href="https://www.mousehuntgame.com/inventory.php?tab=crafting&sub_tab=crafting_table">Crafting Table</PageLink> and press Ctrl+V (or Cmd+V) and the calculator will automatically fill out the amounts for each essence.
       </p>
 
       <form
@@ -89,46 +90,64 @@ export default function EssenceCalculator() {
           e.preventDefault();
           calculateFinalEssences();
         }}
-        className="mt-4 space-y-4"
+        className="mt-6 space-y-6"
+        aria-label="Essence calculator form"
       >
-        {ESSENCES.map((essence, idx) => (
-          <div key={essence} className="flex flex-wrap items-center gap-4">
-            <img
-              src={`/images/essence/${essence.toLowerCase()}.png`}
-              alt={`${essence} Essence`}
-              className="w-12 h-12 mr-2"
-              style={{ display: 'inline-block' }}
-            />
-            <label className="w-20 text-xl font-medium" htmlFor={essence}>
-              {essence}
-            </label>
-            <Input
-              type="number"
-              min="0"
-              value={amounts[idx]}
-              onChange={(e) => handleChange(idx, e.target.value)}
-              className="w-24"
-            />
-            <span className="text-sm text-gray-800 dark:text-gray-400" style={{ minWidth: '120px', display: 'inline-block' }}>
-              {idx > 0 ? (
-                <>
-                  {craftableFromLower[idx].toLocaleString()} total craftable
-                  <span className="hidden sm:inline"> from lower tiers</span>
-                </>
-              ) : (
-                // Empty placeholder for alignment
-                <span>&nbsp;</span>
-              )}
-            </span>
-          </div>
-        ))}
+        <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+          <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-600">
+            <thead className="bg-gray-50 dark:bg-gray-800">
+              <tr>
+                <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100 sm:pl-6">Essence</th>
+                <th scope="col" className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">Current</th>
+                <th scope="col" className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">From Crafting</th>
+                <th scope="col" className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">Final Count</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+              {ESSENCES.map((essence, idx) => (
+                <tr key={essence} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                  <td className="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white sm:pl-6">
+                    <div className="flex items-center">
+                      <img
+                        src={`/images/essence/${essence.toLowerCase()}.png`}
+                        alt=""
+                        className="flex-shrink-0 w-6 h-6 mr-2"
+                        aria-hidden="true"
+                      />
+                      {essence} Essence
+                    </div>
+                  </td>
+                  <td className="px-3 py-4 text-sm text-right text-gray-500 whitespace-nowrap dark:text-gray-400">
+                    <Input
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      value={amounts[idx]}
+                      onChange={(e) => handleChange(idx, e.target.value)}
+                      className="w-24 text-right"
+                      aria-label={`Amount of ${essence} Essence`}
+                    />
+                  </td>
+                  <td className="px-3 py-4 text-sm text-right text-gray-500 whitespace-nowrap dark:text-gray-400">
+                    {craftableFromLower[idx] > 0 ? `+${craftableFromLower[idx]}` : ''}
+                  </td>
+                  <td className="px-3 py-4 text-sm font-medium text-right text-gray-900 whitespace-nowrap dark:text-gray-100">
+                    {finalCounts ? finalCounts[idx] : amounts[idx] || '0'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-        <button
-          type="submit"
-          className="inline-flex items-center px-4 py-2 text-base font-semibold text-white rounded bg-sky-600 hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 dark:focus:ring-offset-gray-800"
-        >
-          Calculate
-        </button>
+        <div className="mt-6">
+          <button
+            type="submit"
+            className="inline-flex items-center px-6 py-3 text-base font-semibold text-white rounded-md bg-sky-600 hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 dark:focus:ring-offset-gray-800 transition-colors duration-200"
+          >
+            Calculate Final Counts
+          </button>
+        </div>
       </form>
 
       {finalCounts && (
@@ -160,12 +179,12 @@ export default function EssenceCalculator() {
                 } else if (isSecondLast) {
                   separator = ' and ';
                 }
-                return `${e.val.toLocaleString()} ${e.name}${separator}`;
+                return `${formatNumber(e.val)} ${e.name}${separator}`;
               }).join('');
 
               return (
                 <>
-                  You can craft <strong>{highest.val.toLocaleString()}</strong> <strong>{ESSENCES[highestIdx]}</strong>
+                  You can craft <strong>{formatNumber(highest.val)}</strong> <strong>{ESSENCES[highestIdx]}</strong>
                   {remaining.length > 0 && <> with {formattedRemaining} remaining</>}
                   .
                 </>

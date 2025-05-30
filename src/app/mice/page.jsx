@@ -9,54 +9,57 @@ export const metadata = {
   description: 'Explore all the different groups of mice in MouseHunt, from common rodents to legendary creatures.',
 };
 
-export default async function Mice() {
-  // Group mice by group name
-  const grouped = mice.reduce((acc, mouse) => {
-    if (! acc[mouse.group]) {
-      acc[mouse.group] = [];
+export default function Mice() {
+  const sortedGroups = [...miceGroups].sort((a, b) => a.display_order - b.display_order);
+
+  // Count mice in each group
+  const mouseCounts = mice.reduce((acc, mouse) => {
+    if (mouse.group) {
+      acc[mouse.group] = (acc[mouse.group] || 0) + 1;
     }
-    acc[mouse.group].push(mouse);
     return acc;
   }, {});
 
-  // Sort group names by their order in the miceGroups array
-  const groupNames = Object.keys(grouped).sort((a, b) => {
-    const indexA = miceGroups.findIndex((group) => group.name === a);
-    const indexB = miceGroups.findIndex((group) => group.name === b);
-    return indexA - indexB;
-  });
-
   return (
-    <>
-      <Heading>MouseHunt Mice</Heading>
-      <div className="space-y-8 mt-6">
-        {groupNames.map((group) => (
-          <div key={group}>
-            <h2 className="text-xl font-semibold mb-2">{group}</h2>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {grouped[group]
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map((mouse) => (
-                  <li key={mouse.type}>
-                    <Link
-                      href={`/mouse/${mouse.type.replace(/_/g, '-')}`}
-                      className="pr-3 rounded bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-100 text-sm hover:bg-pink-100 dark:hover:bg-pink-900 transition min-h-[50px] flex items-center"
-                    >
-                      <Image
-                        src={`/images/mice/thumbnail/${mouse.type.replace(/_/g, '-')}.png`}
-                        alt={mouse.name}
-                        width={50}
-                        height={50}
-                        className="inline-block mr-1"
-                      />
-                      {mouse.name}
-                    </Link>
-                  </li>
-                ))}
-            </ul>
-          </div>
-        ))}
+    <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+      <div className="mb-12 text-center">
+        <Heading>Mouse Groups</Heading>
+        <p className="max-w-3xl mx-auto mt-4 text-lg text-gray-600 dark:text-gray-300">
+          Explore all the different groups of mice in MouseHunt, from common rodents to legendary creatures.
+        </p>
       </div>
-    </>
+
+      <div className="flex flex-col items-center gap-6">
+        {sortedGroups.map((group) => {
+          return (
+            <Link
+              key={group.id}
+              href={`/mice/${group.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`}
+              className="block w-full overflow-hidden bg-white border border-gray-200 rounded-lg shadow-md group dark:bg-gray-800 dark:border-gray-700"
+              aria-label={`View ${group.name} mice`}
+            >
+              <div className="relative h-20 overflow-hidden bg-gray-100 dark:bg-gray-700">
+                <Image
+                  src={`/images/mice-groups/${group.id}.jpg`}
+                  alt={`${group.name} mice`}
+                  fill
+                  className="object-cover max-w-full group-hover:opacity-75 transition-transform duration-300"
+                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <h2 className="text-2xl font-bold text-white text-shadow group-hover:text-pink-300 transition-colors text-outline">
+                    {group.name}
+                  </h2>
+                  <p className="text-gray-200 text-md">
+                    {`${mouseCounts[group.name] || 0} mice`}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+    </div>
   );
 }

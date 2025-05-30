@@ -14,24 +14,24 @@ export default function Home() {
   const items = getPopularItems();
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-10">
-      <Heading className="text-center mb-6">
+    <div className="max-w-5xl px-6 py-10 mx-auto">
+      <Heading className="mb-6 text-center">
         🐭️ Become the best MouseHunter you can be! 🐭️
       </Heading>
 
-      <p className="text-center text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto mb-8">
+      <p className="max-w-2xl mx-auto mb-8 text-lg text-center text-gray-700 dark:text-gray-300">
         Explore a curated collection of guides, extensions, tools, spreadsheets, and userscripts to help you hunt smarter, faster, and more efficiently.
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+      <div className="mb-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
         <Link
           href="/guides"
-          className="block border border-pink-300 text-pink-700 dark:text-pink-400 rounded-lg p-5 transition hover:shadow-md hover:-translate-y-1 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-pink-500 focus:outline-none"
+          className="block p-5 text-pink-700 bg-white border border-pink-300 rounded-lg dark:text-pink-400 transition hover:shadow-md hover:-translate-y-1 dark:bg-gray-900 focus:ring-2 focus:ring-pink-500 focus:outline-none"
           aria-label="Browse MouseHunt Guides"
         >
-          <span className="block font-semibold text-lg mb-1">
+          <span className="block mb-1 text-lg font-semibold">
             <AcademicCapIcon
-              className="inline w-6 h-6 mr-2 align-middle text-pink-800 dark:text-pink-200 hover:text-pink-900 dark:hover:text-pink-300 shrink-0"
+              className="inline w-6 h-6 mr-2 text-pink-800 align-middle dark:text-pink-200 hover:text-pink-900 dark:hover:text-pink-300 shrink-0"
               aria-hidden="true"
             />
             MouseHunt Guides
@@ -40,10 +40,10 @@ export default function Home() {
         </Link>
         <Link
           href="/extensions"
-          className="block border border-cyan-300 text-cyan-700 dark:text-cyan-400 rounded-lg p-5 transition hover:shadow-md hover:-translate-y-1 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
+          className="block p-5 bg-white border rounded-lg border-cyan-300 text-cyan-700 dark:text-cyan-400 transition hover:shadow-md hover:-translate-y-1 dark:bg-gray-900 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
           aria-label="Browse Browser Extensions"
         >
-          <span className="block font-semibold text-lg mb-1">
+          <span className="block mb-1 text-lg font-semibold">
             <BoltIcon
               className="inline w-6 h-6 mr-2 align-middle text-cyan-800 dark:text-cyan-200 hover:text-cyan-900 dark:hover:text-cyan-300 shrink-0"
               aria-hidden="true"
@@ -54,12 +54,12 @@ export default function Home() {
         </Link>
         <Link
           href="/tools"
-          className="block border border-green-300 text-green-700 dark:text-green-400 rounded-lg p-5 transition hover:shadow-md hover:-translate-y-1 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-green-500 focus:outline-none"
+          className="block p-5 text-green-700 bg-white border border-green-300 rounded-lg dark:text-green-400 transition hover:shadow-md hover:-translate-y-1 dark:bg-gray-900 focus:ring-2 focus:ring-green-500 focus:outline-none"
           aria-label="Browse Tools & Helpers"
         >
-          <span className="block font-semibold text-lg mb-1">
+          <span className="block mb-1 text-lg font-semibold">
             <WrenchIcon
-              className="inline w-6 h-6 mr-2 align-middle text-green-800 dark:text-green-200 hover:text-green-900 dark:hover:text-green-300 shrink-0"
+              className="inline w-6 h-6 mr-2 text-green-800 align-middle dark:text-green-200 hover:text-green-900 dark:hover:text-green-300 shrink-0"
               aria-hidden="true"
             />
             Tools & Helpers
@@ -68,12 +68,12 @@ export default function Home() {
         </Link>
         <Link
           href="/spreadsheets"
-          className="block border border-blue-300 text-blue-700 dark:text-blue-400 rounded-lg p-5 transition hover:shadow-md hover:-translate-y-1 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          className="block p-5 text-blue-700 bg-white border border-blue-300 rounded-lg dark:text-blue-400 transition hover:shadow-md hover:-translate-y-1 dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           aria-label="Browse Spreadsheets"
         >
-          <span className="block font-semibold text-lg mb-1">
+          <span className="block mb-1 text-lg font-semibold">
             <TableCellsIcon
-              className="inline w-6 h-6 mr-2 align-middle text-blue-800 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-300 shrink-0"
+              className="inline w-6 h-6 mr-2 text-blue-800 align-middle dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-300 shrink-0"
               aria-hidden="true"
             />
             Spreadsheets
@@ -85,10 +85,10 @@ export default function Home() {
       <Divider className="my-16" />
 
       <section aria-labelledby="popular-items-heading" className="mt-16">
-        <h2 id="popular-items-heading" className="text-center text-2xl font-bold text-gray-900 dark:text-white mb-2">
+        <h2 id="popular-items-heading" className="mb-2 text-2xl font-bold text-center text-gray-900 dark:text-white">
           Community Favorites
         </h2>
-        <p className="text-center text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto mb-8">
+        <p className="max-w-2xl mx-auto mb-8 text-lg text-center text-gray-700 dark:text-gray-300">
           Some of the most popular items in the community:
         </p>
         <ItemList items={items} />

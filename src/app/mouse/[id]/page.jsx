@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { cleanDescription, formatNumber } from '@/utils';
 
 import mice from '@/data/generated/mice.json';
 import reverseMapper from '@/data/generated/mhct-reverse-mapper.json';
@@ -13,20 +14,6 @@ import items from '@/data/generated/items.json';
 const envLookup = Object.fromEntries(environments.map((env) => [env.id, env.name]));
 const envEventsLookup = Object.fromEntries(environmentsEvents.map((env) => [env.id, env.name]));
 const itemLookup = Object.fromEntries(items.map((item) => [item.type, item.name]));
-
-function cleanDescription(desc) {
-  return (desc || '')
-    .replace(/\\n/g, '\n') // Handle escaped newlines
-    .replace(/\\"/g, '"') // Unescape double quotes
-    .replace(/&quot;/g, '"') // Decode HTML entities
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/<br\s*\/?>/gi, '\n') // Convert <br> to newlines
-    .replace(/<\/?[^>]+(>|$)/g, '') // Strip all HTML tags
-    .replace(/\s+/g, ' ') // Normalize whitespace
-    .trim(); // Final trim
-}
 
 function getSortedAttractionData(attractionData) {
   const rows = [];
@@ -149,6 +136,13 @@ export default async function Mouse({ params }) {
     'Elite Chrome Slayer Map (-09.2022)',
     'Elite Map (-09.2022)',
     'Lantern Lighter Event Map (-2022)',
+
+    'Easy Map',
+    'Medium Map',
+    'Hard Map',
+    'Arduous Map',
+    'Elaborate Map',
+    'Elite Map',
   ]);
 
   const baseMapName = (name) =>
@@ -202,6 +196,14 @@ export default async function Mouse({ params }) {
         >
           ← Back to mice list
         </Link>
+        <span className="mx-2 text-gray-400">/</span>
+        <Link
+          href={`/mice/${mouse.group.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`}
+          className="text-sm text-pink-600 hover:text-pink-800 dark:text-pink-400 dark:hover:text-pink-200"
+        >
+          {mouse.group}
+        </Link>
+
       </div>
 
       <div className="flex flex-col items-start md:flex-row gap-6 md:gap-8">
@@ -225,15 +227,18 @@ export default async function Mouse({ params }) {
             {mouse.subgroup && ` (${mouse.subgroup})`}
           </h2>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4 sm:mt-6 text-sm text-gray-700 dark:text-gray-300">
+          <div className="mt-4 text-sm text-gray-700 grid grid-cols-2 sm:grid-cols-3 gap-4 sm:mt-6 dark:text-gray-300">
             <div>
-              <span className="font-semibold">Points:</span> {mouse.points.toLocaleString()}
+              <span className="font-semibold">Points:</span>
+              {formatNumber(mouse.points)}
             </div>
             <div>
-              <span className="font-semibold">Gold:</span> {mouse.gold.toLocaleString()}
+              <span className="font-semibold">Gold:</span>
+              {formatNumber(mouse.gold)}
             </div>
             <div>
-              <span className="font-semibold">Wisdom:</span> {mouse.wisdom?.toLocaleString() || '—'}
+              <span className="font-semibold">Wisdom:</span>
+              {formatNumber(mouse.wisdom)}
             </div>
           </div>
 
@@ -272,32 +277,34 @@ export default async function Mouse({ params }) {
       {/* Minlucks */}
       {mouse.minlucks && Object.keys(mouse.minlucks).length > 0 && (
         <div className="mt-8 sm:mt-10">
-          <h2 className="text-xl sm:text-2xl font-semibold mb-2 text-gray-900 dark:text-gray-100">
-            Minlucks
-            <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="mb-2 text-xl font-semibold text-gray-900 sm:text-2xl dark:text-gray-100">
+              Minlucks
+            </h2>
+            <h3 className="text-xs text-gray-500 align-middle sm:text-sm dark:text-gray-400">
               {' '}
               (Guaranteed catch if your trap has this much Luck)
-            </span>
-          </h2>
+            </h3>
+          </div>
           <ul className="flex flex-wrap gap-2">
             {Object.entries(mouse.minlucks)
               .filter(([, value]) => value > 0)
               .map(([type, value]) => (
                 <li
                   key={type}
-                  className="px-3 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-100 rounded-full text-xs sm:text-sm font-medium"
+                  className="px-3 py-1 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-full dark:bg-yellow-800 dark:text-yellow-100 sm:text-sm"
                 >
-                  <span className="font-semibold">
-                    <Image
-                      src={`/images/power-types/${type}.png`}
-                      alt={type}
-                      width={16}
-                      height={16}
-                      className="inline-block mr-1"
-                    />
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                  <Image
+                    src={`/images/power-types/${type}.png`}
+                    alt={type}
+                    width={16}
+                    height={16}
+                    className="inline-block mr-1"
+                  />
+                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                  <span className="ml-1 font-semibold text-md">
+                    {value}
                   </span>
-                  : {value}
                 </li>
               ))}
           </ul>
@@ -318,39 +325,41 @@ export default async function Mouse({ params }) {
               View on MHCT →
             </Link>
           </div>
-          <div className="w-full overflow-x-auto  max-h-[500px] overflow-y-scroll rounded border border-gray-300 dark:border-gray-700">
-            <table className="min-w-[600px] w-full text-xs sm:text-sm">
-              <thead>
-                <tr className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white">
-                  <th className="px-2 sm:px-3 py-2 text-left border-b border-gray-300 dark:border-gray-700 whitespace-nowrap">Location</th>
-                  {hasAnyStage && (
-                    <th className="px-2 sm:px-3 py-2 text-left border-b border-gray-300 dark:border-gray-700 whitespace-nowrap">Stage</th>
-                  )}
-                  <th className="px-2 sm:px-3 py-2 text-left border-b border-gray-300 dark:border-gray-700 whitespace-nowrap">Cheese</th>
-                  <th className="px-2 sm:px-3 py-2 text-left border-b border-gray-300 dark:border-gray-700 whitespace-nowrap">Attraction Rate</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sortedAttractionData.map((row, i) => (
-                  <tr key={i} className="even:bg-gray-100 dark:even:bg-gray-900 bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
-                    <td className="px-2 sm:px-3 py-2 border-b border-gray-200 dark:border-gray-800 whitespace-nowrap">
-                      {envLookup[row.location] || envEventsLookup[row.location] || row.location}
-                    </td>
+          <div className="w-full overflow-hidden border border-gray-300 rounded dark:border-gray-700">
+            <div className="overflow-x-auto overflow-y-hidden max-h-[500px]">
+              <table className="min-w-[600px] w-full text-xs sm:text-sm">
+                <thead className="sticky top-0 z-10">
+                  <tr className="text-gray-900 bg-gray-100 dark:bg-gray-800 dark:text-white">
+                    <th className="px-2 py-2 text-left bg-gray-100 border-b border-gray-300 sm:px-3 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">Location</th>
                     {hasAnyStage && (
-                      <td className="px-2 sm:px-3 py-2 border-b border-gray-200 dark:border-gray-800 whitespace-nowrap">
-                        {row.stage || '—'}
-                      </td>
+                      <th className="px-2 py-2 text-left bg-gray-100 border-b border-gray-300 sm:px-3 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">Stage</th>
                     )}
-                    <td className="px-2 sm:px-3 py-2 border-b border-gray-200 dark:border-gray-800 whitespace-nowrap">
-                      {itemLookup[row.cheese] || row.cheese}
-                    </td>
-                    <td className="px-2 sm:px-3 py-2 border-b border-gray-200 dark:border-gray-800 whitespace-nowrap">
-                      {row.rate ? `${(row.rate).toFixed(2)}%` : '—'}
-                    </td>
+                    <th className="px-2 py-2 text-left bg-gray-100 border-b border-gray-300 sm:px-3 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">Cheese</th>
+                    <th className="px-2 py-2 text-left bg-gray-100 border-b border-gray-300 sm:px-3 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">Attraction Rate</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="text-gray-900 dark:text-white">
+                  {sortedAttractionData.map((row, i) => (
+                    <tr key={i} className="text-gray-900 bg-white even:bg-gray-100 dark:even:bg-gray-900 dark:bg-gray-800 dark:text-white">
+                      <td className="px-2 py-2 border-b border-gray-200 sm:px-3 dark:border-gray-800 whitespace-nowrap">
+                        {envLookup[row.location] || envEventsLookup[row.location] || row.location}
+                      </td>
+                      {hasAnyStage && (
+                        <td className="px-2 py-2 border-b border-gray-200 sm:px-3 dark:border-gray-800 whitespace-nowrap">
+                          {row.stage || '—'}
+                        </td>
+                      )}
+                      <td className="px-2 py-2 border-b border-gray-200 sm:px-3 dark:border-gray-800 whitespace-nowrap">
+                        {itemLookup[row.cheese] || row.cheese}
+                      </td>
+                      <td className="px-2 py-2 border-b border-gray-200 sm:px-3 dark:border-gray-800 whitespace-nowrap">
+                        {row.rate ? `${(row.rate).toFixed(2)}%` : '—'}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
