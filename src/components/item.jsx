@@ -12,7 +12,7 @@ export function Item({ item, ...props }) {
   return (
     <div
       className={clsx(
-        'text-sm font-medium text-gray-700 border border-gray-400/50 rounded-md shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700',
+        'text-sm font-medium text-gray-700 border border-gray-400/50 rounded-md shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 transition hover:shadow-md hover:-translate-y-1',
         colors[item.category]
       )}
       {...props}

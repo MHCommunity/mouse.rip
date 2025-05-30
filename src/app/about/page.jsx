@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 import { Heading, Subheading } from '@/components/heading';
 import { Divider } from '@/components/divider';
 import { PageLink } from '@/components/page-link';
@@ -10,27 +8,26 @@ export const metadata = {
 };
 
 export default async function About() {
-  const MouseRipLink = () => {
-    return (
-      <Link href="/" className="text-pink-800 dark:text-pink-200 hover:text-pink-900 dark:hover:text-pink-300">
-        mouse.rip
-      </Link>
-    );
-  };
-
   return (
     <div className="max-w-4xl mx-auto">
       <Heading>About mouse.rip</Heading>
 
       <Divider className="my-10 mt-6" />
 
-      <p className="mb-4 text-gray-700 dark:text-gray-300">
-        Welcome to <MouseRipLink />. We are here to provide you with the tools, guides, and information you need to become a successful hunter and navigate the world of Gnawnia.
-      </p>
+      <div className="prose dark:prose-invert max-w-none">
+        <p className="mb-4">
+          Welcome to <PageLink href="/">mouse.rip</PageLink> your ultimate resource hub for the MouseHunt game. We are dedicated to providing comprehensive tools, detailed guides, and valuable information to help you become a master hunter in the world of Gnawnia.
+        </p>
+        <p className="mb-4">
+          Our mission is to create a centralized platform where MouseHunt players of all levels can find the resources they need to enhance their gameplay experience.
+        </p>
+      </div>
+
       <Subheading className="mt-6 mb-3">
         Our Features
       </Subheading>
-      <ul className="mb-4 list-disc list-inside text-gray-700 dark:text-gray-300">
+
+      <ul className="mb-4 list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2">
         <li className="my-2">
           <PageLink href="/guides">Guides</PageLink> - Detailed guides covering all aspects of MouseHunt, from beginner tips to advanced strategies.
         </li>
@@ -47,13 +44,23 @@ export default async function About() {
           <PageLink href="/userscripts">Userscripts</PageLink> - Custom scripts to customize your MouseHunt interface and enhance the user experience.
         </li>
       </ul>
-      <Subheading className="mt-6 mb-3">Connect with Us</Subheading>
+
+      <Subheading className="mt-6 mb-3">
+        Connect with Us
+      </Subheading>
+
       <p className="mb-4 text-gray-700 dark:text-gray-300">
         Join us on <PageLink href="https://github.com/MHCommunity">GitHub</PageLink> or <PageLink href="https://discordapp.com/invite/Ya9zEdk">Discord</PageLink> to connect with other hunters, ask questions, share your ideas, and contribute to the community.
       </p>
+
       <Divider className="my-10" />
-      <p className="text-sm text-center text-gray-500 dark:text-gray-400">
-        mouse.rip is a fan-made resource hub. Not affiliated with HitGrab.
+
+      <Subheading className="mb-3">
+        Disclaimer
+      </Subheading>
+
+      <p className="mb-4 text-gray-700 dark:text-gray-300 text-sm">
+        <PageLink href="/">mouse.rip</PageLink> is a fan-made resource hub created by and for the MouseHunt community.This website is not affiliated with, endorsed, or sponsored by HitGrab. All game content and materials belong to <PageLink href="https://hitgrab.com/">HitGrab</PageLink>.
       </p>
     </div>
   );
