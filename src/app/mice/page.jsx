@@ -5,8 +5,8 @@ import miceGroups from '@/data/generated/mice-groups.json';
 import { Heading } from '@/components/heading';
 
 export const metadata = {
-  title: 'MouseHunt Mouse Groups',
-  description: 'Explore all the different groups of mice in MouseHunt, from common rodents to legendary creatures.',
+  title: 'MouseHunt Mice',
+  description: 'Explore all the different mice in MouseHunt, from common rodents to legendary creatures.',
 };
 
 export default function Mice() {
@@ -23,9 +23,11 @@ export default function Mice() {
   return (
     <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
       <div className="mb-12 text-center">
-        <Heading>Mouse Groups</Heading>
+        <Heading>
+          MouseHunt Mice
+        </Heading>
         <p className="max-w-3xl mx-auto mt-4 text-lg text-gray-600 dark:text-gray-300">
-          Explore all the different groups of mice in MouseHunt, from common rodents to legendary creatures.
+          View information and details about all the different mice in MouseHunt.
         </p>
       </div>
 
