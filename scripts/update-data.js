@@ -14,27 +14,30 @@ const updateDataFiles = async () => {
     'mice-attraction-rates',
   ];
 
+  const itemsToSkip = new Set([
+    'arch_duke_achievement',
+    'bucket_o_cannon_parts_crafting_item',
+    'charm_level_2_trinket_slot',
+    'charm_level_3_trinket_slot',
+    'expired_cheese',
+    'fools_claw_shot_crate_convertible',
+    'fools_claw_shot_crate_convertible',
+    'halloween_2020_journal_theme_collectible',
+    'tournament_reaper_skin',
+  ]);
+
   // For each file, fetch it from api.mouse.rip and save it to the data folder
   for (const file of files) {
-    const apiUrl = `https://api.mouse.rip/${file}`;
-
-    const data = await fetch(apiUrl);
-    if (! data.ok) {
-      console.error(`Failed to fetch data for ${file}`); // eslint-disable-line no-console
-      return;
-    }
-
-    const json = await data.json();
+    let json = await fetch(`https://api.mouse.rip/${file}`).then((res) => res.json());
     if (! json) {
-      console.error(`Failed to parse JSON for ${file}`); // eslint-disable-line no-console
+      console.error(`Failed to fetch data for ${file}`); // eslint-disable-line no-console
       return;
     }
 
     console.log(`Updating ${file}...`); // eslint-disable-line no-console
 
     if ('items' === file) {
-      // remove the 'charm_level_3_trinket_slot' id items;
-      json.items = json.items.filter((item) => item.id !== 'charm_level_3_trinket_slot');
+      json = json.filter((item) => ! itemsToSkip.has(item.type));
     }
 
     const filePath = path.join(__dirname, `../src/data/generated/${file}.json`);

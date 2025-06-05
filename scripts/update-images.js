@@ -1,101 +1,84 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const updateMiceImages = async () => {
-  const miceData = await fetch('https://api.mouse.rip/mice');
-  if (! miceData.ok) {
+const fetchImage = async (url, fullPath) => {
+  if (fs.existsSync(fullPath)) {
     return;
   }
 
-  const mice = await miceData.json();
+  const imageData = await fetch(url);
+  if (! imageData.ok || imageData.redirected) {
+    console.error(`Failed to fetch image for ${url}: ${imageData.statusText}`); // eslint-disable-line no-console
+    return;
+  }
+
+  const imageBuffer = Buffer.from(await imageData.arrayBuffer());
+  if (! imageBuffer || imageBuffer.length === 0) {
+    return;
+  }
+
+  fs.writeFile(fullPath, imageBuffer, (err) => {
+    if (err) {
+      console.error(`Failed to write image to ${fullPath}: ${err.message}`); // eslint-disable-line no-console
+    }
+  });
+};
+
+const updateMiceImages = async () => {
+  const mice = await fetch('https://api.mouse.rip/mice').then((res) => res.json());
   if (! mice) {
     return;
   }
 
   for (const mouse of mice) {
     console.log(`Fetching images for ${mouse.type}...`); // eslint-disable-line no-console
-    const largePath = path.join(__dirname, `../public/images/mice/large/${mouse.type.replaceAll(/_/g, '-')}.png`);
-    if (! fs.existsSync(largePath)) {
-      const imageData = await fetch(mouse.images.large);
-      if (imageData.ok) {
-        const imageBuffer = Buffer.from(await imageData.arrayBuffer());
-        fs.writeFileSync(largePath, imageBuffer);
-      }
-    }
-
-    const thumbPath = path.join(__dirname, `../public/images/mice/thumbnail/${mouse.type.replaceAll(/_/g, '-')}.png`);
-    if (! fs.existsSync(thumbPath)) {
-      const thumbnailData = await fetch(mouse.images.thumbnail);
-      if (thumbnailData.ok) {
-        const thumbnailBuffer = Buffer.from(await thumbnailData.arrayBuffer());
-        fs.writeFileSync(thumbPath, thumbnailBuffer);
-      }
-    }
+    await fetchImage(mouse.images.large, path.join(__dirname, `../public/images/mice/large/${mouse.type.replaceAll(/_/g, '-')}.png`));
+    await fetchImage(mouse.images.thumbnail, path.join(__dirname, `../public/images/mice/thumbnail/${mouse.type.replaceAll(/_/g, '-')}.png`));
   }
 };
 
 const updateItemImages = async () => {
-  const itemsData = await fetch('https://api.mouse.rip/items');
-  if (! itemsData.ok) {
-    return;
-  }
-
-  const items = await itemsData.json();
+  const items = await fetch('https://api.mouse.rip/items').then((res) => res.json());
   if (! items) {
     return;
   }
 
+  const itemsToSkip = new Set([
+    'arch_duke_achievement',
+    'bucket_o_cannon_parts_crafting_item',
+    'charm_level_2_trinket_slot',
+    'charm_level_3_trinket_slot',
+    'expired_cheese',
+    'fools_claw_shot_crate_convertible',
+    'halloween_2020_journal_theme_collectible',
+    'tournament_reaper_skin',
+  ]);
+
   for (const item of items) {
+    if (itemsToSkip.has(item.type)) {
+      console.log(`Skipping item ${item.type}...`); // eslint-disable-line no-console
+      continue;
+    }
+
     console.log(`Fetching images for ${item.type}...`); // eslint-disable-line no-console
-    if (! item.images.large.length) {
-      item.images.large = item.images.thumbnail;
-    }
+    await fetchImage(
+      item.images.upscaled || item.images.best || item.images.large,
+      path.join(__dirname, `../public/images/items/large/${item.type.replaceAll(/_/g, '-')}.png`)
+    );
 
-    const largePath = path.join(__dirname, `../public/images/items/large/${item.type.replaceAll(/_/g, '-')}.png`);
-    if (! fs.existsSync(largePath) && (item.images.upscaled || item.images.best || item.images.large)) {
-      const imageData = await fetch(item.images.upscaled || item.images.best || item.images.large);
-      if (imageData.ok) {
-        const imageBuffer = Buffer.from(await imageData.arrayBuffer());
-        fs.writeFileSync(largePath, imageBuffer);
-      }
-    }
-
-    if (
-      fs.existsSync(largePath) &&
-      item.classification &&
-      'base' !== item.classification &&
-      item.images.upscaled &&
-      item.images.upscaled !== item.images.large
-    ) {
-      console.log(`Updating large image for ${item.type}...`); // eslint-disable-line no-console
-      const imageData = await fetch(item.images.upscaled);
-      if (imageData.ok) {
-        const imageBuffer = Buffer.from(await imageData.arrayBuffer());
-        fs.writeFileSync(largePath, imageBuffer);
-      }
-    }
-
-    const thumbPath = path.join(__dirname, `../public/images/items/thumbnail/${item.type.replaceAll(/_/g, '-')}.png`);
-    if (! fs.existsSync(thumbPath)) {
-      const thumbnailData = await fetch(item.images.thumbnail);
-      if (thumbnailData.ok) {
-        const thumbnailBuffer = Buffer.from(await thumbnailData.arrayBuffer());
-        fs.writeFileSync(thumbPath, thumbnailBuffer);
-      }
-    }
+    await fetchImage(
+      item.images.thumbnail,
+      path.join(__dirname, `../public/images/items/thumbnail/${item.type.replaceAll(/_/g, '-')}.png`)
+    );
 
     if (item.images.trap) {
-      const trapPath = path.join(__dirname, `../public/images/items/trap/${item.type.replaceAll(/_/g, '-')}.png`);
-      if (! fs.existsSync(trapPath)) {
-        const trapData = await fetch(item.images.trap);
-        if (trapData.ok) {
-          const trapBuffer = Buffer.from(await trapData.arrayBuffer());
-          fs.writeFileSync(trapPath, trapBuffer);
-        }
-      }
+      await fetchImage(
+        item.images.trap,
+        path.join(__dirname, `../public/images/items/trap/${item.type.replaceAll(/_/g, '-')}.png`)
+      );
     }
   }
 };
 
-updateItemImages();
 updateMiceImages();
+updateItemImages();

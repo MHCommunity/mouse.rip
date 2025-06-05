@@ -14,38 +14,24 @@ const updateUserScripts = async () => {
     }
 
     const scriptId = script.url.replace('https://greasyfork.org/en/scripts/', '');
-    const apiUrl = `https://api.greasyfork.org/en/scripts/${scriptId}.json`;
-
     console.log(`Updating script ID ${scriptId}...`); // eslint-disable-line no-console
-    const scriptData = await fetch(apiUrl);
-    if (! scriptData.ok) {
+
+    const scriptData = await fetch(`https://api.greasyfork.org/en/scripts/${scriptId}.json`).then((res) => res.json());
+    if (! scriptData) {
       console.error(`Failed to fetch data for script ID ${script.id}`); // eslint-disable-line no-console
       return;
     }
 
-    const scriptJson = await scriptData.json();
-    if (! scriptJson) {
-      console.error(`Failed to parse JSON for script ID ${script.id}`); // eslint-disable-line no-console
-      return;
-    }
-
-    const updateDataUrl = `https://greasyfork.org/en/scripts/${scriptId}/stats.json`;
-    const updateData = await fetch(updateDataUrl);
-    if (! updateData.ok) {
+    const updateData = await fetch(`https://greasyfork.org/en/scripts/${scriptId}/stats.json`).then((res) => res.json());
+    if (! updateData) {
       console.error(`Failed to fetch update data for script ID ${script.id}`); // eslint-disable-line no-console
       return;
     }
 
-    const updateJson = await updateData.json();
-    if (! updateJson) {
-      console.error(`Failed to parse update JSON for script ID ${script.id}`); // eslint-disable-line no-console
-      return;
-    }
-
-    let updateDates = Object.keys(updateJson);
+    let updateDates = Object.keys(updateData);
     const last7Days = updateDates.slice(-7);
     const totalUpdateChecks = last7Days.reduce((sum, date) => {
-      const dayData = updateJson[date];
+      const dayData = updateData[date];
       return sum + (dayData.update_checks || 0);
     }, 0);
 
@@ -55,17 +41,17 @@ const updateUserScripts = async () => {
     const adjustmentFactor = 1.87;
     const estimatedActiveUsers = Math.round(avg * adjustmentFactor);
 
-    updateDates = Object.keys(updateJson);
+    updateDates = Object.keys(updateData);
     const last3Months = updateDates.slice(-90);
     const installsLast3Months = last3Months.reduce((sum, date) => {
-      const dayData = updateJson[date];
+      const dayData = updateData[date];
       return sum + (dayData.installs || 0);
     }, 0);
 
-    updateDates = Object.keys(updateJson);
+    updateDates = Object.keys(updateData);
     const lastMonth = updateDates.slice(-30);
     const installsLastMonth = lastMonth.reduce((sum, date) => {
-      const dayData = updateJson[date];
+      const dayData = updateData[date];
       return sum + (dayData.installs || 0);
     }, 0);
 
@@ -76,7 +62,7 @@ const updateUserScripts = async () => {
       return;
     }
 
-    const scriptAuthor = scriptJson.users.map((author) => {
+    const scriptAuthor = scriptData.users.map((author) => {
       return {
         name: author.name,
         url: author.url,
@@ -86,15 +72,15 @@ const updateUserScripts = async () => {
     userscripts[scriptIndex] = {
       ...userscripts[scriptIndex],
       data: {
-        name: scriptJson.name,
-        description: scriptJson.description,
-        installs: scriptJson.total_installs,
+        name: scriptData.name,
+        description: scriptData.description,
+        installs: scriptData.total_installs,
         active_users: estimatedActiveUsers,
         installs_last_3_months: installsLast3Months,
         installs_last_month: installsLastMonth,
-        created_at: scriptJson.created_at,
-        updated_at: scriptJson.code_updated_at,
-        version: scriptJson.version,
+        created_at: scriptData.created_at,
+        updated_at: scriptData.code_updated_at,
+        version: scriptData.version,
         author: scriptAuthor,
       }
     };
