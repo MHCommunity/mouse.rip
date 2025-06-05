@@ -23,8 +23,6 @@ import {
   BoltIcon,
   HomeIcon,
   QuestionMarkCircleIcon,
-  SparklesIcon,
-  StarIcon,
   SwatchIcon,
   TableCellsIcon,
   WrenchIcon
@@ -128,32 +126,6 @@ export function ApplicationLayout({ children }) {
                 <SwatchIcon aria-hidden="true" />
                 <SidebarLabel className="text-purple-800 hover:text-purple-900 dark:text-purple-200 dark:hover:text-purple-300">
                   Userscripts
-                </SidebarLabel>
-              </SidebarItem>
-            </SidebarSection>
-
-            <SidebarDivider />
-            <SidebarSection>
-              <SidebarItem
-                href="/mice"
-                current={pathname.startsWith('/mice') || pathname.startsWith('/mouse')}
-                aria-label="Mice"
-                className="rounded focus:outline-none focus:ring-2 focus:ring-red-500"
-              >
-                <StarIcon aria-hidden="true" />
-                <SidebarLabel className="text-red-800 hover:text-red-900 dark:text-red-200 dark:hover:text-red-300">
-                  Mice
-                </SidebarLabel>
-              </SidebarItem>
-              <SidebarItem
-                href="/items"
-                current={pathname.startsWith('/items') || pathname.startsWith('/item')}
-                aria-label="Items"
-                className="rounded focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              >
-                <SparklesIcon aria-hidden="true" />
-                <SidebarLabel className="text-yellow-800 hover:text-yellow-900 dark:text-yellow-200 dark:hover:text-yellow-300">
-                  Items
                 </SidebarLabel>
               </SidebarItem>
             </SidebarSection>
