@@ -9,6 +9,9 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    reviewers: 
-      - "bradp"
     versioning-strategy: increase
+    groups:
+      dev-dependencies:
+        applies-to: version-updates
+        patterns:
+          - "*"
