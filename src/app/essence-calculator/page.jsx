@@ -1,9 +1,12 @@
 'use client';
+import Image from 'next/image';
 
-import { useState, useEffect } from 'react';
-import { Input } from '@/components/input';
+import { useEffect, useState } from 'react';
+
 import { Heading } from '@/components/heading';
+import { Input } from '@/components/input';
 import { PageLink } from '@/components/page-link';
+
 import { formatNumber } from '@/utils';
 
 const ESSENCES = [
@@ -78,10 +81,10 @@ export default function EssenceCalculator() {
   const craftableFromLower = computeCraftables();
 
   return (
-    <div className="max-w-4xl px-4 py-6 mx-auto">
+    <div className="mx-auto max-w-4xl px-4 py-6">
       <Heading>Essence Calculator</Heading>
 
-      <p className="p-4 mt-4 text-sm text-gray-800 rounded shadow bg-gray-50 dark:bg-gray-800 dark:text-gray-100">
+      <p className="mt-4 rounded bg-gray-50 p-4 text-sm text-gray-800 shadow dark:bg-gray-800 dark:text-gray-100">
         Tip: You can copy your current amounts from the <PageLink href="https://www.mousehuntgame.com/inventory.php?tab=crafting&sub_tab=crafting_table">Crafting Table</PageLink> and press Ctrl+V (or Cmd+V) and the calculator will automatically fill out the amounts for each essence.
       </p>
 
@@ -93,31 +96,33 @@ export default function EssenceCalculator() {
         className="mt-6 space-y-6"
         aria-label="Essence calculator form"
       >
-        <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+        <div className="overflow-hidden shadow ring-1 ring-black md:rounded-lg">
           <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-600">
             <thead className="bg-gray-50 dark:bg-gray-800">
               <tr>
-                <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100 sm:pl-6">Essence</th>
+                <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 dark:text-gray-100">Essence</th>
                 <th scope="col" className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">Current</th>
                 <th scope="col" className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">From Crafting</th>
                 <th scope="col" className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">Final Count</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+            <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-900">
               {ESSENCES.map((essence, idx) => (
                 <tr key={essence} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                  <td className="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white sm:pl-6">
+                  <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 dark:text-white">
                     <div className="flex items-center">
-                      <img
+                      <Image
                         src={`/images/essence/${essence.toLowerCase()}.png`}
                         alt=""
-                        className="flex-shrink-0 w-6 h-6 mr-2"
+                        width={24}
+                        height={24}
+                        className="mr-2 size-6 shrink-0"
                         aria-hidden="true"
                       />
                       {essence} Essence
                     </div>
                   </td>
-                  <td className="px-3 py-4 text-sm text-right text-gray-500 whitespace-nowrap dark:text-gray-400">
+                  <td className="whitespace-nowrap px-3 py-4 text-right text-sm text-gray-500 dark:text-gray-400">
                     <Input
                       type="text"
                       inputMode="numeric"
@@ -128,10 +133,10 @@ export default function EssenceCalculator() {
                       aria-label={`Amount of ${essence} Essence`}
                     />
                   </td>
-                  <td className="px-3 py-4 text-sm text-right text-gray-500 whitespace-nowrap dark:text-gray-400">
+                  <td className="whitespace-nowrap px-3 py-4 text-right text-sm text-gray-500 dark:text-gray-400">
                     {craftableFromLower[idx] > 0 ? `+${craftableFromLower[idx]}` : ''}
                   </td>
-                  <td className="px-3 py-4 text-sm font-medium text-right text-gray-900 whitespace-nowrap dark:text-gray-100">
+                  <td className="whitespace-nowrap px-3 py-4 text-right text-sm font-medium text-gray-900 dark:text-gray-100">
                     {finalCounts ? finalCounts[idx] : amounts[idx] || '0'}
                   </td>
                 </tr>
@@ -143,7 +148,7 @@ export default function EssenceCalculator() {
         <div className="mt-6">
           <button
             type="submit"
-            className="inline-flex items-center px-6 py-3 text-base font-semibold text-white rounded-md bg-sky-600 hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 dark:focus:ring-offset-gray-800 transition-colors duration-200"
+            className="inline-flex items-center rounded-md bg-sky-600 px-6 py-3 text-base font-semibold text-white transition-colors duration-200 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 dark:bg-sky-500 dark:hover:bg-sky-600 dark:focus:ring-offset-gray-800"
           >
             Calculate Final Counts
           </button>
@@ -151,7 +156,7 @@ export default function EssenceCalculator() {
       </form>
 
       {finalCounts && (
-        <div className="p-4 mt-6 text-gray-800 rounded shadow bg-gray-50 dark:bg-gray-800 dark:text-gray-100">
+        <div className="mt-6 rounded bg-gray-50 p-4 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-100">
           <p>
             {(() => {
               const highest = finalCounts
@@ -195,7 +200,7 @@ export default function EssenceCalculator() {
       )}
 
       {! finalCounts && (
-        <p className="p-4 mt-6 text-gray-800 rounded shadow bg-gray-50 dark:bg-gray-800 dark:text-gray-100">
+        <p className="mt-6 rounded bg-gray-50 p-4 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-100">
           Did you know? It takes 6,561 Aleth Essence to craft 1 Icuri Essence.
         </p>
       )}

@@ -3,7 +3,7 @@
 import * as Headless from '@headlessui/react';
 import clsx from 'clsx';
 
-import { Fragment, forwardRef, useId } from 'react';
+import { forwardRef, Fragment, useId } from 'react';
 import { LayoutGroup, motion } from 'framer-motion';
 
 import { Link } from './link';
@@ -19,7 +19,7 @@ export function SidebarHeader({ className, ...props }) {
       {...props}
       className={clsx(
         className,
-        'flex flex-col p-4 [&>[data-slot=section]+[data-slot=section]]:mt-2.5 border-b border-zinc-200 dark:bg-zinc-900 dark:border-zinc-800'
+        'flex flex-col border-b border-zinc-200 p-4 dark:border-zinc-800 dark:bg-zinc-900 [&>[data-slot=section]+[data-slot=section]]:mt-2.5'
       )}
     />
   );
@@ -32,7 +32,7 @@ export function SidebarBody({ className, ...props }) {
       className={clsx(
         className,
         'flex flex-1 flex-col overflow-y-auto p-4 [&>[data-slot=section]+[data-slot=section]]:mt-8',
-        '[&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-800 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700'
+        '[&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700 [&::-webkit-scrollbar-track]:bg-gray-100 dark:[&::-webkit-scrollbar-track]:bg-zinc-800 [&::-webkit-scrollbar]:w-2'
       )}
     />
   );

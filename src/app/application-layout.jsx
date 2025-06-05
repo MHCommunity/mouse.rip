@@ -23,6 +23,8 @@ import {
   BoltIcon,
   HomeIcon,
   QuestionMarkCircleIcon,
+  SparklesIcon,
+  StarIcon,
   SwatchIcon,
   TableCellsIcon,
   WrenchIcon
@@ -42,7 +44,7 @@ export function ApplicationLayout({ children }) {
           <NavbarSection>
             <NavbarItem href="/" current={pathname === '/'}>
               <Logo />
-              <span className="text-2xl text-pink-800 dark:text-pink-200 hover:text-pink-900 dark:hover:text-pink-300">
+              <span className="text-2xl text-pink-800 hover:text-pink-900 dark:text-pink-200 dark:hover:text-pink-300">
                 mouse.rip
               </span>
             </NavbarItem>
@@ -54,7 +56,7 @@ export function ApplicationLayout({ children }) {
           <SidebarHeader>
             <SidebarItem href="/" aria-label="Home">
               <Logo aria-hidden="true" />
-              <SidebarLabel className="text-2xl text-pink-800 rounded dark:text-pink-200 hover:text-pink-900 dark:hover:text-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-500">
+              <SidebarLabel className="rounded text-2xl text-pink-800 hover:text-pink-900 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:text-pink-200 dark:hover:text-pink-300">
                 mouse.rip
               </SidebarLabel>
             </SidebarItem>
@@ -69,7 +71,9 @@ export function ApplicationLayout({ children }) {
                 className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
               >
                 <HomeIcon aria-hidden="true" />
-                <SidebarLabel>Home</SidebarLabel>
+                <SidebarLabel>
+                  Home
+                </SidebarLabel>
               </SidebarItem>
               <SidebarItem
                 href="/guides"
@@ -78,7 +82,9 @@ export function ApplicationLayout({ children }) {
                 className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
               >
                 <AcademicCapIcon aria-hidden="true" />
-                <SidebarLabel className="text-pink-800 dark:text-pink-200 hover:text-pink-900 dark:hover:text-pink-300">Guides</SidebarLabel>
+                <SidebarLabel className="text-pink-800 hover:text-pink-900 dark:text-pink-200 dark:hover:text-pink-300">
+                  Guides
+                </SidebarLabel>
               </SidebarItem>
               <SidebarItem
                 href="/extensions"
@@ -87,7 +93,9 @@ export function ApplicationLayout({ children }) {
                 className="rounded focus:outline-none focus:ring-2 focus:ring-cyan-500"
               >
                 <BoltIcon aria-hidden="true" />
-                <SidebarLabel className="text-cyan-800 dark:text-cyan-200 hover:text-cyan-900 dark:hover:text-cyan-300">Extensions</SidebarLabel>
+                <SidebarLabel className="text-cyan-800 hover:text-cyan-900 dark:text-cyan-200 dark:hover:text-cyan-300">
+                  Extensions
+                </SidebarLabel>
               </SidebarItem>
               <SidebarItem
                 href="/tools"
@@ -96,7 +104,9 @@ export function ApplicationLayout({ children }) {
                 className="rounded focus:outline-none focus:ring-2 focus:ring-green-500"
               >
                 <WrenchIcon aria-hidden="true" />
-                <SidebarLabel className="text-green-800 dark:text-green-200 hover:text-green-900 dark:hover:text-green-300">Tools</SidebarLabel>
+                <SidebarLabel className="text-green-800 hover:text-green-900 dark:text-green-200 dark:hover:text-green-300">
+                  Tools
+                </SidebarLabel>
               </SidebarItem>
               <SidebarItem
                 href="/spreadsheets"
@@ -105,7 +115,9 @@ export function ApplicationLayout({ children }) {
                 className="rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <TableCellsIcon aria-hidden="true" />
-                <SidebarLabel className="text-blue-800 dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-300">Spreadsheets</SidebarLabel>
+                <SidebarLabel className="text-blue-800 hover:text-blue-900 dark:text-blue-200 dark:hover:text-blue-300">
+                  Spreadsheets
+                </SidebarLabel>
               </SidebarItem>
               <SidebarItem
                 href="/userscripts"
@@ -114,7 +126,35 @@ export function ApplicationLayout({ children }) {
                 className="rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
                 <SwatchIcon aria-hidden="true" />
-                <SidebarLabel className="text-purple-800 dark:text-purple-200 hover:text-purple-900 dark:hover:text-purple-300">Userscripts</SidebarLabel>
+                <SidebarLabel className="text-purple-800 hover:text-purple-900 dark:text-purple-200 dark:hover:text-purple-300">
+                  Userscripts
+                </SidebarLabel>
+              </SidebarItem>
+            </SidebarSection>
+
+            <SidebarDivider />
+            <SidebarSection>
+              <SidebarItem
+                href="/mice"
+                current={pathname.startsWith('/mice') || pathname.startsWith('/mouse')}
+                aria-label="Mice"
+                className="rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+              >
+                <StarIcon aria-hidden="true" />
+                <SidebarLabel className="text-red-800 hover:text-red-900 dark:text-red-200 dark:hover:text-red-300">
+                  Mice
+                </SidebarLabel>
+              </SidebarItem>
+              <SidebarItem
+                href="/items"
+                current={pathname.startsWith('/items') || pathname.startsWith('/item')}
+                aria-label="Items"
+                className="rounded focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              >
+                <SparklesIcon aria-hidden="true" />
+                <SidebarLabel className="text-yellow-800 hover:text-yellow-900 dark:text-yellow-200 dark:hover:text-yellow-300">
+                  Items
+                </SidebarLabel>
               </SidebarItem>
             </SidebarSection>
 
@@ -123,7 +163,7 @@ export function ApplicationLayout({ children }) {
               {locations.map((region) => (
                 <div key={region.id}>
                   <SidebarHeading
-                    className="px-4 py-2 text-xs font-semibold tracking-wider text-gray-600 uppercase dark:text-gray-400"
+                    className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400"
                     aria-label={`${region.name} region`}
                   >
                     {region.name}
@@ -134,14 +174,14 @@ export function ApplicationLayout({ children }) {
                         key={location.id}
                         href={`/locations/${location.id}`}
                         current={pathname === `/locations/${location.id}`}
-                        className="text-xs font-semibold text-gray-400 rounded-md hover:text-white hover:bg-gray-800"
+                        className="rounded-md text-xs font-semibold text-gray-400 hover:bg-gray-800 hover:text-white"
                       >
                         <Avatar slot="icon" src={`/images/locations/${location.id}.png`} alt={location.name} square />
                         {location.name}
                       </SidebarSmallItem>
                     ))}
                   </div>
-                  <div className="flex-1 mt-4" aria-hidden="true" />
+                  <div className="mt-4 flex-1" aria-hidden="true" />
                 </div>
               ))}
             </SidebarSection>
@@ -150,15 +190,21 @@ export function ApplicationLayout({ children }) {
             <SidebarSection>
               <SidebarItem href="/about" current={pathname.startsWith('/about')}>
                 <QuestionMarkCircleIcon />
-                <SidebarLabel>About</SidebarLabel>
+                <SidebarLabel>
+                  About
+                </SidebarLabel>
               </SidebarItem>
               <SidebarItem href="https://github.com/MHCommunity">
                 <GitHubIcon />
-                <SidebarLabel>GitHub</SidebarLabel>
+                <SidebarLabel>
+                  GitHub
+                </SidebarLabel>
               </SidebarItem>
               <SidebarItem href="https://discord.gg/mousehunt">
                 <DiscordIcon />
-                <SidebarLabel>Discord</SidebarLabel>
+                <SidebarLabel>
+                  Discord
+                </SidebarLabel>
               </SidebarItem>
             </SidebarSection>
           </SidebarBody>

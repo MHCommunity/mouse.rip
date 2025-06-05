@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import Image from 'next/image';
 
 export function Logo({ className, ...props }) {
   return (
@@ -7,10 +8,17 @@ export function Logo({ className, ...props }) {
       {...props}
       className={clsx(
         className,
-        'inline-grid shrink-0 align-middle [--avatar-radius:20%] [--ring-opacity:20%] *:col-start-1 *:row-start-1 rounded-full *:rounded-full'
+        'inline-grid shrink-0 rounded-full align-middle [--avatar-radius:20%] [--ring-opacity:20%] *:col-start-1 *:row-start-1 *:rounded-full'
       )}
     >
-      <img className="size-full max-h-6 max-w-6" src="/images/logo.png" alt="mouse.rip" />
+      <Image
+        className="size-full max-h-6 max-w-6"
+        src="/images/logo.png"
+        alt="mouse.rip"
+        width={24}
+        height={24}
+      />
+      <span className="sr-only">mouse.rip</span>
     </span>
   );
 }

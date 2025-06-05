@@ -13,7 +13,7 @@ export default async function Tools() {
   return (
     <>
       <Heading>
-        <WrenchIcon className="w-12 h-12 mr-2 text-green-800 align-middle inline-grid dark:text-green-200 hover:text-green-900 dark:hover:text-green-300 shrink-0" />
+        <WrenchIcon className="mr-2 inline-grid size-12 shrink-0 align-middle text-green-800 hover:text-green-900 dark:text-green-200 dark:hover:text-green-300" />
         MouseHunt Tools
       </Heading>
       <ItemList items={items} />

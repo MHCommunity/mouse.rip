@@ -1,14 +1,16 @@
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { cleanDescription, formatNumber } from '@/utils';
 
-import mice from '@/data/generated/mice.json';
-import reverseMapper from '@/data/generated/mhct-reverse-mapper.json';
+import { cleanDescription, formatNumber } from '@/utils';
+import { Heading } from '@/components/heading';
+
 import attractionRates from '@/data/generated/mice-attraction-rates.json';
 import environments from '@/data/generated/environments.json';
 import environmentsEvents from '@/data/generated/environments-events.json';
 import items from '@/data/generated/items.json';
+import mice from '@/data/generated/mice.json';
+import reverseMapper from '@/data/generated/mhct-reverse-mapper.json';
 
 // Create lookup tables
 const envLookup = Object.fromEntries(environments.map((env) => [env.id, env.name]));
@@ -187,11 +189,11 @@ export default async function Mouse({ params }) {
   const hasAnyStage = sortedAttractionData.some((row) => row.stage);
 
   return (
-    <div className="max-w-4xl px-2 mx-auto sm:px-6">
+    <div className="mx-auto max-w-4xl px-2 sm:px-6">
       <div className="mb-4">
         <Link
           href="/mice"
-          className="inline-flex items-center text-sm font-medium text-pink-600 dark:text-pink-400 hover:text-pink-800 dark:hover:text-pink-200 transition-colors"
+          className="inline-flex items-center text-sm font-medium text-pink-600 transition-colors hover:text-pink-800 dark:text-pink-400 dark:hover:text-pink-200"
         >
           ← Back to Mice
         </Link>
@@ -205,28 +207,28 @@ export default async function Mouse({ params }) {
 
       </div>
 
-      <div className="flex flex-col items-start md:flex-row gap-6 md:gap-8">
-        <div className="flex justify-center w-full md:block md:w-auto">
+      <div className="flex flex-col items-start gap-6 md:flex-row md:gap-8">
+        <div className="flex w-full justify-center md:block md:w-auto">
           <Image
             src={`/images/mice/large/${mouse.type.replace(/_/g, '-')}.png`}
             alt={mouse.name}
             width={mouse.images.is_landscape ? 666 : 333}
             height={mouse.images.is_landscape ? 444 : 500}
-            className="w-40 h-auto border border-gray-300 shadow-md sm:w-56 md:w-64 rounded-md dark:border-gray-700"
+            className="h-auto w-40 rounded-md border border-gray-300 shadow-md sm:w-56 md:w-64 dark:border-gray-700"
             priority
           />
         </div>
 
-        <div className="flex-1 w-full space-y-3">
-          <h1 className="text-2xl font-bold text-gray-900 break-words sm:text-3xl md:text-4xl dark:text-gray-100">
+        <div className="w-full flex-1 space-y-3">
+          <Heading className="break-words text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl dark:text-gray-100">
             {mouse.name}
-          </h1>
-          <h2 className="text-lg font-semibold text-gray-800 break-words sm:text-xl dark:text-gray-200">
+          </Heading>
+          <Heading level={2} className="break-words text-lg font-semibold text-gray-800 sm:text-xl dark:text-gray-200">
             {mouse.group}
             {mouse.subgroup && ` (${mouse.subgroup})`}
-          </h2>
+          </Heading>
 
-          <div className="mt-4 text-sm text-gray-700 grid grid-cols-2 sm:grid-cols-3 gap-4 sm:mt-6 dark:text-gray-300">
+          <div className="mt-4 grid grid-cols-2 gap-4 text-sm text-gray-700 sm:mt-6 sm:grid-cols-3 dark:text-gray-300">
             <div>
               <span className="font-semibold">Points: </span>
               {formatNumber(mouse.points)}
@@ -241,28 +243,28 @@ export default async function Mouse({ params }) {
             </div>
           </div>
 
-          <p className="text-sm text-gray-700 whitespace-pre-line dark:text-gray-300 sm:text-base">
+          <p className="whitespace-pre-line text-sm text-gray-700 sm:text-base dark:text-gray-300">
             {cleanDescription(mouse.description)}
           </p>
 
           {/* Weaknesses */}
           {mouse.weaknesses?.effective?.length > 0 && (
             <div className="mt-8">
-              <h2 className="mb-2 text-base font-semibold text-gray-900 sm:text-lg dark:text-gray-100">
+              <Heading level={2} className="mb-2 text-base font-semibold text-gray-900 sm:text-lg dark:text-gray-100">
                 Effective Power Types
-              </h2>
+              </Heading>
               <ul className="flex flex-wrap gap-2">
                 {mouse.weaknesses.effective.map((type) => (
                   <li
                     key={type}
-                    className="px-3 py-1 text-xs font-medium text-indigo-800 bg-indigo-100 rounded-full dark:bg-indigo-800 dark:text-white sm:text-sm"
+                    className="rounded-full bg-indigo-100 px-3 py-1 text-xs font-medium text-indigo-800 sm:text-sm dark:bg-indigo-800 dark:text-white"
                   >
                     <Image
                       src={`/images/power-types/${type}.png`}
                       alt={type}
                       width={16}
                       height={16}
-                      className="inline-block mr-1"
+                      className="mr-1 inline-block"
                     />
                     {type.charAt(0).toUpperCase() + type.slice(1)}
                   </li>
@@ -276,11 +278,11 @@ export default async function Mouse({ params }) {
       {/* Minlucks */}
       {mouse.minlucks && Object.keys(mouse.minlucks).length > 0 && (
         <div className="mt-8 sm:mt-10">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="mb-2 text-xl font-semibold text-gray-900 sm:text-2xl dark:text-gray-100">
+          <div className="mb-4 flex items-center justify-between">
+            <Heading level={2} className="mb-2 text-xl font-semibold text-gray-900 sm:text-2xl dark:text-gray-100">
               Minlucks
-            </h2>
-            <h3 className="text-xs text-gray-500 align-middle sm:text-sm dark:text-gray-400">
+            </Heading>
+            <h3 className="align-middle text-xs text-gray-500 sm:text-sm dark:text-gray-400">
               {' '}
               (Guaranteed catch if your trap has this much Luck)
             </h3>
@@ -291,17 +293,17 @@ export default async function Mouse({ params }) {
               .map(([type, value]) => (
                 <li
                   key={type}
-                  className="px-3 py-1 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-full dark:bg-yellow-800 dark:text-yellow-100 sm:text-sm"
+                  className="rounded-full bg-yellow-100 px-3 py-1 text-xs font-medium text-yellow-800 sm:text-sm dark:bg-yellow-800 dark:text-yellow-100"
                 >
                   <Image
                     src={`/images/power-types/${type}.png`}
                     alt={type}
                     width={16}
                     height={16}
-                    className="inline-block mr-1"
+                    className="mr-1 inline-block"
                   />
                   {type.charAt(0).toUpperCase() + type.slice(1)}
-                  <span className="ml-1 font-semibold text-md">
+                  <span className="ml-1 font-semibold">
                     {value}
                   </span>
                 </li>
@@ -313,45 +315,45 @@ export default async function Mouse({ params }) {
       {/* Attraction Table */}
       {sortedAttractionData.length > 0 && (
         <div className="mt-8 sm:mt-10">
-          <div className="flex items-center justify-between ">
-            <h2 className="mb-2 text-xl font-semibold text-gray-900 sm:text-2xl dark:text-gray-100">
+          <div className="flex items-center justify-between">
+            <Heading level={2} className="mb-2 text-xl font-semibold text-gray-900 sm:text-2xl dark:text-gray-100">
               Where to find {mouse.name}
-            </h2>
+            </Heading>
             <Link
               href={`https://api.mouse.rip/mhct-redirect/${mouse.id}`}
-              className="inline-flex items-center text-sm font-medium text-pink-600 dark:text-pink-400 hover:text-pink-800 dark:hover:text-pink-200 transition-colors"
+              className="inline-flex items-center text-sm font-medium text-pink-600 transition-colors hover:text-pink-800 dark:text-pink-400 dark:hover:text-pink-200"
             >
               View on MHCT →
             </Link>
           </div>
-          <div className="w-full overflow-hidden border border-gray-300 rounded dark:border-gray-700">
-            <div className="overflow-x-auto overflow-y-hidden max-h-[500px]">
-              <table className="min-w-[600px] w-full text-xs sm:text-sm">
+          <div className="w-full overflow-hidden rounded border border-gray-300 dark:border-gray-700">
+            <div className="max-h-[500px] overflow-x-auto overflow-y-hidden">
+              <table className="w-full min-w-[600px] text-xs sm:text-sm">
                 <thead className="sticky top-0 z-10">
-                  <tr className="text-gray-900 bg-gray-100 dark:bg-gray-800 dark:text-white">
-                    <th className="px-2 py-2 text-left bg-gray-100 border-b border-gray-300 sm:px-3 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">Location</th>
+                  <tr className="bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white">
+                    <th className="whitespace-nowrap border-b border-gray-300 bg-gray-100 p-2 text-left sm:px-3 dark:border-gray-700 dark:bg-gray-800">Location</th>
                     {hasAnyStage && (
-                      <th className="px-2 py-2 text-left bg-gray-100 border-b border-gray-300 sm:px-3 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">Stage</th>
+                      <th className="whitespace-nowrap border-b border-gray-300 bg-gray-100 p-2 text-left sm:px-3 dark:border-gray-700 dark:bg-gray-800">Stage</th>
                     )}
-                    <th className="px-2 py-2 text-left bg-gray-100 border-b border-gray-300 sm:px-3 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">Cheese</th>
-                    <th className="px-2 py-2 text-left bg-gray-100 border-b border-gray-300 sm:px-3 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">Attraction Rate</th>
+                    <th className="whitespace-nowrap border-b border-gray-300 bg-gray-100 p-2 text-left sm:px-3 dark:border-gray-700 dark:bg-gray-800">Cheese</th>
+                    <th className="whitespace-nowrap border-b border-gray-300 bg-gray-100 p-2 text-left sm:px-3 dark:border-gray-700 dark:bg-gray-800">Attraction Rate</th>
                   </tr>
                 </thead>
                 <tbody className="text-gray-900 dark:text-white">
                   {sortedAttractionData.map((row, i) => (
-                    <tr key={i} className="text-gray-900 bg-white even:bg-gray-100 dark:even:bg-gray-900 dark:bg-gray-800 dark:text-white">
-                      <td className="px-2 py-2 border-b border-gray-200 sm:px-3 dark:border-gray-800 whitespace-nowrap">
+                    <tr key={i} className="bg-white text-gray-900 even:bg-gray-100 dark:bg-gray-800 dark:text-white dark:even:bg-gray-900">
+                      <td className="whitespace-nowrap border-b border-gray-200 p-2 sm:px-3 dark:border-gray-800">
                         {envLookup[row.location] || envEventsLookup[row.location] || row.location}
                       </td>
                       {hasAnyStage && (
-                        <td className="px-2 py-2 border-b border-gray-200 sm:px-3 dark:border-gray-800 whitespace-nowrap">
+                        <td className="whitespace-nowrap border-b border-gray-200 p-2 sm:px-3 dark:border-gray-800">
                           {row.stage || '—'}
                         </td>
                       )}
-                      <td className="px-2 py-2 border-b border-gray-200 sm:px-3 dark:border-gray-800 whitespace-nowrap">
+                      <td className="whitespace-nowrap border-b border-gray-200 p-2 sm:px-3 dark:border-gray-800">
                         {itemLookup[row.cheese] || row.cheese}
                       </td>
-                      <td className="px-2 py-2 border-b border-gray-200 sm:px-3 dark:border-gray-800 whitespace-nowrap">
+                      <td className="whitespace-nowrap border-b border-gray-200 p-2 sm:px-3 dark:border-gray-800">
                         {row.rate ? `${(row.rate).toFixed(2)}%` : '—'}
                       </td>
                     </tr>
@@ -365,15 +367,15 @@ export default async function Mouse({ params }) {
 
       {/* Maps */}
       <div className="mt-8 sm:mt-10">
-        <h2 className="mb-2 text-xl font-semibold text-gray-900 sm:text-2xl dark:text-gray-100">
+        <Heading level={2} className="mb-2 text-xl font-semibold text-gray-900 sm:text-2xl dark:text-gray-100">
           Maps containing {mouse.name}
-        </h2>
+        </Heading>
         {maps.length > 0 ? (
           <ul className="flex flex-wrap gap-2">
             {maps.map((map) => (
               <li
                 key={map.map}
-                className="px-3 py-1 text-xs font-medium text-pink-800 bg-pink-100 rounded-full dark:bg-pink-900 dark:text-pink-100 sm:text-sm"
+                className="rounded-full bg-pink-100 px-3 py-1 text-xs font-medium text-pink-800 sm:text-sm dark:bg-pink-900 dark:text-pink-100"
               >
                 <span className="font-semibold">{map.map}</span> ({Math.floor(map.rate / 100)}% chance)
               </li>

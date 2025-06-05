@@ -13,7 +13,7 @@ export default async function Userscripts() {
   return (
     <>
       <Heading>
-        <SwatchIcon className="w-12 h-12 mr-2 text-purple-800 align-middle inline-grid dark:text-purple-200 hover:text-purple-900 dark:hover:text-purple-300 shrink-0" />
+        <SwatchIcon className="mr-2 inline-grid size-12 shrink-0 align-middle text-purple-800 hover:text-purple-900 dark:text-purple-200 dark:hover:text-purple-300" />
         MouseHunt Userscripts
       </Heading>
       <ItemList items={items} showtags="true" />

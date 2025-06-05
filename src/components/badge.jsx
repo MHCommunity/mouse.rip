@@ -2,8 +2,9 @@ import * as Headless from '@headlessui/react';
 import clsx from 'clsx';
 
 import { forwardRef } from 'react';
-import { TouchTarget } from './button';
+
 import { Link } from './link';
+import { TouchTarget } from './button';
 
 import colors from './colors';
 

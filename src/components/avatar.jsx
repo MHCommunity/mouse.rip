@@ -1,7 +1,9 @@
 import * as Headless from '@headlessui/react';
 import clsx from 'clsx';
+import Image from 'next/image';
 
 import { forwardRef } from 'react';
+
 import { Link } from './link';
 import { TouchTarget } from './button';
 
@@ -20,7 +22,7 @@ export function Avatar({ src = null, square = false, initials, alt = '', icon, c
       )}
     >
       {icon && (
-        <span className="size-full flex items-center justify-center text-[48px]">
+        <span className="flex size-full items-center justify-center text-[48px]">
           {icon}
         </span>
       )}
@@ -31,12 +33,17 @@ export function Avatar({ src = null, square = false, initials, alt = '', icon, c
           aria-hidden={alt ? undefined : 'true'}
         >
           {alt && <title>{alt}</title>}
-          <text x="50%" y="50%" alignmentBaseline="middle" dominantBaseline="middle" textAnchor="middle" dy=".125em">
-            {initials}
-          </text>
         </svg>
       )}
-      {src && <img className="size-full" src={src} alt={alt} />}
+      {src && (
+        <Image
+          className="size-full"
+          src={src}
+          alt={alt}
+          width={square ? 100 : undefined}
+          height={square ? 100 : undefined}
+        />
+      )}
     </span>
   );
 }

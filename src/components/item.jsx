@@ -12,12 +12,12 @@ export function Item({ item, ...props }) {
   return (
     <div
       className={clsx(
-        'text-sm font-medium text-gray-700 border border-gray-400/50 rounded-md shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 transition hover:shadow-md hover:-translate-y-1',
+        'rounded-md border border-gray-400/50 text-sm font-medium text-gray-700 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700',
         colors[item.category]
       )}
       {...props}
     >
-      <div className="flex flex-col justify-between flex-1 h-full p-3 gap-2">
+      <div className="flex h-full flex-1 flex-col justify-between gap-2 p-3">
         <a
           href={itemLink}
           title={itemText}
@@ -48,12 +48,12 @@ export function Item({ item, ...props }) {
             href={itemLink}
             title={itemText}
             className={clsx(
-              'text-sm font-semibold text-sky-700 dark:text-sky-200 hover:text-sky-900 dark:hover:text-white drop-shadow-sm',
+              'text-sm font-semibold text-sky-700 drop-shadow-sm hover:text-sky-900 dark:text-sky-200 dark:hover:text-white',
               item.source ? 'flex items-center' : 'text-right'
             )}
           >
             {item.source && 'userscript' !== item.category ? `Go to ${item.source}` : 'View'}
-            <ArrowRightIcon className="inline-block w-4 h-4 ml-1" aria-hidden="true" />
+            <ArrowRightIcon className="ml-1 inline-block size-4" aria-hidden="true" />
           </a>
         </div>
       </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+
 import { Input, InputGroup } from '@/components/input';
 import { Heading } from '@/components/heading';
 
@@ -39,15 +40,15 @@ export default function ValourRiftFloors() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="mx-auto max-w-4xl">
       <Heading>Valour Rift Floors</Heading>
-      <div className="relative flex flex-col items-center justify-center mt-2 mb-3">
+      <div className="relative mb-3 mt-2 flex flex-col items-center justify-center">
         <InputGroup>
           <Input
             id="floor-search"
             type="number"
             placeholder="1, 2, 3, …"
-            className="flex bg-white rounded-md outline outline-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 dark:bg-gray-800 dark:outline-gray-700 dark:focus:outline-indigo-500"
+            className="flex rounded-md bg-white outline outline-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 dark:bg-gray-800 dark:outline-gray-700 dark:focus:outline-indigo-500"
             ref={inputRef}
             onChange={handleInputChange}
             value={currentFloor}
@@ -55,7 +56,7 @@ export default function ValourRiftFloors() {
             pattern="[0-9]*"
             aria-label="Floor number"
           />
-          <label htmlFor="floor-search" className="block mt-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label htmlFor="floor-search" className="mt-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
             Enter a floor number to reorder the list.
           </label>
         </InputGroup>
@@ -65,9 +66,9 @@ export default function ValourRiftFloors() {
           {reorderedFloors.map((floor) => (
             <li
               key={floor.name}
-              className="relative flex flex-col items-center justify-center p-4 gap-x-6 rounded-xl"
+              className="relative flex flex-col items-center justify-center gap-x-6 rounded-xl p-4"
             >
-              <div className="text-xl font-semibold tracking-tight text-gray-900 text-balance sm:text-3xl dark:text-gray-100">
+              <div className="text-balance text-xl font-semibold tracking-tight text-gray-900 sm:text-3xl dark:text-gray-100">
                 {floor.name}
               </div>
               <div className="text-sm text-slate-500 dark:text-slate-400">

@@ -1,9 +1,10 @@
 import { notFound } from 'next/navigation';
 
-import { getItemsByLocation, getLocation, getLocations } from '@/data';
+import { Avatar } from '@/components/avatar';
 import { Heading } from '@/components/heading';
 import { ItemList } from '@/components/item-list';
-import { Avatar } from '@/components/avatar';
+
+import { getItemsByLocation, getLocation, getLocations } from '@/data';
 
 let location;
 

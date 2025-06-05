@@ -13,7 +13,7 @@ export default async function Spreadsheets() {
   return (
     <>
       <Heading>
-        <TableCellsIcon className="w-12 h-12 mr-2 text-blue-800 align-middle inline-grid dark:text-blue-200 hover:text-blue-900 dark:hover:text-blue-300 shrink-0" />
+        <TableCellsIcon className="mr-2 inline-grid size-12 shrink-0 align-middle text-blue-800 hover:text-blue-900 dark:text-blue-200 dark:hover:text-blue-300" />
         MouseHunt Spreadsheets
       </Heading>
       <ItemList items={items} />

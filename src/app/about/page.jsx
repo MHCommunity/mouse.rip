@@ -9,7 +9,7 @@ export const metadata = {
 
 export default async function About() {
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="mx-auto max-w-4xl">
       <Heading>About mouse.rip</Heading>
 
       <Divider className="my-10 mt-6" />
@@ -23,11 +23,11 @@ export default async function About() {
         </p>
       </div>
 
-      <Subheading className="mt-6 mb-3">
+      <Subheading className="mb-3 mt-6">
         Our Features
       </Subheading>
 
-      <ul className="mb-4 text-gray-700 list-disc list-inside dark:text-gray-300 space-y-2">
+      <ul className="mb-4 list-inside list-disc space-y-2 text-gray-700 dark:text-gray-300">
         <li className="my-2">
           <PageLink href="/guides">Guides</PageLink> - Detailed guides covering all aspects of MouseHunt, from beginner tips to advanced strategies.
         </li>
@@ -45,7 +45,7 @@ export default async function About() {
         </li>
       </ul>
 
-      <Subheading className="mt-6 mb-3">
+      <Subheading className="mb-3 mt-6">
         Connect with Us
       </Subheading>
 
