@@ -45,7 +45,7 @@ export default async function Location({ params }) {
     <>
       <Heading>
         <Avatar
-          src={location.image}
+          src={`/images/locations/${location.id.replace('_', '-')}.png`}
           alt={location.name}
           width={32}
           height={32}
