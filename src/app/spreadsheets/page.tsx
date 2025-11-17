@@ -1,0 +1,24 @@
+import { getItemsByCategory } from '@/data';
+import { Heading } from '@/components/heading';
+import { ItemList } from '@/components/item-list';
+import { TableCellsIcon } from '@heroicons/react/20/solid';
+
+import React from 'react';
+
+export const metadata = {
+  title: 'MouseHunt Spreadsheets',
+};
+
+export default async function Spreadsheets() {
+  const items = await getItemsByCategory('spreadsheet');
+
+  return (
+    <>
+      <Heading>
+        <TableCellsIcon className="mr-2 inline-grid size-12 shrink-0 align-middle text-blue-800 hover:text-blue-900 dark:text-blue-200 dark:hover:text-blue-300" />
+        MouseHunt Spreadsheets
+      </Heading>
+      <ItemList items={items} />
+    </>
+  );
+}

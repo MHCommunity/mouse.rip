@@ -1,0 +1,35 @@
+name: Update Data
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Update data
+        run: bun run update:data
+
+      - name: Commit changes
+        run: |
+          git config --local user.name "Mousebot"
+          git config --local user.email "mousebot@mouse.rip"
+          git add .
+          git commit -m "Update data" || echo "No changes to commit"
+      - name: Push changes
+        run: |
+          git push origin main || echo "No changes to push"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,18 +1,12 @@
 # 🐭️ MouseHunt Guides, Tools, and Resources - [mouse.rip](https://mouse.rip)
 
-<p>
-   <a href="https://discord.gg/Z9sxnD5reB/">
-  <img src="https://img.shields.io/badge/mousehunt-discord-blue" alt="Discord">
- </a>
- <a href="https://choosealicense.com/licenses/mit/">
-  <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="MIT License">
- </a>
- <img src="https://img.shields.io/github/workflow/status/MHCommunity/mouse.rip/Lint" alt="Build status">
-</p>
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+[![Build Status](https://github.com/MHCommunity/mouse.rip/actions/workflows/lint.yml/badge.svg)](https://github.com/MHCommunity/mouse.rip/actions/workflows/lint.yml)
+[![Discord](https://img.shields.io/badge/mousehunt-discord-blue)](https://discord.gg/mousehunt)
 
 ## 📖 About
 
-This is the repository powering [mouse.rip](https://mouse.rip), powered by [Next.js](https://nextjs.org/) and [Tailwind](https://tailwindcss.com/).
+This is the repository powering [mouse.rip](https://mouse.rip).
 
 ## 🚀 Getting Started
 
@@ -28,16 +22,16 @@ Next, change to the project directory
   cd mouse-rip
 ```
 
-Install the dependencies
+Install the dependencies (You'll need [Bun](https://bun.sh/) for this step):
 
 ```bash
-  npm install
+  bun install
 ```
 
 Finally, run the development server:
 
 ```bash
-  npm run dev
+  bun run dev
 ```
 
 This will make your site accessible at `http://localhost:3000`, and will automatically reload when you make changes.
@@ -45,17 +39,14 @@ This will make your site accessible at `http://localhost:3000`, and will automat
 When you're finished, you can check for any errors with:
 
 ```bash
-  npm run lint
+  bun run lint
 ```
 
 If you're happy with your changes, you can submit a Pull Request!
 
 ## 🗒️ Updating the content
 
-- The **Tools**, **Userscripts**, and **Spreadsheets** lists are generated from the JSON files in the [`data`](https://github.com/MHCommunity/mouse.rip/tree/main/data) directory.
-- Redirects are handled in [`next.config.js`](https://github.com/MHCommunity/mouse.rip/tree/main/next.config.js).
-
-If you're not familar with Git or the command line and want to make a change to these, you can edit and open a Pull Request directly on GitHub by clicking the "Edit this file" button on the page.
+The items on the site are populated via the contents in the [`src/data`](https://github.com/MHCommunity/mouse.rip/tree/main/src/data) directory.
 
 ## 💬 Discussion & Feedback
 
