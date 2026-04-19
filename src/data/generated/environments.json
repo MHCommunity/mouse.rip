@@ -620,6 +620,16 @@
     "title": "viceroy"
   },
   {
+    "id": "conclusion_cliffs",
+    "name": "Conclusion Cliffs",
+    "article": "the Conclusion Cliffs",
+    "image": "https://www.mousehuntgame.com/images/environments/e785e974d91f5ee9e5da524297153c64.jpg",
+    "headerImage": "https://www.mousehuntgame.com/images/environments/19ab9dc12a5fb7098bd69357d8e2a755.jpg",
+    "order": 148,
+    "title": "viceroy",
+    "region": "folklore_forest"
+  },
+  {
     "id": "rift_gnawnia",
     "name": "Gnawnia Rift",
     "article": "the Gnawnia Rift",
