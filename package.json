@@ -4,8 +4,10 @@
 	"private": true,
 	"scripts": {
 		"add-item": "bun ./scripts/add-item.js",
-		"build": "next build && opennextjs-cloudflare build --skipNextBuild",
+		"build": "next build",
 		"cf-typegen": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts",
+		"cf:build": "opennextjs-cloudflare build",
+		"cf:deploy": "opennextjs-cloudflare deploy",
 		"dev": "next dev --turbopack",
 		"deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
 		"lint": "next lint",
