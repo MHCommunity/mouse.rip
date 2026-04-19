@@ -6,6 +6,7 @@
 		"add-item": "bun ./scripts/add-item.js",
 		"build": "next build",
 		"cf-typegen": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts",
+		"build:cf": "opennextjs-cloudflare build",
 		"deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
 		"dev": "next dev --turbopack",
 		"lint": "next lint",
