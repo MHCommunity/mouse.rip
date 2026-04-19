@@ -9,7 +9,7 @@
 		"global_fetch_strictly_public"
 	],
 	"assets": {
-		"binding": "ASSETS",
+		"binding": "STATIC_ASSETS",
 		"directory": ".open-next/assets"
 	},
 	"observability": {
