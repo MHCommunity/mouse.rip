@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <div className="mx-auto max-w-5xl px-2 py-4">
       <Heading className="mb-6 text-center">
-        Guides, tools, and resources for MouseHunt
+        MouseHunt Guides, Tools, and Resources
       </Heading>
 
       <p className="mx-auto mb-8 max-w-2xl text-center text-lg text-gray-700 dark:text-gray-300">
