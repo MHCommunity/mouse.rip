@@ -314,6 +314,18 @@
       {
         "id": "draconic-depths",
         "name": "Draconic Depths"
+      },
+      {
+        "id": "afterword-acres",
+        "name": "Afterword Acres"
+      },
+      {
+        "id": "epilogue-falls",
+        "name": "Epilogue Falls"
+      },
+      {
+        "id": "conclusion-cliffs",
+        "name": "Conclusion Cliffs"
       }
     ]
   },

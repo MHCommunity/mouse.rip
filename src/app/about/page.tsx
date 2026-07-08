@@ -1,13 +1,15 @@
 import { Heading, Subheading } from '@/components/heading';
 import { Divider } from '@/components/divider';
 import { PageLink } from '@/components/page-link';
+import { pageMetadata } from '@/seo';
 
 import React from 'react';
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: 'About mouse.rip - Your MouseHunt Resource Hub',
   description: 'Learn more about mouse.rip, your comprehensive resource for MouseHunt guides, tools, and community-created content.',
-};
+  path: '/about',
+});
 
 export default async function About() {
   return (

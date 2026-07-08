@@ -1,23 +1,30 @@
 import { getItemsByCategory } from '@/data';
-import { Heading } from '@/components/heading';
+import { PageHeader } from '@/components/page-header';
 import { ItemList } from '@/components/item-list';
 import { SwatchIcon } from '@heroicons/react/20/solid';
+import { pageMetadata } from '@/seo';
 
 import React from 'react';
 
-export const metadata = {
-  title: 'MouseHunt Usercripts',
-};
+export const metadata = pageMetadata({
+  title: 'MouseHunt Userscripts',
+  description: 'A curated collection of MouseHunt userscripts that add features, automate busywork, and surface useful in-game data.',
+  path: '/userscripts',
+});
 
 export default async function Userscripts() {
   const items = getItemsByCategory('userscript');
 
   return (
     <>
-      <Heading>
-        <SwatchIcon className="mr-2 inline-grid size-12 shrink-0 align-middle text-purple-800 hover:text-purple-900 dark:text-purple-200 dark:hover:text-purple-300" />
-        MouseHunt Userscripts
-      </Heading>
+      <PageHeader
+        title="MouseHunt userscripts"
+        description="Lightweight scripts that customize and extend the MouseHunt interface."
+        count={items.length}
+        countLabel="userscripts"
+        icon={SwatchIcon}
+        iconClassName="bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300"
+      />
       <ItemList items={items} showtags />
     </>
   );

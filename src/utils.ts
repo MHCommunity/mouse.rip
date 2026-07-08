@@ -21,3 +21,33 @@ export function cleanDescription(description: string): string {
     .replace(/<[^>]*>/g, '') // Remove HTML tags
 		.trim();
 }
+
+/**
+ * Whether a URL is a relative path within this Next app, and therefore safe to
+ * navigate to with the client router (and to apply view transitions to).
+ *
+ * @param {string} url The URL to check
+ * @return {boolean} True for paths like `/guides/foo`
+ */
+export function isInternalPath(url: string): boolean {
+	return typeof url === 'string' && url.startsWith('/');
+}
+
+/**
+ * Whether a URL points to one of our own pages — either a relative path or a
+ * `mouse.rip` (or subdomain) host. Used to attribute and style links to
+ * mouse.rip differently from outbound links.
+ *
+ * @param {string} url The URL to check
+ * @return {boolean} True for mouse.rip pages
+ */
+export function isOurUrl(url: string): boolean {
+	if (!url) return false;
+	if (isInternalPath(url)) return true;
+	try {
+		const { hostname } = new URL(url);
+		return hostname === 'mouse.rip' || hostname.endsWith('.mouse.rip');
+	} catch {
+		return false;
+	}
+}
