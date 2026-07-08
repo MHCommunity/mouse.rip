@@ -1,6 +1,7 @@
-import { type Metadata } from 'next';
+import { pageMetadata } from '@/seo';
 
-export const metadata: Metadata = {
-  title: 'MouseHunt Essence Calculator',
-  description: 'Calculate your final essence counts after crafting higher-tier essences in MouseHunt. Optimize your essence usage with this handy tool.',
-};
+export const metadata = pageMetadata({
+  title: 'MouseHunt Minluck Search',
+  description: 'Search minluck values for every mouse in MouseHunt to find the lowest luck needed to reliably catch them with each power type.',
+  path: '/minlucks',
+});

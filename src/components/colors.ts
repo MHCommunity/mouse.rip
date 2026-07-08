@@ -24,6 +24,7 @@ const colors: {
   pinkBadge: 'bg-pink-200 text-pink-700 dark:bg-pink-900 dark:text-pink-300',
   rose: 'bg-rose-400 text-rose-700 hover:bg-rose-400 dark:bg-rose-400 dark:text-rose-400 dark:hover:bg-rose-400',
   zinc: 'bg-zinc-200 text-zinc-700 hover:bg-zinc-900 dark:bg-zinc-800 dark:text-zinc-400',
+  tag: 'bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-400',
   zincBadge: 'bg-zinc-600/20 text-zinc-700/90 dark:bg-zinc-300/20 dark:text-zinc-400',
 };
 

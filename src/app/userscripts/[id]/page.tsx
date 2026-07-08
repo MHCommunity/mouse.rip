@@ -5,11 +5,13 @@ import { getItem, getItemsByCategory } from '@/data';
 import React from 'react';
 
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
-import { Badge } from '@/components/badge';
+import { BadgeButton } from '@/components/badge';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { formatNumber } from '@/utils';
 import { Heading } from '@/components/heading';
 import { Link } from '@/components/link';
 import { PageLink } from '@/components/page-link';
+import { pageMetadata } from '@/seo';
 
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
@@ -20,10 +22,11 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     return { title: 'Not Found' };
   }
 
-  return {
+  return pageMetadata({
     title: `${item.name} Userscript for MouseHunt`,
     description: item.description,
-  };
+    path: `/userscripts/${resolvedParams.id}`,
+  });
 }
 
 export function generateStaticParams() {
@@ -50,6 +53,13 @@ export default async function UserscriptPage({ params }: { params: Promise<{ id:
 
   return (
     <div className="mx-auto max-w-2xl space-y-8">
+      <Breadcrumbs
+        items={[
+          { name: 'Home', href: '/' },
+          { name: 'Userscripts', href: '/userscripts' },
+          { name: item.name },
+        ]}
+      />
       <h1 className="mb-2 text-3xl font-extrabold text-gray-900 dark:text-gray-100">
         {item.name}
       </h1>
@@ -61,10 +71,14 @@ export default async function UserscriptPage({ params }: { params: Promise<{ id:
       {/* Tags */}
       {item.tags && item.tags.length > 0 && (
         <div className="flex flex-wrap gap-2">
-          {item.tags.map((tag) => (
-            <Badge key={tag} color="zinc">
+          {[...new Set(item.tags)].map((tag) => (
+            <BadgeButton
+              key={tag}
+              href={`/userscripts/tags/${encodeURIComponent(tag)}`}
+              color="zinc"
+            >
               {tag}
-            </Badge>
+            </BadgeButton>
           ))}
         </div>
       )}

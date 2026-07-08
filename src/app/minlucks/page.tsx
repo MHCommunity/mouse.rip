@@ -9,13 +9,13 @@ import AutoSizer from "react-virtualized-auto-sizer";
 import Image from "next/image";
 
 import { ColorScaleBadge } from "@/components/color-scale-badge";
-import { Heading } from "@/components/heading";
-import { Divider } from "@/components/divider";
+import { PageHeader } from "@/components/page-header";
 import { Input, InputGroup } from "@/components/input";
+import { Link } from "next-view-transitions";
 
-import { Mouse } from "@/types";
+import { SlimMouse } from "@/types";
 
-import mice from "@/data/generated/mice.json";
+import mice from "@/data/generated/mice-search.json";
 
 const minluckTypes = [
   "arcane",
@@ -29,7 +29,7 @@ const minluckTypes = [
   "rift",
 ];
 
-function flattenMinLucksByValue(mouse: Mouse) {
+function flattenMinLucksByValue(mouse: SlimMouse) {
   if (!mouse.minlucks) return [];
   const minluckTypesByValue = minluckTypes.filter(
     (type) =>
@@ -68,13 +68,15 @@ export default function MinLucksPage() {
   const [filter, setFilter] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Keyboard shortcut for focusing input
+  // Pre-fill the filter from a ?q= param (e.g. when arriving from site search).
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get('q');
+    if (q) setFilter(q);
+  }, []);
+
+  // Escape blurs the filter; Cmd/Ctrl+K is handled globally by site search.
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        inputRef.current?.focus();
-      }
       if (e.key === 'Escape' && document.activeElement === inputRef.current) {
         inputRef.current?.blur();
       }
@@ -91,7 +93,7 @@ export default function MinLucksPage() {
   const filteredMice = useMemo(() => {
     const f = debouncedFilter.trim().toLowerCase();
     if (!f) return mice;
-    return mice.filter((mouse: Mouse) =>
+    return mice.filter((mouse: SlimMouse) =>
       mouse.name.toLowerCase().includes(f) ||
       mouse.group?.toLowerCase().includes(f) ||
       mouse.subgroup?.toLowerCase().includes(f)
@@ -123,15 +125,18 @@ export default function MinLucksPage() {
               alt={mouse.name}
               width={48}
               height={48}
-              className="inline-block w-12 h-12 rounded-md"
+              className="inline-block w-12 h-12"
               loading="lazy"
             />
           </div>
           <div className="flex-1 min-w-0 overflow-hidden">
-            <div className="text-lg font-medium text-gray-700 dark:text-gray-300">
+            <Link
+              href={`/mice/${mouse.type.replaceAll('_', '-')}`}
+              className="text-lg font-medium text-gray-700 hover:text-pink-700 dark:text-gray-300 dark:hover:text-pink-300"
+            >
               {mouse.name}
-            </div>
-            <div className="flex items-center mt-2 text-sm font-thin flex-wrap text-gray-500 dark:text-gray-400">
+            </Link>
+            <div className="flex items-center mt-2 text-sm flex-wrap text-gray-600 dark:text-gray-300">
               {mouse?.group && (
                 <span className="mr-1">
                   {mouse.group}
@@ -162,10 +167,12 @@ export default function MinLucksPage() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl px-4 flex flex-col h-dvh">
-      <Heading>Mouse Minlucks</Heading>
-      <Divider />
-      <div className="py-6 flex flex-col flex-1 min-h-0">
+    <div className="mx-auto flex h-dvh max-w-4xl flex-col">
+      <PageHeader
+        title="Mouse Minlucks"
+        description="Search any mouse to find the minimum luck needed to guarantee a catch with each power type."
+      />
+      <div className="flex flex-1 flex-col min-h-0">
         <InputGroup>
           <Input
             id="minluck-search"

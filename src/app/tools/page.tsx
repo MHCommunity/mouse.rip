@@ -1,23 +1,30 @@
 import { getItemsByCategory } from '@/data';
-import { Heading } from '@/components/heading';
+import { PageHeader } from '@/components/page-header';
 import { ItemList } from '@/components/item-list';
 import { WrenchIcon } from '@heroicons/react/20/solid';
+import { pageMetadata } from '@/seo';
 
 import React from 'react';
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: 'MouseHunt Tools',
-};
+  description: 'Calculators, simulators, and lookups for MouseHunt — plan your setups, crunch the numbers, and get more out of every hunt.',
+  path: '/tools',
+});
 
 export default async function Tools() {
   const items = getItemsByCategory('tool');
 
   return (
     <>
-      <Heading>
-        <WrenchIcon className="mr-2 inline-grid size-12 shrink-0 align-middle text-green-800 hover:text-green-900 dark:text-green-200 dark:hover:text-green-300" />
-        MouseHunt Tools
-      </Heading>
+      <PageHeader
+        title="MouseHunt tools"
+        description="Calculators, simulators, and lookups to plan setups and get more out of every hunt."
+        count={items.length}
+        countLabel="tools"
+        icon={WrenchIcon}
+        iconClassName="bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300"
+      />
       <ItemList items={items} />
     </>
   );

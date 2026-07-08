@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import React, { type ComponentPropsWithoutRef } from 'react';
 
 export function PageLink({ href, className, children, ...props }: ComponentPropsWithoutRef<typeof Link>) {
