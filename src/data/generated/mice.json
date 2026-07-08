@@ -72615,5 +72615,1125 @@
       "law": 100,
       "rift": 0
     }
+  },
+  {
+    "id": 1294,
+    "type": "acrobatic_aurora_bandit",
+    "name": "Acrobatic Aurora Bandit Mouse",
+    "abbreviated_name": "Acrobatic Aurora Bandit",
+    "description": "This nimble bandit likes to swoop in, scoop up a stash, and swing away in the mere blink of an eye. Unfortunately for him, he is not quite as nimble and agile as he thinks he is and has a tendency to fumble and drop his prized Aurora Spice on the follow-through.",
+    "points": 65000,
+    "points_formatted": "65,000",
+    "gold": 7500,
+    "gold_formatted": "7,500",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Aurora Spice Raiders",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/c5e3ead92376a635c442ed8b066e7622.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/5d803b85525114aaad8ba5caa68e1022.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/579f095d1db96aea794e2e01100a29dc.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/de166e687e93e45cc8dd58c6868b61d4.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/cc8c8a14249fcc2ba8e09571253e776a.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/5c26be9e5643b62ab8f017236ed79c71.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/e2b4b724c58bc8fc3f469803cf09e4a4.jpg",
+      "is_landscape": false
+    },
+    "weaknesses": {
+      "effective": [
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 73,
+      "rift": 0
+    },
+    "wisdom": 0,
+    "effectivenesses": {
+      "power": 10500,
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 100,
+      "rift": 0
+    }
+  },
+  {
+    "id": 1295,
+    "type": "amateur_knife_juggler",
+    "name": "Amateur Knife Juggler Mouse",
+    "abbreviated_name": "Amateur Knife Juggler",
+    "description": "This Skydock dweller has recently taken up a new and rather dangerous hobby. So far it doesn't seem to be going very well so her fellow raiders have strongly urged her not to quit her day job.",
+    "points": 38000,
+    "points_formatted": "38,000",
+    "gold": 4500,
+    "gold_formatted": "4,500",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Skydock Delinquents",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/73f0c767920e0577f091239682a0cd82.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/62a017bd8be545f91b29d346b26dd2a1.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/e0c9dd7d3d703e0371964fcb17b0a205.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/54f372eb48a986dd2866bb38938d26d5.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/b1951106a84ea43dbba80573f13d024b.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/63fcb99ba783d28424332d255649ea9c.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/f1a75d0a0b2fa9c9b9ae6499f0478fce.jpg",
+      "is_landscape": false
+    },
+    "weaknesses": {
+      "effective": [
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 55,
+      "rift": 0
+    },
+    "wisdom": 5625,
+    "effectivenesses": {
+      "power": 6000,
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 100,
+      "rift": 0
+    }
+  },
+  {
+    "id": 1296,
+    "type": "arrogant_aurora_connoisseur",
+    "name": "Arrogant Aurora Connoisseur Mouse",
+    "abbreviated_name": "Arrogant Aurora Connoisseur",
+    "description": "This haughty hijacker believes herself to be in the upper echelon of Sky Raiders. She is an expert at judging the purity of Aurora Spice and considers her palate to be the most refined across the entire Gnawnian skyscape. She takes tremendous pride in her work and has an enormous ego which makes her despised by her crewmates, despite her obvious talents.",
+    "points": 58000,
+    "points_formatted": "58,000",
+    "gold": 6850,
+    "gold_formatted": "6,850",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Aurora Spice Raiders",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/9f850f49138ceadd4a0007b1fb46032d.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/6d570e8ccd8c7ffe218b60b55321e0c2.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/71506777e936caa3f8ec0da963443338.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/79aab9650ba8a03f9da74bde9b2ca4ad.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/b0f57c6d3340943855d84255515e0351.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/847db957293f98e8b5804afc468c2493.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/9be18d482527dc0d6e73c5b0bcdff45f.jpg",
+      "is_landscape": false
+    },
+    "weaknesses": {
+      "effective": [
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 80,
+      "rift": 0
+    },
+    "wisdom": 0,
+    "effectivenesses": {
+      "power": 12500,
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 100,
+      "rift": 0
+    }
+  },
+  {
+    "id": 1297,
+    "type": "audacious_aurora_embezzler",
+    "name": "Audacious Aurora Embezzler Mouse",
+    "abbreviated_name": "Audacious Aurora Embezzler",
+    "description": "This daring dynamo is infamous even amongst the Sky Raiders as a clever, conniving bandit with an insatiable obsession for Aurora Spice. She has been known to pilfer this coveted spice even from her fellow raiders but none have ever been bold enough to challenge her on it.",
+    "points": 68000,
+    "points_formatted": "68,000",
+    "gold": 8250,
+    "gold_formatted": "8,250",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Aurora Spice Raiders",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/af26ab14a54097aa28cf1691d2b0012a.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/645848c4cf89330f6eb92c864fe3143a.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/e03be53fb9891a3e8f9fadad1a8cd96e.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/379d04804b5d3d9090c8575b126ffbcf.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/9ed1532d23fbc17198c77bb17199c768.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/88bef52a6da376114415c48e5c3a403c.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/992866d3ff9d4ec091db89c35bf140e2.jpg",
+      "is_landscape": false
+    },
+    "weaknesses": {
+      "effective": [
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 81,
+      "rift": 0
+    },
+    "wisdom": 0,
+    "effectivenesses": {
+      "power": 13000,
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 100,
+      "rift": 0
+    }
+  },
+  {
+    "id": 1298,
+    "type": "boulder_and_pebble",
+    "name": "Boulder and Pebble",
+    "abbreviated_name": "Boulder and Pebble",
+    "description": "This dynamic duo is an inseparable pair of stone-stealing, hard-rocking, rubble-rousers. Their approach to piracy is anything but subtle as they soar through the skies blaring rock anthems from their airship while they pillage and plunder all the Unrefined Cloudstone they can get their paws on.",
+    "points": 65000,
+    "points_formatted": "65,000",
+    "gold": 7500,
+    "gold_formatted": "7,500",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Cloudstone Raiders",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/81224dc308747330bf0aef5d803bee92.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/f3d0007dad9624f9cbb549b183adba67.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/b59d2b31d21403382a9d377c7be8f13c.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/1b9a2c5e8c3a2bf1a37a14e00464a1e7.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/01d29b6bca89e013ad5b6abef1f470e1.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/e3b5374c74f43da9aca38e86466c4b36.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/3e4c9fdf55e23811cc3d5fb0086d8944.jpg",
+      "is_landscape": false
+    },
+    "weaknesses": {
+      "effective": [
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 75,
+      "rift": 0
+    },
+    "wisdom": 0,
+    "effectivenesses": {
+      "power": 11000,
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 100,
+      "rift": 0
+    }
+  },
+  {
+    "id": 1299,
+    "type": "captain_crook",
+    "name": "Captain Crook",
+    "abbreviated_name": "Captain Crook",
+    "description": "While in pursuit of her great nemesis Ronza, this menacing marauder inadvertently discovered the Kingdom of Gnawnia, a whole new land ripe for pillage and plunder from her ravenous fleet of Sky Raiders.<br />\n<br />\nHer armada of shiny ships full of sinister scallywags descended from the skies in great force as they tried to recover the precious chrome that they claim was stolen from them by the famous airborne merchant that Gnawnia knows so well. Thanks to the help of the MouseHunters on the land below, Ronza managed a narrow escape from the clutches of these coarse criminals but unfortunately, not before alerting them to the even greater prize of the kingdom below.<br />\n<br />\nShe docked her fleet at the Cerulean Skyport, an aerial port town that had been floating safe and undefended for countless years, and set her raiders upon its docks to take anything and everything they could get their paws on. Using these valuable, stolen commodities, the villainous Captain Crook set her sights on raiding all the helpless lands below with the ultimate goal of taking the entire kingdom as her own. She recruited many of the mice native to this new kingdom whose goals aligned with her own and together with the might of her fleet and the power of her mysterious Cerulean Chrome, she would be an unstoppable force to conquer this new continent... unless the bravest of the MouseHunters are able to stand against her.",
+    "points": 150000,
+    "points_formatted": "150,000",
+    "gold": 20000,
+    "gold_formatted": "20,000",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Sky Commanders",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/c502048fae03bc488657bc2a5c713f86.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/6aafc6980f057ac9ca5bd9f571c49cc2.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/f0159b766b1b5218e80bf7aa680eed9f.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/7640655c8f27fb1392b43f9547f90266.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/7fa5fe77785322cdfe258fb4d7f825ff.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/7f7c744bd2215237b59ba7f039e5d0a7.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/4a10865cf6740cc8e3748886c157e433.jpg",
+      "is_landscape": true
+    },
+    "weaknesses": {
+      "veryEffective": [
+        "physical",
+        "shadow",
+        "tactical",
+        "arcane",
+        "forgotten",
+        "hydro",
+        "draconic",
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 126,
+      "draconic": 126,
+      "forgotten": 126,
+      "hydro": 126,
+      "physical": 126,
+      "shadow": 126,
+      "tactical": 126,
+      "law": 126,
+      "rift": 0
+    },
+    "wisdom": 0,
+    "effectivenesses": {
+      "power": 61600,
+      "arcane": 400,
+      "draconic": 400,
+      "forgotten": 400,
+      "hydro": 400,
+      "physical": 400,
+      "shadow": 400,
+      "tactical": 400,
+      "law": 400,
+      "rift": 0
+    }
+  },
+  {
+    "id": 1300,
+    "type": "careless_canister_rider",
+    "name": "Careless Canister Rider Mouse",
+    "abbreviated_name": "Careless Canister Rider",
+    "description": "This reckless raider is exceptionally speedy at off-loading stolen Atmospherium Gas canisters from plundered airships. However, the advantages it gains from its speed often tend to be nullified by its careless manner of transportation which frequently results in damaged, leaky cargo.",
+    "points": 48500,
+    "points_formatted": "48,500",
+    "gold": 5600,
+    "gold_formatted": "5,600",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Atmospherium Raiders",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/06707aba15464c50c311c7567c0d72e9.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/077e740f279f02629c4d97f64e443031.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/f75b95ddffa8fef19e4516ee7788f3fd.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/b415f09e58e0932c7ff8ed988dc204ca.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/0012e9cc79338fc660363e8f705775a9.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/7e0194d1a972af0558e2f53b58261208.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/038bc6ae93dd2edae025557849de33f8.jpg",
+      "is_landscape": false
+    },
+    "weaknesses": {
+      "effective": [
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 69,
+      "rift": 0
+    },
+    "wisdom": 0,
+    "effectivenesses": {
+      "power": 9500,
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 100,
+      "rift": 0
+    }
+  },
+  {
+    "id": 1301,
+    "type": "cluttergrin_the_commodore_of_curiosities",
+    "name": "Cluttergrin the Commodore of Curiosities",
+    "abbreviated_name": "Cluttergrin the Commodore of Curiosities",
+    "description": "All those who dock at the Cerulean Skyport are forewarned about this seedy merchant and his suspicious dockside shop that promises to have anything and everything you could ever want... if you'll just step inside for a moment. Old Cluttergrin is the collector to end all collectors as there is nothing in the whole Kingdom of Gnawnia and beyond that doesn't spark his interest. Most of his precious treasures would seem like mere junk to the average mouse but to the Commodore of Curiosities, each piece of scrap and pile of debris is a wonder to behold and he will stop at nothing to get his greedy paws on every last bit of it.<br />\n<br />\nThe only thing that can distract Cluttergrin from his hoarding is the unique scent of Aurora Bocconcini Cheese.",
+    "points": 60000,
+    "points_formatted": "60,000",
+    "gold": 9000,
+    "gold_formatted": "9,000",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Sky Commanders",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/c538ce7b1a1ce26e98960ae001f52332.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/7430530ee45ae0ca97c89de43c4794ba.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/590b702a5e418a898d36111727e432ea.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/d404635c5f0323fc89562dece1fd1381.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/013d0a9b9067cbf6fbc295af460ca171.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/a2e1ac2d8caead94dcde6c885630d9a0.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/4facb1c94f39649a3638adf9e2325163.jpg",
+      "is_landscape": true
+    },
+    "weaknesses": {
+      "veryEffective": [
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 50,
+      "rift": 0
+    },
+    "wisdom": 0,
+    "effectivenesses": {
+      "power": 9600,
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 400,
+      "rift": 0
+    }
+  },
+  {
+    "id": 1302,
+    "type": "colossal_canister_collector",
+    "name": "Colossal Canister Collector Mouse",
+    "abbreviated_name": "Colossal Canister Collector",
+    "description": "This bulky bruiser is a massive menace to airships carrying canisters of Atmospherium Gas. He uses his intimidating size to frighten honest sailors into abandoning ship before he plunders their entire cargo single-handed then zip-lines away at high speed.",
+    "points": 58000,
+    "points_formatted": "58,000",
+    "gold": 6850,
+    "gold_formatted": "6,850",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Atmospherium Raiders",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/6a859d9b17f8988c3bf52e50108ae919.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/2d52e19bfff179147a39cae20e905cf2.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/fdd05f5eaf863b96fe7a4946dbae97b7.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/139783dab469876f6e02552eb75e020b.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/6de7ec87d4416139fd0f652d7c04ad66.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/6ddb169d9b9024861c15198ca13fe179.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/5ec499a8a2365a9ad7aef8593d3ad730.jpg",
+      "is_landscape": false
+    },
+    "weaknesses": {
+      "effective": [
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 71,
+      "rift": 0
+    },
+    "wisdom": 0,
+    "effectivenesses": {
+      "power": 10000,
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 100,
+      "rift": 0
+    }
+  },
+  {
+    "id": 1303,
+    "type": "covetous_canister_thief",
+    "name": "Covetous Canister Thief Mouse",
+    "abbreviated_name": "Covetous Canister Thief",
+    "description": "This selfish sneak thief is so obsessed with Atmospherium Gas that she will even steal from her fellow Sky Raiders and if any of them tries to stop her then she'll meet their challenge with the business end of her cutlass.",
+    "points": 52000,
+    "points_formatted": "52,000",
+    "gold": 6200,
+    "gold_formatted": "6,200",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Atmospherium Raiders",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/2bb01bd4ff1e47db4eebd6eb59380083.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/bad6ef023f5f55aaef88e1a89bda90e6.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/ee2b012b340b84e6c2de08a06029aaf7.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/6d2f46f7ebd295790ab2ccb730aaaeae.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/bfd32e4c9e2d59e763107a1f27c38878.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/a2142b26070914b7aed8879d950d329b.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/1d47fecabd9401e21723776b427ea9ec.jpg",
+      "is_landscape": false
+    },
+    "weaknesses": {
+      "effective": [
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 66,
+      "rift": 0
+    },
+    "wisdom": 0,
+    "effectivenesses": {
+      "power": 8500,
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 100,
+      "rift": 0
+    }
+  },
+  {
+    "id": 1304,
+    "type": "craggerclaw_the_magnate_of_minerals",
+    "name": "Craggerclaw the Magnate of Minerals",
+    "abbreviated_name": "Craggerclaw the Magnate of Minerals",
+    "description": "The deep, booming laugh of this mountainous mineral hoarder can be heard across the skies like rolling thunder. He is harsh, brash, and cares for nothing except the feel of cold, Unrefined Cloudstone against his pale, coarse skin. He covets this valuable mineral in its rawest form and considers it an abomination to alter this perfect gemstone into silly trinkets like Cloudstone Bangles and Empyrean Seals and he has an especially unique and furious distaste for the gaudy Adorned Empyrean Jewels of the Floating Islands.<br />\n<br />\nIn addition to Unrefined Cloudstone, this mouse is always seeking knowledge of the Kingdom to bring back to Captain Crook and therefore can always be found carrying additional intel for any shipment's point of origin.<br />\n<br />\nThe only thing that can distract Craggerclaw from collecting his precious Cloudstone is the unique scent of Aurora Bocconcini Cheese.",
+    "points": 75000,
+    "points_formatted": "75,000",
+    "gold": 12000,
+    "gold_formatted": "12,000",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Sky Commanders",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/36a527fca50185541a7b29b535a79f8d.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/33eeb03230018b596d121971809e44ce.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/164dd0a5db495214ed456244ff5fb539.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/729d0f7196bb237b307215d9bae1334a.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/421840560bdc87a4776d0a21a27a197e.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/8f24515c7866809c0e72a051b9a35886.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/0eb21af084fb932a5620749899c899f4.jpg",
+      "is_landscape": true
+    },
+    "weaknesses": {
+      "veryEffective": [
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 107,
+      "rift": 0
+    },
+    "wisdom": 0,
+    "effectivenesses": {
+      "power": 44000,
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 400,
+      "rift": 0
+    }
+  },
+  {
+    "id": 1305,
+    "type": "greedy_stone_grappler",
+    "name": "Greedy Stone Grappler Mouse",
+    "abbreviated_name": "Greedy Stone Grappler",
+    "description": "This high-flying, free-swinging Sky Raider is so confident in his ability to swing from airship to airship with his signature grappling hook that he even does it blindfolded! His corsair companions believe that his only true interest in Unrefined Cloudstone is in using it as a counterbalance while swinging. He earned his \"greedy\" moniker because the more weight he puts on, the more Cloudstone he needs, and therefore also seems to be hungry for more.",
+    "points": 58000,
+    "points_formatted": "58,000",
+    "gold": 6850,
+    "gold_formatted": "6,850",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Cloudstone Raiders",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/9eab30e5fc19b28e70a2385cddee9bf7.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/290d3e14f63415c14c975c0cb60d89f5.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/bb821da4708dd8beeb5fd39b64797588.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/a8964467cef80c01028d3de1f3cdeb13.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/7606ef49cff1760f1f99d1af9f2a9efb.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/d227e93209897fd8a38f35b033622a10.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/5fbf6e07ce5f2c9ccf670dd33b264ba2.jpg",
+      "is_landscape": false
+    },
+    "weaknesses": {
+      "effective": [
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 69,
+      "rift": 0
+    },
+    "wisdom": 0,
+    "effectivenesses": {
+      "power": 9500,
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 100,
+      "rift": 0
+    }
+  },
+  {
+    "id": 1306,
+    "type": "hefty_hulking_hauler",
+    "name": "Hefty Hulking Hauler Mouse",
+    "abbreviated_name": "Hefty Hulking Hauler",
+    "description": "This monstrous mouse is so massive and completely covered with stolen airship parts that he is often mistaken for an airship himself as he lumbers nonchalantly along the Skydocks.",
+    "points": 52000,
+    "points_formatted": "52,000",
+    "gold": 6200,
+    "gold_formatted": "6,200",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Debris Raiders",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/9dbb428afbd49f14f63187d78a9c2693.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/9726a149bb53483a655fffb4b185b800.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/6f56b138a7221ec75523f70ce1abf858.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/1e1f031ee722b0c28988879c0d820375.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/b2caec34d733bf4ad1309cd06fe3cab5.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/2b696a2bdb766520b6b3459a38400fc5.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/c911420fe7faf7db58133e68167268e2.jpg",
+      "is_landscape": false
+    },
+    "weaknesses": {
+      "effective": [
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 68,
+      "rift": 0
+    },
+    "wisdom": 7750,
+    "effectivenesses": {
+      "power": 9000,
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 100,
+      "rift": 0
+    }
+  },
+  {
+    "id": 1307,
+    "type": "port_pillager",
+    "name": "Port Pillager Mouse",
+    "abbreviated_name": "Port Pillager",
+    "description": "Happening upon this unscrupulous miscreant is unfortunately a common occurrence throughout the Cerulean Skyport. He lives to steal although he is not known for having particularly good taste in what he takes. This reckless raider will nick whatever he can get his paws on even though it's usually just worthless junk. He can be lured away from his criminal activities with just about any standard bait but don't expect to find any valuable trade goods in his possession, except for a few Corsair's Curds.",
+    "points": 35000,
+    "points_formatted": "35,000",
+    "gold": 4200,
+    "gold_formatted": "4,200",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Skydock Delinquents",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/70a41ff589382f1595a339534c95256d.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/c8dd941e9388b2ea2a254f8f5b0f4c19.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/f2f616e4c51c71e19f136c4c40f46232.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/7161aa42d4afa5e1f3613925fc8f9af0.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/25c5ddbdb8dc270f0b6eff6e2c2680f7.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/330c43b16046407c224e921f4dfa27bb.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/899763ab1d6844354490a865fe7b09ce.jpg",
+      "is_landscape": false
+    },
+    "weaknesses": {
+      "effective": [
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 58,
+      "rift": 0
+    },
+    "wisdom": 7250,
+    "effectivenesses": {
+      "power": 6700,
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 100,
+      "rift": 0
+    }
+  },
+  {
+    "id": 1308,
+    "type": "quarrelsome_quartermaster",
+    "name": "Quarrelsome Quartermaster Mouse",
+    "abbreviated_name": "Quarrelsome Quartermaster",
+    "description": "This smug, surly, and contentious criminal manages the Sky Raiders with an iron fist and answers only to Captain Crook herself. No pillaging can take place at the Skyport without the Quartermaster's astute supervision. He personally accompanies each and every attack to ensure that the raiders leave no airship unplundered and that the Captain always receives her tribute of the spoils... after he has collected his own ample share.<br />\n<br />\nThis rigid raider is so diligent that only the irresistible aroma of Sky Raider Romano Cheese can distract him from his duties.",
+    "points": 70000,
+    "points_formatted": "70,000",
+    "gold": 10000,
+    "gold_formatted": "10,000",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Sky Commanders",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/3df776ea30bc1c3157b8c995dc9d855c.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/bb5a30be6d823490a04b8e95a8ebeb40.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/9508415e768eedd845bc45e7683af356.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/538285d8d6eefccb84c75c46a005e31f.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/f1a6d0cd760c27462bbb782fe303fb77.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/df47ed4acbf918b111005cd0dc0e394d.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/27a5f6ff45ca9e022829987640fc6e69.jpg",
+      "is_landscape": false
+    },
+    "weaknesses": {
+      "veryEffective": [
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 91,
+      "rift": 0
+    },
+    "wisdom": 9000,
+    "effectivenesses": {
+      "power": 32000,
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 400,
+      "rift": 0
+    }
+  },
+  {
+    "id": 1309,
+    "type": "shimmerdread_the_sovereign_of_spice",
+    "name": "Shimmerdread the Sovereign of Spice",
+    "abbreviated_name": "Shimmerdread the Sovereign of Spice",
+    "description": "This deceptively elegant raider is a ruthless foe as cold as the darkest night and is the most feared of all of Captain Crook's crew. She craves the most valuable commodity in the Cerulean Skyport and will stop at nothing to ensure that all of the Aurora Spice in the entire hemisphere belongs to her. Even her own crew fear to meet her gaze for they say there is something entirely unpredictable and uniquely sinister in those ever-shimmering eyes.<br />\n<br />\nIn addition to Aurora Spice, this mouse is always seeking knowledge of the Kingdom to bring back to Captain Crook and therefore can always be found carrying additional intel for any shipment's point of origin.<br />\n<br />\nThe only thing that can distract Shimmerdread from marvelling at her sacred spice is the unique scent of Aurora Bocconcini Cheese.",
+    "points": 80000,
+    "points_formatted": "80,000",
+    "gold": 14000,
+    "gold_formatted": "14,000",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Sky Commanders",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/5f1e0d7d67d79ea450063b0f03f4a7ed.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/6a81576441c64a8e95486653c124e9ad.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/fca66e8491e9cdbea8323860d74d8887.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/f5af2beab238a4dd3ec82468fb127662.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/c470930e53b5b13f79c40a224ff28216.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/892c2489ee3519e1c81978ccade1c18e.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/a2a2854b99bacdd8fc1b274062c8f496.jpg",
+      "is_landscape": true
+    },
+    "weaknesses": {
+      "veryEffective": [
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 115,
+      "rift": 0
+    },
+    "wisdom": 0,
+    "effectivenesses": {
+      "power": 51200,
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 400,
+      "rift": 0
+    }
+  },
+  {
+    "id": 1310,
+    "type": "slipstream_the_virtuoso_of_vapours",
+    "name": "Slipstream the Virtuoso of Vapours",
+    "abbreviated_name": "Slipstream the Virtuoso of Vapours",
+    "description": "This high-flying, speed demon soars through the skies around the Cerulean Skyport at seemingly impossible speeds utilizing the immense power of compressed Atmospherium Gas. No matter how fast it travels, it's never fast enough, so this Virtuoso of Vapours is constantly in search of more gas to fuel its exploits and therefore can always be found when a gas shipment comes in to dock at the Skyport.<br />\n<br />\nIn addition to Atmospherium Gas, this mouse is always seeking knowledge of the Kingdom to bring back to Captain Crook and therefore can always be found carrying additional intel for any shipment's point of origin.<br />\n<br />\nThe only thing that can distract Slipstream from its high altitude, high octane lifestyle is the unique scent of Aurora Bocconcini Cheese.",
+    "points": 70000,
+    "points_formatted": "70,000",
+    "gold": 10000,
+    "gold_formatted": "10,000",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Sky Commanders",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/ca25f9911ad04df86c2ff400e1cc401f.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/5b94fa825c8f75f49b211999e8e455d2.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/ede913d658a659ee37afb1f6ad3bfdf9.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/4b9ca095fa0983004a2de0c9ec2042e6.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/dd99bfd707a88fc9b1f28a9d64d10563.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/dd1c4f9886b8266118c8f7f12d1a320b.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/c05f6761a625b0fc195024293afb79a7.jpg",
+      "is_landscape": true
+    },
+    "weaknesses": {
+      "veryEffective": [
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 102,
+      "rift": 0
+    },
+    "wisdom": 0,
+    "effectivenesses": {
+      "power": 40000,
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 400,
+      "rift": 0
+    }
+  },
+  {
+    "id": 1311,
+    "type": "sly_skulking_scrapper",
+    "name": "Sly Skulking Scrapper Mouse",
+    "abbreviated_name": "Sly Skulking Scrapper",
+    "description": "Before taking off from the Skydocks, make sure to do a full inspection of your airship because these miniature menaces have been known to climb all over docked vessels, yanking off anything they can get their greedy paws on.",
+    "points": 48500,
+    "points_formatted": "48,500",
+    "gold": 5600,
+    "gold_formatted": "5,600",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Debris Raiders",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/182178b3487c8f77463e427cfb98d142.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/039d26dd92c1ec66e398e369ea8a0e44.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/9a15b2e65f51eeee77e1e7e484fa676e.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/1794a6d674c64f9c6f0b11ff1099931d.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/a7a3f40de7b3a2266feb8d64c0f29b0e.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/87ff802335837e06517bd58be9e343d5.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/cdf78132a89a7fde2f05cb79546cd3ad.jpg",
+      "is_landscape": false
+    },
+    "weaknesses": {
+      "effective": [
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 62,
+      "rift": 0
+    },
+    "wisdom": 0,
+    "effectivenesses": {
+      "power": 7500,
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 100,
+      "rift": 0
+    }
+  },
+  {
+    "id": 1312,
+    "type": "stubby_scrap_scavenger",
+    "name": "Stubby Scrap Scavenger Mouse",
+    "abbreviated_name": "Stubby Scrap Scavenger",
+    "description": "Don't let his stature fool you, what this scavenger lacks in size he more than makes up for in strength. Best to keep a close eye on your airship when docked at the Skydocks because this stout mouse may just strip it down to parts right under your nose!",
+    "points": 45000,
+    "points_formatted": "45,000",
+    "gold": 5250,
+    "gold_formatted": "5,250",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Debris Raiders",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/c61709909a7d567eaf07073f7db736aa.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/f55ee194dff43a3fd2b39462282cec9f.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/e5ced6ff1558df6de12a5d9288525aa1.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/deee0296bc3c44a57bd9a56d41228fc0.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/4a648260b4795784b0b2ff7b8fa8e58d.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/49f11f1932ceda938091f6e3aad3e65a.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/f2c47f34f5f607a03516d1a72cb6df1f.jpg",
+      "is_landscape": false
+    },
+    "weaknesses": {
+      "effective": [
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 66,
+      "rift": 0
+    },
+    "wisdom": 0,
+    "effectivenesses": {
+      "power": 8500,
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 100,
+      "rift": 0
+    }
+  },
+  {
+    "id": 1313,
+    "type": "swift_stone_snatcher",
+    "name": "Swift Stone Snatcher Mouse",
+    "abbreviated_name": "Swift Stone Snatcher",
+    "description": "This speedy Sky Raider is well known throughout the Skyport for her uncanny agility. It is said that she is so swift and nimble that she can clear out a hull full of Unrefined Cloudstone in the time it takes for the airship's crew to tie their ship to the dock.",
+    "points": 52000,
+    "points_formatted": "52,000",
+    "gold": 6200,
+    "gold_formatted": "6,200",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Cloudstone Raiders",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/f6e2ca346f78480d1126c4fe919c7921.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/8a0c831882ac866fd28616172a0cf1e1.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/e69e4283cf04af855643e78c08f6408d.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/a20fda26a07acefbfdac47bc41002ef5.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/78bd17dc7ba9f86cf1e1e0375b3f8ac5.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/87e86e11fd75d22c7541c3e645563c8a.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/14f4f0cb0783242f3b3e423081513cd3.jpg",
+      "is_landscape": false
+    },
+    "weaknesses": {
+      "effective": [
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 73,
+      "rift": 0
+    },
+    "wisdom": 0,
+    "effectivenesses": {
+      "power": 10500,
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 100,
+      "rift": 0
+    }
+  },
+  {
+    "id": 1314,
+    "type": "treacherous_dock_lurker",
+    "name": "Treacherous Dock Lurker Mouse",
+    "abbreviated_name": "Treacherous Dock Lurker",
+    "description": "This disreputable raider has a nasty habit of lurking beneath the Skydocks in order to catch his victims unaware. It is because of this mouse in particular that the Cerulean Skyport Authority now recommends that all sailors check the dock's edge carefully each time before stepping off.",
+    "points": 42000,
+    "points_formatted": "42,000",
+    "gold": 5000,
+    "gold_formatted": "5,000",
+    "group": "Cerulean Sky Raiders",
+    "subgroup": "Skydock Delinquents",
+    "images": {
+      "thumbnail": "https://www.mousehuntgame.com/images/mice/thumb/eca7ec06814b6359054522698069457e.gif",
+      "silhouette_thumbnail": "https://www.mousehuntgame.com/images/mice/silhouette_thumb/65a2a2218d443056bb8c406e4ba2e388.gif",
+      "small": "",
+      "medium": "https://www.mousehuntgame.com/images/mice/medium/9dc5a03f23887fc3a68265961b222cf1.jpg",
+      "silhouette_medium": "https://www.mousehuntgame.com/images/mice/silhouette_medium/8ebbd2f948f78919ebba6e3a35e694b5.jpg",
+      "large": "https://www.mousehuntgame.com/images/mice/large/63a1748849173e3ae4c96224075d8e9a.jpg",
+      "silhouette_large": "https://www.mousehuntgame.com/images/mice/silhouette_large/4868f147fd56a23c8de871b316d7183e.jpg",
+      "square": "https://www.mousehuntgame.com/images/mice/square/91e0e7f960354dcf99fb2f32f9334d8b.jpg",
+      "is_landscape": false
+    },
+    "weaknesses": {
+      "effective": [
+        "law"
+      ]
+    },
+    "minlucks": {
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 36,
+      "rift": 0
+    },
+    "wisdom": 6250,
+    "effectivenesses": {
+      "power": 5000,
+      "arcane": 0,
+      "draconic": 0,
+      "forgotten": 0,
+      "hydro": 0,
+      "physical": 0,
+      "shadow": 0,
+      "tactical": 0,
+      "law": 400,
+      "rift": 0
+    }
   }
 ]

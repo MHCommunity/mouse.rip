@@ -540,6 +540,16 @@
     "title": "archduke_archduchess"
   },
   {
+    "id": "cerulean_skyport",
+    "name": "Cerulean Skyport",
+    "article": "the Cerulean Skyport",
+    "image": "https://www.mousehuntgame.com/images/environments/730d4980a121ad22d3fa1465683821d7.jpg",
+    "headerImage": "https://www.mousehuntgame.com/images/environments/ab001a78d7083a756a458b72d1e09ec1.jpg",
+    "region": "zokor_zone",
+    "order": 135,
+    "title": "archduke_archduchess"
+  },
+  {
     "id": "foreword_farm",
     "name": "Foreword Farm",
     "article": "the Foreword Farm",
