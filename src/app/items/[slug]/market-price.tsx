@@ -2,6 +2,8 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 
+import { formatGold, formatSb } from '@/utils';
+
 interface PricePoint {
   date: string;
   price: number;
@@ -28,18 +30,10 @@ const RANGES = [
 
 type RangeKey = (typeof RANGES)[number]['key'];
 
-function formatGold(value: number): string {
-  return Math.round(value).toLocaleString('en-US');
-}
-
 function formatCompact(value: number): string {
   return new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(
     value
   );
-}
-
-function formatSb(value: number): string {
-  return value >= 100 ? Math.round(value).toLocaleString('en-US') : value.toFixed(2);
 }
 
 // Chart geometry (SVG user units; the element itself is responsive).

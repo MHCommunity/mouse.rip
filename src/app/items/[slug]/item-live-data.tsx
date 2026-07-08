@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react';
 
 import { CheeseCell, LocationCell } from '@/components/mhct-cells';
+import { useEndpoint, sectionTitle, SkeletonRows } from '@/components/live-data';
+import { formatGold } from '@/utils';
 
 interface DropRow {
   location: string;
@@ -22,55 +24,10 @@ interface ConvertibleRow {
   chance: string | number;
 }
 
-type Loadable<T> =
-  | { status: 'loading' }
-  | { status: 'ready'; data: T }
-  | { status: 'empty' }
-  | { status: 'error' };
-
-function useEndpoint<T>(url: string | null, isEmpty: (data: T) => boolean): Loadable<T> {
-  const [state, setState] = useState<Loadable<T>>(url ? { status: 'loading' } : { status: 'empty' });
-
-  useEffect(() => {
-    if (!url) return;
-    let active = true;
-    fetch(url)
-      .then((res) => res.json() as Promise<T>)
-      .then((data) => {
-        if (!active) return;
-        setState(isEmpty(data) ? { status: 'empty' } : { status: 'ready', data });
-      })
-      .catch(() => active && setState({ status: 'error' }));
-    return () => {
-      active = false;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [url]);
-
-  return state;
-}
-
-const sectionTitle =
-  'text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500';
-
-function SkeletonRows() {
-  return (
-    <div className="mt-4 space-y-2">
-      {[0, 1, 2].map((i) => (
-        <div key={i} className="h-9 animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800" />
-      ))}
-    </div>
-  );
-}
-
 function formatQuantity(min: number, max: number): string {
   if (!min && !max) return '';
   if (min === max) return `${min}`;
   return `${min}–${max}`;
-}
-
-function formatGold(value: number): string {
-  return Math.round(value).toLocaleString('en-US');
 }
 
 interface MarkethuntListRow {

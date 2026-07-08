@@ -23,6 +23,41 @@ export function cleanDescription(description: string): string {
 }
 
 /**
+ * Converts a snake_case identifier (item classification, environment name)
+ * into a Title Case label, e.g. 'torn_pages' → 'Torn Pages'.
+ *
+ * @param {string} value The snake_case value to convert
+ * @return {string} The Title Case label
+ */
+export function titleCase(value: string): string {
+	return value
+    .split('_')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+/**
+ * Formats a gold amount (e.g. a Markethunt price or volume) as a whole number
+ * with thousands separators.
+ *
+ * @param {number} value The gold amount
+ * @return {string} The formatted amount
+ */
+export function formatGold(value: number): string {
+	return Math.round(value).toLocaleString('en-US');
+}
+
+/**
+ * Formats a SUPER|brie+ price: whole SB above 100, two decimals below.
+ *
+ * @param {number} value The SB price
+ * @return {string} The formatted price
+ */
+export function formatSb(value: number): string {
+	return value >= 100 ? Math.round(value).toLocaleString('en-US') : value.toFixed(2);
+}
+
+/**
  * Whether a URL is a relative path within this Next app, and therefore safe to
  * navigate to with the client router (and to apply view transitions to).
  *
