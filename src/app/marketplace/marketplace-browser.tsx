@@ -5,6 +5,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'next-view-transitions';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 
+import { formatGold, formatSb } from '@/utils';
+
 interface MarketItem {
   item_info: { item_id: number; name: string; currently_tradeable: boolean };
   // null for items Markethunt tracks but has no market data for (~10% of rows).
@@ -26,14 +28,6 @@ const SORTS: { key: SortKey; label: string }[] = [
   { key: 'sb', label: 'SB price' },
   { key: 'name', label: 'Name' },
 ];
-
-function formatGold(value: number): string {
-  return value.toLocaleString('en-US');
-}
-
-function formatSb(value: number): string {
-  return value >= 100 ? Math.round(value).toLocaleString('en-US') : value.toFixed(2);
-}
 
 export function MarketplaceBrowser({ slugById }: { slugById: Record<number, string> }) {
   const [state, setState] = useState<State>({ status: 'loading' });

@@ -5,19 +5,14 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'next-view-transitions';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 
+import { titleCase } from '@/utils';
+
 export interface SlimItem {
   id: number;
   name: string;
   slug: string;
   classification: string;
   tradable?: boolean;
-}
-
-function classificationLabel(classification: string): string {
-  return classification
-    .split('_')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
 }
 
 const pillBase =
@@ -126,7 +121,7 @@ export function ItemsBrowser({
                 : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
             }`}
           >
-            {classificationLabel(key)}
+            {titleCase(key)}
             <span className="ml-1.5 text-xs tabular-nums opacity-60">{counts.get(key) ?? 0}</span>
           </button>
         ))}
@@ -148,7 +143,7 @@ export function ItemsBrowser({
           {grouped.map(([key, list]) => (
             <section key={key}>
               <h2 className="text-sm font-semibold tracking-tight text-zinc-900 dark:text-white">
-                {classificationLabel(key)}
+                {titleCase(key)}
                 <span className="ml-2 text-xs font-normal tabular-nums text-zinc-400 dark:text-zinc-500">
                   {list.length}
                 </span>

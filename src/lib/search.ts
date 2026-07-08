@@ -1,4 +1,5 @@
 import { getItems, getLocations, getTitles, getEnvironments } from '@/data';
+import { titleCase } from '@/utils';
 import miceGroups from '@/data/generated/mice-groups.json';
 import type { SlimMouse } from '@/types';
 
@@ -203,19 +204,12 @@ interface SlimGameItem {
   classification: string;
 }
 
-function classificationLabel(classification: string): string {
-  return classification
-    .split('_')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-}
-
 function toGameItemRecord(item: SlimGameItem): SearchRecord {
   return {
     id: `gameitem-${item.id}`,
     group: 'Items',
     title: item.name,
-    subtitle: classificationLabel(item.classification),
+    subtitle: titleCase(item.classification),
     href: `/items/${item.type.replaceAll('_', '-')}`,
     keywords: `${item.name} ${item.classification} item`.toLowerCase(),
   };

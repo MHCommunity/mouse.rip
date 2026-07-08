@@ -11,7 +11,7 @@ import { getAllGameItems, getGameItemBySlug, itemSlug } from '@/lib/game-data';
 import { descriptionToParagraphs, powerTypeLabel, POWER_TYPE_CHIP } from '@/lib/power-types';
 import type { GameItem, GameItemStats } from '@/types';
 import { ogCard, pageMetadata } from '@/seo';
-import { cleanDescription } from '@/utils';
+import { cleanDescription, titleCase } from '@/utils';
 import { ItemLiveData } from './item-live-data';
 import { MarketPrice } from './market-price';
 
@@ -19,13 +19,6 @@ export const dynamicParams = false;
 
 export function generateStaticParams() {
   return getAllGameItems().map((item) => ({ slug: itemSlug(item.type) }));
-}
-
-function classificationLabel(classification: string): string {
-  return classification
-    .split('_')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -52,7 +45,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     path: `/items/${slug}`,
     image: ogCard({
       title: item.name,
-      eyebrow: classificationLabel(item.classification),
+      eyebrow: titleCase(item.classification),
       subtitle: cardSubtitle || undefined,
       image: cardImage,
       accent: 'blue',
@@ -123,13 +116,7 @@ function itemEnvironments(item: GameItem): { id: string | null; name: string }[]
       const id = env.replaceAll('_', '-');
       const name = locationNames.get(id);
       if (name) return { id, name };
-      return {
-        id: null,
-        name: env
-          .split('_')
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(' '),
-      };
+      return { id: null, name: titleCase(env) };
     });
 }
 
@@ -291,10 +278,10 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
           <div className="mt-3 flex flex-wrap items-center gap-2">
             <Link
               href={`/items?type=${item.classification}`}
-              title={`All ${classificationLabel(item.classification).toLowerCase()}s`}
+              title={`All ${titleCase(item.classification).toLowerCase()}s`}
               className="inline-flex rounded-md bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600 transition hover:ring-2 hover:ring-blue-400 dark:bg-zinc-800 dark:text-zinc-300"
             >
-              {classificationLabel(item.classification)}
+              {titleCase(item.classification)}
             </Link>
             {flags.map((flag) => (
               <span
@@ -403,7 +390,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
       {related.length > 0 && (
         <section className="mt-10">
           <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
-            Related {classificationLabel(item.classification).toLowerCase()}s
+            Related {titleCase(item.classification).toLowerCase()}s
           </h2>
           <ul className="mt-4 flex flex-wrap gap-2">
             {related.map((peer) => (
