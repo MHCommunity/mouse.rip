@@ -72655,7 +72655,7 @@
       "law": 73,
       "rift": 0
     },
-    "wisdom": 0,
+    "wisdom": 9375,
     "effectivenesses": {
       "power": 10500,
       "arcane": 0,
@@ -72761,7 +72761,7 @@
       "law": 80,
       "rift": 0
     },
-    "wisdom": 0,
+    "wisdom": 8563,
     "effectivenesses": {
       "power": 12500,
       "arcane": 0,
@@ -72814,7 +72814,7 @@
       "law": 81,
       "rift": 0
     },
-    "wisdom": 0,
+    "wisdom": 10313,
     "effectivenesses": {
       "power": 13000,
       "arcane": 0,
@@ -72867,7 +72867,7 @@
       "law": 75,
       "rift": 0
     },
-    "wisdom": 0,
+    "wisdom": 9375,
     "effectivenesses": {
       "power": 11000,
       "arcane": 0,
@@ -72980,7 +72980,7 @@
       "law": 69,
       "rift": 0
     },
-    "wisdom": 0,
+    "wisdom": 7000,
     "effectivenesses": {
       "power": 9500,
       "arcane": 0,
@@ -73030,12 +73030,12 @@
       "physical": 0,
       "shadow": 0,
       "tactical": 0,
-      "law": 50,
+      "law": 91,
       "rift": 0
     },
     "wisdom": 0,
     "effectivenesses": {
-      "power": 9600,
+      "power": 32000,
       "arcane": 0,
       "draconic": 0,
       "forgotten": 0,
@@ -73086,7 +73086,7 @@
       "law": 71,
       "rift": 0
     },
-    "wisdom": 0,
+    "wisdom": 8563,
     "effectivenesses": {
       "power": 10000,
       "arcane": 0,
@@ -73139,7 +73139,7 @@
       "law": 66,
       "rift": 0
     },
-    "wisdom": 0,
+    "wisdom": 7750,
     "effectivenesses": {
       "power": 8500,
       "arcane": 0,
@@ -73245,7 +73245,7 @@
       "law": 69,
       "rift": 0
     },
-    "wisdom": 0,
+    "wisdom": 8563,
     "effectivenesses": {
       "power": 9500,
       "arcane": 0,
@@ -73401,12 +73401,12 @@
       "physical": 0,
       "shadow": 0,
       "tactical": 0,
-      "law": 91,
+      "law": 50,
       "rift": 0
     },
     "wisdom": 9000,
     "effectivenesses": {
-      "power": 32000,
+      "power": 9600,
       "arcane": 0,
       "draconic": 0,
       "forgotten": 0,
@@ -73457,7 +73457,7 @@
       "law": 115,
       "rift": 0
     },
-    "wisdom": 0,
+    "wisdom": 12000,
     "effectivenesses": {
       "power": 51200,
       "arcane": 0,
@@ -73563,7 +73563,7 @@
       "law": 62,
       "rift": 0
     },
-    "wisdom": 0,
+    "wisdom": 7000,
     "effectivenesses": {
       "power": 7500,
       "arcane": 0,
@@ -73616,7 +73616,7 @@
       "law": 66,
       "rift": 0
     },
-    "wisdom": 0,
+    "wisdom": 6563,
     "effectivenesses": {
       "power": 8500,
       "arcane": 0,
@@ -73669,7 +73669,7 @@
       "law": 73,
       "rift": 0
     },
-    "wisdom": 0,
+    "wisdom": 7750,
     "effectivenesses": {
       "power": 10500,
       "arcane": 0,
