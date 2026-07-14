@@ -23546,7 +23546,7 @@
     "type": "carmine",
     "name": "Carmine the Apothecary",
     "abbreviated_name": "Carmine the Apothecary",
-    "description": "Tales are still told of the sickness that ran through Muridae: First, victims would break out in feverish sweats, then they'd develop spots all over their body, and then finally collapse comatose.  This illness spread like wildfire and it seemed nothing could be done, until finally Carmine arrived with faintly-glowing poultices and potions and miraculously cured everyone in a single day.<br>\n<br>\nSince then, she's been the town's famed and well-loved apothecary, able to cure diseases that don't even have names yet.  How she does it is anyone's guess, but the townsfolk adore her and anyone asking too many questions is quickly... dissuaded.",
+    "description": "Tales are still told of the sickness that ran through Muridae: First, mice would break out in feverish sweats, then they'd develop spots all over their body, and then finally collapse comatose.  This illness spread like wildfire and it seemed nothing could be done, until finally Carmine arrived with faintly-glowing poultices and potions and miraculously cured everyone in a single day.<br>\n\t<br>\n\tSince then, she's been the town's famed and well-loved apothecary, able to cure diseases that don't even have names yet.  Sneaking into the Living Garden has allowed her to gather the Garden Essences necessary to accomplish this task, but something sinister happened to her there, and she's become more than just an apothecary - for reasons unknown she's raised an army of mice that attack anyone entering the Garden, and is able to wield incredible powers and seemingly span worlds with her magic!<br>\n\t<br>\n\tThe question is, how did a simple apothecary gain the ability to control world-rending magic, and what does this mean for Gnawnia as a whole?",
     "points": 12500,
     "points_formatted": "12,500",
     "gold": 800,
@@ -72917,27 +72917,27 @@
       ]
     },
     "minlucks": {
-      "arcane": 126,
-      "draconic": 126,
-      "forgotten": 126,
-      "hydro": 126,
-      "physical": 126,
-      "shadow": 126,
-      "tactical": 126,
-      "law": 126,
+      "arcane": 109,
+      "draconic": 109,
+      "forgotten": 109,
+      "hydro": 109,
+      "physical": 109,
+      "shadow": 109,
+      "tactical": 109,
+      "law": 109,
       "rift": 0
     },
-    "wisdom": 0,
+    "wisdom": 25000,
     "effectivenesses": {
-      "power": 61600,
-      "arcane": 400,
-      "draconic": 400,
-      "forgotten": 400,
-      "hydro": 400,
-      "physical": 400,
-      "shadow": 400,
-      "tactical": 400,
-      "law": 400,
+      "power": 46200,
+      "arcane": 300,
+      "draconic": 300,
+      "forgotten": 300,
+      "hydro": 300,
+      "physical": 300,
+      "shadow": 300,
+      "tactical": 300,
+      "law": 300,
       "rift": 0
     }
   },
@@ -73030,12 +73030,12 @@
       "physical": 0,
       "shadow": 0,
       "tactical": 0,
-      "law": 91,
+      "law": 79,
       "rift": 0
     },
-    "wisdom": 0,
+    "wisdom": 9000,
     "effectivenesses": {
-      "power": 32000,
+      "power": 24000,
       "arcane": 0,
       "draconic": 0,
       "forgotten": 0,
@@ -73043,7 +73043,7 @@
       "physical": 0,
       "shadow": 0,
       "tactical": 0,
-      "law": 400,
+      "law": 300,
       "rift": 0
     }
   },
@@ -73189,12 +73189,12 @@
       "physical": 0,
       "shadow": 0,
       "tactical": 0,
-      "law": 107,
+      "law": 93,
       "rift": 0
     },
-    "wisdom": 0,
+    "wisdom": 11000,
     "effectivenesses": {
-      "power": 44000,
+      "power": 33000,
       "arcane": 0,
       "draconic": 0,
       "forgotten": 0,
@@ -73202,7 +73202,7 @@
       "physical": 0,
       "shadow": 0,
       "tactical": 0,
-      "law": 400,
+      "law": 300,
       "rift": 0
     }
   },
@@ -73401,12 +73401,12 @@
       "physical": 0,
       "shadow": 0,
       "tactical": 0,
-      "law": 50,
+      "law": 43,
       "rift": 0
     },
     "wisdom": 9000,
     "effectivenesses": {
-      "power": 9600,
+      "power": 7200,
       "arcane": 0,
       "draconic": 0,
       "forgotten": 0,
@@ -73414,7 +73414,7 @@
       "physical": 0,
       "shadow": 0,
       "tactical": 0,
-      "law": 400,
+      "law": 300,
       "rift": 0
     }
   },
@@ -73454,12 +73454,12 @@
       "physical": 0,
       "shadow": 0,
       "tactical": 0,
-      "law": 115,
+      "law": 100,
       "rift": 0
     },
     "wisdom": 12000,
     "effectivenesses": {
-      "power": 51200,
+      "power": 38400,
       "arcane": 0,
       "draconic": 0,
       "forgotten": 0,
@@ -73467,7 +73467,7 @@
       "physical": 0,
       "shadow": 0,
       "tactical": 0,
-      "law": 400,
+      "law": 300,
       "rift": 0
     }
   },
@@ -73507,12 +73507,12 @@
       "physical": 0,
       "shadow": 0,
       "tactical": 0,
-      "law": 102,
+      "law": 88,
       "rift": 0
     },
-    "wisdom": 0,
+    "wisdom": 10000,
     "effectivenesses": {
-      "power": 40000,
+      "power": 30000,
       "arcane": 0,
       "draconic": 0,
       "forgotten": 0,
@@ -73520,7 +73520,7 @@
       "physical": 0,
       "shadow": 0,
       "tactical": 0,
-      "law": 400,
+      "law": 300,
       "rift": 0
     }
   },
