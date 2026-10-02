@@ -7,11 +7,12 @@ import { PageHeader } from '@/components/page-header';
 import { getEnvironments, getLocations, getRelicHunterHints } from '@/data';
 import { RelicHunterLive } from './relic-hunter-live';
 import { pageMetadata } from '@/seo';
+import { locationImageUrl } from '@/lib/image-urls';
 
 export const metadata = pageMetadata({
   title: 'Relic Hunter Location & Hints',
   description:
-    "See where the Relic Hunter is hiding right now, plus the riddles she drops for every location she visits across MouseHunt.",
+    'See where the Relic Hunter is hiding right now, plus the riddles she drops for every location she visits across MouseHunt.',
   path: '/relic-hunter',
 });
 
@@ -20,7 +21,6 @@ export default function RelicHunterPage() {
   const environments = getEnvironments();
 
   const nameById = new Map(environments.map((env) => [env.id, env.name ?? env.id]));
-  const imageById = new Map(environments.map((env) => [env.id, env.image]));
   const orderById = new Map(environments.map((env) => [env.id, env.order ?? 999]));
 
   // On-site location ids (hyphenated) so we can link hint locations to their pages.
@@ -36,7 +36,7 @@ export default function RelicHunterPage() {
     .sort(([a], [b]) => (orderById.get(a) ?? 999) - (orderById.get(b) ?? 999));
 
   return (
-    <div className="mx-auto max-w-4xl">
+    <div>
       <PageHeader
         title="Relic Hunter"
         description="Each day the Relic Hunter slips away to a new corner of the kingdom and leaves behind a riddle about where she's gone. See where she's hiding right now, and browse the riddles she drops for every location below."
@@ -55,7 +55,6 @@ export default function RelicHunterPage() {
       <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
         {entries.map(([envId, list]) => {
           const name = nameById.get(envId) ?? envId;
-          const image = imageById.get(envId);
           const locationId = envId.replace(/_/g, '-');
           const hasPage = locationIds.has(locationId);
 
@@ -65,14 +64,12 @@ export default function RelicHunterPage() {
               className="group flex flex-col rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900"
             >
               <div className="flex items-center gap-3">
-                {image && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={image}
-                    alt=""
-                    className="size-10 shrink-0 rounded-lg object-cover ring-1 ring-zinc-950/5 dark:ring-white/10"
-                  />
-                )}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={locationImageUrl(envId)}
+                  alt=""
+                  className="size-10 shrink-0 rounded-lg object-cover ring-1 ring-zinc-950/5 dark:ring-white/10"
+                />
                 <div className="min-w-0 flex-1">
                   <h3 className="truncate text-base font-semibold tracking-tight text-zinc-900 dark:text-white">
                     {hasPage ? (

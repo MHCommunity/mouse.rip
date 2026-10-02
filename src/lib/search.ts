@@ -2,16 +2,10 @@ import { getItems, getLocations, getTitles, getEnvironments } from '@/data';
 import { titleCase } from '@/utils';
 import miceGroups from '@/data/generated/mice-groups.json';
 import type { SlimMouse } from '@/types';
+import { loadItemIndex, loadMouseIndex, type IndexedItem } from '@/lib/client-index';
+import { itemImageUrl, locationImageUrl, mouseGroupImageUrl, mouseImageUrl, titleImageUrl } from '@/lib/image-urls';
 
-export type SearchGroup =
-  | 'Pages'
-  | 'Mice'
-  | 'Groups'
-  | 'Locations'
-  | 'Items'
-  | 'Guides'
-  | 'Resources'
-  | 'Titles';
+export type SearchGroup = 'Pages' | 'Mice' | 'Groups' | 'Locations' | 'Items' | 'Guides' | 'Resources' | 'Titles';
 
 export interface SearchRecord {
   id: string;
@@ -23,7 +17,7 @@ export interface SearchRecord {
   href: string;
   external?: boolean;
   image?: string;
-  /** Pre-lowercased haystack used for matching. */
+  /** Haystack used for matching; normalized together with the query. */
   keywords: string;
 }
 
@@ -41,20 +35,25 @@ export const GROUP_ORDER: SearchGroup[] = [
 
 const PAGE_RECORDS: SearchRecord[] = [
   ['/', 'Home', 'Guides, tools, and resources', 'home start overview'],
-  ['/mice', 'Mice & groups', 'Browse mice by group or power type', 'mice mouse bestiary stats minluck groups clan tribe'],
+  [
+    '/mice',
+    'Mice & groups',
+    'Browse mice by group or power type',
+    'mice mouse bestiary stats minluck groups clan tribe',
+  ],
   ['/items', 'Items', 'Browse every item', 'items weapons bases charms cheese collectibles'],
-  ['/marketplace', 'Marketplace', 'Live tradable item prices', 'marketplace market prices gold sb supplies trade markethunt'],
+  [
+    '/marketplace',
+    'Marketplace',
+    'Live tradable item prices',
+    'marketplace market prices gold sb supplies trade markethunt',
+  ],
   ['/guides', 'Guides', 'Walkthroughs and strategy', 'guides walkthrough strategy how to'],
   ['/extensions', 'Extensions', 'Browser add-ons', 'extensions browser add-ons addons'],
   ['/tools', 'Tools', 'Calculators and lookups', 'tools calculators simulators lookups'],
   ['/spreadsheets', 'Spreadsheets', 'Community sheets', 'spreadsheets sheets google docs'],
   ['/userscripts', 'Userscripts', 'Scripts for the game UI', 'userscripts scripts tampermonkey'],
-  [
-    '/minlucks',
-    'Minlucks',
-    'Minimum luck to guarantee a catch',
-    'minluck minlucks luck catch rate power type mouse',
-  ],
+  ['/minlucks', 'Minlucks', 'Minimum luck to guarantee a catch', 'minluck minlucks luck catch rate power type mouse'],
   ['/titles', 'Titles & ranks', 'Ranks and wisdom requirements', 'titles ranks wisdom novice fabled'],
   ['/relic-hunter', 'Relic Hunter', "Where she's hiding and her riddles", 'relic hunter riddle hint'],
   [
@@ -95,7 +94,7 @@ const TYPE_LABELS: Record<string, string> = {
 
 function minluckSummary(mouse: SlimMouse): string | undefined {
   const entries = Object.entries(mouse.minlucks ?? {}).filter(
-    ([, value]) => typeof value === 'number' && value > 0
+    ([, value]) => typeof value === 'number' && value > 0,
   ) as [string, number][];
   if (entries.length === 0) return undefined;
 
@@ -114,7 +113,7 @@ function toMouseRecord(mouse: SlimMouse): SearchRecord {
     subtitle,
     badge: minluckSummary(mouse),
     href: `/mice/${mouse.type.replaceAll('_', '-')}`,
-    image: `https://i.mouse.rip/images/mice/thumbnail/${mouse.type.replaceAll('_', '-')}.png`,
+    image: mouseImageUrl(mouse.type),
     keywords:
       `${mouse.name} ${mouse.abbreviated_name ?? ''} ${mouse.group} ${mouse.subgroup ?? ''} mouse minluck`.toLowerCase(),
   };
@@ -145,7 +144,7 @@ export function getStaticSearchRecords(): SearchRecord[] {
       title: group.name,
       subtitle: `${group.mouse_ids.length} mice`,
       href: `/groups/${group.id}`,
-      image: group.banner,
+      image: mouseGroupImageUrl(group.id),
       keywords: `${group.name} ${group.description_short ?? ''} group mice clan tribe`.toLowerCase(),
     });
   }
@@ -160,22 +159,23 @@ export function getStaticSearchRecords(): SearchRecord[] {
         title: location.name,
         subtitle: region.name,
         href: `/locations/${location.id}`,
-        image: `/images/locations/${location.id.replaceAll('_', '-')}.png`,
-        keywords:
-          `${location.name} ${region.name} ${env?.description ?? ''} location area region`.toLowerCase(),
+        image: locationImageUrl(location.id),
+        keywords: `${location.name} ${region.name} ${env?.description ?? ''} location area region`.toLowerCase(),
       });
     }
   }
 
   for (const item of getItems()) {
     const isGuide = item.category === 'guide';
+    // Userscripts always resolve to their on-site detail page, like the Item card.
+    const href = item.category === 'userscript' ? `/userscripts/${item.id}` : item.url;
     records.push({
       id: `item-${item.category}-${item.id}`,
       group: isGuide ? 'Guides' : 'Resources',
       title: item.name,
       subtitle: isGuide ? 'Guide' : capitalize(item.category),
-      href: item.url,
-      external: /^https?:/i.test(item.url),
+      href,
+      external: /^https?:/i.test(href),
       keywords:
         `${item.name} ${item.description} ${item.category} ${item.source ?? ''} ${(item.tags ?? []).join(' ')}`.toLowerCase(),
     });
@@ -188,7 +188,7 @@ export function getStaticSearchRecords(): SearchRecord[] {
       title: title.name,
       subtitle: 'Rank',
       href: '/titles',
-      image: title.icon,
+      image: titleImageUrl(title.id),
       keywords: `${title.name} title rank wisdom`.toLowerCase(),
     });
   }
@@ -197,69 +197,62 @@ export function getStaticSearchRecords(): SearchRecord[] {
   return records;
 }
 
-interface SlimGameItem {
-  id: number;
-  name: string;
-  type: string;
-  classification: string;
-}
-
-function toGameItemRecord(item: SlimGameItem): SearchRecord {
+function toGameItemRecord(item: IndexedItem): SearchRecord {
   return {
     id: `gameitem-${item.id}`,
     group: 'Items',
     title: item.name,
     subtitle: titleCase(item.classification),
     href: `/items/${item.type.replaceAll('_', '-')}`,
+    image: itemImageUrl(item.type),
     keywords: `${item.name} ${item.classification} item`.toLowerCase(),
   };
 }
 
-let micePromise: Promise<SearchRecord[]> | null = null;
-let gameItemsPromise: Promise<SearchRecord[]> | null = null;
-
-/** Game items are numerous; load the slim index lazily on first search. */
+/**
+ * Game items and mice are numerous, so their indexes load lazily on first
+ * search — from the same shared chunks the /items, /mice and /marketplace
+ * browsers use, so whichever comes first pays for both.
+ */
 export function loadGameItemRecords(): Promise<SearchRecord[]> {
-  if (!gameItemsPromise) {
-    gameItemsPromise = import('@/data/generated/game-items-search.json').then((mod) => {
-      const items = ((mod as { default?: SlimGameItem[] }).default ??
-        (mod as unknown as SlimGameItem[])) as SlimGameItem[];
-      return items.map(toGameItemRecord);
-    });
-  }
-  return gameItemsPromise;
+  return loadItemIndex().then((items) => items.map(toGameItemRecord));
 }
 
-/** Mice are large (~1,300 records), so load them lazily on first search. */
 export function loadMouseRecords(): Promise<SearchRecord[]> {
-  if (!micePromise) {
-    micePromise = import('@/data/generated/mice-search.json').then((mod) => {
-      const mice = ((mod as { default?: SlimMouse[] }).default ?? (mod as unknown as SlimMouse[])) as SlimMouse[];
-      return mice.map(toMouseRecord);
-    });
-  }
-  return micePromise;
+  return loadMouseIndex().then((mice) => mice.map(toMouseRecord));
+}
+
+/** Treat punctuation and accents as word separators so game typography remains searchable. */
+export function normalizeSearchText(value: string): string {
+  return value
+    .normalize('NFKD')
+    .replace(/\p{M}/gu, '')
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .trim()
+    .replace(/\s+/g, ' ');
 }
 
 /** AND-match every token against keywords, then rank by how well the title matches. */
 export function searchRecords(records: SearchRecord[], query: string, limit = 40): SearchRecord[] {
-  const q = query.trim().toLowerCase();
+  const q = normalizeSearchText(query);
   if (!q) return [];
 
   const tokens = q.split(/\s+/).filter(Boolean);
   const scored: { record: SearchRecord; score: number }[] = [];
 
   for (const record of records) {
+    const keywords = normalizeSearchText(record.keywords);
     let matchesAll = true;
     for (const token of tokens) {
-      if (!record.keywords.includes(token)) {
+      if (!keywords.includes(token)) {
         matchesAll = false;
         break;
       }
     }
     if (!matchesAll) continue;
 
-    const title = record.title.toLowerCase();
+    const title = normalizeSearchText(record.title);
     let score = 0;
     if (title === q) score += 1000;
     else if (title.startsWith(q)) score += 600;
@@ -274,5 +267,25 @@ export function searchRecords(records: SearchRecord[], query: string, limit = 40
   }
 
   scored.sort((a, b) => b.score - a.score || a.record.title.length - b.record.title.length);
-  return scored.slice(0, limit).map((entry) => entry.record);
+  if (scored.length <= limit) return scored.map((entry) => entry.record);
+
+  // Keep broad item/mouse matches from consuming the entire result budget before
+  // the dialog groups them. Two slots per matching group preserves navigation
+  // results, then the remaining slots go to the strongest matches globally.
+  const selected = new Set<SearchRecord>();
+  for (const group of GROUP_ORDER) {
+    let reserved = 0;
+    for (const entry of scored) {
+      if (selected.size >= limit || reserved >= 2) break;
+      if (entry.record.group !== group) continue;
+      selected.add(entry.record);
+      reserved++;
+    }
+  }
+  for (const entry of scored) {
+    if (selected.size >= limit) break;
+    selected.add(entry.record);
+  }
+
+  return scored.filter((entry) => selected.has(entry.record)).map((entry) => entry.record);
 }

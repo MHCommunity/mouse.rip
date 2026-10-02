@@ -12,17 +12,6 @@ export const MouseRipItemSchema = z.object({
   priority: z.number().optional(),
   highlight: z.boolean().optional(),
   tags: z.array(z.string()).optional(),
-  data: z.object({
-    name: z.string().optional(),
-    description: z.string().optional(),
-    installs: z.number().optional(),
-    active_users: z.number().optional(),
-    installs_last_3_months: z.number().optional(),
-    installs_last_month: z.number().optional(),
-    created_at: z.string().optional(),
-    updated_at: z.string().optional(),
-    version: z.string().optional(),
-  }).optional(),
 });
 export type MouseRipItem = z.infer<typeof MouseRipItemSchema>;
 
@@ -41,6 +30,8 @@ export type LocationRegion = z.infer<typeof LocationRegionSchema>;
 
 export const EnvironmentSchema = z.object({
   id: z.string(),
+  /** Upstream environment ID when `id` is the site's public route slug. */
+  environmentId: z.string().optional(),
   name: z.string().optional(),
   article: z.string().optional(),
   description: z.string().optional(),
@@ -86,20 +77,24 @@ export const MouseSchema = z.object({
   gold_formatted: z.string(),
   group: z.string(),
   subgroup: z.string().optional(),
-  images: z.object({
-    thumbnail: z.string().optional(),
-    silhouette_thumbnail: z.string().optional(),
-    small: z.string().optional(),
-    medium: z.string().optional(),
-    silhouette_medium: z.string().optional(),
-    large: z.string().optional(),
-    silhouette_large: z.string().optional(),
-    square: z.string().optional(),
-    is_landscape: z.boolean().optional(),
-  }).optional(),
-  weaknesses: z.object({
-    effective: z.array(z.string()).optional(),
-  }).optional(),
+  images: z
+    .object({
+      thumbnail: z.string().optional(),
+      silhouette_thumbnail: z.string().optional(),
+      small: z.string().optional(),
+      medium: z.string().optional(),
+      silhouette_medium: z.string().optional(),
+      large: z.string().optional(),
+      silhouette_large: z.string().optional(),
+      square: z.string().optional(),
+      is_landscape: z.boolean().optional(),
+    })
+    .optional(),
+  weaknesses: z
+    .object({
+      effective: z.array(z.string()).optional(),
+    })
+    .optional(),
   minlucks: z.object({
     arcane: z.number().optional(),
     draconic: z.number().optional(),
@@ -112,26 +107,25 @@ export const MouseSchema = z.object({
     rift: z.number().optional(),
   }),
   wisdom: z.number(),
-  effectivenesses: z.object({
-    power: z.number().optional(),
-    arcane: z.number().optional(),
-    draconic: z.number().optional(),
-    forgotten: z.number().optional(),
-    hydro: z.number().optional(),
-    physical: z.number().optional(),
-    shadow: z.number().optional(),
-    tactical: z.number().optional(),
-    law: z.number().optional(),
-    rift: z.number().optional(),
-  }).optional(),
+  effectivenesses: z
+    .object({
+      power: z.number().optional(),
+      arcane: z.number().optional(),
+      draconic: z.number().optional(),
+      forgotten: z.number().optional(),
+      hydro: z.number().optional(),
+      physical: z.number().optional(),
+      shadow: z.number().optional(),
+      tactical: z.number().optional(),
+      law: z.number().optional(),
+      rift: z.number().optional(),
+    })
+    .optional(),
 });
 export type Mouse = z.infer<typeof MouseSchema>;
 
 /** Slim subset of Mouse shipped to the client (site search, minlucks table). */
-export type SlimMouse = Pick<
-  Mouse,
-  'id' | 'type' | 'name' | 'abbreviated_name' | 'group' | 'subgroup' | 'minlucks'
->;
+export type SlimMouse = Pick<Mouse, 'id' | 'type' | 'name' | 'abbreviated_name' | 'group' | 'subgroup' | 'minlucks'>;
 
 export interface GeneratedItem {
   id: number;
@@ -191,6 +185,7 @@ export interface GameItem {
   type: string;
   name: string;
   description?: string;
+  obtain_hint?: string;
   classification: string;
   tags?: string[];
   environment?: string[];
@@ -245,16 +240,6 @@ export interface MiceRegion {
   mouse_ids: number[];
 }
 
-export interface MouseLootEntry {
-  item: string;
-  drop_pct?: number;
-  min?: number;
-  max?: number;
-}
-
-/** Loot a mouse drops, keyed by mouse id. */
-export type MouseLoot = Record<string, MouseLootEntry[]>;
-
 export interface EnvironmentEvent {
   id: string;
   name: string;
@@ -270,4 +255,69 @@ export interface MapData {
     map: string;
     rate: number;
   }>;
+}
+
+/** A scroll case, the map it opens into, and the treasure chests that map awards. */
+export interface MapRelation {
+  scrollCase: { id: number; type: string; name: string };
+  map: { name: string; mhctId: number };
+  chests: { id: number; type: string; name: string; rare: boolean }[];
+}
+
+/** A convertible an item can come out of, linked when we have a page for it. */
+export interface FoundInConvertible {
+  id?: number;
+  name: string;
+  slug?: string;
+}
+
+/**
+ * The MHCT-derived tables baked in by scripts/update-data.js. These used to be
+ * fetched from the client on every page view; they're prerendered now, so the
+ * shapes mirror what api.mouse.rip returned.
+ */
+
+/** One reward row from opening a convertible. `chance` is a percent, e.g. "5.56". */
+export interface ConvertibleRow {
+  id: number;
+  name: string;
+  min: number;
+  max: number;
+  chance: string;
+  /** Filled in at build time when the reward has an item page of its own. */
+  slug?: string;
+}
+
+/** One location/cheese combination that drops a given item. */
+export interface ItemDropRow {
+  location: string;
+  stage: string | null;
+  cheese: string;
+  drop_pct: string | number;
+  total_hunts?: number;
+  min_amt: number;
+  max_amt: number;
+}
+
+/** The 50 best drop rows for an item, plus how many MHCT actually recorded. */
+export interface ItemDrops {
+  rows: ItemDropRow[];
+  total: number;
+}
+
+/** Where a mouse is attracted, and how often. `rate` is in hundredths of a percent. */
+export interface AttractionRow {
+  location: string;
+  stage: string | null;
+  cheese: string;
+  rate: number;
+  total_hunts: number;
+}
+
+/** A treasure map a mouse can appear on. */
+export interface MouseMapRow {
+  map: string;
+  rate: number;
+  seen_maps: number;
+  total_maps: number;
 }

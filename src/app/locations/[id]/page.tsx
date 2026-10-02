@@ -12,12 +12,18 @@ import { getItemsByLocation, getLocation, getLocations, getTitles, getTrapEffect
 import { getAllGameItems, getMiceForRegionName, itemSlug } from '@/lib/game-data';
 import { ogCard, pageMetadata } from '@/seo';
 import { cleanDescription } from '@/utils';
+import { itemImageUrl, locationHeaderImageUrl, locationImageUrl, titleImageUrl } from '@/lib/image-urls';
+
+export const dynamicParams = false;
+
+// Keep the game-data sections hidden while their navigation is hidden.
+const SHOW_LOCATION_GAME_DATA = false;
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
   const location = getLocation(resolvedParams.id);
 
-  if (! location) {
+  if (!location) {
     return { title: 'Not Found' };
   }
 
@@ -32,7 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       ? ogCard({
           title: location.name,
           eyebrow: 'Location',
-          image: location.image,
+          image: locationImageUrl(location.id),
           accent: 'emerald',
         })
       : undefined,
@@ -41,7 +47,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export function generateStaticParams() {
   const locations = getLocations();
-  if (! locations) {
+  if (!locations) {
     return [];
   }
 
@@ -61,57 +67,44 @@ export function generateStaticParams() {
 export default async function Location({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
   const location = getLocation(resolvedParams.id);
-  const items = await getItemsByLocation(resolvedParams.id);
 
-  if (! location || ! items) {
+  if (!location) {
     notFound();
   }
+  const items = getItemsByLocation(resolvedParams.id);
 
-  const mice = location.name ? getMiceForRegionName(location.name) : [];
-  const minTitle = location.title
-    ? getTitles().find((title) => title.id === location.title)
-    : undefined;
+  const mice = SHOW_LOCATION_GAME_DATA && location.name ? getMiceForRegionName(location.name) : [];
+  const minTitle = location.title ? getTitles().find((title) => title.id === location.title) : undefined;
   const trapEffects = location.name
     ? (getTrapEffects().find((entry) => entry.location === location.name)?.effects ?? [])
     : [];
-  const environmentKey = resolvedParams.id.replaceAll('-', '_');
-  const locationItems = getAllGameItems().filter((item) =>
-    (item.environment ?? []).includes(environmentKey)
-  );
+  const environmentKey = location.environmentId ?? location.id;
+  const locationItems = SHOW_LOCATION_GAME_DATA
+    ? getAllGameItems().filter((item) => (item.environment ?? []).includes(environmentKey))
+    : [];
 
   return (
     <>
-      <Breadcrumbs
-        items={[
-          { name: 'Home', href: '/' },
-          { name: 'Locations', href: '/locations' },
-          { name: location.name ?? 'Location' },
-        ]}
-      />
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: location.name ?? 'Location' }]} />
 
       {location.headerImage && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={location.headerImage}
+          src={locationHeaderImageUrl(location.environmentId ?? location.id)}
           alt=""
           className="mb-6 h-40 w-full rounded-2xl object-cover ring-1 ring-zinc-950/5 dark:ring-white/10"
         />
       )}
 
       <Heading>
-        <Avatar
-          src={`/images/locations/${location.id.replaceAll('_', '-')}.png`}
-          alt={location.name}
-          square
-          className="mr-2"
-        />
+        <Avatar src={locationImageUrl(location.id)} alt={location.name} square className="mr-2" />
         MouseHunt Resources for {location.article ? location.article : location.name}
       </Heading>
 
       {minTitle && (
         <p className="mt-3 flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={minTitle.icon} alt="" className="size-5 shrink-0" />
+          <img src={titleImageUrl(minTitle.id)} alt="" className="size-5 shrink-0" />
           Requires the{' '}
           <Link
             href="/titles"
@@ -143,12 +136,7 @@ export default async function Location({ params }: { params: Promise<{ id: strin
                     className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 shadow-sm transition hover:border-blue-300 hover:text-blue-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-blue-800 dark:hover:text-blue-300"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={`https://i.mouse.rip/images/items/thumbnail/${slug}.png`}
-                      alt=""
-                      loading="lazy"
-                      className="size-6 shrink-0 rounded"
-                    />
+                    <img src={itemImageUrl(slug)} alt="" loading="lazy" className="size-6 shrink-0 rounded" />
                     {item.name}
                   </Link>
                 </li>

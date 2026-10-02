@@ -6,8 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'mouse.rip — MouseHunt Resources',
     short_name: 'mouse.rip',
-    description:
-      'Community-built MouseHunt guides, extensions, tools, spreadsheets, and userscripts.',
+    description: 'Community-built MouseHunt guides, extensions, tools, spreadsheets, and userscripts.',
     start_url: '/',
     display: 'standalone',
     background_color: '#fcfcfb',

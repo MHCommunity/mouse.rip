@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { formatGold, formatSb } from '@/utils';
 
-interface PricePoint {
+export interface PricePoint {
   date: string;
   price: number;
   sb_price: number;
@@ -31,9 +31,7 @@ const RANGES = [
 type RangeKey = (typeof RANGES)[number]['key'];
 
 function formatCompact(value: number): string {
-  return new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(
-    value
-  );
+  return new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(value);
 }
 
 // Chart geometry (SVG user units; the element itself is responsive).
@@ -45,7 +43,7 @@ const VOL_TOP = 178;
 const VOL_BOTTOM = 214;
 const LABEL_Y = 234;
 
-function PriceChart({ points }: { points: PricePoint[] }) {
+export function PriceChart({ points }: { points: PricePoint[] }) {
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 
   const series = useMemo(() => {
@@ -66,8 +64,7 @@ function PriceChart({ points }: { points: PricePoint[] }) {
     const range = max - min || 1;
     const step = series.length > 1 ? W / (series.length - 1) : W;
     const xFor = (index: number) => index * step;
-    const yFor = (price: number) =>
-      PRICE_BOTTOM - ((price - min) / range) * (PRICE_BOTTOM - PRICE_TOP);
+    const yFor = (price: number) => PRICE_BOTTOM - ((price - min) / range) * (PRICE_BOTTOM - PRICE_TOP);
 
     const line = series
       .map((point, index) => `${index === 0 ? 'M' : 'L'}${xFor(index).toFixed(1)},${yFor(point.price).toFixed(1)}`)
@@ -97,9 +94,7 @@ function PriceChart({ points }: { points: PricePoint[] }) {
         {hovered ? (
           <>
             <span>{hovered.date}</span>
-            <span className="font-medium text-zinc-700 dark:text-zinc-200">
-              {formatGold(hovered.price)} gold
-            </span>
+            <span className="font-medium text-zinc-700 dark:text-zinc-200">{formatGold(hovered.price)} gold</span>
             <span>{formatSb(hovered.sb_price)} SB</span>
             <span>{hovered.volume != null ? `${formatCompact(hovered.volume)} traded` : ''}</span>
           </>
@@ -130,12 +125,7 @@ function PriceChart({ points }: { points: PricePoint[] }) {
               strokeWidth={1}
               strokeDasharray="4 4"
             />
-            <text
-              x={4}
-              y={geometry.yFor(value) - 4}
-              className="fill-zinc-400 dark:fill-zinc-500"
-              fontSize={11}
-            >
+            <text x={4} y={geometry.yFor(value) - 4} className="fill-zinc-400 dark:fill-zinc-500" fontSize={11}>
               {formatCompact(value)}
             </text>
           </g>
@@ -179,25 +169,14 @@ function PriceChart({ points }: { points: PricePoint[] }) {
               className="stroke-zinc-400 dark:stroke-zinc-500"
               strokeWidth={1}
             />
-            <circle
-              cx={geometry.xFor(hoverIndex)}
-              cy={geometry.yFor(hovered.price)}
-              r={3.5}
-              fill={stroke}
-            />
+            <circle cx={geometry.xFor(hoverIndex)} cy={geometry.yFor(hovered.price)} r={3.5} fill={stroke} />
           </g>
         )}
 
         <text x={4} y={LABEL_Y} className="fill-zinc-400 dark:fill-zinc-500" fontSize={11}>
           {series[0].date}
         </text>
-        <text
-          x={W - 4}
-          y={LABEL_Y}
-          textAnchor="end"
-          className="fill-zinc-400 dark:fill-zinc-500"
-          fontSize={11}
-        >
+        <text x={W - 4} y={LABEL_Y} textAnchor="end" className="fill-zinc-400 dark:fill-zinc-500" fontSize={11}>
           {series[series.length - 1].date}
         </text>
       </svg>
@@ -260,9 +239,7 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
   }, [series, range, latestTime]);
 
   // Price ~30 days ago, by date, for the trend figure.
-  const monthAgo =
-    series.find((point) => new Date(point.date).getTime() >= latestTime - 30 * 86400000) ??
-    series[0];
+  const monthAgo = series.find((point) => new Date(point.date).getTime() >= latestTime - 30 * 86400000) ?? series[0];
   const change = monthAgo.price ? ((latest.price - monthAgo.price) / monthAgo.price) * 100 : 0;
   const up = change >= 0;
 
@@ -308,8 +285,7 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
             ))}
           </div>
           <div className="text-xs tabular-nums text-zinc-400 dark:text-zinc-500">
-            High {formatCompact(high.price)} ({high.date}) · Low {formatCompact(low.price)} (
-            {low.date})
+            High {formatCompact(high.price)} ({high.date}) · Low {formatCompact(low.price)} ({low.date})
           </div>
         </div>
       </div>
@@ -320,8 +296,8 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
 
       <div className="mt-4 flex items-center justify-between border-t border-zinc-100 pt-3 text-xs text-zinc-400 dark:border-zinc-800 dark:text-zinc-500">
         <span>
-          {latest.volume != null ? `${formatGold(latest.volume)} traded` : 'Volume unavailable'} · as
-          of {latest.date} · data from Markethunt
+          {latest.volume != null ? `${formatGold(latest.volume)} traded` : 'Volume unavailable'} · as of {latest.date} ·
+          data from Markethunt
         </span>
         <a
           href={`https://markethunt.win/?item_id=${itemId}`}

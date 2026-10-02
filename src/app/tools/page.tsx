@@ -8,7 +8,8 @@ import React from 'react';
 
 export const metadata = pageMetadata({
   title: 'MouseHunt Tools',
-  description: 'Calculators, simulators, and lookups for MouseHunt — plan your setups, crunch the numbers, and get more out of every hunt.',
+  description:
+    'Calculators, simulators, and lookups for MouseHunt — plan your setups, crunch the numbers, and get more out of every hunt.',
   path: '/tools',
 });
 

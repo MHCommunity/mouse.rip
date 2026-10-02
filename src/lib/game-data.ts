@@ -3,7 +3,18 @@ import 'server-only';
 import fs from 'node:fs';
 import path from 'node:path';
 
-import type { GameItem, MiceGroup, MiceRegion, Mouse, MouseLoot, MouseLootEntry } from '@/types';
+import type {
+  AttractionRow,
+  ConvertibleRow,
+  FoundInConvertible,
+  GameItem,
+  ItemDrops,
+  MapRelation,
+  MiceGroup,
+  MiceRegion,
+  Mouse,
+  MouseMapRow,
+} from '@/types';
 
 // These datasets are large (multiple MB). We read them from disk at build time
 // (pages are statically generated) instead of `import`-ing them, so they never
@@ -12,6 +23,17 @@ const DATA_DIR = path.join(process.cwd(), 'src/data/generated');
 
 function readJson<T>(file: string): T {
   return JSON.parse(fs.readFileSync(path.join(DATA_DIR, file), 'utf-8')) as T;
+}
+
+/**
+ * When scripts/update-data.js last actually refreshed the game data. The sitemap
+ * reports this as lastmod — a file mtime would be wrong (a CI clone stamps every
+ * file with the checkout time), and a lastmod that always reads "just now"
+ * teaches crawlers to ignore it.
+ */
+export function getDataUpdatedAt(): Date {
+  const { updatedAt } = readJson<{ updatedAt: string }>('data-updated.json');
+  return new Date(updatedAt);
 }
 
 export function mouseSlug(type: string): string {
@@ -43,9 +65,7 @@ let groupSlugByNameCache: Map<string, string> | null = null;
 
 export function getAllMiceGroups(): MiceGroup[] {
   if (!groupsCache) {
-    groupsCache = readJson<MiceGroup[]>('mice-groups.json').sort(
-      (a, b) => a.display_order - b.display_order
-    );
+    groupsCache = readJson<MiceGroup[]>('mice-groups.json').sort((a, b) => a.display_order - b.display_order);
   }
   return groupsCache;
 }
@@ -71,20 +91,24 @@ export function getMiceForGroup(group: MiceGroup): Mouse[] {
   return group.mouse_ids.map((id) => byId.get(id)).filter((mouse): mouse is Mouse => Boolean(mouse));
 }
 
+let regionsCache: MiceRegion[] | null = null;
+
+function getAllMiceRegions(): MiceRegion[] {
+  if (!regionsCache) regionsCache = readJson<MiceRegion[]>('mice-regions.json');
+  return regionsCache;
+}
+
 let regionsByNameCache: Map<string, MiceRegion> | null = null;
 
 /** The mice in a hunting region, looked up by the region's display name. */
 export function getMiceForRegionName(name: string): Mouse[] {
   if (!regionsByNameCache) {
-    const regions = readJson<MiceRegion[]>('mice-regions.json');
-    regionsByNameCache = new Map(regions.map((region) => [region.name.toLowerCase(), region]));
+    regionsByNameCache = new Map(getAllMiceRegions().map((region) => [region.name.toLowerCase(), region]));
   }
   const region = regionsByNameCache.get(name.toLowerCase());
   if (!region) return [];
   const byId = new Map(getAllMice().map((mouse) => [mouse.id, mouse]));
-  return region.mouse_ids
-    .map((id) => byId.get(id))
-    .filter((mouse): mouse is Mouse => Boolean(mouse));
+  return region.mouse_ids.map((id) => byId.get(id)).filter((mouse): mouse is Mouse => Boolean(mouse));
 }
 
 export interface MouseRanks {
@@ -101,7 +125,7 @@ export function getMouseRanks(mouseId: number): MouseRanks | undefined {
   if (!mouseRanksCache) {
     const mice = getAllMice();
     const cache = new Map<number, MouseRanks>(
-      mice.map((mouse) => [mouse.id, { points: 0, gold: 0, wisdom: 0, total: mice.length }])
+      mice.map((mouse) => [mouse.id, { points: 0, gold: 0, wisdom: 0, total: mice.length }]),
     );
     for (const key of ['points', 'gold', 'wisdom'] as const) {
       const sorted = [...mice].sort((a, b) => b[key] - a[key]);
@@ -135,28 +159,87 @@ export function getGameItemBySlug(slug: string): GameItem | undefined {
   return itemsBySlugCache.get(slug);
 }
 
-let itemSlugByNameCache: Map<string, string> | null = null;
+let itemSlugByIdCache: Map<number, string> | null = null;
 
-/** Resolve an item display name to its item-page slug, if we have that item. */
-export function itemSlugForName(name: string): string | undefined {
-  if (!itemSlugByNameCache) {
-    itemSlugByNameCache = new Map(
-      getAllGameItems().map((item) => [item.name.toLowerCase(), itemSlug(item.type)])
-    );
+/** Resolve a MouseHunt item id to its item-page slug, if we have that item. */
+export function itemSlugForId(id: number): string | undefined {
+  if (!itemSlugByIdCache) {
+    itemSlugByIdCache = new Map(getAllGameItems().map((item) => [item.id, itemSlug(item.type)]));
   }
-  return itemSlugByNameCache.get(name.trim().toLowerCase());
+  return itemSlugByIdCache.get(id);
 }
 
-let mouseLootCache: MouseLoot | null = null;
+let mapRelationsCache: MapRelation[] | null = null;
 
-/** Loot a given mouse drops (empty until the loot dataset is populated). */
-export function getMouseLoot(mouseId: number): MouseLootEntry[] {
-  if (!mouseLootCache) {
-    try {
-      mouseLootCache = readJson<MouseLoot>('mouse-loot.json');
-    } catch {
-      mouseLootCache = {};
-    }
+/**
+ * Scroll-case → map → treasure-chest relations touching a given item, whether
+ * that item is the scroll case or one of the chests.
+ */
+export function getMapRelationsForItem(itemId: number): MapRelation[] {
+  if (!mapRelationsCache) {
+    mapRelationsCache = readJson<MapRelation[]>('map-relations.json');
   }
-  return mouseLootCache[String(mouseId)] ?? [];
+  return mapRelationsCache.filter(
+    (relation) => relation.scrollCase.id === itemId || relation.chests.some((chest) => chest.id === itemId),
+  );
+}
+
+let foundInCache: Record<string, Omit<FoundInConvertible, 'slug'>[]> | null = null;
+
+/** The convertibles (chests, gift baskets…) that an item can come out of. */
+export function getConvertiblesContaining(itemId: number): FoundInConvertible[] {
+  if (!foundInCache) {
+    foundInCache = readJson<Record<string, Omit<FoundInConvertible, 'slug'>[]>>('item-found-in.json');
+  }
+  return (foundInCache[String(itemId)] ?? []).map((source) => ({
+    ...source,
+    slug: source.id ? itemSlugForId(source.id) : undefined,
+  }));
+}
+
+let contentsCache: Record<string, ConvertibleRow[]> | null = null;
+
+/** What a convertible opens into, best odds first, with reward pages linked. */
+export function getConvertibleContents(itemId: number): ConvertibleRow[] {
+  if (!contentsCache) {
+    contentsCache = readJson<Record<string, ConvertibleRow[]>>('convertible-contents.json');
+  }
+  return (contentsCache[String(itemId)] ?? []).map((row) => ({
+    ...row,
+    slug: itemSlugForId(row.id),
+  }));
+}
+
+let dropsCache: Record<string, ItemDrops> | null = null;
+
+/**
+ * The locations and cheeses that drop a given item (from MHCT). `rows` holds the
+ * 50 best; `total` is how many combinations MHCT has actually recorded, so the
+ * page can say what it's leaving out.
+ */
+export function getItemDrops(itemId: number): ItemDrops {
+  if (!dropsCache) {
+    dropsCache = readJson<Record<string, ItemDrops>>('item-drops.json');
+  }
+  return dropsCache[String(itemId)] ?? { rows: [], total: 0 };
+}
+
+let attractionCache: Record<string, AttractionRow[]> | null = null;
+
+/** Where a mouse is attracted and how often, best rate first (from MHCT). */
+export function getMouseAttraction(mouseId: number): AttractionRow[] {
+  if (!attractionCache) {
+    attractionCache = readJson<Record<string, AttractionRow[]>>('mice-attraction.json');
+  }
+  return attractionCache[String(mouseId)] ?? [];
+}
+
+let mouseMapsCache: Record<string, MouseMapRow[]> | null = null;
+
+/** The treasure maps a mouse can turn up on (from MHCT). */
+export function getMouseMaps(mouseId: number): MouseMapRow[] {
+  if (!mouseMapsCache) {
+    mouseMapsCache = readJson<Record<string, MouseMapRow[]>>('mouse-maps.json');
+  }
+  return mouseMapsCache[String(mouseId)] ?? [];
 }

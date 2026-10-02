@@ -30,14 +30,11 @@ const sections = [
 
 export default function NotFound() {
   return (
-    <div className="mx-auto max-w-xl py-12">
-      <p className="font-mono text-sm font-semibold tracking-widest text-pink-600 dark:text-pink-400">
-        404
-      </p>
+    <div className="py-12">
+      <p className="font-mono text-sm font-semibold tracking-widest text-pink-600 dark:text-pink-400">404</p>
       <Heading className="mt-3">This page scurried off</Heading>
       <p className="mt-4 text-base/7 text-pretty text-zinc-600 dark:text-zinc-300">
-        We couldn&apos;t find the page you were looking for. It may have moved, or the link might
-        be out of date.
+        We couldn&apos;t find the page you were looking for. It may have moved, or the link might be out of date.
       </p>
 
       <Link
@@ -49,9 +46,7 @@ export default function NotFound() {
       </Link>
 
       <div className="mt-12">
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-          Or jump to
-        </h2>
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Or jump to</h2>
         <ul className="mt-3 divide-y divide-zinc-200 dark:divide-zinc-800">
           {sections.map(({ href, label, icon: Icon }) => (
             <li key={href}>
@@ -59,7 +54,10 @@ export default function NotFound() {
                 href={href}
                 className="group flex items-center gap-3 py-3 text-sm font-medium text-zinc-700 transition-colors hover:text-pink-700 focus:outline-none focus-visible:text-pink-700 dark:text-zinc-300 dark:hover:text-pink-300"
               >
-                <Icon className="size-5 text-zinc-400 group-hover:text-pink-600 dark:group-hover:text-pink-400" aria-hidden="true" />
+                <Icon
+                  className="size-5 text-zinc-400 group-hover:text-pink-600 dark:group-hover:text-pink-400"
+                  aria-hidden="true"
+                />
                 {label}
                 <ArrowRightIcon
                   className="ml-auto size-4 text-zinc-300 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-pink-500 dark:text-zinc-600"

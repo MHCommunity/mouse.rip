@@ -1,8 +1,13 @@
 'use client';
 
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 
-import { SearchDialog } from './search-dialog';
+// The dialog pulls in the search index (mice groups, titles, items), so it's
+// only loaded once the user actually opens search.
+const SearchDialog = dynamic(() => import('./search-dialog').then((mod) => mod.SearchDialog), {
+  ssr: false,
+});
 
 interface SearchContextValue {
   open: () => void;
@@ -26,14 +31,20 @@ function isTypingTarget(target: EventTarget | null): boolean {
 
 export function SearchProvider({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
+  // Stays true once search has been opened, so the dialog keeps its loaded chunk.
+  const [mounted, setMounted] = useState(false);
 
-  const open = useCallback(() => setIsOpen(true), []);
+  const open = useCallback(() => {
+    setMounted(true);
+    setIsOpen(true);
+  }, []);
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       // Cmd/Ctrl+K opens search from anywhere.
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
         event.preventDefault();
+        setMounted(true);
         setIsOpen((prev) => !prev);
         return;
       }
@@ -41,6 +52,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
       if (event.key === '/' && !event.metaKey && !event.ctrlKey && !event.altKey) {
         if (isTypingTarget(event.target)) return;
         event.preventDefault();
+        setMounted(true);
         setIsOpen(true);
       }
     }
@@ -52,7 +64,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
   return (
     <SearchContext.Provider value={{ open }}>
       {children}
-      <SearchDialog open={isOpen} onClose={() => setIsOpen(false)} />
+      {mounted && <SearchDialog open={isOpen} onClose={() => setIsOpen(false)} />}
     </SearchContext.Provider>
   );
 }

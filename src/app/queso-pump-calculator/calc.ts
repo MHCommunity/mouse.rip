@@ -6,13 +6,7 @@
 // is obtained by pumping the volcano. Given a target amount of Nachore, this
 // works out how many hunts and how much Bland Queso each cheese strategy costs.
 
-export const CHEESE_NAMES = [
-  'Bland Queso',
-  'Mild Queso',
-  'Medium Queso',
-  'Hot Queso',
-  "Flamin' Queso",
-] as const;
+export const CHEESE_NAMES = ['Bland Queso', 'Mild Queso', 'Medium Queso', 'Hot Queso', "Flamin' Queso"] as const;
 
 // Bland Queso pumped per catch, by pump level (1–10).
 export const PUMP_LEVELS = [1, 2, 5, 7, 12, 30, 40, 60, 150, 200] as const;
@@ -66,7 +60,11 @@ function pumpRate({ pumpLevel, useOesb, useQpc }: PumpOptions): number {
 }
 
 // Total hunts for a tier with a specific essence multiplier (3 or 6).
-function huntsForTier(tier: number, essence: number, options: PumpOptions): {
+function huntsForTier(
+  tier: number,
+  essence: number,
+  options: PumpOptions,
+): {
   hunts: number;
   blandQueso: number;
   magicEssence: number;

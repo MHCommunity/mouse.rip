@@ -9,7 +9,8 @@ import { pageMetadata } from '@/seo';
 
 export const metadata = pageMetadata({
   title: 'MouseHunt Browser Extensions',
-  description: 'Browser extensions that improve MouseHunt — quality-of-life upgrades, helper tools, and data tracking for catch-rate calculators.',
+  description:
+    'Browser extensions that improve MouseHunt — quality-of-life upgrades, helper tools, and data tracking for catch-rate calculators.',
   path: '/extensions',
 });
 

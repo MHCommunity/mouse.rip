@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import { CheeseIcon } from '@/components/game-icons';
 import { PageHeader } from '@/components/page-header';
 
-import { getAllGameItems, itemSlug } from '@/lib/game-data';
+import { getAllGameItems } from '@/lib/game-data';
+import { orderClassifications } from '@/lib/item-classifications';
 import { pageMetadata } from '@/seo';
-import { ItemsBrowser, type SlimItem } from './items-browser';
+import { ItemsBrowser } from './items-browser';
 
 export const metadata = pageMetadata({
   title: 'MouseHunt Items',
@@ -14,49 +15,39 @@ export const metadata = pageMetadata({
   path: '/items',
 });
 
-// Friendlier classifications first; the rest follow alphabetically.
-const CLASSIFICATION_ORDER = [
-  'weapon',
-  'base',
-  'bait',
-  'trinket',
-  'potion',
-  'crafting_item',
-  'convertible',
-  'collectible',
-  'map_piece',
-  'skin',
-];
-
 export default function ItemsIndexPage() {
   const items = getAllGameItems();
 
-  const slim: SlimItem[] = items.map((item) => ({
-    id: item.id,
-    name: item.name,
-    slug: itemSlug(item.type),
-    classification: item.classification || 'other',
-    tradable: item.is_tradable || undefined,
-  }));
+  // Only the per-type totals cross to the client. The item list itself is a
+  // code-split chunk the browser fetches on demand (see @/lib/client-index) —
+  // inlining all 4,033 items here would put ~70 KB of duplicated JSON into this
+  // page's HTML, and again into /marketplace's, and again into search's.
+  const counts: Record<string, number> = {};
+  for (const item of items) {
+    const key = item.classification || 'other';
+    counts[key] = (counts[key] ?? 0) + 1;
+  }
 
-  const present = new Set(slim.map((item) => item.classification));
-  const classificationOrder = [
-    ...CLASSIFICATION_ORDER.filter((key) => present.has(key)),
-    ...[...present].filter((key) => !CLASSIFICATION_ORDER.includes(key)).sort(),
-  ];
+  const classificationOrder = orderClassifications(Object.keys(counts));
 
   return (
-    <div className="mx-auto max-w-5xl">
+    <div>
       <PageHeader
         title="Items"
-        description="Browse every item in MouseHunt. Filter by type or name — each item has its own page with its description, stats, and where it drops."
+        description="Every item in MouseHunt — weapons, bases, charms, cheese, chests, and collectibles. Pick a type or search by name; each item has its own page with its stats, where it drops, and what's inside it."
         count={items.length}
         countLabel="items"
         icon={CheeseIcon}
         iconClassName="bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300"
       />
 
-      <ItemsBrowser items={slim} classificationOrder={classificationOrder} />
+      {/* ItemsBrowser reads the filters off the URL with useSearchParams, which
+          would opt this page into dynamic rendering without a boundary here. The
+          page must stay static: game-data reads its JSON off disk at build time,
+          and that disk isn't there in the Cloudflare worker. */}
+      <Suspense>
+        <ItemsBrowser counts={counts} classificationOrder={classificationOrder} />
+      </Suspense>
     </div>
   );
 }

@@ -50,7 +50,7 @@ export function powerTypeLabel(type: string): string {
 export function bestPowerTypes(effectivenesses?: Record<string, number | undefined>): string[] {
   if (!effectivenesses) return [];
   const entries = POWER_TYPES.map((type) => [type, effectivenesses[type] ?? 0] as const).filter(
-    ([, value]) => value > 0
+    ([, value]) => value > 0,
   );
   if (entries.length === 0) return [];
   const max = Math.max(...entries.map(([, value]) => value));

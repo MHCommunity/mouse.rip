@@ -45,9 +45,7 @@ export function ogCard(params: {
  */
 export function pageMetadata({ title, description, path, type = 'website', image }: PageMetadataOptions): Metadata {
   const ogTitle = `${title} | ${SITE_NAME}`;
-  const images = image
-    ? [{ url: image, width: 1200, height: 630, alt: ogTitle }]
-    : [OG_IMAGE];
+  const images = image ? [{ url: image, width: 1200, height: 630, alt: ogTitle }] : [OG_IMAGE];
 
   return {
     title,

@@ -35,10 +35,7 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
           return (
             <li key={`${crumb.name}-${index}`} className="flex items-center gap-x-1.5">
               {index > 0 && (
-                <ChevronRightIcon
-                  className="size-4 shrink-0 text-zinc-300 dark:text-zinc-600"
-                  aria-hidden="true"
-                />
+                <ChevronRightIcon className="size-4 shrink-0 text-zinc-300 dark:text-zinc-600" aria-hidden="true" />
               )}
               {crumb.href && !isLast ? (
                 <Link
@@ -59,10 +56,7 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
           );
         })}
       </ol>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     </nav>
   );
 }

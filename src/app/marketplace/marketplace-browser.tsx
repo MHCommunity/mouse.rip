@@ -5,7 +5,10 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'next-view-transitions';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 
+import { itemSlugsById, loadItemIndex } from '@/lib/client-index';
+import hiddenItemIds from '@/data/generated/marketplace-hidden-items.json';
 import { formatGold, formatSb } from '@/utils';
+import { PriceChart, type PricePoint } from '@/app/items/[slug]/market-price';
 
 interface MarketItem {
   item_info: { item_id: number; name: string; currently_tradeable: boolean };
@@ -15,12 +18,21 @@ interface MarketItem {
 
 type PricedItem = MarketItem & { latest_market_data: NonNullable<MarketItem['latest_market_data']> };
 
+const hiddenItems = new Set<number>(hiddenItemIds);
+
+export function isVisibleMarketItem(item: MarketItem): item is PricedItem {
+  return (
+    item.latest_market_data !== null && item.item_info.currently_tradeable && !hiddenItems.has(item.item_info.item_id)
+  );
+}
+
 type SortKey = 'volume' | 'price' | 'sb' | 'name';
 
-type State =
-  | { status: 'loading' }
-  | { status: 'ready'; items: PricedItem[] }
-  | { status: 'error' };
+type State = { status: 'loading' } | { status: 'ready'; items: PricedItem[] } | { status: 'error' };
+
+interface MarketHistoryResponse {
+  market_data?: PricePoint[];
+}
 
 const SORTS: { key: SortKey; label: string }[] = [
   { key: 'volume', label: 'Volume' },
@@ -29,23 +41,87 @@ const SORTS: { key: SortKey; label: string }[] = [
   { key: 'name', label: 'Name' },
 ];
 
-export function MarketplaceBrowser({ slugById }: { slugById: Record<number, string> }) {
+function SuperBrieChart({ points }: { points: PricePoint[] }) {
+  const latest = points[points.length - 1];
+  const latestTime = new Date(latest.date).getTime();
+  const window = points.filter((point) => new Date(point.date).getTime() >= latestTime - 90 * 86400000);
+  const series = window.length > 1 ? window : points.slice(-2);
+  const monthAgo = points.find((point) => new Date(point.date).getTime() >= latestTime - 30 * 86400000) ?? points[0];
+  const change = monthAgo.price ? ((latest.price - monthAgo.price) / monthAgo.price) * 100 : 0;
+
+  return (
+    <section className="mb-6 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h2 className="text-sm font-semibold text-zinc-900 dark:text-white">SUPER|brie+ market rate</h2>
+          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+            The marketplace&rsquo;s benchmark item over the last 90 days.
+          </p>
+        </div>
+        <div className="text-right">
+          <div className="text-2xl font-semibold tabular-nums text-zinc-900 dark:text-white">
+            {formatGold(latest.price)}
+            <span className="ml-1 text-sm font-normal text-zinc-400">gold</span>
+          </div>
+          <div
+            className={`mt-0.5 text-xs font-medium tabular-nums ${
+              change >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'
+            }`}
+          >
+            {change >= 0 ? '▲' : '▼'} {Math.abs(change).toFixed(1)}% in 30 days
+          </div>
+        </div>
+      </div>
+      <div className="mt-4">
+        <PriceChart points={series} />
+      </div>
+    </section>
+  );
+}
+
+export function MarketplaceBrowser() {
   const [state, setState] = useState<State>({ status: 'loading' });
+  const [superBrieHistory, setSuperBrieHistory] = useState<PricePoint[]>([]);
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState<SortKey>('volume');
+
+  // id → item-page slug, so price rows can deep-link. Loaded from the shared
+  // item chunk in parallel with the price fetch we're already waiting on, rather
+  // than inlined into this page's HTML. Rows we can't resolve stay plain text.
+  const [slugById, setSlugById] = useState<Record<number, string>>({});
+  useEffect(() => {
+    let alive = true;
+    loadItemIndex()
+      .then((items) => alive && setSlugById(itemSlugsById(items)))
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+    fetch('https://api.markethunt.win/items/114')
+      .then((res) => (res.ok ? (res.json() as Promise<MarketHistoryResponse>) : Promise.reject()))
+      .then((data) => {
+        if (active && data.market_data && data.market_data.length > 1) {
+          setSuperBrieHistory(data.market_data);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
 
   useEffect(() => {
     let active = true;
     fetch('https://api.markethunt.win/items')
       .then((res) => (res.ok ? (res.json() as Promise<MarketItem[]>) : Promise.reject()))
-      .then(
-        (items) =>
-          active &&
-          setState({
-            status: 'ready',
-            items: items.filter((item): item is PricedItem => item.latest_market_data !== null),
-          })
-      )
+      .then((items) => {
+        if (!Array.isArray(items)) throw new TypeError('Markethunt returned invalid item data');
+        if (active) setState({ status: 'ready', items: items.filter(isVisibleMarketItem) });
+      })
       .catch(() => active && setState({ status: 'error' }));
     return () => {
       active = false;
@@ -55,9 +131,7 @@ export function MarketplaceBrowser({ slugById }: { slugById: Record<number, stri
   const rows = useMemo(() => {
     if (state.status !== 'ready') return [];
     const q = query.trim().toLowerCase();
-    const filtered = q
-      ? state.items.filter((item) => item.item_info.name.toLowerCase().includes(q))
-      : state.items;
+    const filtered = q ? state.items.filter((item) => item.item_info.name.toLowerCase().includes(q)) : state.items;
     const sorted = [...filtered].sort((a, b) => {
       if (sort === 'name') return a.item_info.name.localeCompare(b.item_info.name);
       if (sort === 'price') return b.latest_market_data.price - a.latest_market_data.price;
@@ -70,13 +144,10 @@ export function MarketplaceBrowser({ slugById }: { slugById: Record<number, stri
   const overview = useMemo(() => {
     if (state.status !== 'ready') return null;
     const sb = state.items.find((item) => item.item_info.item_id === 114);
-    const tradeable = state.items.filter((item) => item.item_info.currently_tradeable);
-    const mostTraded = tradeable
+    const mostTraded = state.items
       .filter((item) => item.item_info.item_id !== 114) // SB has its own tile
-      .sort(
-        (a, b) => (b.latest_market_data.volume ?? 0) - (a.latest_market_data.volume ?? 0)
-      )[0];
-    return { sb, tradeableCount: tradeable.length, mostTraded };
+      .sort((a, b) => (b.latest_market_data.volume ?? 0) - (a.latest_market_data.volume ?? 0))[0];
+    return { sb, tradeableCount: state.items.length, mostTraded };
   }, [state]);
 
   if (state.status === 'error') {
@@ -89,6 +160,8 @@ export function MarketplaceBrowser({ slugById }: { slugById: Record<number, stri
 
   return (
     <div>
+      {superBrieHistory.length > 1 && <SuperBrieChart points={superBrieHistory} />}
+
       {overview && (
         <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
           {overview.sb && (
@@ -150,8 +223,8 @@ export function MarketplaceBrowser({ slugById }: { slugById: Record<number, stri
             type="text"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Filter marketplace items…"
-            aria-label="Filter marketplace items"
+            placeholder="Search marketplace items by name…"
+            aria-label="Search marketplace items by name"
             className="w-full border-0 bg-transparent py-3 text-base text-zinc-900 placeholder:text-zinc-400 focus:outline-none dark:text-white"
           />
         </div>
@@ -191,7 +264,7 @@ export function MarketplaceBrowser({ slugById }: { slugById: Record<number, stri
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
-              {rows.slice(0, 250).map((item) => {
+              {rows.slice(0, query.trim() ? 100 : 50).map((item) => {
                 const slug = slugById[item.item_info.item_id];
                 const name = item.item_info.name;
                 return (
@@ -215,18 +288,17 @@ export function MarketplaceBrowser({ slugById }: { slugById: Record<number, stri
                       {formatSb(item.latest_market_data.sb_price)}
                     </td>
                     <td className="hidden px-4 py-2 text-right tabular-nums text-zinc-400 sm:table-cell dark:text-zinc-500">
-                      {item.latest_market_data.volume != null
-                        ? formatGold(item.latest_market_data.volume)
-                        : '—'}
+                      {item.latest_market_data.volume != null ? formatGold(item.latest_market_data.volume) : '—'}
                     </td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
-          {rows.length > 250 && (
+          {rows.length > (query.trim() ? 100 : 50) && (
             <div className="border-t border-zinc-100 px-4 py-2 text-center text-xs text-zinc-400 dark:border-zinc-800 dark:text-zinc-500">
-              Showing the top 250 of {rows.length.toLocaleString()} items — refine your filter to see more.
+              Showing the first {query.trim() ? 100 : 50} of {rows.length.toLocaleString()} items
+              {query.trim() ? ' — refine your search to see more.' : ' — search for a specific item to see it.'}
             </div>
           )}
         </div>

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Environment } from '@/types';
+import { locationImageUrl } from '@/lib/image-urls';
 
 type State =
   | { status: 'loading' }
@@ -79,7 +80,7 @@ export function RelicHunterLive() {
           {environment.image && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={environment.image}
+              src={locationImageUrl(environment.id)}
               alt=""
               className="size-14 shrink-0 rounded-lg object-cover ring-1 ring-zinc-950/5 dark:ring-white/10"
             />

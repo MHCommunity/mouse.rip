@@ -38,13 +38,13 @@ export default function TrapSpecialEffectsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl">
+    <div>
       <PageHeader
         title="Location trap &amp; base effects"
         description={
           <>
-            Traps, bases, and charms with special effects that only apply in certain locations —
-            bonus loot, instacatches, attraction tweaks, and more. Adapted from the community{' '}
+            Traps, bases, and charms with special effects that only apply in certain locations — bonus loot,
+            instacatches, attraction tweaks, and more. Adapted from the community{' '}
             <PageLink href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRg_s_It1mDCefWgwc-7Gexr5Hc7lKBztFue9kYZidI76iodSUan3BoGsagLCI1M26U_zG7uVMe9kgK/pubhtml?gid=0&single=true">
               Location Specific Trap Effects
             </PageLink>{' '}
@@ -87,12 +87,8 @@ export default function TrapSpecialEffectsPage() {
                           key={`${entry.location}-${effect.name}-${effect.effect}`}
                           className="grid grid-cols-1 gap-x-4 gap-y-0.5 py-2.5 sm:grid-cols-[minmax(0,14rem)_1fr]"
                         >
-                          <dt className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                            {effect.name}
-                          </dt>
-                          <dd className="text-sm text-zinc-600 dark:text-zinc-400">
-                            {effect.effect || '—'}
-                          </dd>
+                          <dt className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{effect.name}</dt>
+                          <dd className="text-sm text-zinc-600 dark:text-zinc-400">{effect.effect || '—'}</dd>
                         </div>
                       ))}
                     </dl>

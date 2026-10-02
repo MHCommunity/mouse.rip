@@ -3,7 +3,6 @@ import React from 'react';
 import { ArrowTrendingUpIcon } from '@heroicons/react/20/solid';
 import { PageHeader } from '@/components/page-header';
 
-import { getAllGameItems, itemSlug } from '@/lib/game-data';
 import { pageMetadata } from '@/seo';
 import { MarketplaceBrowser } from './marketplace-browser';
 
@@ -15,14 +14,8 @@ export const metadata = pageMetadata({
 });
 
 export default function MarketplacePage() {
-  // id → item-page slug, so the live price table can deep-link to our item pages.
-  const slugById: Record<number, string> = {};
-  for (const item of getAllGameItems()) {
-    slugById[item.id] = itemSlug(item.type);
-  }
-
   return (
-    <div className="mx-auto max-w-4xl">
+    <div>
       <PageHeader
         title="Marketplace"
         description="Live gold and SUPER|brie+ prices for every tradable item, with daily trade volume. Sort and filter, then open any item for its full price history."
@@ -30,7 +23,7 @@ export default function MarketplacePage() {
         iconClassName="bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
       />
 
-      <MarketplaceBrowser slugById={slugById} />
+      <MarketplaceBrowser />
     </div>
   );
 }

@@ -48,6 +48,8 @@ export default async function Guide({ params }: { params: Promise<{ slug: string
   const url = `https://mouse.rip${guide.url}`;
 
   return (
+    // Guides are long-form prose, so they keep a readable measure inside the
+    // layout's wider content column.
     <div className="mx-auto max-w-3xl">
       <script
         type="application/ld+json"
@@ -64,13 +66,7 @@ export default async function Guide({ params }: { params: Promise<{ slug: string
           }),
         }}
       />
-      <Breadcrumbs
-        items={[
-          { name: 'Home', href: '/' },
-          { name: 'Guides', href: '/guides' },
-          { name: guide.name },
-        ]}
-      />
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Guides', href: '/guides' }, { name: guide.name }]} />
       <PageHeader
         title={guide.name}
         description={guide.description}
@@ -84,8 +80,8 @@ export default async function Guide({ params }: { params: Promise<{ slug: string
 
       {guide.sourceUrl && (
         <footer className="mt-12 border-t border-zinc-200 pt-4 text-sm text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
-          Originally published at{' '}
-          <PageLink href={guide.sourceUrl}>{guide.sourceUrl}</PageLink>. Reproduced here for easier reading.
+          Originally published at <PageLink href={guide.sourceUrl}>{guide.sourceUrl}</PageLink>. Reproduced here for
+          easier reading.
         </footer>
       )}
     </div>
