@@ -1,24 +1,32 @@
 import { AcademicCapIcon } from '@heroicons/react/20/solid';
-import { Heading } from '@/components/heading';
+import { PageHeader } from '@/components/page-header';
 import { ItemList } from '@/components/item-list';
 
 import React from 'react';
 
 import { getItemsByCategory } from '@/data';
+import { pageMetadata } from '@/seo';
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: 'MouseHunt Guides',
-};
+  description:
+    'MouseHunt strategy and how-to guides, from your first hunt to endgame optimization, written and curated by experienced hunters.',
+  path: '/guides',
+});
 
 export default async function Guides() {
   const items = await getItemsByCategory('guide');
 
   return (
     <>
-      <Heading>
-        <AcademicCapIcon className="mr-2 inline-grid size-12 shrink-0 align-middle text-pink-800 hover:text-pink-900 dark:text-pink-200 dark:hover:text-pink-300" />
-        MouseHunt Guides
-      </Heading>
+      <PageHeader
+        title="MouseHunt guides"
+        description="From your first hunt to endgame optimization, strategy and how-tos written by experienced hunters."
+        count={items.length}
+        countLabel="guides"
+        icon={AcademicCapIcon}
+        iconClassName="bg-pink-100 text-pink-700 dark:bg-pink-950 dark:text-pink-300"
+      />
       <ItemList items={items} />
     </>
   );

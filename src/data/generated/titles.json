@@ -1,0 +1,162 @@
+[
+  {
+    "id": "novice",
+    "order": 1,
+    "icon": "https://www.mousehuntgame.com/images/titles/84bc1109b5cd7aa8c24d195bc8207c38.png",
+    "name": "Novice",
+    "name_female": "Novice",
+    "name_male": "Novice"
+  },
+  {
+    "id": "recruit",
+    "order": 2,
+    "icon": "https://www.mousehuntgame.com/images/titles/3f1e44bbaa7138da4c326819e9f3f0a8.png",
+    "name": "Recruit",
+    "name_female": "Recruit",
+    "name_male": "Recruit"
+  },
+  {
+    "id": "apprentice",
+    "order": 3,
+    "icon": "https://www.mousehuntgame.com/images/titles/6f4673dd2d9d1e98b4569667d702a775.png",
+    "name": "Apprentice",
+    "name_female": "Apprentice",
+    "name_male": "Apprentice"
+  },
+  {
+    "id": "initiate",
+    "order": 4,
+    "icon": "https://www.mousehuntgame.com/images/titles/e96387f7261b95c0eeab9291e4e594e1.png",
+    "name": "Initiate",
+    "name_female": "Initiate",
+    "name_male": "Initiate"
+  },
+  {
+    "id": "journeyman",
+    "order": 5,
+    "icon": "https://www.mousehuntgame.com/images/titles/ad6875955f541159133c6d3798519f81.png",
+    "name": "Journeyman/Journeywoman",
+    "name_female": "Journeywoman",
+    "name_male": "Journeyman"
+  },
+  {
+    "id": "master",
+    "order": 6,
+    "icon": "https://www.mousehuntgame.com/images/titles/35ee6056a09037fb13a9195881875045.png",
+    "name": "Master",
+    "name_female": "Master",
+    "name_male": "Master"
+  },
+  {
+    "id": "grandmaster",
+    "order": 7,
+    "icon": "https://www.mousehuntgame.com/images/titles/0da3761747914f497c16dc2051ba132d.png",
+    "name": "Grandmaster",
+    "name_female": "Grandmaster",
+    "name_male": "Grandmaster"
+  },
+  {
+    "id": "legendary",
+    "order": 8,
+    "icon": "https://www.mousehuntgame.com/images/titles/fca35751046f4bcc972716ca484b6d61.png",
+    "name": "Legendary",
+    "name_female": "Legendary",
+    "name_male": "Legendary"
+  },
+  {
+    "id": "hero",
+    "order": 9,
+    "icon": "https://www.mousehuntgame.com/images/titles/0567284d6e12aaaed35ca5912007e070.png",
+    "name": "Hero",
+    "name_female": "Hero",
+    "name_male": "Hero"
+  },
+  {
+    "id": "knight",
+    "order": 10,
+    "icon": "https://www.mousehuntgame.com/images/titles/398dca9a8c7703de969769491622ca32.png",
+    "name": "Knight",
+    "name_female": "Knight",
+    "name_male": "Knight"
+  },
+  {
+    "id": "lord_lady",
+    "order": 11,
+    "icon": "https://www.mousehuntgame.com/images/titles/9a6acd429a9a3a4849ed13901288b0b8.png",
+    "name": "Lord/Lady",
+    "name_female": "Lady",
+    "name_male": "Lord"
+  },
+  {
+    "id": "baron_baroness",
+    "order": 12,
+    "icon": "https://www.mousehuntgame.com/images/titles/ea9c0ec2e6d3d81c14e61f5ce924d0e1.png",
+    "name": "Baron/Baroness",
+    "name_female": "Baroness",
+    "name_male": "Baron"
+  },
+  {
+    "id": "count_countess",
+    "order": 13,
+    "icon": "https://www.mousehuntgame.com/images/titles/dd11711a25b80db90e0306193f2e8d78.png",
+    "name": "Count/Countess",
+    "name_female": "Countess",
+    "name_male": "Count"
+  },
+  {
+    "id": "duke_dutchess",
+    "order": 14,
+    "icon": "https://www.mousehuntgame.com/images/titles/eb46ac1e8197b13299ab860f07d963db.png",
+    "name": "Duke/Duchess",
+    "name_female": "Duchess",
+    "name_male": "Duke"
+  },
+  {
+    "id": "grand_duke",
+    "order": 15,
+    "icon": "https://www.mousehuntgame.com/images/titles/87937fa96bbb3b2dd3225df883002642.png",
+    "name": "Grand Duke/Duchess",
+    "name_female": "Grand Duchess",
+    "name_male": "Grand Duke"
+  },
+  {
+    "id": "archduke_archduchess",
+    "order": 16,
+    "icon": "https://www.mousehuntgame.com/images/titles/043efe31de4f0f2e0ddca590fe829032.png",
+    "name": "Archduke/Archduchess",
+    "name_female": "Archduchess",
+    "name_male": "Archduke"
+  },
+  {
+    "id": "viceroy",
+    "order": 17,
+    "icon": "https://www.mousehuntgame.com/images/titles/e2e79f6f9201a4d4e7a89684fbb5356f.png",
+    "name": "Viceroy",
+    "name_female": "Viceroy",
+    "name_male": "Viceroy"
+  },
+  {
+    "id": "elder",
+    "order": 18,
+    "icon": "https://www.mousehuntgame.com/images/titles/ccb7073950cc3b6e77b1d1ace7640fe7.gif?cv=3",
+    "name": "Elder",
+    "name_female": "Elder",
+    "name_male": "Elder"
+  },
+  {
+    "id": "sage",
+    "order": 19,
+    "icon": "https://www.mousehuntgame.com/images/titles/cb49e43c5e4460da7c09fe28ca4f44ce.png",
+    "name": "Sage",
+    "name_female": "Sage",
+    "name_male": "Sage"
+  },
+  {
+    "id": "fabled",
+    "order": 20,
+    "icon": "https://www.mousehuntgame.com/images/titles/5daba92a8d609834aa8b789f37544e08.png",
+    "name": "Fabled",
+    "name_female": "Fabled",
+    "name_male": "Fabled"
+  }
+]

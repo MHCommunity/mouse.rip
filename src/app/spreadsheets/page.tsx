@@ -1,23 +1,31 @@
 import { getItemsByCategory } from '@/data';
-import { Heading } from '@/components/heading';
+import { PageHeader } from '@/components/page-header';
 import { ItemList } from '@/components/item-list';
 import { TableCellsIcon } from '@heroicons/react/20/solid';
+import { pageMetadata } from '@/seo';
 
 import React from 'react';
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: 'MouseHunt Spreadsheets',
-};
+  description:
+    'Community-maintained MouseHunt spreadsheets for tracking collections, crowns, minlucks, wisdom, and planning your progression.',
+  path: '/spreadsheets',
+});
 
 export default async function Spreadsheets() {
   const items = await getItemsByCategory('spreadsheet');
 
   return (
     <>
-      <Heading>
-        <TableCellsIcon className="mr-2 inline-grid size-12 shrink-0 align-middle text-blue-800 hover:text-blue-900 dark:text-blue-200 dark:hover:text-blue-300" />
-        MouseHunt Spreadsheets
-      </Heading>
+      <PageHeader
+        title="MouseHunt spreadsheets"
+        description="Community-maintained sheets for tracking collections, planning, and crunching the numbers."
+        count={items.length}
+        countLabel="spreadsheets"
+        icon={TableCellsIcon}
+        iconClassName="bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
+      />
       <ItemList items={items} />
     </>
   );
