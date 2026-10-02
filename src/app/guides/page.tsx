@@ -9,7 +9,8 @@ import { pageMetadata } from '@/seo';
 
 export const metadata = pageMetadata({
   title: 'MouseHunt Guides',
-  description: 'MouseHunt strategy and how-to guides, from your first hunt to endgame optimization, written and curated by experienced hunters.',
+  description:
+    'MouseHunt strategy and how-to guides, from your first hunt to endgame optimization, written and curated by experienced hunters.',
   path: '/guides',
 });
 

@@ -8,7 +8,8 @@ import React from 'react';
 
 export const metadata = pageMetadata({
   title: 'MouseHunt Spreadsheets',
-  description: 'Community-maintained MouseHunt spreadsheets for tracking collections, crowns, minlucks, wisdom, and planning your progression.',
+  description:
+    'Community-maintained MouseHunt spreadsheets for tracking collections, crowns, minlucks, wisdom, and planning your progression.',
   path: '/spreadsheets',
 });
 

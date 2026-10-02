@@ -109,13 +109,21 @@ export default async function RootLayout({ children }: RootLayoutProps) {
                 url: 'https://mouse.rip',
                 sameAs: ['https://discord.gg/mousehunt', 'https://github.com/MHCommunity'],
               },
+              // Makes us eligible for a search box in our own Google result, so
+              // people can jump straight to a mouse or item from the SERP.
+              potentialAction: {
+                '@type': 'SearchAction',
+                target: {
+                  '@type': 'EntryPoint',
+                  urlTemplate: 'https://mouse.rip/items?q={search_term_string}',
+                },
+                'query-input': 'required name=search_term_string',
+              },
             }),
           }}
         />
         <ViewTransitions>
-          <ApplicationLayout>
-            {children}
-          </ApplicationLayout>
+          <ApplicationLayout>{children}</ApplicationLayout>
         </ViewTransitions>
       </body>
     </html>

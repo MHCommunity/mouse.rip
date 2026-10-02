@@ -6,11 +6,7 @@ type ItemListProps = {
   showtags?: boolean;
 };
 
-export function ItemList({
-  items,
-  showtags = false,
-  ...props
-}: ItemListProps) {
+export function ItemList({ items, showtags = false, ...props }: ItemListProps) {
   if (!items.length) {
     return (
       <div className="mt-8 rounded-xl border border-dashed border-zinc-300 p-10 text-center text-sm text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
@@ -29,12 +25,7 @@ export function ItemList({
   return (
     <div className="relative mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3" {...props}>
       {items.map((item) => (
-        <Item
-          key={item.id}
-          item={item}
-          showtags={showtags}
-          {...props}
-        />
+        <Item key={item.id} item={item} showtags={showtags} {...props} />
       ))}
     </div>
   );

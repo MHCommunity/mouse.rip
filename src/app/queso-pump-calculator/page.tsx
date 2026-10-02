@@ -43,15 +43,13 @@ export default function QuesoPumpCalculator() {
   const nextNachore = NEXT_PUMP_NACHORE[pumpLevel - 1];
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-6">
+    <div className="py-6">
       <Heading>Queso Pump Calculator</Heading>
 
       <p className="mt-4 rounded bg-gray-50 p-4 text-sm text-gray-800 shadow dark:bg-gray-800 dark:text-gray-100">
-        Pumping the volcano in{' '}
-        <PageLink href="/locations/queso-river">Queso Canyon</PageLink> costs Nachore. Enter how
-        much Nachore you need and this works out the most time-efficient cheese to farm it with,
-        comparing Bland Queso all the way up to Flamin&apos; Queso. Ported from fysh&apos;s original
-        Queso Canyon Resource Calculator.
+        Pumping the volcano in <PageLink href="/locations/queso-river">Queso Canyon</PageLink> costs Nachore. Enter how
+        much Nachore you need and this works out the most time-efficient cheese to farm it with, comparing Bland Queso
+        all the way up to Flamin&apos; Queso. Ported from fysh&apos;s original Queso Canyon Resource Calculator.
       </p>
 
       <form className="mt-6 space-y-5" aria-label="Queso pump calculator form" onSubmit={(e) => e.preventDefault()}>
@@ -121,11 +119,19 @@ export default function QuesoPumpCalculator() {
 
       <p className="mt-4 text-sm text-gray-600 dark:text-gray-400">
         Pumping <strong>{basePump}</strong> Bland Queso per catch
-        {boostedPump !== basePump && <> (boosted to <strong>{boostedPump}</strong>)</>}.{' '}
+        {boostedPump !== basePump && (
+          <>
+            {' '}
+            (boosted to <strong>{boostedPump}</strong>)
+          </>
+        )}
+        .{' '}
         {nextNachore === null ? (
           <>Pump is at the maximum level.</>
         ) : (
-          <>Next pump level needs <strong>{formatNumber(nextNachore)}</strong> Nachore.</>
+          <>
+            Next pump level needs <strong>{formatNumber(nextNachore)}</strong> Nachore.
+          </>
         )}
       </p>
 
@@ -133,17 +139,17 @@ export default function QuesoPumpCalculator() {
         <>
           <div className="mt-6 rounded bg-emerald-50 p-4 text-emerald-900 shadow dark:bg-emerald-950/60 dark:text-emerald-100">
             <p>
-              The most time-efficient strategy is{' '}
-              <strong>{best.name}</strong>, taking a minimum of{' '}
+              The most time-efficient strategy is <strong>{best.name}</strong>, taking a minimum of{' '}
               <strong>{formatNumber(best.hunts)}</strong> hunts
               {best.tier > 0 && (
                 <>
-                  {' '}and <strong>{formatNumber(best.blandQueso)}</strong> Bland Queso
-                  {useMagicEssence && best.magicEssence > 0 && (
-                    <>, {formatNumber(best.magicEssence)} Magic Essence</>
-                  )}
+                  {' '}
+                  and <strong>{formatNumber(best.blandQueso)}</strong> Bland Queso
+                  {useMagicEssence && best.magicEssence > 0 && <>, {formatNumber(best.magicEssence)} Magic Essence</>}
                   {useQpc && (
-                    <>, {formatNumber(best.pumpCharms)} Queso Pump Charm{best.pumpCharms === 1 ? '' : 's'}</>
+                    <>
+                      , {formatNumber(best.pumpCharms)} Queso Pump Charm{best.pumpCharms === 1 ? '' : 's'}
+                    </>
                   )}
                 </>
               )}
@@ -151,10 +157,9 @@ export default function QuesoPumpCalculator() {
             </p>
             {best.essenceSavedHunts > 0 && (
               <p className="mt-1 text-sm">
-                {useMagicEssence ? 'Using' : 'Not using'} Magic Essence{' '}
-                {useMagicEssence ? 'saves' : 'costs'} you{' '}
-                {formatNumber(best.essenceSavedHunts)} hunts ({best.essenceSavedPercent.toFixed(2)}%)
-                versus the alternative.
+                {useMagicEssence ? 'Using' : 'Not using'} Magic Essence {useMagicEssence ? 'saves' : 'costs'} you{' '}
+                {formatNumber(best.essenceSavedHunts)} hunts ({best.essenceSavedPercent.toFixed(2)}%) versus the
+                alternative.
               </p>
             )}
           </div>
@@ -163,14 +168,39 @@ export default function QuesoPumpCalculator() {
             <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-600">
               <thead className="bg-gray-50 dark:bg-gray-800">
                 <tr>
-                  <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 dark:text-gray-100">Cheese</th>
-                  <th scope="col" className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">Total hunts</th>
-                  <th scope="col" className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">Bland Queso</th>
+                  <th
+                    scope="col"
+                    className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 dark:text-gray-100"
+                  >
+                    Cheese
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100"
+                  >
+                    Total hunts
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100"
+                  >
+                    Bland Queso
+                  </th>
                   {useMagicEssence && (
-                    <th scope="col" className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">Magic Essence</th>
+                    <th
+                      scope="col"
+                      className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100"
+                    >
+                      Magic Essence
+                    </th>
                   )}
                   {useQpc && (
-                    <th scope="col" className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">Pump Charms</th>
+                    <th
+                      scope="col"
+                      className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100"
+                    >
+                      Pump Charms
+                    </th>
                   )}
                 </tr>
               </thead>
@@ -178,21 +208,35 @@ export default function QuesoPumpCalculator() {
                 {strategies.map((s) => (
                   <tr
                     key={s.tier}
-                    className={s.tier === best.tier ? 'bg-emerald-50/60 dark:bg-emerald-950/30' : 'hover:bg-gray-50 dark:hover:bg-gray-800/50'}
+                    className={
+                      s.tier === best.tier
+                        ? 'bg-emerald-50/60 dark:bg-emerald-950/30'
+                        : 'hover:bg-gray-50 dark:hover:bg-gray-800/50'
+                    }
                   >
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 dark:text-white">
                       {s.name}
                       {s.tier === best.tier && (
-                        <span className="ml-2 rounded bg-emerald-600 px-1.5 py-0.5 text-xs font-semibold text-white">best</span>
+                        <span className="ml-2 rounded bg-emerald-600 px-1.5 py-0.5 text-xs font-semibold text-white">
+                          best
+                        </span>
                       )}
                     </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-right text-sm tabular-nums text-gray-700 dark:text-gray-300">{formatNumber(s.hunts)}</td>
-                    <td className="whitespace-nowrap px-3 py-4 text-right text-sm tabular-nums text-gray-500 dark:text-gray-400">{formatNumber(s.blandQueso)}</td>
+                    <td className="whitespace-nowrap px-3 py-4 text-right text-sm tabular-nums text-gray-700 dark:text-gray-300">
+                      {formatNumber(s.hunts)}
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-right text-sm tabular-nums text-gray-500 dark:text-gray-400">
+                      {formatNumber(s.blandQueso)}
+                    </td>
                     {useMagicEssence && (
-                      <td className="whitespace-nowrap px-3 py-4 text-right text-sm tabular-nums text-gray-500 dark:text-gray-400">{s.magicEssence > 0 ? formatNumber(s.magicEssence) : '—'}</td>
+                      <td className="whitespace-nowrap px-3 py-4 text-right text-sm tabular-nums text-gray-500 dark:text-gray-400">
+                        {s.magicEssence > 0 ? formatNumber(s.magicEssence) : '—'}
+                      </td>
                     )}
                     {useQpc && (
-                      <td className="whitespace-nowrap px-3 py-4 text-right text-sm tabular-nums text-gray-500 dark:text-gray-400">{formatNumber(s.pumpCharms)}</td>
+                      <td className="whitespace-nowrap px-3 py-4 text-right text-sm tabular-nums text-gray-500 dark:text-gray-400">
+                        {formatNumber(s.pumpCharms)}
+                      </td>
                     )}
                   </tr>
                 ))}

@@ -8,7 +8,8 @@ import React from 'react';
 
 export const metadata = pageMetadata({
   title: 'MouseHunt Userscripts',
-  description: 'A curated collection of MouseHunt userscripts that add features, automate busywork, and surface useful in-game data.',
+  description:
+    'A curated collection of MouseHunt userscripts that add features, automate busywork, and surface useful in-game data.',
   path: '/userscripts',
 });
 

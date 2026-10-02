@@ -6,24 +6,28 @@ import locations from './data/locations.json';
 import trapEffects from './data/trap-effects.json';
 import userscripts from './data/userscripts.json';
 
-import { MouseRipItem, Environment, LocationRegion, Title, TrapEffectLocation, RelicHunterHints } from '@/types';
+import { Environment, LocationRegion, MouseRipItem, RelicHunterHints, Title, TrapEffectLocation } from '@/types';
 
 export function getItems(): MouseRipItem[] {
   return [...items, ...userscripts];
 }
 
 export function getLocation(id: string): Environment | undefined {
-  let environment = { id };
   for (const region of locations as LocationRegion[]) {
-    const found = region.locations.find((location: { id: { toString: () => string; }; }) => location.id.toString() === id);
+    const found = region.locations.find((location) => location.id === id);
     if (found) {
-      const foundEnvironment = environments.find((env: Environment) => env.name === found.name) || found;
-      environment = { ...foundEnvironment, id: found.id.toString() };
-      return environment;
+      const foundEnvironment = environments.find((env: Environment) => env.name === found.name);
+      if (!foundEnvironment) return found;
+
+      return {
+        ...foundEnvironment,
+        id: found.id,
+        environmentId: foundEnvironment.id,
+      };
     }
   }
 
-  return environment;
+  return undefined;
 }
 
 export function getLocations(): LocationRegion[] {

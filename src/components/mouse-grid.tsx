@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'next-view-transitions';
 
 import { mouseSlug } from '@/lib/game-data';
+import { mouseImageUrl } from '@/lib/image-urls';
 import type { Mouse } from '@/types';
 
 /** A responsive grid of mouse cards that link to each mouse's page. */
@@ -17,7 +18,7 @@ export function MouseGrid({ mice }: { mice: Mouse[] }) {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={`https://i.mouse.rip/images/mice/thumbnail/${mouseSlug(mouse.type)}.png`}
+              src={mouseImageUrl(mouse.type)}
               alt=""
               loading="lazy"
               className="size-10 shrink-0 rounded-md object-cover ring-1 ring-zinc-950/5 dark:ring-white/10"
@@ -27,9 +28,7 @@ export function MouseGrid({ mice }: { mice: Mouse[] }) {
                 {mouse.name}
               </div>
               {mouse.subgroup && (
-                <div className="truncate text-xs text-zinc-400 dark:text-zinc-500">
-                  {mouse.subgroup}
-                </div>
+                <div className="truncate text-xs text-zinc-400 dark:text-zinc-500">{mouse.subgroup}</div>
               )}
             </div>
           </Link>

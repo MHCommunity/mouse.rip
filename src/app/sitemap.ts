@@ -1,17 +1,16 @@
 import type { MetadataRoute } from 'next';
 
 import { getItemsByCategory, getLocations, getOnSiteGuides } from '@/data';
-import {
-  getAllGameItems,
-  getAllMice,
-  getAllMiceGroups,
-  itemSlug,
-  mouseSlug,
-} from '@/lib/game-data';
+import { getAllGameItems, getAllMice, getAllMiceGroups, getDataUpdatedAt, itemSlug, mouseSlug } from '@/lib/game-data';
+import { orderClassifications } from '@/lib/item-classifications';
 
 const BASE_URL = 'https://mouse.rip';
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  // When the game data was last actually refreshed — not the build time, which
+  // would claim every page changed on every deploy and get lastmod ignored.
+  const lastModified = getDataUpdatedAt();
+
   const staticRoutes = [
     '',
     '/guides',
@@ -19,7 +18,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/spreadsheets',
     '/extensions',
     '/userscripts',
-    '/locations',
     '/mice',
     '/items',
     '/marketplace',
@@ -48,7 +46,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${BASE_URL}/locations/${location.id}`,
       changeFrequency: 'monthly' as const,
       priority: 0.6,
-    }))
+    })),
   );
 
   const userscriptRoutes = getItemsByCategory('userscript').map((item) => ({
@@ -59,20 +57,33 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const mouseRoutes = getAllMice().map((mouse) => ({
     url: `${BASE_URL}/mice/${mouseSlug(mouse.type)}`,
-    changeFrequency: 'monthly' as const,
+    lastModified,
+    changeFrequency: 'weekly' as const,
     priority: 0.6,
   }));
 
   const groupRoutes = getAllMiceGroups().map((group) => ({
     url: `${BASE_URL}/groups/${group.id}`,
-    changeFrequency: 'monthly' as const,
+    lastModified,
+    changeFrequency: 'weekly' as const,
     priority: 0.5,
   }));
 
-  const itemRoutes = getAllGameItems().map((item) => ({
+  const items = getAllGameItems();
+
+  const itemRoutes = items.map((item) => ({
     url: `${BASE_URL}/items/${itemSlug(item.type)}`,
-    changeFrequency: 'monthly' as const,
+    lastModified,
+    changeFrequency: 'weekly' as const,
     priority: 0.5,
+  }));
+
+  // The per-type hub pages, which are how crawlers reach the item pages at all.
+  const itemTypeRoutes = orderClassifications(items.map((item) => item.classification || 'other')).map((type) => ({
+    url: `${BASE_URL}/items/type/${type}`,
+    lastModified,
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
   }));
 
   return [
@@ -82,6 +93,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...userscriptRoutes,
     ...mouseRoutes,
     ...groupRoutes,
+    ...itemTypeRoutes,
     ...itemRoutes,
   ];
 }

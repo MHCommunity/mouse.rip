@@ -1,14 +1,14 @@
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     assignees:
-      - "bradp"
+      - 'bradp'
     versioning-strategy: increase
     groups:
       dev-dependencies:
         applies-to: version-updates
         patterns:
-          - "*"
+          - '*'

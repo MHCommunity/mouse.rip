@@ -36,11 +36,13 @@ Finally, run the development server:
 
 This will make your site accessible at `http://localhost:3000`, and will automatically reload when you make changes.
 
-When you're finished, you can check for any errors with:
+When you're finished, run lint, formatting, and TypeScript checks:
 
 ```bash
-  bun run lint
+  bun run check
 ```
+
+Use `bun run format` to apply formatting and `bun run build` to verify production page generation.
 
 If you're happy with your changes, you can submit a Pull Request!
 
@@ -48,9 +50,16 @@ If you're happy with your changes, you can submit a Pull Request!
 
 The items on the site are populated via the contents in the [`src/data`](https://github.com/MHCommunity/mouse.rip/tree/main/src/data) directory.
 
+Run `bun run update:data` to refresh the generated game data. The updater validates the responses before replacing the
+existing snapshots. Item contents, drop rates, and mouse attraction and map data are included in the generated pages;
+marketplace prices are fetched live in the browser.
+
+Run `bun run update:images` to download images into the ignored `static-mouse-rip/images` directory. `bun run update`
+refreshes the data first, then downloads images. Publishing those images to `i.mouse.rip` is a separate step.
+
 ## 💬 Discussion & Feedback
 
-If you'd like to suggest a change, you can open an issue or a pull request. If you aren't comfortable or familiar with GithHub, or if you have any questions, you can chat in the `#community-tools` channel on the [MouseHunt Community Discord](https://discord.gg/Z9sxnD5reB/) server.
+If you'd like to suggest a change, you can open an issue or a pull request. If you aren't comfortable or familiar with GitHub, or if you have any questions, you can chat in the `#community-tools` channel on the [MouseHunt Community Discord](https://discord.gg/Z9sxnD5reB/) server.
 
 ## 📝 License
 

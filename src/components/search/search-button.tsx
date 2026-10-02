@@ -25,17 +25,15 @@ export function SearchBar({ className }: { className?: string }) {
       type="button"
       onClick={open}
       className={clsx(
-        'group flex w-full items-center gap-3 rounded-2xl border border-zinc-200 bg-white px-5 py-4 text-left shadow-sm transition duration-300 hover:border-pink-300 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-pink-800',
-        className
+        'group flex w-full items-center gap-3 rounded-xl border border-zinc-200 bg-white px-5 py-4 text-left shadow-sm transition duration-200 hover:border-pink-300 hover:shadow-md active:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-pink-800',
+        className,
       )}
     >
       <MagnifyingGlassIcon
         className="size-5 shrink-0 text-zinc-400 transition-colors group-hover:text-pink-500"
         aria-hidden="true"
       />
-      <span className="flex-1 text-base text-zinc-400 dark:text-zinc-500">
-        Search mice, locations, guides, tools…
-      </span>
+      <span className="flex-1 text-base text-zinc-500 dark:text-zinc-400">Search mice, locations, guides, tools…</span>
       <kbd className="hidden shrink-0 rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-400 sm:block dark:border-zinc-700 dark:bg-zinc-800">
         {shortcut}
       </kbd>
@@ -54,8 +52,8 @@ export function SearchButton({ className }: { className?: string }) {
       onClick={open}
       aria-label="Search"
       className={clsx(
-        'group flex items-center gap-2.5 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-left text-sm shadow-sm transition hover:border-zinc-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-zinc-600',
-        className
+        'group flex items-center gap-2.5 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-left text-sm shadow-sm transition hover:border-pink-300 hover:shadow-md active:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-pink-800',
+        className,
       )}
     >
       <MagnifyingGlassIcon className="size-4 shrink-0 text-zinc-400" aria-hidden="true" />

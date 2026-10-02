@@ -5,6 +5,7 @@ import { PageHeader } from '@/components/page-header';
 
 import { getTitles } from '@/data';
 import { pageMetadata } from '@/seo';
+import { titleImageUrl } from '@/lib/image-urls';
 
 export const metadata = pageMetadata({
   title: 'MouseHunt Titles & Ranks',
@@ -47,11 +48,7 @@ const PERKS_BY_TITLE: Record<string, string[]> = {
     'Access to 6 of 70 locations in the Kingdom',
     "Hunt at the Windmill, the King's Arms, and the Tournament Hall",
   ],
-  initiate: [
-    'Access to 7 of 70 locations in the Kingdom',
-    'Hunt at the Harbour',
-    'Combine 2 items while crafting',
-  ],
+  initiate: ['Access to 7 of 70 locations in the Kingdom', 'Hunt at the Harbour', 'Combine 2 items while crafting'],
   journeyman: [
     'Access to 9 of 70 locations in the Kingdom',
     'Hunt in the Mountain and the Calm Clearing',
@@ -138,7 +135,7 @@ export default function TitlesPage() {
   const titles = getTitles();
 
   return (
-    <div className="mx-auto max-w-4xl">
+    <div>
       <PageHeader
         title="Titles &amp; ranks"
         description={
@@ -152,8 +149,7 @@ export default function TitlesPage() {
             >
               wisdom
             </a>{' '}
-            from catching mice. Here&rsquo;s what each title unlocks, and the wisdom it takes to get
-            there.
+            from catching mice. Here&rsquo;s what each title unlocks, and the wisdom it takes to get there.
           </>
         }
         count={titles.length}
@@ -175,7 +171,7 @@ export default function TitlesPage() {
               <div className="flex items-center gap-3">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={title.icon}
+                  src={titleImageUrl(title.id)}
                   alt=""
                   width={40}
                   height={40}
@@ -183,9 +179,7 @@ export default function TitlesPage() {
                   className="size-10 shrink-0"
                 />
                 <div className="min-w-0 flex-1">
-                  <div className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-                    {title.name}
-                  </div>
+                  <div className="text-base font-semibold text-zinc-900 dark:text-zinc-100">{title.name}</div>
                   {wisdom !== undefined && (
                     <div className="text-xs tabular-nums text-zinc-500 dark:text-zinc-400">
                       {wisdom.toLocaleString('en-US')} wisdom

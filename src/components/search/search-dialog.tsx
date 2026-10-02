@@ -39,11 +39,15 @@ export function SearchDialog({ open, onClose }: { open: boolean; onClose: () => 
   const debouncedQuery = useDebouncedValue(query, 120);
 
   // Pull in the (large) mouse and item indexes the first time search is opened.
+  // allSettled, not all: if one index fails to load, keep the one that did —
+  // search falls back to the static records only for the half that's missing.
   useEffect(() => {
     if (!open) return;
     let active = true;
-    Promise.all([loadMouseRecords(), loadGameItemRecords()]).then(([mice, items]) => {
-      if (active) setLazyRecords([...mice, ...items]);
+    Promise.allSettled([loadMouseRecords(), loadGameItemRecords()]).then((results) => {
+      if (!active) return;
+      const loaded = results.flatMap((result) => (result.status === 'fulfilled' ? result.value : []));
+      if (loaded.length > 0) setLazyRecords(loaded);
     });
     return () => {
       active = false;
@@ -55,15 +59,9 @@ export function SearchDialog({ open, onClose }: { open: boolean; onClose: () => 
     if (!open) setQuery('');
   }, [open]);
 
-  const records = useMemo(
-    () => [...getStaticSearchRecords(), ...lazyRecords],
-    [lazyRecords]
-  );
+  const records = useMemo(() => [...getStaticSearchRecords(), ...lazyRecords], [lazyRecords]);
 
-  const results = useMemo(
-    () => searchRecords(records, debouncedQuery),
-    [records, debouncedQuery]
-  );
+  const results = useMemo(() => searchRecords(records, debouncedQuery), [records, debouncedQuery]);
 
   const grouped = useMemo(() => {
     const byGroup = new Map<SearchGroup, SearchRecord[]>();
@@ -72,9 +70,7 @@ export function SearchDialog({ open, onClose }: { open: boolean; onClose: () => 
       list.push(record);
       byGroup.set(record.group, list);
     }
-    return GROUP_ORDER.filter((group) => byGroup.has(group)).map(
-      (group) => [group, byGroup.get(group)!] as const
-    );
+    return GROUP_ORDER.filter((group) => byGroup.has(group)).map((group) => [group, byGroup.get(group)!] as const);
   }, [results]);
 
   function handleSelect(record: SearchRecord | null) {
@@ -154,10 +150,7 @@ export function SearchDialog({ open, onClose }: { open: boolean; onClose: () => 
                               {record.title}
                             </span>
                             {record.external && (
-                              <ArrowUpRightIcon
-                                className="size-3.5 shrink-0 text-zinc-400"
-                                aria-hidden="true"
-                              />
+                              <ArrowUpRightIcon className="size-3.5 shrink-0 text-zinc-400" aria-hidden="true" />
                             )}
                           </span>
                           {record.subtitle && (

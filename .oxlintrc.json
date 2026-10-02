@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "error"
+  },
+  "plugins": ["eslint", "typescript", "react", "jsx-a11y", "nextjs", "import", "unicorn", "oxc"],
+  "ignorePatterns": [".next/**", ".open-next/**", "cloudflare-env.d.ts", "next-env.d.ts", "src/data/generated/**"],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "jsx-a11y/anchor-has-content": "off",
+    "jsx-a11y/heading-has-content": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "jsx-a11y/no-autofocus": "off",
+    "jsx-a11y/prefer-tag-over-role": "off"
+  }
+}

@@ -8,6 +8,7 @@ import { MouseGrid } from '@/components/mouse-grid';
 import { getAllMiceGroups, getMiceForGroup, getMiceGroupBySlug } from '@/lib/game-data';
 import { ogCard, pageMetadata } from '@/seo';
 import { cleanDescription } from '@/utils';
+import { mouseGroupImageUrl } from '@/lib/image-urls';
 
 export const dynamicParams = false;
 
@@ -23,8 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return pageMetadata({
     title: `${group.name} — MouseHunt Mice`,
     description:
-      cleanDescription(group.description).slice(0, 160) ||
-      `Every mouse in the ${group.name} group in MouseHunt.`,
+      cleanDescription(group.description).slice(0, 160) || `Every mouse in the ${group.name} group in MouseHunt.`,
     path: `/groups/${slug}`,
     image: ogCard({
       title: group.name,
@@ -43,19 +43,14 @@ export default async function GroupPage({ params }: { params: Promise<{ slug: st
   const mice = getMiceForGroup(group);
 
   return (
-    <div className="mx-auto max-w-4xl">
-      <Breadcrumbs
-        items={[
-          { name: 'Home', href: '/' },
-          { name: 'Groups', href: '/groups' },
-          { name: group.name },
-        ]}
-      />
+    <div>
+      {/* The group index lives on /mice ("Browse by group") — /groups only redirects there. */}
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Mice', href: '/mice' }, { name: group.name }]} />
 
       {group.banner && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={group.banner}
+          src={mouseGroupImageUrl(group.id)}
           alt=""
           className="mb-6 h-40 w-full rounded-2xl object-cover ring-1 ring-zinc-950/5 dark:ring-white/10"
         />

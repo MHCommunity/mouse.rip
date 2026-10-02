@@ -7,9 +7,8 @@ function wikiName(name: string): string {
 }
 
 /**
- * Outbound "more info" links to community references. `kind` selects the
- * dbgames path segment (`mice` or `items`). Pass `id` to add an MHCT deep link
- * (via the api.mouse.rip redirect, which maps our ids to MHCT's), and
+ * Outbound "more info" links to community references. Pass `id` to add an MHCT
+ * deep link (via the api.mouse.rip redirect, which maps our ids to MHCT's), and
  * `tradable` to add a Markethunt link.
  */
 export function ExternalRefs({
@@ -28,10 +27,6 @@ export function ExternalRefs({
       label: 'MHWiki',
       href: `https://mhwiki.hitgrab.com/wiki/index.php/${wikiName(name)}`,
     },
-    {
-      label: 'dbgames',
-      href: `https://dbgames.info/mousehunt/${kind}/${wikiName(name)}`,
-    },
     ...(id != null
       ? [
           {
@@ -43,9 +38,7 @@ export function ExternalRefs({
           },
         ]
       : []),
-    ...(id != null && tradable
-      ? [{ label: 'Markethunt', href: `https://markethunt.win/?item_id=${id}` }]
-      : []),
+    ...(id != null && tradable ? [{ label: 'Markethunt', href: `https://markethunt.win/?item_id=${id}` }] : []),
   ];
 
   return (

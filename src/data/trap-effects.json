@@ -1,1385 +1,1385 @@
 [
- {
-  "region": "Gnawnia",
-  "location": "Meadow",
-  "effects": [
-   {
-    "name": "Any Drillbot",
-    "effect": "Drops scrap metal from Steel mice"
-   }
-  ]
- },
- {
-  "region": "Gnawnia",
-  "location": "Town of Gnawnia",
-  "effects": [
-   {
-    "name": "(Maniacal) Brain Extractor",
-    "effect": "Drops brain bits from zombie mice"
-   },
-   {
-    "name": "Any Drillbot",
-    "effect": "Drops scrap metal from Steel mice"
-   },
-   {
-    "name": "Skello-Ton",
-    "effect": "Drops brain bits"
-   },
-   {
-    "name": "(Super) Brain",
-    "effect": "Attracts zombies"
-   }
-  ]
- },
- {
-  "region": "Gnawnia",
-  "location": "Windmill",
-  "effects": []
- },
- {
-  "region": "Gnawnia",
-  "location": "Harbour",
-  "effects": [
-   {
-    "name": "Any Drillbot",
-    "effect": "Drops scrap metal from Steel mice"
-   },
-   {
-    "name": "S.S. Scoundrel Sleigher",
-    "effect": "Chance to instacatch a Dock Dweller or Pirate (33%)"
-   },
-   {
-    "name": "Black Widow",
-    "effect": "Black Widow drops bonus loot"
-   }
-  ]
- },
- {
-  "region": "Gnawnia",
-  "location": "Mountain",
-  "effects": [
-   {
-    "name": "(Maniacal) Brain Extractor",
-    "effect": "Drops brain bits from zombie mice"
-   },
-   {
-    "name": "Any Drillbot",
-    "effect": "Drops scrap metal from Steel mice"
-   },
-   {
-    "name": "Skello-Ton",
-    "effect": "Drops brain bits"
-   },
-   {
-    "name": "Black Widow",
-    "effect": "Black Widow drops bonus loot"
-   },
-   {
-    "name": "Prospector",
-    "effect": "Better mice attracted"
-   },
-   {
-    "name": "(Super) Brain",
-    "effect": "Attracts zombies"
-   }
-  ]
- },
- {
-  "region": "Valour",
-  "location": "King's Arms",
-  "effects": [
-   {
-    "name": "Black Widow",
-    "effect": "Black Widow drops bonus loot"
-   }
-  ]
- },
- {
-  "region": "Valour",
-  "location": "Tournament Hall",
-  "effects": []
- },
- {
-  "region": "Valour",
-  "location": "King's Gauntlet",
-  "effects": [
-   {
-    "name": "Ancient Gauntlet",
-    "effect": "Doubles tier 2 potions drops"
-   },
-   {
-    "name": "Festive Gauntlet Crusher",
-    "effect": "Doubles tier 3 potion drops"
-   }
-  ]
- },
- {
-  "region": "Whisker Woods",
-  "location": "Calm Clearing",
-  "effects": [
-   {
-    "name": "Black Widow",
-    "effect": "Black Widow drops bonus loot"
-   }
-  ]
- },
- {
-  "region": "Whisker Woods",
-  "location": "Great Gnarled Tree",
-  "effects": [
-   {
-    "name": "Black Widow",
-    "effect": "Black Widow drops bonus loot"
-   }
-  ]
- },
- {
-  "region": "Whisker Woods",
-  "location": "Lagoon",
-  "effects": [
-   {
-    "name": "Black Widow",
-    "effect": "Black Widow drops bonus loot"
-   }
-  ]
- },
- {
-  "region": "Burroughs",
-  "location": "Laboratory",
-  "effects": [
-   {
-    "name": "(Maniacal) Brain Extractor",
-    "effect": "Drops brain bits from zombie mice"
-   },
-   {
-    "name": "Any Drillbot",
-    "effect": "Drops scrap metal from Steel mice"
-   },
-   {
-    "name": "Skello-Ton",
-    "effect": "Drops brain bits"
-   },
-   {
-    "name": "Black Widow",
-    "effect": "Black Widow drops bonus loot"
-   },
-   {
-    "name": "Scientist",
-    "effect": "Doubles potion drops"
-   },
-   {
-    "name": "(Super) Brain",
-    "effect": "Attracts zombies"
-   }
-  ]
- },
- {
-  "region": "Burroughs",
-  "location": "Toxic Spill",
-  "effects": [
-   {
-    "name": "Super Scum Scrubber",
-    "effect": "Extra Pollutinum gathered or refined"
-   },
-   {
-    "name": "Washboard Base",
-    "effect": "+5 luck, +5% Power"
-   },
-   {
-    "name": "(Super) Rotten",
-    "effect": "Suds-dropping mice attracted"
-   },
-   {
-    "name": "(Super) Soap",
-    "effect": "Bonus Power Refine +1 / +2"
-   }
-  ]
- },
- {
-  "region": "Burroughs",
-  "location": "Town of Digby",
-  "effects": [
-   {
-    "name": "(Maniacal) Brain Extractor",
-    "effect": "Drops brain bits from zombie mice"
-   },
-   {
-    "name": "Any Drillbot",
-    "effect": "Drops scrap metal from Steel mice"
-   },
-   {
-    "name": "Skello-Ton",
-    "effect": "Drops brain bits"
-   },
-   {
-    "name": "Black Widow",
-    "effect": "Black Widow drops bonus loot"
-   },
-   {
-    "name": "Mining",
-    "effect": "Power bonus with limelight; adjusts AR of dirt dwellers"
-   },
-   {
-    "name": "(Super) Brain",
-    "effect": "Attracts zombies"
-   }
-  ]
- },
- {
-  "region": "Burroughs",
-  "location": "Mousoleum",
-  "effects": [
-   {
-    "name": "(Maniacal) Brain Extractor",
-    "effect": "Drops brain bits from zombie mice"
-   },
-   {
-    "name": "Skello-Ton",
-    "effect": "Drops brain bits"
-   }
-  ]
- },
- {
-  "region": "Burroughs",
-  "location": "Bazaar",
-  "effects": [
-   {
-    "name": "(Maniacal) Brain Extractor",
-    "effect": "Drops brain bits from zombie mice"
-   },
-   {
-    "name": "Any Drillbot",
-    "effect": "Drops scrap metal from Steel mice"
-   },
-   {
-    "name": "Skello-Ton",
-    "effect": "Drops brain bits"
-   },
-   {
-    "name": "Black Widow",
-    "effect": "Black Widow drops bonus loot"
-   },
-   {
-    "name": "(Super) Brain",
-    "effect": "Attracts zombies"
-   }
-  ]
- },
- {
-  "region": "Furoma",
-  "location": "Training Grounds",
-  "effects": [
-   {
-    "name": "Black Widow",
-    "effect": "Black Widow drops bonus loot"
-   }
-  ]
- },
- {
-  "region": "Furoma",
-  "location": "Dojo",
-  "effects": [
-   {
-    "name": "Furoma",
-    "effect": "Chance for an extra token"
-   }
-  ]
- },
- {
-  "region": "Furoma",
-  "location": "Meditation Room",
-  "effects": []
- },
- {
-  "region": "Furoma",
-  "location": "Pinnacle Chamber",
-  "effects": []
- },
- {
-  "region": "Bristle Woods",
-  "location": "Catacombs",
-  "effects": [
-   {
-    "name": "Black Widow",
-    "effect": "Black Widow drops bonus loot"
-   },
-   {
-    "name": "(Maniacal) Brain Extractor",
-    "effect": "Drops brain bits from zombie mice"
-   },
-   {
-    "name": "Skello-Ton",
-    "effect": "Drops brain bits"
-   }
-  ]
- },
- {
-  "region": "Bristle Woods",
-  "location": "Forbidden Grove",
-  "effects": [
-   {
-    "name": "Runic Base",
-    "effect": "Drops extra runes"
-   },
-   {
-    "name": "Black Widow",
-    "effect": "Black Widow drops bonus loot"
-   },
-   {
-    "name": "(Maniacal) Brain Extractor",
-    "effect": "Drops brain bits from zombie mice"
-   },
-   {
-    "name": "Skello-Ton",
-    "effect": "Drops brain bits"
-   }
-  ]
- },
- {
-  "region": "Bristle Woods",
-  "location": "Acolyte Realm",
-  "effects": [
-   {
-    "name": "Black Widow",
-    "effect": "Black Widow drops bonus loot"
-   },
-   {
-    "name": "Festive Winter Timepiece",
-    "effect": "Gets stronger, lootier with every Acolyte caught, resets when Chrono caught"
-   }
-  ]
- },
- {
-  "region": "Tribal Isles",
-  "location": "Cape Clawed",
-  "effects": [
-   {
-    "name": "Isle Idol",
-    "effect": "Doubles loot drops from tribal mice. Does not double seeds"
-   },
-   {
-    "name": "Tiki Base",
-    "effect": "Secret +6 luck against tribe mice"
-   },
-   {
-    "name": "Tribal Kaboom",
-    "effect": "Doubles tribal loot drops, including seeds."
-   },
-   {
-    "name": "Vegetation",
-    "effect": "When a seed drops, get a matching pepper"
-   }
-  ]
- },
- {
-  "region": "Tribal Isles",
-  "location": "Derr Dunes",
-  "effects": [
-   {
-    "name": "Black Widow",
-    "effect": "Black Widow drops bonus loot"
-   },
-   {
-    "name": "Derr Power",
-    "effect": "More power against derr mice"
-   }
-  ]
- },
- {
-  "region": "Tribal Isles",
-  "location": "Elub Shore",
-  "effects": [
-   {
-    "name": "Black Widow",
-    "effect": "Black Widow drops bonus loot"
-   },
-   {
-    "name": "Elub Power",
-    "effect": "More power against elub mice"
-   }
-  ]
- },
- {
-  "region": "Tribal Isles",
-  "location": "Nerg Plains",
-  "effects": [
-   {
-    "name": "Black Widow",
-    "effect": "Black Widow drops bonus loot"
-   },
-   {
-    "name": "Nerg Power",
-    "effect": "More power against Nerg mice"
-   }
-  ]
- },
- {
-  "region": "Tribal Isles",
-  "location": "Jungle of Dread",
-  "effects": [
-   {
-    "name": "Cackle Lantern",
-    "effect": "Extra fire salt dropped"
-   },
-   {
-    "name": "Dreaded Totem",
-    "effect": "+8500 power"
-   },
-   {
-    "name": "Cackle",
-    "effect": "Extra fire salt dropped"
-   },
-   {
-    "name": "Dreaded",
-    "effect": "300% Power bonus"
-   }
-  ]
- },
- {
-  "region": "Tribal Isles",
-  "location": "Dracano",
-  "effects": [
-   {
-    "name": "(Super) Dragonbane",
-    "effect": "Better CR for Dragon"
-   }
-  ]
- },
- {
-  "region": "Tribal Isles",
-  "location": "Balack's Cove",
-  "effects": [
-   {
-    "name": "Nutcracker Nuisance",
-    "effect": "Increased loot from liches"
-   }
-  ]
- },
- {
-  "region": "Varmint Valley",
-  "location": "Claw Shot City",
-  "effects": [
-   {
-    "name": "SLAC (II)",
-    "effect": "Bonuses with Claw Shot base and cactus charms"
-   },
-   {
-    "name": "Prospector",
-    "effect": "Special attraction for Prospector"
-   },
-   {
-    "name": "Sheriff's Badge",
-    "effect": "Catches Bounty Hunter, gets poster"
-   }
-  ]
- },
- {
-  "region": "Varmint Valley",
-  "location": "Gnawnian Express Station",
-  "effects": [
-   {
-    "name": "Bandit Deflector",
-    "effect": "+1500 power in Raider River"
-   },
-   {
-    "name": "Engine Doubler",
-    "effect": "+1500 power in Daredevil Canyon"
-   },
-   {
-    "name": "Supply Grabber",
-    "effect": "+1500 power in Supply Depot"
-   }
-  ]
- },
- {
-  "region": "Varmint Valley",
-  "location": "Fort Rox",
-  "effects": [
-   {
-    "name": "Moonbeam Barrier Trap",
-    "effect": "Instacatch Battering Ram"
-   },
-   {
-    "name": "Nightlight",
-    "effect": "The darker the night the more bonus"
-   },
-   {
-    "name": "Electromagnetic Meteorite",
-    "effect": "Makes meteorites in the night, sometimes"
-   }
-  ]
- },
- {
-  "region": "Queso Canyon",
-  "location": "Queso River",
-  "effects": [
-   {
-    "name": "Queso Cannonstorm",
-    "effect": "Turns 5 solidified amber queso into something else . Yes, including a rib - we know."
-   },
-   {
-    "name": "Queso Factory",
-    "effect": "Eventually fills its meter and pumps out 500 Bland"
-   },
-   {
-    "name": "Overgrown Ember Stone Base",
-    "effect": "+50% Bland Queso from pumps"
-   }
-  ]
- },
- {
-  "region": "Queso Canyon",
-  "location": "Prickly Plains",
-  "effects": []
- },
- {
-  "region": "Queso Canyon",
-  "location": "Cantera Quarry",
-  "effects": []
- },
- {
-  "region": "Rodentia",
-  "location": "S.S. Huntington III",
-  "effects": [
-   {
-    "name": "S.S. Scoundrel Sleigher",
-    "effect": "Chance to instacatch a Buccaneer, Pirate (33%)"
-   }
-  ]
- },
- {
-  "region": "Rodentia",
-  "location": "Slushy Shoreline",
-  "effects": [
-   {
-    "name": "Steam Laser (Mk I, II, III)",
-    "effect": "More power, luck"
-   },
-   {
-    "name": "Softserve",
-    "effect": "Changes AR"
-   }
-  ]
- },
- {
-  "region": "Rodentia",
-  "location": "Seasonal Garden",
-  "effects": [
-   {
-    "name": "Chesla's Revenge",
-    "effect": "Amp boost"
-   },
-   {
-    "name": "Soul Harvester",
-    "effect": "+10 luck in Fall"
-   },
-   {
-    "name": "Terrifying Spider",
-    "effect": "+10 luck in Fall"
-   },
-   {
-    "name": "Zugzwang's Ultimate",
-    "effect": "Can guarantee a catch"
-   },
-   {
-    "name": "Sandcastle Shard",
-    "effect": "Harvester can fill amp"
-   },
-   {
-    "name": "Seasonal Base",
-    "effect": "+18% Power"
-   },
-   {
-    "name": "Amplifier",
-    "effect": "Doubles amplifier gains"
-   }
-  ]
- },
- {
-  "region": "Rodentia",
-  "location": "Zugzwang's Tower",
-  "effects": [
-   {
-    "name": "Blackstone Pass",
-    "effect": "+1800 power, +6 luck against Mystic mice -2400 power, -9 luck against Technic mice"
-   },
-   {
-    "name": "Mystic Pawn Pincher",
-    "effect": "+10,920 power, +51 luck against mystic pawns"
-   },
-   {
-    "name": "Obvious Ambush",
-    "effect": "+1800 power, +6 luck against Technic mice -2400 power, -9 luck against Mystic mice"
-   },
-   {
-    "name": "Technic Pawn Pincher",
-    "effect": "+10,920 power, +51 luck against technic pawns"
-   },
-   {
-    "name": "Zugzwang's Ultimate",
-    "effect": "Can guarantee a catch"
-   },
-   {
-    "name": "Rook Crumble",
-    "effect": "300% Power boost against rooks"
-   },
-   {
-    "name": "Uncharged Scholar",
-    "effect": "Becomes Charged with CM catch"
-   },
-   {
-    "name": "Stalemate",
-    "effect": "Stay in the tower after king and Chessmaster catches"
-   }
-  ]
- },
- {
-  "region": "Rodentia",
-  "location": "Crystal Library",
-  "effects": [
-   {
-    "name": "Scholar Charm",
-    "effect": "Attracts Zurreal"
-   }
-  ]
- },
- {
-  "region": "Rodentia",
-  "location": "Iceberg",
-  "effects": [
-   {
-    "name": "Steam Laser (Mk I, II, III)",
-    "effect": "More power, luck"
-   },
-   {
-    "name": "Steam Auger Bot",
-    "effect": "Chance to double progress (20%). Huge luck bonus."
-   },
-   {
-    "name": "Ultimate Iceberg / Iceberg Boiler",
-    "effect": "Combines all the other bases to the right"
-   },
-   {
-    "name": "Deep Freeze",
-    "effect": "More luck, power; Can proceed past Icewing"
-   },
-   {
-    "name": "Hearthstone",
-    "effect": "Repels zealot mice"
-   },
-   {
-    "name": "Magnet",
-    "effect": "Attracts tunnel rats"
-   },
-   {
-    "name": "Remote Detonator",
-    "effect": "Extra depth from Bomb Squad"
-   },
-   {
-    "name": "Spiked Base",
-    "effect": "No depth lost to Brutes"
-   },
-   {
-    "name": "Super Wax Charm",
-    "effect": "Advance 2' extra"
-   }
-  ]
- },
- {
-  "region": "Rodentia",
-  "location": "Sunken City",
-  "effects": [
-   {
-    "name": "Haunted Shipwreck",
-    "effect": "Bonus loot in shipwrecks"
-   },
-   {
-    "name": "S.S. Scoundrel Sleigher",
-    "effect": "Chance to instacatch Dread Pirate Mousert, Deranged Deckhand, and Pirate Anchor (33%)"
-   },
-   {
-    "name": "Depth Charge",
-    "effect": "+1000 power"
-   },
-   {
-    "name": "Golden Anchor",
-    "effect": "Bonus sand dollar"
-   },
-   {
-    "name": "Oxygen Burst",
-    "effect": "Extra o2 dropped"
-   },
-   {
-    "name": "Smart Water Jet",
-    "effect": "Automatically disarms"
-   },
-   {
-    "name": "Treasure Trawling",
-    "effect": "Bonus loot"
-   },
-   {
-    "name": "Brilliant Water Jet",
-    "effect": "Automatically disarms, takes you to end of current zone"
-   }
-  ]
- },
- {
-  "region": "Sandtail Desert",
-  "location": "Fiery Warpath",
-  "effects": [
-   {
-    "name": "Desert Heater Base",
-    "effect": "Uses a flameshard, creates random loot from these areas"
-   },
-   {
-    "name": "Warden Slayer",
-    "effect": "Large bonus during wave 4"
-   },
-   {
-    "name": "Warpath Thrasher",
-    "effect": "Bonus that diminishes with pool of mice"
-   },
-   {
-    "name": "Flamebane",
-    "effect": "Power bonus against marching flame"
-   },
-   {
-    "name": "Gargantua Guarantee",
-    "effect": "Attracts Garga at 7 or more streak"
-   },
-   {
-    "name": "Monger",
-    "effect": "More loot dropped by warmonger"
-   }
-  ]
- },
- {
-  "region": "Sandtail Desert",
-  "location": "Muridae Market",
-  "effects": []
- },
- {
-  "region": "Sandtail Desert",
-  "location": "Living Garden",
-  "effects": [
-   {
-    "name": "Hothouse/Living base",
-    "effect": "Doubles petals dropped"
-   },
-   {
-    "name": "Aurora base",
-    "effect": "Random essences added to inventory"
-   },
-   {
-    "name": "Double Sponge",
-    "effect": "Double the dewdrops dropped"
-   }
-  ]
- },
- {
-  "region": "Sandtail Desert",
-  "location": "Lost City",
-  "effects": [
-   {
-    "name": "Curse Breaker",
-    "effect": "50% chance to break a curse"
-   },
-   {
-    "name": "Safeguard",
-    "effect": "Avoid cursing mice"
-   }
-  ]
- },
- {
-  "region": "Sandtail Desert",
-  "location": "Sand Dunes",
-  "effects": [
-   {
-    "name": "Grubling Bonanza",
-    "effect": "Triggers a stampede"
-   }
-  ]
- },
- {
-  "region": "Sandtail Desert",
-  "location": "Twisted Garden",
-  "effects": [
-   {
-    "name": "Double Red/Yellow Sponge",
-    "effect": "Double Red/Yellow dewdrops dropped"
-   }
-  ]
- },
- {
-  "region": "Sandtail Desert",
-  "location": "Cursed City",
-  "effects": [
-   {
-    "name": "Curse Breaker",
-    "effect": "50% chance to break a curse"
-   },
-   {
-    "name": "Safeguard",
-    "effect": "Avoid cursing mice"
-   }
-  ]
- },
- {
-  "region": "Sandtail Desert",
-  "location": "Sand Crypts",
-  "effects": [
-   {
-    "name": "Smelly Sodium",
-    "effect": "Attract King Grub at 50 salt without a charm; adds a salt when salting"
-   },
-   {
-    "name": "Super Salt",
-    "effect": "Doubles salting"
-   }
-  ]
- },
- {
-  "region": "Hollow Heights",
-  "location": "Fungal Cavern",
-  "effects": [
-   {
-    "name": "Crystal Mineral Crusher",
-    "effect": "Adds extra minerals when one drops"
-   },
-   {
-    "name": "Living Grove Base",
-    "effect": "Makes bonus fungus or nightshade on catch"
-   },
-   {
-    "name": "Gemology Base",
-    "effect": "Changes ARs for better drop rates"
-   },
-   {
-    "name": "Gemstone Boost",
-    "effect": "Adds a gemstone when one is dropped"
-   },
-   {
-    "name": "Diamond Boost",
-    "effect": "Adds a diamond when one is dropped"
-   },
-   {
-    "name": "Crucible Cloning",
-    "effect": "Adds 3 crucibles to a drop"
-   }
-  ]
- },
- {
-  "region": "Hollow Heights",
-  "location": "Labyrinth",
-  "effects": [
-   {
-    "name": "Labyrinth Base",
-    "effect": "Blocks some dead end clues (50%)"
-   },
-   {
-    "name": "Minotaur Base",
-    "effect": "Blocks some dead end clues (50%)"
-   },
-   {
-    "name": "Treasure Seeker Base",
-    "effect": "Blocks some dead end clues (50%). Turns other new clues into treasury clues, sometimes"
-   },
-   {
-    "name": "Compass Magnet Base",
-    "effect": "Can remove existing dead end clues (30%), even in intersections"
-   },
-   {
-    "name": "Glowing Gourd",
-    "effect": "Repels Shadow Stalker"
-   },
-   {
-    "name": "Compass Magnet Charm",
-    "effect": "Blocks dead end clues (100%). Occasionally removes one (30%)."
-   }
-  ]
- },
- {
-  "region": "Hollow Heights",
-  "location": "Zokor",
-  "effects": [
-   {
-    "name": "Thief Base",
-    "effect": "Can toggle between 50% chance to not lose any stealth OR lose double stealth but get double district loot"
-   }
-  ]
- },
- {
-  "region": "Hollow Heights",
-  "location": "Moussu Picchu",
-  "effects": [
-   {
-    "name": "(Chrome) Stormwrought Ballista/ Dragon Slayer Cannon",
-    "effect": "Adds an extra scale when one drops"
-   },
-   {
-    "name": "Forecaster Base",
-    "effect": "Doubles increase of storm levels"
-   },
-   {
-    "name": "Storm Condenser Base",
-    "effect": "Keeps storm levels from increasing (Dragoon, eg)"
-   }
-  ]
- },
- {
-  "region": "Hollow Heights",
-  "location": "Floating Islands",
-  "effects": [
-   {
-    "name": "S.S. Scoundrel Sleigher",
-    "effect": "Chance to instacatch pirates (33%)"
-   },
-   {
-    "name": "Polar Vortex",
-    "effect": "Consume a Cyclone stone to add +1 to area drops"
-   },
-   {
-    "name": "Adorned Empyrean Refractor Base",
-    "effect": "Chance at +1 area-specific loot"
-   },
-   {
-    "name": "Royal Ruby Refractor Base",
-    "effect": "Chance at +1 area-specific loot"
-   },
-   {
-    "name": "Sorcerer's Sapphire Refractor Base",
-    "effect": "Chance at +1 area-specific loot"
-   },
-   {
-    "name": "Opal Refractor Base",
-    "effect": "Chance at +1 area-specific loot"
-   },
-   {
-    "name": "Rainbow Diamond Refractor Base",
-    "effect": "Chance at +1 area-specific loot"
-   }
-  ]
- },
- {
-  "region": "Folklore Forest",
-  "location": "Foreword Farm",
-  "effects": [
-   {
-    "name": "(Naughty List) Printing Press Base",
-    "effect": "Uses Prolific Printing Paper to get better stats"
-   }
-  ]
- },
- {
-  "region": "Folklore Forest",
-  "location": "Prologue Pond",
-  "effects": []
- },
- {
-  "region": "Folklore Forest",
-  "location": "Table of Contents",
-  "effects": []
- },
- {
-  "region": "Folklore Forest",
-  "location": "Bountiful Beanstalk",
-  "effects": [
-   {
-    "name": "Royal Ruby Refractor Base",
-    "effect": "Doubles Fertilizer Drops"
-   },
-   {
-    "name": "Sorcerer's Sapphire Refractor Base",
-    "effect": "Doubles Fertilizer Drops"
-   },
-   {
-    "name": "Opal Refractor Base",
-    "effect": "Doubles Fertilizer Drops"
-   },
-   {
-    "name": "Rainbow Diamond Refractor Base",
-    "effect": "Doubles Fertilizer Drops"
-   }
-  ]
- },
- {
-  "region": "Folklore Forest",
-  "location": "School of Sorcery",
-  "effects": [
-   {
-    "name": "Sorcerer's Sapphire Refractor Base",
-    "effect": "+1 Spell Force"
-   },
-   {
-    "name": "Opal Refractor Base",
-    "effect": "+1 Spell Force"
-   },
-   {
-    "name": "Rainbow Diamond Refractor Base",
-    "effect": "+1 Spell Force"
-   }
-  ]
- },
- {
-  "region": "Folklore Forest",
-  "location": "Draconic Depths",
-  "effects": [
-   {
-    "name": "Opal Refractor Base",
-    "effect": "Doubles Dragonhide Slivers"
-   },
-   {
-    "name": "Rainbow Diamond Refractor Base",
-    "effect": "Doubles Dragonhide Slivers"
-   }
-  ]
- },
- {
-  "region": "Folklore Forest",
-  "location": "Afterword Acres",
-  "effects": [
-   {
-    "name": "Rainbow Diamond Refractor Base",
-    "effect": "Chance to stop blight regrowing"
-   }
-  ]
- },
- {
-  "region": "Folklore Forest",
-  "location": "Epilogue Falls",
-  "effects": [
-   {
-    "name": "Rainbow Diamond Refractor Base",
-    "effect": "Chance to avoid pushback"
-   }
-  ]
- },
- {
-  "region": "Folklore Forest",
-  "location": "Conclusion Cliffs",
-  "effects": [
-   {
-    "name": "Rainbow Diamond Refractor Base",
-    "effect": "Chance to avoid hunt loss in postscript"
-   }
-  ]
- },
- {
-  "region": "Rift Plane",
-  "location": "Gnawnia Rift",
-  "effects": [
-   {
-    "name": "Christmas Crystalabra",
-    "effect": "Adds a Calcified Rift Mist when one drops"
-   },
-   {
-    "name": "Rift (Super) Vacuum Charm",
-    "effect": "Chance for mouse to drop Calcified Rift Mist"
-   }
-  ]
- },
- {
-  "region": "Rift Plane",
-  "location": "Burroughs Rift",
-  "effects": [
-   {
-    "name": "Biomolecular Atomizer",
-    "effect": "Adds an extra circuit when one drops"
-   },
-   {
-    "name": "Christmas Crystalabra",
-    "effect": "Adds a Calcified Rift Mist when one drops"
-   },
-   {
-    "name": "Mist Meter Regulator Base",
-    "effect": "Consumes two Mist Canisters; Keeps you in green"
-   },
-   {
-    "name": "Skello-Ton",
-    "effect": "Drops brain bits"
-   },
-   {
-    "name": "Rift (Super) Vacuum Charm",
-    "effect": "Chance for mouse to drop Calcified Rift Mist"
-   }
-  ]
- },
- {
-  "region": "Rift Plane",
-  "location": "Whisker Woods Rift",
-  "effects": [
-   {
-    "name": "Christmas Crystalabra",
-    "effect": "Adds a Calcified Rift Mist when one drops"
-   },
-   {
-    "name": "Darkest Chocolate Bunny",
-    "effect": "Doubles rage gained"
-   },
-   {
-    "name": "Rift (Super) Vacuum Charm",
-    "effect": "Chance for mouse to drop Calcified Rift Mist"
-   }
-  ]
- },
- {
-  "region": "Rift Plane",
-  "location": "Furoma Rift",
-  "effects": [
-   {
-    "name": "Biomolecular Atomizer",
-    "effect": "Adds an extra circuit when one drops"
-   },
-   {
-    "name": "Christmas Crystalabra",
-    "effect": "Adds a Calcified Rift Mist when one drops"
-   },
-   {
-    "name": "(Attuned) Enerchi Induction",
-    "effect": "+2/(3) Enerchi when some is dropped"
-   },
-   {
-    "name": "Furoma",
-    "effect": "Chance for an extra token"
-   },
-   {
-    "name": "Rift (Super) Vacuum Charm",
-    "effect": "Chance for mouse to drop Calcified Rift Mist"
-   }
-  ]
- },
- {
-  "region": "Rift Plane",
-  "location": "Bristle Woods Rift",
-  "effects": [
-   {
-    "name": "Christmas Crystalabra",
-    "effect": "Adds a Calcified Rift Mist when one drops"
-   },
-   {
-    "name": "Rift (Super) Vacuum Charm",
-    "effect": "Chance for mouse to drop Calcified Rift Mist"
-   }
-  ]
- },
- {
-  "region": "Rift Plane",
-  "location": "Valour Rift",
-  "effects": [
-   {
-    "name": "Rift Hailstone Singularity",
-    "effect": "You get no area loot but do get +1 step; Prestige bonus stats"
-   },
-   {
-    "name": "Rift (Super) Vacuum Charm",
-    "effect": "Chance for mouse to drop Calcified Rift Mist"
-   }
-  ]
- },
- {
-  "region": "Rift Plane",
-  "location": "Haunted Terrortories Gloomy Greenwood",
-  "effects": [
-   {
-    "name": "Soul Catcher / Harvester",
-    "effect": "+10 luck in haunted terrortories"
-   },
-   {
-    "name": "Terrifying Spider",
-    "effect": "+10 luck in haunted terrortories"
-   }
-  ]
- },
- {
-  "region": "Rift Plane",
-  "location": "Great Winter Hunt",
-  "effects": [
-   {
-    "name": "Wrapped Gift",
-    "effect": "Big stats boost at the event area"
-   }
-  ]
- },
- {
-  "region": "Rift Plane",
-  "location": "Spring Egg Hunt",
-  "effects": [
-   {
-    "name": "Chocolate Bar",
-    "effect": "With Eggstra (Charge) can add another egg (25%). Increases AR for chocolatonium mice"
-   },
-   {
-    "name": "Eggstra Charge Charm",
-    "effect": "Adds a chocolotonium for each egg dropped"
-   }
-  ]
- },
- {
-  "region": "Rift Plane",
-  "location": "Everywhere Traps",
-  "effects": [
-   {
-    "name": "Glacier Gatler / Ice Blaster",
-    "effect": "Drops snowball charms (35% / 19%)"
-   },
-   {
-    "name": "Admiral's Galleon",
-    "effect": "Sometimes drops up to 5000 cursed gold (38%)"
-   },
-   {
-    "name": "Surprise Party",
-    "effect": "Sometimes drops Party Charms (5%)"
-   },
-   {
-    "name": "Rift Glacier Gatler",
-    "effect": "Drops rift snowball charms (19%)"
-   },
-   {
-    "name": "The Haunted Manor",
-    "effect": "Drops Spooky Charms. Pair with Condemned Base for Super Spooky"
-   },
-   {
-    "name": "Boiling Cauldron",
-    "effect": "Adds random potions (8.5%). Pairs with Alchemist's Cookbook"
-   },
-   {
-    "name": "The Holiday Express Trap",
-    "effect": "Chance to generate Gift Wrapped Charm"
-   }
-  ]
- },
- {
-  "region": "Rift Plane",
-  "location": "Everywhere Bases",
-  "effects": [
-   {
-    "name": "(Extra|Sprinkly Sweet) Cupcake",
-    "effect": "Drops (extra|sprinkly sweet) cupcake charms - 5%/3%/3%"
-   },
-   {
-    "name": "Physical Brace",
-    "effect": "+25% power with physical trap"
-   },
-   {
-    "name": "(Refined) Polluted",
-    "effect": "Mice drop radioactive curd (doubled) - 12%"
-   },
-   {
-    "name": "(Attuned) Enerchi Induction",
-    "effect": "+2/(3) Enerchi when some is dropped (use with charm)"
-   },
-   {
-    "name": "20XX New Year's",
-    "effect": "Drops 20XX Charms (until the end of its year) 20XX: 8% Rift 20XX: 3%"
-   },
-   {
-    "name": "Ancient Booster",
-    "effect": "Takes a relic, gives ancient charms when RH is caught"
-   },
-   {
-    "name": "10 Layer Cake Base",
-    "effect": "Drops (extra|sprinkly sweet) cupcake charms - each 4-5%, any 15%"
-   },
-   {
-    "name": "Living Grove Base",
-    "effect": "Makes bonus fungus or nightshade on catch, 100% in Fungal Cavern only"
-   },
-   {
-    "name": "(Seasonal) Gift of the Day Base",
-    "effect": "Mice can now drop the current gift of the day. (40%)"
-   },
-   {
-    "name": "Alchemist's Cookbook",
-    "effect": "Chance (25%) to add to potion drops. Always doubles Boiling Cauldron's adds."
-   },
-   {
-    "name": "Elixir Exchange Base",
-    "effect": "Exchange dropped elixir for 2 sigils"
-   },
-   {
-    "name": "All Season Express Track Base",
-    "effect": "With snowball charms : 100% chance to upgrade With power charms : 10% chance to upgrade"
-   },
-   {
-    "name": "Rift Mist Diffuser Base",
-    "effect": "Turns snowball charms into Rift snowball charms at cost of calcified rift mist"
-   },
-   {
-    "name": "Rainbow Diamond Refractor Base",
-    "effect": "Chance roll up Ultimate Ancient and Rainbow Charms (25%)"
-   }
-  ]
- },
- {
-  "region": "Rift Plane",
-  "location": "Everywhere Charms",
-  "effects": [
-   {
-    "name": "(Super) Enerchi Charm",
-    "effect": "+5/+2 Enerchi on catch"
-   },
-   {
-    "name": "Unstable Charm",
-    "effect": "Pops into a random charm"
-   },
-   {
-    "name": "Super Nightshade Farming Charm",
-    "effect": "Drops a nightshade"
-   },
-   {
-    "name": "Gilded Charm",
-    "effect": "Makes 1-10 sb+"
-   },
-   {
-    "name": "(Rift) (Super|Extreme|Ultimate) Snowball Charm",
-    "effect": "Has a chance to drop a better charm: regular -> super -> extreme -> ultimate (25%). Gets a bonus with Festive traps"
-   },
-   {
-    "name": "Spooky Charms",
-    "effect": "Get a bonus with Halloween traps. Chance to drop a better Spooky"
-   },
-   {
-    "name": "(Rift) (Super|Extreme) Spooky Charm",
-    "effect": "Has a chance to drop a better charm: regular -> super -> extreme -> ultimate (25%). (Not Rift Spooky)"
-   },
-   {
-    "name": "Gift Wrapped Charm",
-    "effect": "Unwraps into a random charm"
-   },
-   {
-    "name": "(Super|Extreme) Queso Pump Charm",
-    "effect": "Pumps a batch (or two|or four) of queso (except Rift, Acolyte Realm)"
-   },
-   {
-    "name": "(Super|Extreme| Ultimate) Party Charm",
-    "effect": "Has a chance to drop a better charm: regular -> super -> extreme -> ultimate. Bonus with Birthday Traps"
-   },
-   {
-    "name": "Torch Charm",
-    "effect": "Turns into a random thing"
-   },
-   {
-    "name": "(Rift) Tarnished Charm",
-    "effect": "Turns into a (Rift) Chrome Charm on catch"
-   }
-  ]
- },
- {
-  "region": "Rift Plane",
-  "location": "Equipment Needed",
-  "effects": [
-   {
-    "name": "(Super|Extreme) Ancient Charm",
-    "effect": "Has a chance to drop a better charm: regular -> super -> extreme -> ultimate. Requires Empyrian Codex"
-   },
-   {
-    "name": "(Super|Extreme) Regal Charm",
-    "effect": "Has a chance to drop a better charm: regular -> super -> extreme -> ultimate. Requires Regal Codex"
-   },
-   {
-    "name": "(Rift) Chrome Charm",
-    "effect": "Stat boost of 500 power, 7% power, 1 luck. Has a chance to drop a better charm: regular -> super -> extreme -> ultimate. Requires Chrome Codex"
-   }
-  ]
- }
+  {
+    "region": "Gnawnia",
+    "location": "Meadow",
+    "effects": [
+      {
+        "name": "Any Drillbot",
+        "effect": "Drops scrap metal from Steel mice"
+      }
+    ]
+  },
+  {
+    "region": "Gnawnia",
+    "location": "Town of Gnawnia",
+    "effects": [
+      {
+        "name": "(Maniacal) Brain Extractor",
+        "effect": "Drops brain bits from zombie mice"
+      },
+      {
+        "name": "Any Drillbot",
+        "effect": "Drops scrap metal from Steel mice"
+      },
+      {
+        "name": "Skello-Ton",
+        "effect": "Drops brain bits"
+      },
+      {
+        "name": "(Super) Brain",
+        "effect": "Attracts zombies"
+      }
+    ]
+  },
+  {
+    "region": "Gnawnia",
+    "location": "Windmill",
+    "effects": []
+  },
+  {
+    "region": "Gnawnia",
+    "location": "Harbour",
+    "effects": [
+      {
+        "name": "Any Drillbot",
+        "effect": "Drops scrap metal from Steel mice"
+      },
+      {
+        "name": "S.S. Scoundrel Sleigher",
+        "effect": "Chance to instacatch a Dock Dweller or Pirate (33%)"
+      },
+      {
+        "name": "Black Widow",
+        "effect": "Black Widow drops bonus loot"
+      }
+    ]
+  },
+  {
+    "region": "Gnawnia",
+    "location": "Mountain",
+    "effects": [
+      {
+        "name": "(Maniacal) Brain Extractor",
+        "effect": "Drops brain bits from zombie mice"
+      },
+      {
+        "name": "Any Drillbot",
+        "effect": "Drops scrap metal from Steel mice"
+      },
+      {
+        "name": "Skello-Ton",
+        "effect": "Drops brain bits"
+      },
+      {
+        "name": "Black Widow",
+        "effect": "Black Widow drops bonus loot"
+      },
+      {
+        "name": "Prospector",
+        "effect": "Better mice attracted"
+      },
+      {
+        "name": "(Super) Brain",
+        "effect": "Attracts zombies"
+      }
+    ]
+  },
+  {
+    "region": "Valour",
+    "location": "King's Arms",
+    "effects": [
+      {
+        "name": "Black Widow",
+        "effect": "Black Widow drops bonus loot"
+      }
+    ]
+  },
+  {
+    "region": "Valour",
+    "location": "Tournament Hall",
+    "effects": []
+  },
+  {
+    "region": "Valour",
+    "location": "King's Gauntlet",
+    "effects": [
+      {
+        "name": "Ancient Gauntlet",
+        "effect": "Doubles tier 2 potions drops"
+      },
+      {
+        "name": "Festive Gauntlet Crusher",
+        "effect": "Doubles tier 3 potion drops"
+      }
+    ]
+  },
+  {
+    "region": "Whisker Woods",
+    "location": "Calm Clearing",
+    "effects": [
+      {
+        "name": "Black Widow",
+        "effect": "Black Widow drops bonus loot"
+      }
+    ]
+  },
+  {
+    "region": "Whisker Woods",
+    "location": "Great Gnarled Tree",
+    "effects": [
+      {
+        "name": "Black Widow",
+        "effect": "Black Widow drops bonus loot"
+      }
+    ]
+  },
+  {
+    "region": "Whisker Woods",
+    "location": "Lagoon",
+    "effects": [
+      {
+        "name": "Black Widow",
+        "effect": "Black Widow drops bonus loot"
+      }
+    ]
+  },
+  {
+    "region": "Burroughs",
+    "location": "Laboratory",
+    "effects": [
+      {
+        "name": "(Maniacal) Brain Extractor",
+        "effect": "Drops brain bits from zombie mice"
+      },
+      {
+        "name": "Any Drillbot",
+        "effect": "Drops scrap metal from Steel mice"
+      },
+      {
+        "name": "Skello-Ton",
+        "effect": "Drops brain bits"
+      },
+      {
+        "name": "Black Widow",
+        "effect": "Black Widow drops bonus loot"
+      },
+      {
+        "name": "Scientist",
+        "effect": "Doubles potion drops"
+      },
+      {
+        "name": "(Super) Brain",
+        "effect": "Attracts zombies"
+      }
+    ]
+  },
+  {
+    "region": "Burroughs",
+    "location": "Toxic Spill",
+    "effects": [
+      {
+        "name": "Super Scum Scrubber",
+        "effect": "Extra Pollutinum gathered or refined"
+      },
+      {
+        "name": "Washboard Base",
+        "effect": "+5 luck, +5% Power"
+      },
+      {
+        "name": "(Super) Rotten",
+        "effect": "Suds-dropping mice attracted"
+      },
+      {
+        "name": "(Super) Soap",
+        "effect": "Bonus Power Refine +1 / +2"
+      }
+    ]
+  },
+  {
+    "region": "Burroughs",
+    "location": "Town of Digby",
+    "effects": [
+      {
+        "name": "(Maniacal) Brain Extractor",
+        "effect": "Drops brain bits from zombie mice"
+      },
+      {
+        "name": "Any Drillbot",
+        "effect": "Drops scrap metal from Steel mice"
+      },
+      {
+        "name": "Skello-Ton",
+        "effect": "Drops brain bits"
+      },
+      {
+        "name": "Black Widow",
+        "effect": "Black Widow drops bonus loot"
+      },
+      {
+        "name": "Mining",
+        "effect": "Power bonus with limelight; adjusts AR of dirt dwellers"
+      },
+      {
+        "name": "(Super) Brain",
+        "effect": "Attracts zombies"
+      }
+    ]
+  },
+  {
+    "region": "Burroughs",
+    "location": "Mousoleum",
+    "effects": [
+      {
+        "name": "(Maniacal) Brain Extractor",
+        "effect": "Drops brain bits from zombie mice"
+      },
+      {
+        "name": "Skello-Ton",
+        "effect": "Drops brain bits"
+      }
+    ]
+  },
+  {
+    "region": "Burroughs",
+    "location": "Bazaar",
+    "effects": [
+      {
+        "name": "(Maniacal) Brain Extractor",
+        "effect": "Drops brain bits from zombie mice"
+      },
+      {
+        "name": "Any Drillbot",
+        "effect": "Drops scrap metal from Steel mice"
+      },
+      {
+        "name": "Skello-Ton",
+        "effect": "Drops brain bits"
+      },
+      {
+        "name": "Black Widow",
+        "effect": "Black Widow drops bonus loot"
+      },
+      {
+        "name": "(Super) Brain",
+        "effect": "Attracts zombies"
+      }
+    ]
+  },
+  {
+    "region": "Furoma",
+    "location": "Training Grounds",
+    "effects": [
+      {
+        "name": "Black Widow",
+        "effect": "Black Widow drops bonus loot"
+      }
+    ]
+  },
+  {
+    "region": "Furoma",
+    "location": "Dojo",
+    "effects": [
+      {
+        "name": "Furoma",
+        "effect": "Chance for an extra token"
+      }
+    ]
+  },
+  {
+    "region": "Furoma",
+    "location": "Meditation Room",
+    "effects": []
+  },
+  {
+    "region": "Furoma",
+    "location": "Pinnacle Chamber",
+    "effects": []
+  },
+  {
+    "region": "Bristle Woods",
+    "location": "Catacombs",
+    "effects": [
+      {
+        "name": "Black Widow",
+        "effect": "Black Widow drops bonus loot"
+      },
+      {
+        "name": "(Maniacal) Brain Extractor",
+        "effect": "Drops brain bits from zombie mice"
+      },
+      {
+        "name": "Skello-Ton",
+        "effect": "Drops brain bits"
+      }
+    ]
+  },
+  {
+    "region": "Bristle Woods",
+    "location": "Forbidden Grove",
+    "effects": [
+      {
+        "name": "Runic Base",
+        "effect": "Drops extra runes"
+      },
+      {
+        "name": "Black Widow",
+        "effect": "Black Widow drops bonus loot"
+      },
+      {
+        "name": "(Maniacal) Brain Extractor",
+        "effect": "Drops brain bits from zombie mice"
+      },
+      {
+        "name": "Skello-Ton",
+        "effect": "Drops brain bits"
+      }
+    ]
+  },
+  {
+    "region": "Bristle Woods",
+    "location": "Acolyte Realm",
+    "effects": [
+      {
+        "name": "Black Widow",
+        "effect": "Black Widow drops bonus loot"
+      },
+      {
+        "name": "Festive Winter Timepiece",
+        "effect": "Gets stronger, lootier with every Acolyte caught, resets when Chrono caught"
+      }
+    ]
+  },
+  {
+    "region": "Tribal Isles",
+    "location": "Cape Clawed",
+    "effects": [
+      {
+        "name": "Isle Idol",
+        "effect": "Doubles loot drops from tribal mice. Does not double seeds"
+      },
+      {
+        "name": "Tiki Base",
+        "effect": "Secret +6 luck against tribe mice"
+      },
+      {
+        "name": "Tribal Kaboom",
+        "effect": "Doubles tribal loot drops, including seeds."
+      },
+      {
+        "name": "Vegetation",
+        "effect": "When a seed drops, get a matching pepper"
+      }
+    ]
+  },
+  {
+    "region": "Tribal Isles",
+    "location": "Derr Dunes",
+    "effects": [
+      {
+        "name": "Black Widow",
+        "effect": "Black Widow drops bonus loot"
+      },
+      {
+        "name": "Derr Power",
+        "effect": "More power against derr mice"
+      }
+    ]
+  },
+  {
+    "region": "Tribal Isles",
+    "location": "Elub Shore",
+    "effects": [
+      {
+        "name": "Black Widow",
+        "effect": "Black Widow drops bonus loot"
+      },
+      {
+        "name": "Elub Power",
+        "effect": "More power against elub mice"
+      }
+    ]
+  },
+  {
+    "region": "Tribal Isles",
+    "location": "Nerg Plains",
+    "effects": [
+      {
+        "name": "Black Widow",
+        "effect": "Black Widow drops bonus loot"
+      },
+      {
+        "name": "Nerg Power",
+        "effect": "More power against Nerg mice"
+      }
+    ]
+  },
+  {
+    "region": "Tribal Isles",
+    "location": "Jungle of Dread",
+    "effects": [
+      {
+        "name": "Cackle Lantern",
+        "effect": "Extra fire salt dropped"
+      },
+      {
+        "name": "Dreaded Totem",
+        "effect": "+8500 power"
+      },
+      {
+        "name": "Cackle",
+        "effect": "Extra fire salt dropped"
+      },
+      {
+        "name": "Dreaded",
+        "effect": "300% Power bonus"
+      }
+    ]
+  },
+  {
+    "region": "Tribal Isles",
+    "location": "Dracano",
+    "effects": [
+      {
+        "name": "(Super) Dragonbane",
+        "effect": "Better CR for Dragon"
+      }
+    ]
+  },
+  {
+    "region": "Tribal Isles",
+    "location": "Balack's Cove",
+    "effects": [
+      {
+        "name": "Nutcracker Nuisance",
+        "effect": "Increased loot from liches"
+      }
+    ]
+  },
+  {
+    "region": "Varmint Valley",
+    "location": "Claw Shot City",
+    "effects": [
+      {
+        "name": "SLAC (II)",
+        "effect": "Bonuses with Claw Shot base and cactus charms"
+      },
+      {
+        "name": "Prospector",
+        "effect": "Special attraction for Prospector"
+      },
+      {
+        "name": "Sheriff's Badge",
+        "effect": "Catches Bounty Hunter, gets poster"
+      }
+    ]
+  },
+  {
+    "region": "Varmint Valley",
+    "location": "Gnawnian Express Station",
+    "effects": [
+      {
+        "name": "Bandit Deflector",
+        "effect": "+1500 power in Raider River"
+      },
+      {
+        "name": "Engine Doubler",
+        "effect": "+1500 power in Daredevil Canyon"
+      },
+      {
+        "name": "Supply Grabber",
+        "effect": "+1500 power in Supply Depot"
+      }
+    ]
+  },
+  {
+    "region": "Varmint Valley",
+    "location": "Fort Rox",
+    "effects": [
+      {
+        "name": "Moonbeam Barrier Trap",
+        "effect": "Instacatch Battering Ram"
+      },
+      {
+        "name": "Nightlight",
+        "effect": "The darker the night the more bonus"
+      },
+      {
+        "name": "Electromagnetic Meteorite",
+        "effect": "Makes meteorites in the night, sometimes"
+      }
+    ]
+  },
+  {
+    "region": "Queso Canyon",
+    "location": "Queso River",
+    "effects": [
+      {
+        "name": "Queso Cannonstorm",
+        "effect": "Turns 5 solidified amber queso into something else . Yes, including a rib - we know."
+      },
+      {
+        "name": "Queso Factory",
+        "effect": "Eventually fills its meter and pumps out 500 Bland"
+      },
+      {
+        "name": "Overgrown Ember Stone Base",
+        "effect": "+50% Bland Queso from pumps"
+      }
+    ]
+  },
+  {
+    "region": "Queso Canyon",
+    "location": "Prickly Plains",
+    "effects": []
+  },
+  {
+    "region": "Queso Canyon",
+    "location": "Cantera Quarry",
+    "effects": []
+  },
+  {
+    "region": "Rodentia",
+    "location": "S.S. Huntington III",
+    "effects": [
+      {
+        "name": "S.S. Scoundrel Sleigher",
+        "effect": "Chance to instacatch a Buccaneer, Pirate (33%)"
+      }
+    ]
+  },
+  {
+    "region": "Rodentia",
+    "location": "Slushy Shoreline",
+    "effects": [
+      {
+        "name": "Steam Laser (Mk I, II, III)",
+        "effect": "More power, luck"
+      },
+      {
+        "name": "Softserve",
+        "effect": "Changes AR"
+      }
+    ]
+  },
+  {
+    "region": "Rodentia",
+    "location": "Seasonal Garden",
+    "effects": [
+      {
+        "name": "Chesla's Revenge",
+        "effect": "Amp boost"
+      },
+      {
+        "name": "Soul Harvester",
+        "effect": "+10 luck in Fall"
+      },
+      {
+        "name": "Terrifying Spider",
+        "effect": "+10 luck in Fall"
+      },
+      {
+        "name": "Zugzwang's Ultimate",
+        "effect": "Can guarantee a catch"
+      },
+      {
+        "name": "Sandcastle Shard",
+        "effect": "Harvester can fill amp"
+      },
+      {
+        "name": "Seasonal Base",
+        "effect": "+18% Power"
+      },
+      {
+        "name": "Amplifier",
+        "effect": "Doubles amplifier gains"
+      }
+    ]
+  },
+  {
+    "region": "Rodentia",
+    "location": "Zugzwang's Tower",
+    "effects": [
+      {
+        "name": "Blackstone Pass",
+        "effect": "+1800 power, +6 luck against Mystic mice -2400 power, -9 luck against Technic mice"
+      },
+      {
+        "name": "Mystic Pawn Pincher",
+        "effect": "+10,920 power, +51 luck against mystic pawns"
+      },
+      {
+        "name": "Obvious Ambush",
+        "effect": "+1800 power, +6 luck against Technic mice -2400 power, -9 luck against Mystic mice"
+      },
+      {
+        "name": "Technic Pawn Pincher",
+        "effect": "+10,920 power, +51 luck against technic pawns"
+      },
+      {
+        "name": "Zugzwang's Ultimate",
+        "effect": "Can guarantee a catch"
+      },
+      {
+        "name": "Rook Crumble",
+        "effect": "300% Power boost against rooks"
+      },
+      {
+        "name": "Uncharged Scholar",
+        "effect": "Becomes Charged with CM catch"
+      },
+      {
+        "name": "Stalemate",
+        "effect": "Stay in the tower after king and Chessmaster catches"
+      }
+    ]
+  },
+  {
+    "region": "Rodentia",
+    "location": "Crystal Library",
+    "effects": [
+      {
+        "name": "Scholar Charm",
+        "effect": "Attracts Zurreal"
+      }
+    ]
+  },
+  {
+    "region": "Rodentia",
+    "location": "Iceberg",
+    "effects": [
+      {
+        "name": "Steam Laser (Mk I, II, III)",
+        "effect": "More power, luck"
+      },
+      {
+        "name": "Steam Auger Bot",
+        "effect": "Chance to double progress (20%). Huge luck bonus."
+      },
+      {
+        "name": "Ultimate Iceberg / Iceberg Boiler",
+        "effect": "Combines all the other bases to the right"
+      },
+      {
+        "name": "Deep Freeze",
+        "effect": "More luck, power; Can proceed past Icewing"
+      },
+      {
+        "name": "Hearthstone",
+        "effect": "Repels zealot mice"
+      },
+      {
+        "name": "Magnet",
+        "effect": "Attracts tunnel rats"
+      },
+      {
+        "name": "Remote Detonator",
+        "effect": "Extra depth from Bomb Squad"
+      },
+      {
+        "name": "Spiked Base",
+        "effect": "No depth lost to Brutes"
+      },
+      {
+        "name": "Super Wax Charm",
+        "effect": "Advance 2' extra"
+      }
+    ]
+  },
+  {
+    "region": "Rodentia",
+    "location": "Sunken City",
+    "effects": [
+      {
+        "name": "Haunted Shipwreck",
+        "effect": "Bonus loot in shipwrecks"
+      },
+      {
+        "name": "S.S. Scoundrel Sleigher",
+        "effect": "Chance to instacatch Dread Pirate Mousert, Deranged Deckhand, and Pirate Anchor (33%)"
+      },
+      {
+        "name": "Depth Charge",
+        "effect": "+1000 power"
+      },
+      {
+        "name": "Golden Anchor",
+        "effect": "Bonus sand dollar"
+      },
+      {
+        "name": "Oxygen Burst",
+        "effect": "Extra o2 dropped"
+      },
+      {
+        "name": "Smart Water Jet",
+        "effect": "Automatically disarms"
+      },
+      {
+        "name": "Treasure Trawling",
+        "effect": "Bonus loot"
+      },
+      {
+        "name": "Brilliant Water Jet",
+        "effect": "Automatically disarms, takes you to end of current zone"
+      }
+    ]
+  },
+  {
+    "region": "Sandtail Desert",
+    "location": "Fiery Warpath",
+    "effects": [
+      {
+        "name": "Desert Heater Base",
+        "effect": "Uses a flameshard, creates random loot from these areas"
+      },
+      {
+        "name": "Warden Slayer",
+        "effect": "Large bonus during wave 4"
+      },
+      {
+        "name": "Warpath Thrasher",
+        "effect": "Bonus that diminishes with pool of mice"
+      },
+      {
+        "name": "Flamebane",
+        "effect": "Power bonus against marching flame"
+      },
+      {
+        "name": "Gargantua Guarantee",
+        "effect": "Attracts Garga at 7 or more streak"
+      },
+      {
+        "name": "Monger",
+        "effect": "More loot dropped by warmonger"
+      }
+    ]
+  },
+  {
+    "region": "Sandtail Desert",
+    "location": "Muridae Market",
+    "effects": []
+  },
+  {
+    "region": "Sandtail Desert",
+    "location": "Living Garden",
+    "effects": [
+      {
+        "name": "Hothouse/Living base",
+        "effect": "Doubles petals dropped"
+      },
+      {
+        "name": "Aurora base",
+        "effect": "Random essences added to inventory"
+      },
+      {
+        "name": "Double Sponge",
+        "effect": "Double the dewdrops dropped"
+      }
+    ]
+  },
+  {
+    "region": "Sandtail Desert",
+    "location": "Lost City",
+    "effects": [
+      {
+        "name": "Curse Breaker",
+        "effect": "50% chance to break a curse"
+      },
+      {
+        "name": "Safeguard",
+        "effect": "Avoid cursing mice"
+      }
+    ]
+  },
+  {
+    "region": "Sandtail Desert",
+    "location": "Sand Dunes",
+    "effects": [
+      {
+        "name": "Grubling Bonanza",
+        "effect": "Triggers a stampede"
+      }
+    ]
+  },
+  {
+    "region": "Sandtail Desert",
+    "location": "Twisted Garden",
+    "effects": [
+      {
+        "name": "Double Red/Yellow Sponge",
+        "effect": "Double Red/Yellow dewdrops dropped"
+      }
+    ]
+  },
+  {
+    "region": "Sandtail Desert",
+    "location": "Cursed City",
+    "effects": [
+      {
+        "name": "Curse Breaker",
+        "effect": "50% chance to break a curse"
+      },
+      {
+        "name": "Safeguard",
+        "effect": "Avoid cursing mice"
+      }
+    ]
+  },
+  {
+    "region": "Sandtail Desert",
+    "location": "Sand Crypts",
+    "effects": [
+      {
+        "name": "Smelly Sodium",
+        "effect": "Attract King Grub at 50 salt without a charm; adds a salt when salting"
+      },
+      {
+        "name": "Super Salt",
+        "effect": "Doubles salting"
+      }
+    ]
+  },
+  {
+    "region": "Hollow Heights",
+    "location": "Fungal Cavern",
+    "effects": [
+      {
+        "name": "Crystal Mineral Crusher",
+        "effect": "Adds extra minerals when one drops"
+      },
+      {
+        "name": "Living Grove Base",
+        "effect": "Makes bonus fungus or nightshade on catch"
+      },
+      {
+        "name": "Gemology Base",
+        "effect": "Changes ARs for better drop rates"
+      },
+      {
+        "name": "Gemstone Boost",
+        "effect": "Adds a gemstone when one is dropped"
+      },
+      {
+        "name": "Diamond Boost",
+        "effect": "Adds a diamond when one is dropped"
+      },
+      {
+        "name": "Crucible Cloning",
+        "effect": "Adds 3 crucibles to a drop"
+      }
+    ]
+  },
+  {
+    "region": "Hollow Heights",
+    "location": "Labyrinth",
+    "effects": [
+      {
+        "name": "Labyrinth Base",
+        "effect": "Blocks some dead end clues (50%)"
+      },
+      {
+        "name": "Minotaur Base",
+        "effect": "Blocks some dead end clues (50%)"
+      },
+      {
+        "name": "Treasure Seeker Base",
+        "effect": "Blocks some dead end clues (50%). Turns other new clues into treasury clues, sometimes"
+      },
+      {
+        "name": "Compass Magnet Base",
+        "effect": "Can remove existing dead end clues (30%), even in intersections"
+      },
+      {
+        "name": "Glowing Gourd",
+        "effect": "Repels Shadow Stalker"
+      },
+      {
+        "name": "Compass Magnet Charm",
+        "effect": "Blocks dead end clues (100%). Occasionally removes one (30%)."
+      }
+    ]
+  },
+  {
+    "region": "Hollow Heights",
+    "location": "Zokor",
+    "effects": [
+      {
+        "name": "Thief Base",
+        "effect": "Can toggle between 50% chance to not lose any stealth OR lose double stealth but get double district loot"
+      }
+    ]
+  },
+  {
+    "region": "Hollow Heights",
+    "location": "Moussu Picchu",
+    "effects": [
+      {
+        "name": "(Chrome) Stormwrought Ballista/ Dragon Slayer Cannon",
+        "effect": "Adds an extra scale when one drops"
+      },
+      {
+        "name": "Forecaster Base",
+        "effect": "Doubles increase of storm levels"
+      },
+      {
+        "name": "Storm Condenser Base",
+        "effect": "Keeps storm levels from increasing (Dragoon, eg)"
+      }
+    ]
+  },
+  {
+    "region": "Hollow Heights",
+    "location": "Floating Islands",
+    "effects": [
+      {
+        "name": "S.S. Scoundrel Sleigher",
+        "effect": "Chance to instacatch pirates (33%)"
+      },
+      {
+        "name": "Polar Vortex",
+        "effect": "Consume a Cyclone stone to add +1 to area drops"
+      },
+      {
+        "name": "Adorned Empyrean Refractor Base",
+        "effect": "Chance at +1 area-specific loot"
+      },
+      {
+        "name": "Royal Ruby Refractor Base",
+        "effect": "Chance at +1 area-specific loot"
+      },
+      {
+        "name": "Sorcerer's Sapphire Refractor Base",
+        "effect": "Chance at +1 area-specific loot"
+      },
+      {
+        "name": "Opal Refractor Base",
+        "effect": "Chance at +1 area-specific loot"
+      },
+      {
+        "name": "Rainbow Diamond Refractor Base",
+        "effect": "Chance at +1 area-specific loot"
+      }
+    ]
+  },
+  {
+    "region": "Folklore Forest",
+    "location": "Foreword Farm",
+    "effects": [
+      {
+        "name": "(Naughty List) Printing Press Base",
+        "effect": "Uses Prolific Printing Paper to get better stats"
+      }
+    ]
+  },
+  {
+    "region": "Folklore Forest",
+    "location": "Prologue Pond",
+    "effects": []
+  },
+  {
+    "region": "Folklore Forest",
+    "location": "Table of Contents",
+    "effects": []
+  },
+  {
+    "region": "Folklore Forest",
+    "location": "Bountiful Beanstalk",
+    "effects": [
+      {
+        "name": "Royal Ruby Refractor Base",
+        "effect": "Doubles Fertilizer Drops"
+      },
+      {
+        "name": "Sorcerer's Sapphire Refractor Base",
+        "effect": "Doubles Fertilizer Drops"
+      },
+      {
+        "name": "Opal Refractor Base",
+        "effect": "Doubles Fertilizer Drops"
+      },
+      {
+        "name": "Rainbow Diamond Refractor Base",
+        "effect": "Doubles Fertilizer Drops"
+      }
+    ]
+  },
+  {
+    "region": "Folklore Forest",
+    "location": "School of Sorcery",
+    "effects": [
+      {
+        "name": "Sorcerer's Sapphire Refractor Base",
+        "effect": "+1 Spell Force"
+      },
+      {
+        "name": "Opal Refractor Base",
+        "effect": "+1 Spell Force"
+      },
+      {
+        "name": "Rainbow Diamond Refractor Base",
+        "effect": "+1 Spell Force"
+      }
+    ]
+  },
+  {
+    "region": "Folklore Forest",
+    "location": "Draconic Depths",
+    "effects": [
+      {
+        "name": "Opal Refractor Base",
+        "effect": "Doubles Dragonhide Slivers"
+      },
+      {
+        "name": "Rainbow Diamond Refractor Base",
+        "effect": "Doubles Dragonhide Slivers"
+      }
+    ]
+  },
+  {
+    "region": "Folklore Forest",
+    "location": "Afterword Acres",
+    "effects": [
+      {
+        "name": "Rainbow Diamond Refractor Base",
+        "effect": "Chance to stop blight regrowing"
+      }
+    ]
+  },
+  {
+    "region": "Folklore Forest",
+    "location": "Epilogue Falls",
+    "effects": [
+      {
+        "name": "Rainbow Diamond Refractor Base",
+        "effect": "Chance to avoid pushback"
+      }
+    ]
+  },
+  {
+    "region": "Folklore Forest",
+    "location": "Conclusion Cliffs",
+    "effects": [
+      {
+        "name": "Rainbow Diamond Refractor Base",
+        "effect": "Chance to avoid hunt loss in postscript"
+      }
+    ]
+  },
+  {
+    "region": "Rift Plane",
+    "location": "Gnawnia Rift",
+    "effects": [
+      {
+        "name": "Christmas Crystalabra",
+        "effect": "Adds a Calcified Rift Mist when one drops"
+      },
+      {
+        "name": "Rift (Super) Vacuum Charm",
+        "effect": "Chance for mouse to drop Calcified Rift Mist"
+      }
+    ]
+  },
+  {
+    "region": "Rift Plane",
+    "location": "Burroughs Rift",
+    "effects": [
+      {
+        "name": "Biomolecular Atomizer",
+        "effect": "Adds an extra circuit when one drops"
+      },
+      {
+        "name": "Christmas Crystalabra",
+        "effect": "Adds a Calcified Rift Mist when one drops"
+      },
+      {
+        "name": "Mist Meter Regulator Base",
+        "effect": "Consumes two Mist Canisters; Keeps you in green"
+      },
+      {
+        "name": "Skello-Ton",
+        "effect": "Drops brain bits"
+      },
+      {
+        "name": "Rift (Super) Vacuum Charm",
+        "effect": "Chance for mouse to drop Calcified Rift Mist"
+      }
+    ]
+  },
+  {
+    "region": "Rift Plane",
+    "location": "Whisker Woods Rift",
+    "effects": [
+      {
+        "name": "Christmas Crystalabra",
+        "effect": "Adds a Calcified Rift Mist when one drops"
+      },
+      {
+        "name": "Darkest Chocolate Bunny",
+        "effect": "Doubles rage gained"
+      },
+      {
+        "name": "Rift (Super) Vacuum Charm",
+        "effect": "Chance for mouse to drop Calcified Rift Mist"
+      }
+    ]
+  },
+  {
+    "region": "Rift Plane",
+    "location": "Furoma Rift",
+    "effects": [
+      {
+        "name": "Biomolecular Atomizer",
+        "effect": "Adds an extra circuit when one drops"
+      },
+      {
+        "name": "Christmas Crystalabra",
+        "effect": "Adds a Calcified Rift Mist when one drops"
+      },
+      {
+        "name": "(Attuned) Enerchi Induction",
+        "effect": "+2/(3) Enerchi when some is dropped"
+      },
+      {
+        "name": "Furoma",
+        "effect": "Chance for an extra token"
+      },
+      {
+        "name": "Rift (Super) Vacuum Charm",
+        "effect": "Chance for mouse to drop Calcified Rift Mist"
+      }
+    ]
+  },
+  {
+    "region": "Rift Plane",
+    "location": "Bristle Woods Rift",
+    "effects": [
+      {
+        "name": "Christmas Crystalabra",
+        "effect": "Adds a Calcified Rift Mist when one drops"
+      },
+      {
+        "name": "Rift (Super) Vacuum Charm",
+        "effect": "Chance for mouse to drop Calcified Rift Mist"
+      }
+    ]
+  },
+  {
+    "region": "Rift Plane",
+    "location": "Valour Rift",
+    "effects": [
+      {
+        "name": "Rift Hailstone Singularity",
+        "effect": "You get no area loot but do get +1 step; Prestige bonus stats"
+      },
+      {
+        "name": "Rift (Super) Vacuum Charm",
+        "effect": "Chance for mouse to drop Calcified Rift Mist"
+      }
+    ]
+  },
+  {
+    "region": "Rift Plane",
+    "location": "Haunted Terrortories Gloomy Greenwood",
+    "effects": [
+      {
+        "name": "Soul Catcher / Harvester",
+        "effect": "+10 luck in haunted terrortories"
+      },
+      {
+        "name": "Terrifying Spider",
+        "effect": "+10 luck in haunted terrortories"
+      }
+    ]
+  },
+  {
+    "region": "Rift Plane",
+    "location": "Great Winter Hunt",
+    "effects": [
+      {
+        "name": "Wrapped Gift",
+        "effect": "Big stats boost at the event area"
+      }
+    ]
+  },
+  {
+    "region": "Rift Plane",
+    "location": "Spring Egg Hunt",
+    "effects": [
+      {
+        "name": "Chocolate Bar",
+        "effect": "With Eggstra (Charge) can add another egg (25%). Increases AR for chocolatonium mice"
+      },
+      {
+        "name": "Eggstra Charge Charm",
+        "effect": "Adds a chocolotonium for each egg dropped"
+      }
+    ]
+  },
+  {
+    "region": "Rift Plane",
+    "location": "Everywhere Traps",
+    "effects": [
+      {
+        "name": "Glacier Gatler / Ice Blaster",
+        "effect": "Drops snowball charms (35% / 19%)"
+      },
+      {
+        "name": "Admiral's Galleon",
+        "effect": "Sometimes drops up to 5000 cursed gold (38%)"
+      },
+      {
+        "name": "Surprise Party",
+        "effect": "Sometimes drops Party Charms (5%)"
+      },
+      {
+        "name": "Rift Glacier Gatler",
+        "effect": "Drops rift snowball charms (19%)"
+      },
+      {
+        "name": "The Haunted Manor",
+        "effect": "Drops Spooky Charms. Pair with Condemned Base for Super Spooky"
+      },
+      {
+        "name": "Boiling Cauldron",
+        "effect": "Adds random potions (8.5%). Pairs with Alchemist's Cookbook"
+      },
+      {
+        "name": "The Holiday Express Trap",
+        "effect": "Chance to generate Gift Wrapped Charm"
+      }
+    ]
+  },
+  {
+    "region": "Rift Plane",
+    "location": "Everywhere Bases",
+    "effects": [
+      {
+        "name": "(Extra|Sprinkly Sweet) Cupcake",
+        "effect": "Drops (extra|sprinkly sweet) cupcake charms - 5%/3%/3%"
+      },
+      {
+        "name": "Physical Brace",
+        "effect": "+25% power with physical trap"
+      },
+      {
+        "name": "(Refined) Polluted",
+        "effect": "Mice drop radioactive curd (doubled) - 12%"
+      },
+      {
+        "name": "(Attuned) Enerchi Induction",
+        "effect": "+2/(3) Enerchi when some is dropped (use with charm)"
+      },
+      {
+        "name": "20XX New Year's",
+        "effect": "Drops 20XX Charms (until the end of its year) 20XX: 8% Rift 20XX: 3%"
+      },
+      {
+        "name": "Ancient Booster",
+        "effect": "Takes a relic, gives ancient charms when RH is caught"
+      },
+      {
+        "name": "10 Layer Cake Base",
+        "effect": "Drops (extra|sprinkly sweet) cupcake charms - each 4-5%, any 15%"
+      },
+      {
+        "name": "Living Grove Base",
+        "effect": "Makes bonus fungus or nightshade on catch, 100% in Fungal Cavern only"
+      },
+      {
+        "name": "(Seasonal) Gift of the Day Base",
+        "effect": "Mice can now drop the current gift of the day. (40%)"
+      },
+      {
+        "name": "Alchemist's Cookbook",
+        "effect": "Chance (25%) to add to potion drops. Always doubles Boiling Cauldron's adds."
+      },
+      {
+        "name": "Elixir Exchange Base",
+        "effect": "Exchange dropped elixir for 2 sigils"
+      },
+      {
+        "name": "All Season Express Track Base",
+        "effect": "With snowball charms : 100% chance to upgrade With power charms : 10% chance to upgrade"
+      },
+      {
+        "name": "Rift Mist Diffuser Base",
+        "effect": "Turns snowball charms into Rift snowball charms at cost of calcified rift mist"
+      },
+      {
+        "name": "Rainbow Diamond Refractor Base",
+        "effect": "Chance roll up Ultimate Ancient and Rainbow Charms (25%)"
+      }
+    ]
+  },
+  {
+    "region": "Rift Plane",
+    "location": "Everywhere Charms",
+    "effects": [
+      {
+        "name": "(Super) Enerchi Charm",
+        "effect": "+5/+2 Enerchi on catch"
+      },
+      {
+        "name": "Unstable Charm",
+        "effect": "Pops into a random charm"
+      },
+      {
+        "name": "Super Nightshade Farming Charm",
+        "effect": "Drops a nightshade"
+      },
+      {
+        "name": "Gilded Charm",
+        "effect": "Makes 1-10 sb+"
+      },
+      {
+        "name": "(Rift) (Super|Extreme|Ultimate) Snowball Charm",
+        "effect": "Has a chance to drop a better charm: regular -> super -> extreme -> ultimate (25%). Gets a bonus with Festive traps"
+      },
+      {
+        "name": "Spooky Charms",
+        "effect": "Get a bonus with Halloween traps. Chance to drop a better Spooky"
+      },
+      {
+        "name": "(Rift) (Super|Extreme) Spooky Charm",
+        "effect": "Has a chance to drop a better charm: regular -> super -> extreme -> ultimate (25%). (Not Rift Spooky)"
+      },
+      {
+        "name": "Gift Wrapped Charm",
+        "effect": "Unwraps into a random charm"
+      },
+      {
+        "name": "(Super|Extreme) Queso Pump Charm",
+        "effect": "Pumps a batch (or two|or four) of queso (except Rift, Acolyte Realm)"
+      },
+      {
+        "name": "(Super|Extreme| Ultimate) Party Charm",
+        "effect": "Has a chance to drop a better charm: regular -> super -> extreme -> ultimate. Bonus with Birthday Traps"
+      },
+      {
+        "name": "Torch Charm",
+        "effect": "Turns into a random thing"
+      },
+      {
+        "name": "(Rift) Tarnished Charm",
+        "effect": "Turns into a (Rift) Chrome Charm on catch"
+      }
+    ]
+  },
+  {
+    "region": "Rift Plane",
+    "location": "Equipment Needed",
+    "effects": [
+      {
+        "name": "(Super|Extreme) Ancient Charm",
+        "effect": "Has a chance to drop a better charm: regular -> super -> extreme -> ultimate. Requires Empyrian Codex"
+      },
+      {
+        "name": "(Super|Extreme) Regal Charm",
+        "effect": "Has a chance to drop a better charm: regular -> super -> extreme -> ultimate. Requires Regal Codex"
+      },
+      {
+        "name": "(Rift) Chrome Charm",
+        "effect": "Stat boost of 500 power, 7% power, 1 luck. Has a chance to drop a better charm: regular -> super -> extreme -> ultimate. Requires Chrome Codex"
+      }
+    ]
+  }
 ]
