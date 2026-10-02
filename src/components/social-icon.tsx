@@ -1,6 +1,6 @@
 import React, { type ComponentPropsWithoutRef } from 'react';
 
-type DiscordIconProps = ComponentPropsWithoutRef<'svg'>
+type DiscordIconProps = ComponentPropsWithoutRef<'svg'>;
 
 export function DiscordIcon(props: DiscordIconProps) {
   return (
@@ -10,7 +10,7 @@ export function DiscordIcon(props: DiscordIconProps) {
   );
 }
 
-type GitHubIconProps = ComponentPropsWithoutRef<'svg'>
+type GitHubIconProps = ComponentPropsWithoutRef<'svg'>;
 
 export function GitHubIcon(props: GitHubIconProps) {
   return (

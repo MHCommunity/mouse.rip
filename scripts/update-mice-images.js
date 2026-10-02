@@ -7,21 +7,17 @@ const fetchImage = async (url, fullPath) => {
   }
 
   const imageData = await fetch(url);
-  if (! imageData.ok || imageData.redirected) {
+  if (!imageData.ok) {
     console.error(`Failed to fetch image for ${url}: ${imageData.statusText}`);
     return;
   }
 
   const imageBuffer = Buffer.from(await imageData.arrayBuffer());
-  if (! imageBuffer || imageBuffer.length === 0) {
+  if (!imageBuffer || imageBuffer.length === 0) {
     return;
   }
 
-  fs.writeFile(fullPath, imageBuffer, (err) => {
-    if (err) {
-      console.error(`Failed to write image to ${fullPath}: ${err.message}`);
-    }
-  });
+  await fs.promises.writeFile(fullPath, imageBuffer);
 };
 
 const updateMiceImages = async () => {
@@ -29,18 +25,18 @@ const updateMiceImages = async () => {
   const squareDir = path.join(__dirname, '../static-mouse-rip/images/mice/square');
   const thumbnailDir = path.join(__dirname, '../static-mouse-rip/images/mice/thumbnail');
 
-  if (! fs.existsSync(largeDir)) {
+  if (!fs.existsSync(largeDir)) {
     fs.mkdirSync(largeDir, { recursive: true });
   }
-  if (! fs.existsSync(squareDir)) {
+  if (!fs.existsSync(squareDir)) {
     fs.mkdirSync(squareDir, { recursive: true });
   }
-  if (! fs.existsSync(thumbnailDir)) {
+  if (!fs.existsSync(thumbnailDir)) {
     fs.mkdirSync(thumbnailDir, { recursive: true });
   }
 
   const mice = await fetch('https://api.mouse.rip/mice').then((res) => res.json());
-  if (! mice) {
+  if (!mice) {
     return;
   }
 

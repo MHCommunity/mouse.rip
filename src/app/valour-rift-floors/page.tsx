@@ -27,15 +27,12 @@ export default function ValourRiftFloors() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const reorderFloors = (floorNum: number) => {
-    if (! floorNum || isNaN(floorNum) || floorNum < 1) {
+    if (!floorNum || isNaN(floorNum) || floorNum < 1) {
       setReorderedFloors(FLOOR_ORDER);
       return;
     }
     const index = (floorNum - 1) % FLOOR_ORDER.length;
-    setReorderedFloors([
-      ...FLOOR_ORDER.slice(index),
-      ...FLOOR_ORDER.slice(0, index),
-    ]);
+    setReorderedFloors([...FLOOR_ORDER.slice(index), ...FLOOR_ORDER.slice(0, index)]);
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +42,7 @@ export default function ValourRiftFloors() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl">
+    <div>
       <Heading>Valour Rift Floors</Heading>
       <div className="relative mb-3 mt-2 flex flex-col items-center justify-center">
         <InputGroup>
@@ -69,16 +66,11 @@ export default function ValourRiftFloors() {
       <div className="overflow-hidden">
         <ul>
           {reorderedFloors.map((floor) => (
-            <li
-              key={floor.name}
-              className="relative flex flex-col items-center justify-center gap-x-6 rounded-xl p-4"
-            >
+            <li key={floor.name} className="relative flex flex-col items-center justify-center gap-x-6 rounded-xl p-4">
               <div className="text-balance text-xl font-semibold tracking-tight text-gray-900 sm:text-3xl dark:text-gray-100">
                 {floor.name}
               </div>
-              <div className="text-sm text-slate-500 dark:text-slate-400">
-                Floors: {floor.floors.join(', ')}
-              </div>
+              <div className="text-sm text-slate-500 dark:text-slate-400">Floors: {floor.floors.join(', ')}</div>
             </li>
           ))}
         </ul>

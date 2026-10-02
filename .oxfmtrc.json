@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 120,
+  "singleQuote": true,
+  "sortPackageJson": false,
+  "ignorePatterns": [
+    ".next/**",
+    ".open-next/**",
+    "cloudflare-env.d.ts",
+    "next-env.d.ts",
+    "src/content/**",
+    "src/data/**/*.json",
+    "src/data/generated/**",
+    "scripts/tableau-out/**"
+  ]
+}

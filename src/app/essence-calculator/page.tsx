@@ -9,17 +9,7 @@ import { PageLink } from '@/components/page-link';
 
 import { formatNumber } from '@/utils';
 
-const ESSENCES: string[] = [
-  'Aleth',
-  'Ber',
-  'Cynd',
-  'Dol',
-  'Est',
-  'Fel',
-  'Gur',
-  'Hix',
-  'Icuri'
-];
+const ESSENCES: string[] = ['Aleth', 'Ber', 'Cynd', 'Dol', 'Est', 'Fel', 'Gur', 'Hix', 'Icuri'];
 
 export default function EssenceCalculator() {
   const [amounts, setAmounts] = useState<string[]>(Array(ESSENCES.length).fill(''));
@@ -84,11 +74,15 @@ export default function EssenceCalculator() {
   const craftableFromLower = computeCraftables();
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-6">
+    <div className="py-6">
       <Heading>Essence Calculator</Heading>
 
       <p className="mt-4 rounded bg-gray-50 p-4 text-sm text-gray-800 shadow dark:bg-gray-800 dark:text-gray-100">
-        Tip: You can copy your current amounts from the <PageLink href="https://www.mousehuntgame.com/inventory.php?tab=crafting&sub_tab=crafting_table">Crafting Table</PageLink> and press Ctrl+V (or Cmd+V) and the calculator will automatically fill out the amounts for each essence.
+        Tip: You can copy your current amounts from the{' '}
+        <PageLink href="https://www.mousehuntgame.com/inventory.php?tab=crafting&sub_tab=crafting_table">
+          Crafting Table
+        </PageLink>{' '}
+        and press Ctrl+V (or Cmd+V) and the calculator will automatically fill out the amounts for each essence.
       </p>
 
       <form
@@ -103,9 +97,24 @@ export default function EssenceCalculator() {
           <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-600">
             <thead className="bg-gray-50 dark:bg-gray-800">
               <tr>
-                <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 dark:text-gray-100">Essence</th>
-                <th scope="col" className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900 dark:text-gray-100">Current</th>
-                <th scope="col" className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900 dark:text-gray-100">Can Craft</th>
+                <th
+                  scope="col"
+                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 dark:text-gray-100"
+                >
+                  Essence
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900 dark:text-gray-100"
+                >
+                  Current
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-3.5 text-center text-sm font-semibold text-gray-900 dark:text-gray-100"
+                >
+                  Can Craft
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-900">
@@ -138,7 +147,7 @@ export default function EssenceCalculator() {
                   <td className="whitespace-nowrap px-3 py-4 text-center text-gray-500 dark:text-gray-400">
                     {craftableFromLower[idx] > 0 ? `${craftableFromLower[idx]}` : ''}
                   </td>
-              </tr>
+                </tr>
               ))}
             </tbody>
           </table>
@@ -163,7 +172,7 @@ export default function EssenceCalculator() {
                 .reverse()
                 .find((e) => e.val > 0);
 
-              if (! highest) {
+              if (!highest) {
                 return 'You cannot craft any essences.';
               }
 
@@ -178,16 +187,13 @@ export default function EssenceCalculator() {
               const lastComma = formattedRemaining.lastIndexOf(', ');
               const prettyRemaining =
                 lastComma !== -1
-                  ? formattedRemaining.slice(0, lastComma) +
-                    ' and' +
-                    formattedRemaining.slice(lastComma + 1)
+                  ? formattedRemaining.slice(0, lastComma) + ' and' + formattedRemaining.slice(lastComma + 1)
                   : formattedRemaining;
 
               return (
                 <>
                   You can craft <strong>{formatNumber(highest.val)}</strong> <strong>{ESSENCES[highestIdx]}</strong>
-                  {remaining.length > 0 && <> with {prettyRemaining} remaining</>}
-                  .
+                  {remaining.length > 0 && <> with {prettyRemaining} remaining</>}.
                 </>
               );
             })()}
@@ -195,12 +201,11 @@ export default function EssenceCalculator() {
         </div>
       )}
 
-      {! finalCounts && (
+      {!finalCounts && (
         <p className="mt-6 rounded bg-gray-50 p-4 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-100">
           Did you know? It takes 6,561 Aleth Essence to craft 1 Icuri Essence.
         </p>
       )}
-
     </div>
   );
 }

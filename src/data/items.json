@@ -228,24 +228,82 @@
     ]
   },
   {
+    "id": "queso-pump-calculator",
+    "name": "Queso Pump Calculator",
+    "description": "Find the most time-efficient Queso cheese to pump the volcano with.",
+    "url": "/queso-pump-calculator",
+    "category": "tool",
+    "tags": [
+      "location",
+      "calculator"
+    ],
+    "locations": [
+      "queso-river",
+      "prickly-plains",
+      "cantera-quarry",
+      "queso-geyser"
+    ]
+  },
+  {
+    "id": "titles",
+    "name": "Titles & Ranks",
+    "description": "The full MouseHunt rank ladder from Novice to the top, with badges.",
+    "url": "/titles",
+    "category": "tool",
+    "tags": [
+      "reference"
+    ]
+  },
+  {
+    "id": "trap-special-effects",
+    "name": "Location Trap & Base Effects",
+    "description": "Traps, bases, and charms with special effects in specific locations — bonus loot, instacatches, attraction tweaks, and more.",
+    "url": "/trap-special-effects",
+    "category": "tool",
+    "tags": [
+      "location",
+      "reference"
+    ]
+  },
+  {
+    "id": "relic-hunter",
+    "name": "Relic Hunter",
+    "description": "Where the Relic Hunter is right now, plus the riddle hints for every location she hides in.",
+    "url": "/relic-hunter",
+    "category": "tool",
+    "tags": [
+      "reference"
+    ]
+  },
+  {
     "id": "trap-progression-guide",
     "name": "Trap Progression Guide",
     "description": "Optimal trap and base progression from Novice to Viceroy.",
-    "url": "https://pastebin.com/BDTXTGMC",
-    "category": "guide"
+    "url": "/guides/trap-progression-guide",
+    "sourceUrl": "https://pastebin.com/BDTXTGMC",
+    "category": "guide",
+    "tags": [
+      "progression",
+      "equipment"
+    ]
   },
   {
     "id": "ranks-beyond-mhbasics",
     "name": "'Shellnut' Guide",
     "description": "A guide from Baron rank onwards, outlining key traps, bases, and areas to focus on.",
-    "url": "https://pastebin.com/mfXiFLYA",
-    "category": "guide"
+    "url": "/guides/ranks-beyond-mhbasics",
+    "sourceUrl": "https://pastebin.com/mfXiFLYA",
+    "category": "guide",
+    "tags": [
+      "progression"
+    ]
   },
   {
     "id": "shellnut-checklist",
     "name": "Shellnut Checklist",
     "description": "A checklist of key things to complete from Baron to Archduke/duchess ranks.",
-    "url": "https://pastebin.com/bNr3v7Ws",
+    "url": "/guides/shellnut-checklist",
+    "sourceUrl": "https://pastebin.com/bNr3v7Ws",
     "category": "guide",
     "tags": [
       "checklist",
@@ -254,10 +312,26 @@
     ]
   },
   {
+    "id": "labyrinth-guide",
+    "name": "Labyrinth & Zokor Guide",
+    "description": "Conquering the 100-clue maze: clue management, hallway strategy, and trap/base progression.",
+    "url": "/guides/labyrinth-guide",
+    "category": "guide",
+    "tags": [
+      "location",
+      "progression"
+    ],
+    "locations": [
+      "labyrinth",
+      "zokor"
+    ]
+  },
+  {
     "id": "valour-rift-guide",
     "name": "Valour Rift Guide",
-    "description": "Valour Rift gift - including Ultimate Umbra runs, upgrade strategies, and trap recommendations.",
-    "url": "https://pastebin.com/UCAqCgGg",
+    "description": "Valour Rift guide including Ultimate Umbra runs, upgrade strategies, and trap recommendations.",
+    "url": "/guides/valour-rift-guide",
+    "sourceUrl": "https://pastebin.com/UCAqCgGg",
     "category": "guide",
     "locations": [
       "valour-rift"
@@ -267,10 +341,68 @@
     "id": "valour-rift-additional-info",
     "name": "Valour Rift Additional Info",
     "description": "Valour Rift supplementary info, including upgrade orders, simulator tools, and optimization tips.",
-    "url": "https://pastebin.com/3E59L69r",
+    "url": "/guides/valour-rift-additional-info",
+    "sourceUrl": "https://pastebin.com/3E59L69r",
     "category": "guide",
     "locations": [
       "valour-rift"
+    ]
+  },
+  {
+    "id": "valour-rift-strategy-guides",
+    "name": "Valour Rift Strategy Guides",
+    "description": "Advanced strategy: comparing climbing performance, retreating, Ultimate Charm farming, and the UC Prestige push.",
+    "url": "/guides/valour-rift-strategy-guides",
+    "category": "guide",
+    "tags": [
+      "location",
+      "strategy"
+    ],
+    "locations": [
+      "valour-rift"
+    ]
+  },
+  {
+    "id": "kings-gauntlet-guide",
+    "name": "King's Gauntlet Guide",
+    "description": "Level-by-level reference: mice, points, gold, drop rates, cheese conversions, and clear estimates for all 8 Gauntlet levels.",
+    "url": "/guides/kings-gauntlet",
+    "category": "guide",
+    "tags": [
+      "location",
+      "reference"
+    ],
+    "locations": [
+      "kings-gauntlet"
+    ]
+  },
+  {
+    "id": "jungle-of-dread-peppers",
+    "name": "Jungle of Dread Peppers",
+    "description": "Which pepper seeds to plant for each Havarti cheese, the mouse it attracts, and its minluck.",
+    "url": "/guides/jungle-of-dread-peppers",
+    "category": "guide",
+    "tags": [
+      "location",
+      "reference"
+    ],
+    "locations": [
+      "jungle-of-dread"
+    ]
+  },
+  {
+    "id": "fort-rox-guide",
+    "name": "Fort Rox Guide",
+    "description": "Silvermane's walkthrough: starting out, fort upgrades, and surviving the five night phases.",
+    "url": "/guides/fort-rox",
+    "sourceUrl": "https://docs.google.com/document/d/1QcjnW_B3V3emuZz4mbQsJ88hbsllaMum9qgjvke",
+    "category": "guide",
+    "tags": [
+      "location",
+      "reference"
+    ],
+    "locations": [
+      "fort-rox"
     ]
   },
   {
