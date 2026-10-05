@@ -5,9 +5,14 @@
     "article": "the Meadow",
     "image": "https://www.mousehuntgame.com/images/environments/a441eb078698da69ef2765983f4b5912.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/6ef3ffe2f90a79250807b46105e77b68.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/b1a5b70c94dc8f19f0e52468a16289b7.jpg",
     "region": "gnawnia",
     "order": 10,
-    "title": "novice"
+    "title": "novice",
+    "title_formatted": "Novice",
+    "environment_id": 18,
+    "status": "active",
+    "description": "Slightly secluded from the human population, the Meadow is mostly inhabited by the more timid breeds of mice. Considered somewhat of a safe haven for novice mouse hunters who hate to see their cheese stolen."
   },
   {
     "id": "town_of_gnawnia",
@@ -15,9 +20,14 @@
     "article": "the Town of Gnawnia",
     "image": "https://www.mousehuntgame.com/images/environments/231c9b4d583f98c365efcbbd50fddb76_v2.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/4f61abe7975e99a3c780c5fd895dc07c_v2.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/ba4162a3ac5cc3cde928e08a8246a4b3_v2.jpg",
     "region": "gnawnia",
     "order": 11,
-    "title": "recruit"
+    "title": "recruit",
+    "title_formatted": "Recruit",
+    "environment_id": 28,
+    "status": "active",
+    "description": "With a dense population and a variety of environments, a hunter will be sure to find almost all varieties of mice when in town."
   },
   {
     "id": "windmill",
@@ -25,9 +35,14 @@
     "article": "the Windmill",
     "image": "https://www.mousehuntgame.com/images/environments/15623ee3d1cecd303d677e35507b6bb1.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/18298644393b7a4d062bed498f03aeca.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/654263a6596f5a90da200554961dc25e.jpg",
     "region": "gnawnia",
     "order": 16,
-    "title": "apprentice"
+    "title": "apprentice",
+    "title_formatted": "Apprentice",
+    "environment_id": 30,
+    "status": "active",
+    "description": "This windmill, and the farm beside it, used to belong to one of Gnawnia's most prosperous farmers before the mice took it over. Windmill mice enjoy the simple life down on the farm, but don't be fooled by their relaxed attitude-- they're laid-back about everything but cheese."
   },
   {
     "id": "harbour",
@@ -35,9 +50,14 @@
     "article": "the Harbour",
     "image": "https://www.mousehuntgame.com/images/environments/299b09242d8fc78cbf208c3241a84f47.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/8c969345fe09d05a1aaa7cac063eee2b.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/a2e5ea2dd91f68a1a8eaaa3220cfeea0.jpg",
     "region": "gnawnia",
     "order": 17,
-    "title": "initiate"
+    "title": "initiate",
+    "title_formatted": "Initiate",
+    "environment_id": 13,
+    "status": "active",
+    "description": "Full of fresh air and plenty of sunshine, the Harbour seems to attract the types of mice who boast of sea salt in their veins."
   },
   {
     "id": "mountain",
@@ -45,9 +65,14 @@
     "article": "the Mountain",
     "image": "https://www.mousehuntgame.com/images/environments/dee680c95caf9f8d4f4c8f62d9559c55.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/7fb74d6bb5148169a41e9e999f8d72ee.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/682514af36d6df488c94e73ec4665d07.jpg",
     "region": "gnawnia",
     "order": 18,
-    "title": "journeyman"
+    "title": "journeyman",
+    "title_formatted": "Journeyman/Journeywoman",
+    "environment_id": 20,
+    "status": "active",
+    "description": "This treacherous environment only allows the toughest of mice to survive. Be warned: the Mountain is no place for the novice mouse hunter!"
   },
   {
     "id": "kings_arms",
@@ -55,9 +80,14 @@
     "article": "the King's Arms",
     "image": "https://www.mousehuntgame.com/images/environments/85b1ef8a33eb3738f99ff6b6ef031b0b.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/657cad8107032c3e4e5ee3931964c8ae.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/30e8a66a62580d85caef84e83d81f180.jpg",
     "region": "valour",
     "order": 14,
-    "title": "apprentice"
+    "title": "apprentice",
+    "title_formatted": "Apprentice",
+    "environment_id": 38,
+    "status": "active",
+    "description": "Have King's Credits to spend? Visit the many shoppes at the King's Arms to exchange your King's Credits for hunting equipment and loot!"
   },
   {
     "id": "tournament_hall",
@@ -65,9 +95,14 @@
     "article": "the Tournament Hall",
     "image": "https://www.mousehuntgame.com/images/environments/bcef5388cc1ef35263ab0ce4dc25775a.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/43f6791b691ba14212d2d94ab3f8c03d.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/9b1ff85b6882bb730f6e9738e1572bf5.jpg",
     "region": "valour",
     "order": 15,
-    "title": "apprentice"
+    "title": "apprentice",
+    "title_formatted": "Apprentice",
+    "environment_id": 37,
+    "status": "active",
+    "description": "The King's Tournament Hall is where the best of the best come to train and compete amongst the very best. The Tournament Hall has the equipment to support every tournament or competition imaginable. The hall is not limited to just hunting! It is equipped to support all forms of competition, which includes sports, and sporting mice alike!\nThe best laid training plans of mice and hunter often go awry, except in the Tournament Hall! Mice and hunter alike train here to become their very best, and the mice here get excited to test their abilities against the hunters best traps.\nThe Tournament Hall contains various shoppes where you can exchange Tournament Tokens for hunting equipment and loot."
   },
   {
     "id": "kings_gauntlet",
@@ -75,9 +110,14 @@
     "article": "the King's Gauntlet",
     "image": "https://www.mousehuntgame.com/images/environments/c6b49b20bb646760bf6c0ed3068f1295.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/85fddecd193221238fab3e5d7db0cead.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/fc26e85b3435d035fc35e96c07248585.jpg",
     "region": "valour",
     "order": 65,
-    "title": "hero"
+    "title": "hero",
+    "title_formatted": "Hero",
+    "environment_id": 15,
+    "status": "active",
+    "description": "This many-storied tower is the King's personal challenge to MouseHunters everywhere: anyone who can reach the top is among the kingdom's elite. The King's Gauntlet works on a tier system, with Hunters advancing to the next floor by hunting with cheese that they collect on the current floor. The Gauntlet is meant as a challenge for hunters of all skill levels, but in order to ascend to the very top, a Hero's rank will come in handy."
   },
   {
     "id": "calm_clearing",
@@ -85,9 +125,14 @@
     "article": "the Calm Clearing",
     "image": "https://www.mousehuntgame.com/images/environments/7767dffc1f500872477a503c3860a0af.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/e310e54e7de5501d7a82b5d20202b387.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/953aabeb2a4679be5acd5ae4ab7f1e6b.jpg",
     "region": "whisker_woods",
     "order": 20,
-    "title": "journeyman"
+    "title": "journeyman",
+    "title_formatted": "Journeyman/Journeywoman",
+    "environment_id": 4,
+    "status": "active",
+    "description": "Tucked behind the dense trees of Whisker Woods is a quiet and peaceful clearing. In the center of the clearing is a glowing boulder with colourful fungi growing around it. The magic rock seems to draw mice near to it, as if empowering them."
   },
   {
     "id": "great_gnarled_tree",
@@ -95,9 +140,14 @@
     "article": "the Great Gnarled Tree",
     "image": "https://www.mousehuntgame.com/images/environments/ea24e3c7e0318a5ab098139848e43f36.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/e332e7ab3913409e331ce750ce45ba70.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/3f2cb3bd01b5d265486265c67831ac59.jpg",
     "region": "whisker_woods",
     "order": 24,
-    "title": "master"
+    "title": "master",
+    "title_formatted": "Master",
+    "environment_id": 12,
+    "status": "active",
+    "description": "At the edge of Whisker Woods lies a tree older than Gnawnia itself. Its magic roots stretch far underground and deep into the woods, giving life to the other trees. The shadow it casts is so massive that it began to affect the surrounding area through time, blocking necessary light from other trees. As a result, the other trees seem almost alive as they bend back and forth, seeking out the light."
   },
   {
     "id": "lagoon",
@@ -105,9 +155,14 @@
     "article": "the Lagoon",
     "image": "https://www.mousehuntgame.com/images/environments/cfbb19c90443073ff9d14b282c157c90.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/76489e496d9bdda7760d04856adf7e85.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/35f31e6cbe1908d2318ae2347367bc84.jpg",
     "region": "whisker_woods",
     "order": 25,
-    "title": "grandmaster"
+    "title": "grandmaster",
+    "title_formatted": "Grandmaster",
+    "environment_id": 17,
+    "status": "active",
+    "description": "The enticing blue water hypnotizes hunters, distracting them from the dangerous mice that take up residence nearby. The terrain that surrounds the Lagoon is extremely unsteady, comprised of jagged rocks and slick moss. High up in the trees that surround the Lagoon are the nests of Harpy mice who act as a plague to all hunters, stealing their cheese, gold and crippling their courage. Some mice here are not attracted to conventional bait. It is highly recommended that a hunter use Gnarled cheese when hunting at the Lagoon."
   },
   {
     "id": "laboratory",
@@ -115,9 +170,14 @@
     "article": "the Laboratory",
     "image": "https://www.mousehuntgame.com/images/environments/34167a825f66074fcc1c2f01018815b9.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/bcc9ef0f15b292e08d04715f6b4dc750.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/14feb6357563e60153b703e27f1a2e6c.jpg",
     "region": "burroughs",
     "order": 21,
-    "title": "master"
+    "title": "master",
+    "title_formatted": "Master",
+    "environment_id": 16,
+    "status": "active",
+    "description": "The original purpose of the Laboratory was to research the minor mouse problem Gnawnia was having. A few less than ethical experiments soon gave rise to new breeds of mice altogether. Now overrun with the very mice it spawned, few hunters dare to step foot on its grounds."
   },
   {
     "id": "mousoleum",
@@ -125,9 +185,14 @@
     "article": "the Mousoleum",
     "image": "https://www.mousehuntgame.com/images/environments/90f0aedc563b86ae9f791f8f1d54e65d.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/508a63db4778fd235f4721e2646126f8.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/eee73bfe6dd494d3cbac5b78fefca68f.jpg",
     "region": "burroughs",
     "order": 22,
-    "title": "master"
+    "title": "master",
+    "title_formatted": "Master",
+    "environment_id": 21,
+    "status": "active",
+    "description": "The scientists of the nearby Laboratory would often come to the Mousoleum to harvest 'spare parts' for their various creations. This grim hunting location is now haunted by spirits of slain mice. The mice of this location seem almost unable to resist radioactive cheese."
   },
   {
     "id": "town_of_digby",
@@ -135,9 +200,14 @@
     "article": "the Town of Digby",
     "image": "https://www.mousehuntgame.com/images/environments/82cc4bd9e80af9968d04e3f353386c39_v2.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/ed2bd0952268c9e602375af82601a3a8_v2.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/3f72b0aa4156853ea7fdf601154d6d07_v2.jpg",
     "region": "burroughs",
     "order": 23,
-    "title": "master"
+    "title": "master",
+    "title_formatted": "Master",
+    "environment_id": 27,
+    "status": "active",
+    "description": "When the mice of the Burroughs overran the laboratory, the resourceful scientists created a fortified subterranean city. Unfortunately their creations proved to be just as resourceful and soon infiltrated the city."
   },
   {
     "id": "bazaar",
@@ -145,9 +215,14 @@
     "article": "the Bazaar",
     "image": "https://www.mousehuntgame.com/images/environments/52aa280a0470bf2bbf4fcc47248df387.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/844ce3418fc5990eb57738aa5223462e.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/4931ee838380baa2ea4473eaaae07a03.jpg",
     "region": "burroughs",
     "order": 31,
-    "title": "grandmaster"
+    "title": "grandmaster",
+    "title_formatted": "Grandmaster",
+    "environment_id": 3,
+    "status": "active",
+    "description": "The organizers of the Bazaar used to travel abroad with a merchant companion named Ronza. During their visit to the Burroughs region, these quirky folk felt right at home, so much so that they decided to stay! Their newly constructed shops are now known across the Kingdom for their strange inventory."
   },
   {
     "id": "pollution_outbreak",
@@ -155,9 +230,14 @@
     "article": "the Toxic Spill",
     "image": "https://www.mousehuntgame.com/images/environments/6e8c017845d0fac63689aaa807775ab2.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/90bf5805afad175dca5ab584d73e4526.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/321ce35d2c4426a09e0e5683a5d85fa6.jpg",
     "region": "burroughs",
     "order": 66,
-    "title": "archduke_archduchess"
+    "title": "archduke_archduchess",
+    "title_formatted": "Archduke/Archduchess",
+    "environment_id": 45,
+    "status": "active",
+    "description": "Pollution spewing out of the Laboratory has resulted in this hideous Toxic Spill! The Hunter's Title required to enter is dependent on the current contamination level."
   },
   {
     "id": "training_grounds",
@@ -165,9 +245,14 @@
     "article": "the Training Grounds",
     "image": "https://www.mousehuntgame.com/images/environments/c4a76adf8dce0b63bc51985821a7df8f.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/64d17c40b34901ca2dacadb110d451c4.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/18887ba8302071809158a87ac51082ff.jpg",
     "region": "furoma",
     "order": 30,
-    "title": "grandmaster"
+    "title": "grandmaster",
+    "title_formatted": "Grandmaster",
+    "environment_id": 29,
+    "status": "active",
+    "description": "A place of study, the students that train along the northern shore of the Burroughs River are indeed a worthy foe. Hunters who prove themselves as formidable opponents may earn the right to challenge the students' teachers."
   },
   {
     "id": "dojo",
@@ -175,9 +260,14 @@
     "article": "the Dojo",
     "image": "https://www.mousehuntgame.com/images/environments/04009d0da06626fec6dde7fbca554e04.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/1421a0b3920d4bfafb6a150ced5f4278.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/7eecf3ea9814d4a32f3b337663e59dd4.jpg",
     "region": "furoma",
     "order": 32,
-    "title": "grandmaster"
+    "title": "grandmaster",
+    "title_formatted": "Grandmaster",
+    "environment_id": 8,
+    "status": "active",
+    "description": "The ground floor of the Furoma Pagoda is where students most frequently train. Be cautious of your trap setup when hunting here as students are resistant to basic attacks."
   },
   {
     "id": "meditation_room",
@@ -185,9 +275,14 @@
     "article": "the Meditation Room",
     "image": "https://www.mousehuntgame.com/images/environments/6abcf1fec4d87fe316c596ddf40c486e.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/8d4d7b2c39f6027fc7e8bc20507ba817.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/798e1525480c8890f07a6a2780811dc9.jpg",
     "region": "furoma",
     "order": 33,
-    "title": "grandmaster"
+    "title": "grandmaster",
+    "title_formatted": "Grandmaster",
+    "environment_id": 19,
+    "status": "active",
+    "description": "The second floor of the Pagoda is where the Masters of the three cheese schools meditate and study. These Masters are far too wise to go for conventional bait. Instead, a hunter will need to craft very specific bait in order to attract each master."
   },
   {
     "id": "pinnacle_chamber",
@@ -195,9 +290,14 @@
     "article": "the Pinnacle Chamber",
     "image": "https://www.mousehuntgame.com/images/environments/87926031d29e6aefe3fb7ed6c9b26634.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/a4fa72ca33426c8b7630b6c268ff3b77.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/3039132e3df5f56062057ba77fd8184a.jpg",
     "region": "furoma",
     "order": 34,
-    "title": "grandmaster"
+    "title": "grandmaster",
+    "title_formatted": "Grandmaster",
+    "environment_id": 23,
+    "status": "active",
+    "description": "The stairs that lead to the third and final floor of the Pagoda are behind a thick, opulent set of double doors and are extremely well guarded. The grand chamber of this floor is where the Masters of the Dojo reside, occasionally seen peering over the landscape they wish to enslave. Any hunter wishing to challenge these powerful mice will require an unstable and rare cheese."
   },
   {
     "id": "catacombs",
@@ -205,9 +305,14 @@
     "article": "the Catacombs",
     "image": "https://www.mousehuntgame.com/images/environments/6c90bd8fb85fbbfecb1b15eb191e61a7.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/36a27716b813e1dfeb9d4e9008aa43db.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/01dd75317c1c55a7d80654b833a8e0a2.jpg",
     "region": "bristle_woods",
     "order": 40,
-    "title": "legendary"
+    "title": "legendary",
+    "title_formatted": "Legendary",
+    "environment_id": 6,
+    "status": "active",
+    "description": "Deep below the cursed soil of the Mousoleum are underground caverns that stretch to the west where long-forgotten mice roam. These powerful mice are highly resistant to most types of damage and apparently have a weakness for Radioactive Blue cheese. The creatures of the Catacombs seem strangely organized, as if they are preparing for something. Who knows what sinister secrets a hunter may uncover here...?"
   },
   {
     "id": "forbidden_grove",
@@ -215,9 +320,14 @@
     "article": "the Forbidden Grove",
     "image": "https://www.mousehuntgame.com/images/environments/2b093e36c3aadc67b59abc740f194149.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/a3c6d8106b7f6fa6dfadbdf887dd093f.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/958ce1d59a786146ed9b52992a5871a5.jpg",
     "region": "bristle_woods",
     "order": 41,
-    "title": "legendary"
+    "title": "legendary",
+    "title_formatted": "Legendary",
+    "environment_id": 11,
+    "status": "active",
+    "description": "At the end of the Catacombs, beyond heavy stone gates, lies a hidden hunting ground. Etched into the gates is a warning: \"Beware young soul, should the stone gates close while within this grove, you will find yourself caught between realms.\""
   },
   {
     "id": "acolyte_realm",
@@ -225,9 +335,14 @@
     "article": "the Acolyte Realm",
     "image": "https://www.mousehuntgame.com/images/environments/a72f9c94f446eef321d92f25c8617c62.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/4f4eb01d7b6ff25046a78af4e6913ac0.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/e548fa4a4d263c2be8e24403be2aa9ee.jpg",
     "region": "bristle_woods",
     "order": 42,
-    "title": "legendary"
+    "title": "legendary",
+    "title_formatted": "Legendary",
+    "environment_id": 1,
+    "status": "locked",
+    "description": "Years ago in Bristle Woods, a MouseHunter by the name of Plankrun opened a passageway to another realm. The passage was intended to act as an elaborate one-way trap for Acolyte mice. However, recently, the Acolyte mice have had success in reversing the portal's direction and are attempting to re-enter the Gnawnia Kingdom."
   },
   {
     "id": "cape_clawed",
@@ -235,9 +350,14 @@
     "article": "Cape Clawed",
     "image": "https://www.mousehuntgame.com/images/environments/49323d2e691deb0336089fa0be3b9a80.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/557ea195ec4c9be8f2ad4816158c9577.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/5b772152e1a84c4fea406e0ed3857ba6.jpg",
     "region": "tribal_isles",
     "order": 60,
-    "title": "legendary"
+    "title": "legendary",
+    "title_formatted": "Legendary",
+    "environment_id": 5,
+    "status": "active",
+    "description": "This small island was once attached to the mainland before a mighty storm washed away a massive piece of land. Members of the three tribes were then trapped where they were forced to work together to build a means of travel back to the mainland. Cape Clawed now acts as a meeting place where the elders of the tribes discuss diplomatic matters."
   },
   {
     "id": "elub_shore",
@@ -245,9 +365,14 @@
     "article": "the Elub Shore",
     "image": "https://www.mousehuntgame.com/images/environments/35e41632eb8740769d7c3b4fce87d08e.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/06770d179764b35c573a7db5348828f5.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/a937cccaec7f08a2d4492671eca38bec.jpg",
     "region": "tribal_isles",
     "order": 61,
-    "title": "legendary"
+    "title": "legendary",
+    "title_formatted": "Legendary",
+    "environment_id": 10,
+    "status": "active",
+    "description": "The shores of the great Tribal Island is where the Elub Tribe call home. The Elub utilize the resources of the ocean to build tools and shelter. Use of a Hydro trap is highly recommended while hunting for the Elub."
   },
   {
     "id": "nerg_plains",
@@ -255,9 +380,14 @@
     "article": "the Nerg Plains",
     "image": "https://www.mousehuntgame.com/images/environments/e543aa29b9ddbf8e53b614243c502b37.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/6c151158dde393e87804b6266a5ef1c6.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/88a51c628a54d254564c80d3f09f103f.jpg",
     "region": "tribal_isles",
     "order": 62,
-    "title": "legendary"
+    "title": "legendary",
+    "title_formatted": "Legendary",
+    "environment_id": 22,
+    "status": "active",
+    "description": "The Nerg Tribe use the tall grass for camouflage and the sturdy trees as defensive positions making their village hard to infiltrate. Use of a Tactical trap is highly recommended when hunting for the Nerg."
   },
   {
     "id": "derr_dunes",
@@ -265,9 +395,14 @@
     "article": "Derr Dunes",
     "image": "https://www.mousehuntgame.com/images/environments/e2203bda2c17140902aed0a0f8da1515.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/0f0964cc5604c1894da6e2e67a6c3820.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/f2305faf94cb9b487e306261eada7668.jpg",
     "region": "tribal_isles",
     "order": 63,
-    "title": "legendary"
+    "title": "legendary",
+    "title_formatted": "Legendary",
+    "environment_id": 7,
+    "status": "active",
+    "description": "The dunes are a harsh, barren wasteland where only the toughest of mice can survive. The Derr Tribe take advantage of their ability to survive and navigate in such a dangerous terrain as a defensive strength which allows them to maximize their offensive abilities. Use of a Physical trap is highly recommended when hunting for the Derr."
   },
   {
     "id": "jungle_of_dread",
@@ -275,9 +410,14 @@
     "article": "the Jungle of Dread",
     "image": "https://www.mousehuntgame.com/images/environments/cf9945d59760e180f3c0d77d6f065b71_v2.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/55c8b16d30aa344f64c5daaeb95de38b_v2.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/a249f76e79eaed384dfe89e1e159cb17_v2.jpg",
     "region": "tribal_isles",
     "order": 64,
-    "title": "hero"
+    "title": "hero",
+    "title_formatted": "Hero",
+    "environment_id": 14,
+    "status": "active",
+    "description": "Named by the tribes, this dangerous jungle is home to some of the most terrifying mice ever discovered. Long ago the leaders of the tribes discovered a spicy cheese made with peppers capable of distracting the mighty beasts of the jungle. This peppered bait may be the key to luring these mice to a trap..."
   },
   {
     "id": "dracano",
@@ -285,9 +425,14 @@
     "article": "Dracano",
     "image": "https://www.mousehuntgame.com/images/environments/eefec52373c6cb93bcd55909cb477e47.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/7b223d1176016fbf2a6f362d9d86371c.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/221d1f2f33c5c6188d07de462e3ee8c5.jpg",
     "region": "tribal_isles",
     "order": 67,
-    "title": "knight"
+    "title": "knight",
+    "title_formatted": "Knight",
+    "environment_id": 9,
+    "status": "active",
+    "description": "This volcano is said to have long ago given life to the entire island in a massive eruption. For this reason the tribes have long worshipped the Dracano, bringing offerings of peppered cheese to a fearsome winged mouse they believe to be a deity."
   },
   {
     "id": "balacks_cove",
@@ -295,9 +440,14 @@
     "article": "Balack's Cove",
     "image": "https://www.mousehuntgame.com/images/environments/13f8a9edffc65a052d84dd08d1a0a32b.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/a802bbffb7dcbf035352bb6a0916eb04.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/977304807bcae1c0eca23e500694d330.jpg",
     "region": "tribal_isles",
     "order": 68,
-    "title": "knight"
+    "title": "knight",
+    "title_formatted": "Knight",
+    "environment_id": 2,
+    "status": "active",
+    "description": "This foreboding sea cave has fierce, unpredictable tides that can easily wash unsuspecting Hunters out to sea. Those who seek the spirits of this darkened grotto should arm a Shadow, Arcane or Forgotten trap, and use Vanilla Stilton as bait."
   },
   {
     "id": "claw_shot_city",
@@ -305,9 +455,14 @@
     "article": "Claw Shot City",
     "image": "https://www.mousehuntgame.com/images/environments/d3ace11874ce22faf7b2801b0c57f529.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/b79693a6e67a1f5c7f268b3ceb9de8cf.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/8f767b419627720497f4eb1a901afe13.jpg",
     "region": "varmint_valley",
     "order": 85,
-    "title": "lord_lady"
+    "title": "lord_lady",
+    "title_formatted": "Lord/Lady",
+    "environment_id": 43,
+    "status": "active",
+    "description": "It was a dry and dusty day in Gnawnia when the Old West rolled into town... And with it came some of the meanest, nastiest creatures you ever did saw. The local Marshall needs MouseHunters to help bring the Law back to this valley. Will you help track down the lawless Wild Bunch gangs?"
   },
   {
     "id": "train_station",
@@ -315,9 +470,14 @@
     "article": "the Gnawnian Express Station",
     "image": "https://www.mousehuntgame.com/images/environments/dbbb6f5114d44fefa3870271a8a4b0fe.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/34fb304be8323af0a4584cdf1a9c7d1c.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/5e9d775d2c6f93bdff9a176519d39507.jpg",
     "region": "varmint_valley",
     "order": 86,
-    "title": "lord_lady"
+    "title": "lord_lady",
+    "title_formatted": "Lord/Lady",
+    "environment_id": 44,
+    "status": "active",
+    "description": "The railroad's come to town! Board the Gnawnian Express and get set for high adventure in the Old West! Guard the supplies and protect the train to ensure its safe arrival on its perilous journey across Gnawnia!"
   },
   {
     "id": "fort_rox",
@@ -325,9 +485,14 @@
     "article": "Fort Rox",
     "image": "https://www.mousehuntgame.com/images/environments/f8fa3cfb0ba47234604e790c0edc51aa.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/ccf4854faaabc8f36cf9ec7a6d328393.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/334c890e5a872f1733d28d4cb1f11e24.jpg",
     "region": "varmint_valley",
     "order": 95,
-    "title": "baron_baroness"
+    "title": "baron_baroness",
+    "title_formatted": "Baron/Baroness",
+    "environment_id": 54,
+    "status": "active",
+    "description": "A strange meteor has landed near Claw Shot City, leaving a huge impact crater near the Gnawnian Express rails! This mysterious meteor brings with it a mysterious new breed of mice and their presence threatens the lives of the citizens of Varmint Valley. Around the crater, an encampment of hunters has surrounded these dangerous mice and are setting up a fort to hold them back!"
   },
   {
     "id": "desert_warpath",
@@ -335,9 +500,14 @@
     "article": "the Fiery Warpath",
     "image": "https://www.mousehuntgame.com/images/environments/50c140c25725c308d70f14ef96279ab6.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/6d866864cb299fbc992cc3a1b5a4da5f.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/59fbd8281bd3fd03188314397e2c1c55.jpg",
     "region": "desert",
     "order": 90,
-    "title": "baron_baroness"
+    "title": "baron_baroness",
+    "title_formatted": "Baron/Baroness",
+    "environment_id": 33,
+    "status": "active",
+    "description": "The Marching Flame has attacked and pillaged much of the Sandtail Desert and now their warpath is headed towards Gnawnia! Their battalions attack in waves and seem to endlessly march over the horizon. All that stands between them and conquering Gnawnia are the brave hunters who camp here."
   },
   {
     "id": "desert_city",
@@ -345,9 +515,14 @@
     "article": "the Muridae Market",
     "image": "https://www.mousehuntgame.com/images/environments/423b8ccbc5788e599320f20f6c20a478.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/ce9fd48c0a5b4e76f2f63113474d9ac6.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/f8e163b90c7d5a7580c905a3f2a9c777.jpg",
     "region": "desert",
     "order": 91,
-    "title": "baron_baroness"
+    "title": "baron_baroness",
+    "title_formatted": "Baron/Baroness",
+    "environment_id": 34,
+    "status": "active",
+    "description": "This fortified market has been ravaged by the relentless attacks of the Marching Flame. Local merchants are eagerly seeking the help of hunters to find construction materials and help rebuild their shops."
   },
   {
     "id": "desert_oasis",
@@ -355,9 +530,14 @@
     "article": "the Living Garden",
     "image": "https://www.mousehuntgame.com/images/environments/1f78a597ffbc9e1db4dd312d2a510e2d.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/4888b940f4619e6611e90a612cb254e3.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/f157f3b8b8aacdadf53eb1ef1b832411.jpg",
     "region": "desert",
     "order": 92,
-    "title": "baron_baroness"
+    "title": "baron_baroness",
+    "title_formatted": "Baron/Baroness",
+    "environment_id": 35,
+    "status": "active",
+    "description": "The mice that live in this garden use the environment to their advantage, fashioning crude armour and weapons from plantlife in order to protect and hoard all the Garden Essences they can find."
   },
   {
     "id": "lost_city",
@@ -365,9 +545,14 @@
     "article": "the Lost City",
     "image": "https://www.mousehuntgame.com/images/environments/aa370a7e75c3baa6db51967c17f6bc90.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/678132388b2581f42d01749fbff0bcfa.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/2d9be489ae37fc1247ecbb4497638761.jpg",
     "region": "desert",
     "order": 93,
-    "title": "baron_baroness"
+    "title": "baron_baroness",
+    "title_formatted": "Baron/Baroness",
+    "environment_id": 41,
+    "status": "active",
+    "description": "This city suffered a terrible curse and was lost between dimensions! The mice residing here are ghostly apparitions as well, trapped between dimensions in an incorporeal state."
   },
   {
     "id": "sand_dunes",
@@ -375,9 +560,14 @@
     "article": "the Sand Dunes",
     "image": "https://www.mousehuntgame.com/images/environments/4e8967692df16dfbb489e9acf672ec4a.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/6e96db3ec1b7075ba09875173e1999d5.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/09d766c4001c9e659dcd1ad758863a76.jpg",
     "region": "desert",
     "order": 94,
-    "title": "baron_baroness"
+    "title": "baron_baroness",
+    "title_formatted": "Baron/Baroness",
+    "environment_id": 42,
+    "status": "active",
+    "description": "Food in the desert is so scarce that there is fierce competition between mice over it. Watch out for the vicious grublings in this area, who hoard food and Garden Essences like no other mouse!"
   },
   {
     "id": "ss_huntington_ii",
@@ -385,9 +575,14 @@
     "article": "the S.S. Huntington IV",
     "image": "https://www.mousehuntgame.com/images/environments/2b8b5004d762ad05d5e84a932244a6e0.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/0d758141f6bcbe0a231985c578714538.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/c89203a09275672afac04eb66f9842b4.jpg",
     "region": "rodentia",
     "order": 50,
-    "title": "legendary"
+    "title": "legendary",
+    "title_formatted": "Legendary",
+    "environment_id": 26,
+    "status": "active",
+    "description": "This fine vessel has been granted permission by the King to sail the open ocean east of Gnawnia, and has been upgraded with hundreds of thousands of interlocking hull fragments, allowing it to breach even the dangerous Iceberg with ease."
   },
   {
     "id": "seasonal_garden",
@@ -395,9 +590,14 @@
     "article": "the Seasonal Garden",
     "image": "https://www.mousehuntgame.com/images/environments/49b4059a6789ec3b24b7489be9143c4a.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/7829f3af239544f2ceb3a4bbddfa60ce.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/86bc1af6627c8a4c07cbe176f322ceb1.jpg",
     "region": "rodentia",
     "order": 70,
-    "title": "lord_lady"
+    "title": "lord_lady",
+    "title_formatted": "Lord/Lady",
+    "environment_id": 31,
+    "status": "active",
+    "description": "Zugzwang's seasonal garden is the perfect destination for those who can't make up their mind about the weather. Every few days, the seasons shift, bringing with them a new crop of mice with different powers. Keep an eye out for the shards of an old key- they might provide the way into that mysterious locked tower.\nCurrent season: Winter\nChanging to Spring117450 in 1 day 8 hours 37 minutes 30 seconds"
   },
   {
     "id": "zugzwang_tower",
@@ -405,9 +605,14 @@
     "article": "Zugzwang's Tower",
     "image": "https://www.mousehuntgame.com/images/environments/08a64629c0ca285a411df8330ede2c11.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/7d8ec7b21f3761cd81c8385f62d294df.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/2f0a9c143bdc14295809d1ebbe8cbe04.jpg",
     "region": "rodentia",
     "order": 71,
-    "title": "lord_lady"
+    "title": "lord_lady",
+    "title_formatted": "Lord/Lady",
+    "environment_id": 32,
+    "status": "active",
+    "description": "An ordered chaos consumes this enchanted tower as the technological chess mice do battle with their mystical counterparts, all under the auspices of a dark game master who hides in the shadows. Conquer both Kings to find what lurks beyond the chess board, but beware: this is a place of powerful magics, where things are not always what they seem."
   },
   {
     "id": "zugzwang_library",
@@ -415,9 +620,14 @@
     "article": "the Crystal Library",
     "image": "https://www.mousehuntgame.com/images/environments/3b829c45549a8f953bc96ee34eff66dd.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/56e2f71c1ad421c71e252065619ec316.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/882cf2b6e2e24138e6fbb7cc76484ded.jpg",
     "region": "rodentia",
     "order": 72,
-    "title": "lord_lady"
+    "title": "lord_lady",
+    "title_formatted": "Lord/Lady",
+    "environment_id": 36,
+    "status": "active",
+    "description": "A magical barrier originally protected this library from mouse invasion until recently. Bands of magic and mechanical mice have circumvented the library's security measures in an effort to destroy the research Zugzwang once worked so hard to document."
   },
   {
     "id": "slushy_shoreline",
@@ -425,9 +635,14 @@
     "article": "the Slushy Shoreline",
     "image": "https://www.mousehuntgame.com/images/environments/83a58b48b1fdbde6f3b14e8a40e04e1f.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/3e8eb4494fdac0c3338219b64e1dbfc5.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/96c88a404a1743de26cbd81951273d14.jpg",
     "region": "rodentia",
     "order": 80,
-    "title": "lord_lady"
+    "title": "lord_lady",
+    "title_formatted": "Lord/Lady",
+    "environment_id": 39,
+    "status": "active",
+    "description": "In recent days, huge chunks of ice have washed ashore the beaches of Gnawnia. Worse, dangerous mice have floated ashore alongside and are attacking the walls of Gnawnia!\nHead to the beaches and stop the invasion!\nYou must be the rank of Lord/Lady to travel to this dangerous area."
   },
   {
     "id": "iceberg",
@@ -435,9 +650,14 @@
     "article": "the Iceberg",
     "image": "https://www.mousehuntgame.com/images/environments/11939d9ac30a58d4b923915834764ff0.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/4ff3e4717538b76cc1ec3f67ab8bd149.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/d6c6aaa1495efebb29da8d1225e9d4c4.jpg",
     "region": "rodentia",
     "order": 81,
-    "title": "lord_lady"
+    "title": "lord_lady",
+    "title_formatted": "Lord/Lady",
+    "environment_id": 40,
+    "status": "active",
+    "description": "Iceberg, dead ahead!\nTeeming with mice, and on a collision course with the beaches directly outside Gnawnia's castle, this Iceberg must be stopped at all costs!\nYou must be the rank of Lord/Lady to travel to this dangerous area."
   },
   {
     "id": "sunken_city",
@@ -445,9 +665,14 @@
     "article": "the Sunken City",
     "image": "https://www.mousehuntgame.com/images/environments/76c845e1cb95684581b12f3c3b1c1c8e.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/02e7cde50d53cd9ed90e1dcb4cb2c5a6.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/1502b125ffa059a0a25f47f86606a3ae.jpg",
     "region": "rodentia",
     "order": 110,
-    "title": "count_countess"
+    "title": "count_countess",
+    "title_formatted": "Count/Countess",
+    "environment_id": 47,
+    "status": "active",
+    "description": "Dive into the depths of the Rodentia Ocean and explore this ancient underwater city! Great treasures await adventurous hunters who journey into the deep waters!"
   },
   {
     "id": "queso_river",
@@ -455,9 +680,14 @@
     "article": "the Queso River",
     "image": "https://www.mousehuntgame.com/images/environments/404207124e79f78d3970df192fae9460.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/1c30a0923563b56e01ec10cbe2eac17c.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/7fecb8efca248bfea4971c5bf71c3750.jpg",
     "region": "queso_canyon",
     "order": 100,
-    "title": "count_countess"
+    "title": "count_countess",
+    "title_formatted": "Count/Countess",
+    "environment_id": 59,
+    "status": "active",
+    "description": "A free-flowing river of Bland Queso with an unknown origin. Being located deep within a canyon has kept it safe and hidden for quite sometime. Pumps established here can pump the Bland Queso straight from the river."
   },
   {
     "id": "queso_plains",
@@ -465,9 +695,14 @@
     "article": "the Prickly Plains",
     "image": "https://www.mousehuntgame.com/images/environments/b22f0b26343fc87581e3291e41b957ef.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/079c993f2608cc46a2676c16b2a95f0a.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/3895d12ba2b0ae7b1e17116800fcb6fe.jpg",
     "region": "queso_canyon",
     "order": 101,
-    "title": "count_countess"
+    "title": "count_countess",
+    "title_formatted": "Count/Countess",
+    "environment_id": 57,
+    "status": "active",
+    "description": "Within the canyon valley resides a beautiful field of cacti blossoming with a lovely variety of colourful spice leaves. The river winds nearby giving easy access to flowing queso for the convenient dipping of spice leaves for a great, flavourful snack."
   },
   {
     "id": "queso_quarry",
@@ -475,9 +710,14 @@
     "article": "the Cantera Quarry",
     "image": "https://www.mousehuntgame.com/images/environments/04042c67b067e04bc96bf59a05b3c9c3.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/425d407d398942cc3d13ea1ba9a23a75.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/15882f67e18ad8bd163d4f0b64442854.jpg",
     "region": "queso_canyon",
     "order": 102,
-    "title": "count_countess"
+    "title": "count_countess",
+    "title_formatted": "Count/Countess",
+    "environment_id": 58,
+    "status": "active",
+    "description": "A seemingly bottomless quarry that reaches down into a dark abyss. A valuable source of Nachore can be found here but it is guarded by a resilient group of mice."
   },
   {
     "id": "queso_geyser",
@@ -485,9 +725,14 @@
     "article": "the Queso Geyser",
     "image": "https://www.mousehuntgame.com/images/environments/d0046f985528496b0d638c04f35270bc.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/99ed271c5c776d5cff7eb3e0b42d20b7.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/dd5c9e06c512d0b3aff6f325d7f98633.jpg",
     "region": "queso_canyon",
     "order": 103,
-    "title": "count_countess"
+    "title": "count_countess",
+    "title_formatted": "Count/Countess",
+    "environment_id": 61,
+    "status": "active",
+    "description": "A highly active geyser home to powerful Draconic mice. The extreme heat fluctuations and stages of the geysers natural eruption cycle also affect the activity of the native mice population."
   },
   {
     "id": "fungal_cavern",
@@ -495,9 +740,14 @@
     "article": "the Fungal Cavern",
     "image": "https://www.mousehuntgame.com/images/environments/8e2c435efa191b1948f38525664c96ff.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/2f102c9a838767f48d4966e6ea1a91fc.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/dafaa165a37c8fb67c6778eae73c3269.jpg",
     "region": "zokor_zone",
     "order": 130,
-    "title": "duke_dutchess"
+    "title": "duke_dutchess",
+    "title_formatted": "Duke/Duchess",
+    "environment_id": 50,
+    "status": "active",
+    "description": "A recent settling of sand near the southern edge of the desert has revealed a hidden passageway into an underground cavern.\nThe Fungal Cavern is the site of an underground aquifer, a damp place full of mushrooms and poisonous plants. The walls are rich with Minerals and sparkling Gemstones that reflect and scatter what little light enters the cave."
   },
   {
     "id": "labyrinth",
@@ -505,9 +755,14 @@
     "article": "the Labyrinth",
     "image": "https://www.mousehuntgame.com/images/environments/fde0d810fea36c1bb16af988fa014a1f.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/24d1074c2616b20a5f4b8348a3cdd729.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/c2551d61d5e8ecf059487dbd4d8b5422.jpg",
     "region": "zokor_zone",
     "order": 131,
-    "title": "duke_dutchess"
+    "title": "duke_dutchess",
+    "title_formatted": "Duke/Duchess",
+    "environment_id": 52,
+    "status": "locked",
+    "description": "Topsy, turvy, left is right, up is down, can't make heads or tails of it all maze of epic proportions. Navigating the Labyrinth is simple yet complex. The strongest of hunters easily collapse to their knees in sheer madness trying and failing to complete this almost living structure. Even those that make it through have no better understanding of its layout."
   },
   {
     "id": "ancient_city",
@@ -515,9 +770,14 @@
     "article": "Zokor",
     "image": "https://www.mousehuntgame.com/images/environments/4439cd721150faa28ff83f8e390dd766.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/436adc956ec6763c6ece2c91609610c1.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/89e99375a209fd42ce73333fa4285da0.jpg",
     "region": "zokor_zone",
     "order": 132,
-    "title": "duke_dutchess"
+    "title": "duke_dutchess",
+    "title_formatted": "Duke/Duchess",
+    "environment_id": 51,
+    "status": "locked",
+    "description": "Built upon the ancient ruins of Moussu Picchu, this technologically-advanced superstructure of a city lies behind the endless, twisting corridors of the Labyrinth. Hunters must brave the mind-bending maze before entering this city in order to discover the secrets behind its multi-faceted society."
   },
   {
     "id": "moussu_picchu",
@@ -525,9 +785,14 @@
     "article": "Moussu Picchu",
     "image": "https://www.mousehuntgame.com/images/environments/438e2879c8c1e468f7e7eee169e289b6.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/fee8b8eaeca51a0c1ea67b9f9f262739.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/57be2e93f0467a8fa95ba7e4d4614c19.jpg",
     "region": "zokor_zone",
     "order": 133,
-    "title": "grand_duke"
+    "title": "grand_duke",
+    "title_formatted": "Grand Duke/Duchess",
+    "environment_id": 56,
+    "status": "active",
+    "description": "A once long-lost civilization, now left in ruins. The magics that at one point coursed through the city have been released into the surrounding area, lending power to the environment. This power has created intense fluctuations in the weather and has attracted some particularly powerful mice..."
   },
   {
     "id": "floating_islands",
@@ -535,9 +800,14 @@
     "article": "the Floating Islands",
     "image": "https://www.mousehuntgame.com/images/environments/0fb181c7f216be2d5bde0475ab46f8c5.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/53e8e44ac36e222571c250bcfab3d900.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/901d5e2b0d7c71579f9231edf7c1f2fd.jpg",
     "region": "zokor_zone",
     "order": 134,
-    "title": "archduke_archduchess"
+    "title": "archduke_archduchess",
+    "title_formatted": "Archduke/Archduchess",
+    "environment_id": 63,
+    "status": "active",
+    "description": "An archipelago of airborne islands that shift positions with the prevailing winds. This bountiful skyward region was previously cut off from the land-dwellers of Gnawnia due to the impenetrable magical storms created by Ful'Mina. Any intrepid hunter who possesses the Skyfarer's Oculus, a dirigible, and the protective Warden Stones will now be able to sail safely through the storms to this lofty paradise in the clouds."
   },
   {
     "id": "cerulean_skyport",
@@ -545,9 +815,14 @@
     "article": "the Cerulean Skyport",
     "image": "https://www.mousehuntgame.com/images/environments/730d4980a121ad22d3fa1465683821d7.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/cdb98f321fb2e515309f5556a242fcfe.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/c204785f9bb8a6b6eaf4ed7f7cd2968e.jpg",
     "region": "zokor_zone",
     "order": 135,
-    "title": "archduke_archduchess"
+    "title": "archduke_archduchess",
+    "title_formatted": "Archduke/Archduchess",
+    "environment_id": 77,
+    "status": "active",
+    "description": "This floating port town is the centre of aerial commerce in Gnawnia with trade goods flying in daily from all corners of the Kingdom."
   },
   {
     "id": "foreword_farm",
@@ -555,9 +830,14 @@
     "article": "the Foreword Farm",
     "image": "https://www.mousehuntgame.com/images/environments/e473a02469e37bf1d01c0a42188a8609.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/97f7fb7936ea4842c996bb8b614902f4.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/0d610ec1e4edae7f6bab36cafc591422.jpg",
     "region": "folklore_forest",
     "order": 140,
-    "title": "archduke_archduchess"
+    "title": "archduke_archduchess",
+    "title_formatted": "Archduke/Archduchess",
+    "environment_id": 65,
+    "status": "active",
+    "description": "Tend these fertile fields to grow a bountiful harvest of Parable Papyrus!"
   },
   {
     "id": "prologue_pond",
@@ -565,9 +845,14 @@
     "article": "the Prologue Pond",
     "image": "https://www.mousehuntgame.com/images/environments/cd1bbc4c15baca2208f90313c7ef65a4.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/b80757311ac4164ef9b3ad12b5dfb48d.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/43040f2cc1dc585bdc1abfd1ef2277d7.jpg",
     "region": "folklore_forest",
     "order": 141,
-    "title": "archduke_archduchess"
+    "title": "archduke_archduchess",
+    "title_formatted": "Archduke/Archduchess",
+    "environment_id": 66,
+    "status": "active",
+    "description": "Push off from shore, cast your line, and go fishing for Inspiration Ink!"
   },
   {
     "id": "table_of_contents",
@@ -575,9 +860,14 @@
     "article": "the Table of Contents",
     "image": "https://www.mousehuntgame.com/images/environments/f48fa15a916ac106efbf4ca6b4be7135.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/e5fae435efbf58a7a3f76f496c08aec1.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/41ec0595296495e630dea499c0bed3a2.jpg",
     "region": "folklore_forest",
     "order": 142,
-    "title": "archduke_archduchess"
+    "title": "archduke_archduchess",
+    "title_formatted": "Archduke/Archduchess",
+    "environment_id": 67,
+    "status": "active",
+    "description": "Protect the history of Gnawnia by writing the longest books that you can in an effort to outwrite the devious and dastardly Mythweaver!"
   },
   {
     "id": "bountiful_beanstalk",
@@ -585,9 +875,14 @@
     "article": "the Bountiful Beanstalk",
     "image": "https://www.mousehuntgame.com/images/environments/b87a3294559cfa57506b4fbda5f66917.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/ce1d7f400ed30896a7118468cf790706.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/1559cd101730b5ae0b90e212b0b7a0fd.jpg",
     "region": "folklore_forest",
     "order": 143,
-    "title": "viceroy"
+    "title": "viceroy",
+    "title_formatted": "Viceroy",
+    "environment_id": 71,
+    "status": "active",
+    "description": "Climb this massive, towering beanstalk to reach the impressive, lucrative, and dangerous Castle in the Clouds!"
   },
   {
     "id": "school_of_sorcery",
@@ -595,9 +890,14 @@
     "article": "the School of Sorcery",
     "image": "https://www.mousehuntgame.com/images/environments/55598ce351c1dc264fdd9ad0d4762a6f.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/3748b0f5ede5ad360273aa9da3ebdb12.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/55598ce351c1dc264fdd9ad0d4762a6f.jpg",
     "region": "folklore_forest",
     "order": 144,
-    "title": "viceroy"
+    "title": "viceroy",
+    "title_formatted": "Viceroy",
+    "environment_id": 72,
+    "status": "active",
+    "description": "Prepare to hit the books and study hard so that you can graduate from a lowly Apprentice to a powerful Master Sorcerer!"
   },
   {
     "id": "draconic_depths",
@@ -605,9 +905,14 @@
     "article": "the Draconic Depths",
     "image": "https://www.mousehuntgame.com/images/environments/de21170f614ec5cbd112626d059c09fd.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/c122e76eaa17716a7e058a11a7ff54f5.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/de21170f614ec5cbd112626d059c09fd.jpg",
     "region": "folklore_forest",
     "order": 145,
-    "title": "viceroy"
+    "title": "viceroy",
+    "title_formatted": "Viceroy",
+    "environment_id": 73,
+    "status": "active",
+    "description": "Do you dare to descend into dark and dangerous depths where dread, despair, and desolation dominate a devastatingly dismal den of destruction? Beware, here be dragons!"
   },
   {
     "id": "afterword_acres",
@@ -615,9 +920,14 @@
     "article": "the Afterword Acres",
     "image": "https://www.mousehuntgame.com/images/environments/9e2ede5751cdfa4bdb29128d26f9d269.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/ad338f4ced63858de74503ec0d8ba705.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/9e2ede5751cdfa4bdb29128d26f9d269.jpg",
     "region": "folklore_forest",
     "order": 146,
-    "title": "viceroy"
+    "title": "viceroy",
+    "title_formatted": "Viceroy",
+    "environment_id": 74,
+    "status": "active",
+    "description": "Fight the blight, save the Infinitree, and carve Poetic Planks!"
   },
   {
     "id": "epilogue_falls",
@@ -625,9 +935,14 @@
     "article": "the Epilogue Falls",
     "image": "https://www.mousehuntgame.com/images/environments/de315cfc322a251f74da564ccc44343a.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/ae7de9be98b1ddb7ca01c50ebb1fdbc6.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/de315cfc322a251f74da564ccc44343a.jpg",
     "region": "folklore_forest",
     "order": 147,
-    "title": "viceroy"
+    "title": "viceroy",
+    "title_formatted": "Viceroy",
+    "environment_id": 75,
+    "status": "active",
+    "description": "Build a barrel, ride the rapids, and journey into the falls!"
   },
   {
     "id": "conclusion_cliffs",
@@ -635,9 +950,14 @@
     "article": "the Conclusion Cliffs",
     "image": "https://www.mousehuntgame.com/images/environments/e785e974d91f5ee9e5da524297153c64.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/19ab9dc12a5fb7098bd69357d8e2a755.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/0cbec0586a49db9b7207e2efb458e3d4.jpg",
     "order": 148,
     "title": "viceroy",
-    "region": "folklore_forest"
+    "region": "folklore_forest",
+    "title_formatted": "Viceroy",
+    "environment_id": 76,
+    "status": "active",
+    "description": "Write the conclusion to the Mythweaver's story!"
   },
   {
     "id": "rift_gnawnia",
@@ -645,9 +965,14 @@
     "article": "the Gnawnia Rift",
     "image": "https://www.mousehuntgame.com/images/environments/632aa670b5358a0bbc2d2c4ef982c6ad.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/c02154174160d9023d44f3075f3267e1.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/8b51987e048966a5c6f74418e89dd88c.jpg",
     "region": "riftopia",
     "order": 900,
-    "title": "count_countess"
+    "title": "count_countess",
+    "title_formatted": "Count/Countess",
+    "environment_id": 46,
+    "status": "active",
+    "description": "Within the depths of the unknown, creeping among the mists of mystery, the Gnawnia Rift is haunted by the most menacing, terrifyingly thought-bending, and maniacally mind-warping mice one could imagine... What will you find beyond the tear is vast and unknown. Brace yourselves for a challenge of great proportions!"
   },
   {
     "id": "rift_burroughs",
@@ -655,9 +980,14 @@
     "article": "the Burroughs Rift",
     "image": "https://www.mousehuntgame.com/images/environments/818f04f2bda88795c67cc6ff227615bb.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/c1ada6edacdc8bf6cbdce967d7d7481f.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/4ed5970afb26b55d856f8197ec513b33.jpg",
     "region": "riftopia",
     "order": 901,
-    "title": "duke_dutchess"
+    "title": "duke_dutchess",
+    "title_formatted": "Duke/Duchess",
+    "environment_id": 48,
+    "status": "active",
+    "description": "Just when you thought you understood and could deal with the horrors of the Gnawnian Rift, a new rift opens up! Tendrils of mist curl along the ground, and the terrifying cries of powerful mice echo all around. Do you have what it takes to take it on?"
   },
   {
     "id": "rift_whisker_woods",
@@ -665,9 +995,14 @@
     "article": "the Whisker Woods Rift",
     "image": "https://www.mousehuntgame.com/images/environments/d5e2069ed820740389a2f4cebbc5657c.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/91e00fc43d1517fd7ac6ead89a3ce8ec.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/a62ecf1568d221204f9e414365257cff.jpg",
     "region": "riftopia",
     "order": 902,
-    "title": "duke_dutchess"
+    "title": "duke_dutchess",
+    "title_formatted": "Duke/Duchess",
+    "environment_id": 49,
+    "status": "active",
+    "description": "If a tree falls in the woods, does it make a sound? Yes, It sounds like the angry yelling of crowded mice! Bursting forth from the surrounding area is the entrance of a new Rift. Can you head deep into the angered overgrowth of the Whisker Woods Rift and calm it down?"
   },
   {
     "id": "rift_furoma",
@@ -675,9 +1010,14 @@
     "article": "the Furoma Rift",
     "image": "https://www.mousehuntgame.com/images/environments/67fca617353d1d951d24abea92bce506.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/44eb42443db54782b5c4ba02b432ee13.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/0929ca477211f380c0856663cd825195.jpg",
     "region": "riftopia",
     "order": 903,
-    "title": "grand_duke"
+    "title": "grand_duke",
+    "title_formatted": "Grand Duke/Duchess",
+    "environment_id": 53,
+    "status": "active",
+    "description": "Cloaked in choking mist, the looming tower of the Furoma Rift beckons hunters to scale it. The mist acts as an environmental defence to keep outsiders away from stealing their precious teachings. Too thick for a hunter to breathe or even see through, this area presents quite a challenge.\nThe mist will be the least of your problems. It is rumored that the most powerful mice yet to be encountered reside inside and grow stronger every day."
   },
   {
     "id": "rift_bristle_woods",
@@ -685,9 +1025,14 @@
     "article": "the Bristle Woods Rift",
     "image": "https://www.mousehuntgame.com/images/environments/3319aacbf12783484718dd1470f2bdb7.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/f96ec205e6d305a8ceb62a9ffc7042c4.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/2b8f8498d46eb6a83376fd2bbe8969c1.jpg",
     "region": "riftopia",
     "order": 904,
-    "title": "grand_duke"
+    "title": "grand_duke",
+    "title_formatted": "Grand Duke/Duchess",
+    "environment_id": 55,
+    "status": "active",
+    "description": "A huge tower looms in the distance, stretching beyond the visible skyline. Completely isolated with no signs of entry except for a lone, translucent portal. Contained inside are extremely powerful mice, versed in the arts of clockwork time manipulation looking to find a way out!"
   },
   {
     "id": "rift_valour",
@@ -695,8 +1040,13 @@
     "article": "the Valour Rift",
     "image": "https://www.mousehuntgame.com/images/environments/5d2d00f48fbe41740cfb438f947273ac.jpg",
     "headerImage": "https://www.mousehuntgame.com/images/environments/35d5eed5ac7dfd3f3a5c3b4254ab1fc7.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/0f2b5a24c32d2596676c1bf8e9420982.jpg",
     "region": "riftopia",
     "order": 905,
-    "title": "archduke_archduchess"
+    "title": "archduke_archduchess",
+    "title_formatted": "Archduke/Archduchess",
+    "environment_id": 62,
+    "status": "active",
+    "description": "Within the Valour Rift stands an endlessly tall tower slightly out of sync with our timeline... What dark secrets does this tower hold?"
   }
 ]
