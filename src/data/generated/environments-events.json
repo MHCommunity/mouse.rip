@@ -3,42 +3,84 @@
     "id": "winter_hunt_grove",
     "name": "Cinnamon Hill",
     "image": "https://www.mousehuntgame.com/images/environments/9116f87ec4f9ef3be13a1a833a61aec4.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/e3a7b6767899075d59bb3bb90b4aca2b.jpg",
     "region": "events-gwh",
-    "event": "gwh"
+    "event": "gwh",
+    "order": 1,
+    "title": "recruit",
+    "title_formatted": "Recruit",
+    "environment_id": 69,
+    "status": "inactive",
+    "description": "Possibly the most delightfully aromatic place in all of Gnawnia, Cinnamon Hill is the source of the Kingdom's cleanest, most efficient, and most delicious fuel source!"
   },
   {
     "id": "winter_hunt_workshop",
     "name": "Golem Workshop",
     "image": "https://www.mousehuntgame.com/images/environments/bbd5eeca404e57ec2ffb9d9a108361a2.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/83ec5fb09bc903878b25ba6f5c77f07d.jpg",
     "region": "events-gwh",
-    "event": "gwh"
+    "event": "gwh",
+    "order": 2,
+    "title": "recruit",
+    "title_formatted": "Recruit",
+    "environment_id": 70,
+    "status": "inactive",
+    "description": "The hard-working droids that toil away in this merry manufacturing plant are the most efficient and meticulous artisans of Snow Golem parts in the entire Kingdom!"
   },
   {
     "id": "winter_hunt_fortress",
     "name": "Ice Fortress",
     "image": "https://www.mousehuntgame.com/images/environments/15d8d9d837b22b31707d06f412b78e0d.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/374bdc780fd11253d3ca5ae43f339f9b.jpg",
     "region": "events-gwh",
-    "event": "gwh"
+    "event": "gwh",
+    "order": 3,
+    "title": "recruit",
+    "title_formatted": "Recruit",
+    "environment_id": 68,
+    "status": "inactive",
+    "description": "This frighteningly frigid fortress towering over the Great Winter Taiga is home to the devious and dastardly Frost King!"
   },
   {
     "id": "super_brie_factory",
     "name": "SUPER|brie+ Factory",
     "image": "https://www.mousehuntgame.com/images/environments/5c062423fe24cb76089ea7acca9e40a6.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/50323713619548bd225c232cf9e6ad3d.jpg",
     "region": "events-birthday",
-    "event": "birthday"
+    "event": "birthday",
+    "order": 12,
+    "title": "recruit",
+    "title_formatted": "Recruit",
+    "environment_id": 60,
+    "status": "inactive",
+    "description": "The real, actual super secret factory where the King produces all of the SUPER|brie+ in the Kingdom! Seldom opened to the public, make sure you visit when you can so you can make some SUPER|brie+ of your own!"
   },
   {
     "id": "halloween_event_location",
     "name": "Gloomy Greenwood",
     "image": "https://www.mousehuntgame.com/images/environments/40955984e59753d278e0c17f53478c9d.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/8bdd624eda4c249d21f4b971aad3c7ae.jpg",
     "region": "events-halloween",
-    "event": "halloween"
+    "event": "halloween",
+    "order": 12,
+    "title": "recruit",
+    "title_formatted": "Recruit",
+    "environment_id": 64,
+    "status": "inactive",
+    "description": "A dark and dangerous forest that earned its moniker from its blanket of billowing green fog and the inescapable sense of dread that envelops all those who dare approach it. The trees seem to close around you, choking out the light, while the shadows of the unknown dance in the distance behind the glow of a mysterious hut.\nA very spooky place indeed!"
   },
   {
     "id": "ronzas_traveling_shoppe",
     "name": "Ronza's Traveling Shoppe",
     "image": "https://www.mousehuntgame.com/images/environments/567b2bcd2fb4b713d3777226783e5ffa.jpg",
+    "icon": "https://www.mousehuntgame.com/images/environments/f09f72c16dfcb65f57672ac30885e1e9.jpg",
     "region": "events-ronza",
-    "event": "ronza"
+    "event": "ronza",
+    "order": 13,
+    "title": "recruit",
+    "title_formatted": "Recruit",
+    "environment_id": 24,
+    "status": "inactive",
+    "description": "Ronza stops in from time to time, bringing MouseHunters new and fancy trap components from other parts of the world. Little is known about her origins, and she never stays very long. The King allows Ronza to make port near the castle, to sell her goods. Perhaps the more she visits, the more we will find out about her..."
   }
 ]

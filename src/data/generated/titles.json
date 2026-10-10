@@ -5,7 +5,11 @@
     "icon": "https://www.mousehuntgame.com/images/titles/84bc1109b5cd7aa8c24d195bc8207c38.png",
     "name": "Novice",
     "name_female": "Novice",
-    "name_male": "Novice"
+    "name_male": "Novice",
+    "title_id": 15,
+    "icon_border": "https://www.mousehuntgame.com/images/titles/f6bd9e523ad0e1af06323d1122744956.gif",
+    "crafting_slots": 0,
+    "description": "- Your starting title\n- Hunt in the Meadow"
   },
   {
     "id": "recruit",
@@ -13,7 +17,11 @@
     "icon": "https://www.mousehuntgame.com/images/titles/3f1e44bbaa7138da4c326819e9f3f0a8.png",
     "name": "Recruit",
     "name_female": "Recruit",
-    "name_male": "Recruit"
+    "name_male": "Recruit",
+    "title_id": 18,
+    "icon_border": "https://www.mousehuntgame.com/images/titles/c1d4de886e1f77140db21584ccee9690.gif",
+    "crafting_slots": 0,
+    "description": "- Hunt in the Town of Gnawnia"
   },
   {
     "id": "apprentice",
@@ -21,7 +29,11 @@
     "icon": "https://www.mousehuntgame.com/images/titles/6f4673dd2d9d1e98b4569667d702a775.png",
     "name": "Apprentice",
     "name_female": "Apprentice",
-    "name_male": "Apprentice"
+    "name_male": "Apprentice",
+    "title_id": 1,
+    "icon_border": "https://www.mousehuntgame.com/images/titles/42fd744082a2d43d0a3850c7c78bca63.gif",
+    "crafting_slots": 0,
+    "description": "- Hunt at the Windmill, the King's Arms, and the Tournament Hall"
   },
   {
     "id": "initiate",
@@ -29,7 +41,11 @@
     "icon": "https://www.mousehuntgame.com/images/titles/e96387f7261b95c0eeab9291e4e594e1.png",
     "name": "Initiate",
     "name_female": "Initiate",
-    "name_male": "Initiate"
+    "name_male": "Initiate",
+    "title_id": 17,
+    "icon_border": "https://www.mousehuntgame.com/images/titles/5ee6baadac7a694aafa395232af28e91.gif",
+    "crafting_slots": 2,
+    "description": "- Hunt at the Harbour\n- Combine 2 items while crafting"
   },
   {
     "id": "journeyman",
@@ -37,7 +53,11 @@
     "icon": "https://www.mousehuntgame.com/images/titles/ad6875955f541159133c6d3798519f81.png",
     "name": "Journeyman/Journeywoman",
     "name_female": "Journeywoman",
-    "name_male": "Journeyman"
+    "name_male": "Journeyman",
+    "title_id": 9,
+    "icon_border": "https://www.mousehuntgame.com/images/titles/11cf600b38d4551f8e7067d008be3eff.gif",
+    "crafting_slots": 3,
+    "description": "- Hunt in the Mountain and the Calm Clearing\n- Combine 3 items while crafting\n- Use Charms by visiting the Charm Shoppe in the Mountain"
   },
   {
     "id": "master",
@@ -45,7 +65,11 @@
     "icon": "https://www.mousehuntgame.com/images/titles/35ee6056a09037fb13a9195881875045.png",
     "name": "Master",
     "name_female": "Master",
-    "name_male": "Master"
+    "name_male": "Master",
+    "title_id": 14,
+    "icon_border": "https://www.mousehuntgame.com/images/titles/c5f810894ccbd924337a4a73d52b65f5.gif",
+    "crafting_slots": 4,
+    "description": "- Hunt in the Laboratory, Town of Digby, Mousoleum, and the Great Gnarled Tree\n- Combine 4 items while crafting"
   },
   {
     "id": "grandmaster",
@@ -53,7 +77,11 @@
     "icon": "https://www.mousehuntgame.com/images/titles/0da3761747914f497c16dc2051ba132d.png",
     "name": "Grandmaster",
     "name_female": "Grandmaster",
-    "name_male": "Grandmaster"
+    "name_male": "Grandmaster",
+    "title_id": 7,
+    "icon_border": "https://www.mousehuntgame.com/images/titles/200ad58c8ddad563fb37713b37807943.gif",
+    "crafting_slots": 5,
+    "description": "- Hunt in the Bazaar, Training Grounds, Dojo, Meditation Room, Pinnacle Chamber, and the Lagoon\n- Combine 5 items while crafting"
   },
   {
     "id": "legendary",
@@ -61,7 +89,11 @@
     "icon": "https://www.mousehuntgame.com/images/titles/fca35751046f4bcc972716ca484b6d61.png",
     "name": "Legendary",
     "name_female": "Legendary",
-    "name_male": "Legendary"
+    "name_male": "Legendary",
+    "title_id": 12,
+    "icon_border": "https://www.mousehuntgame.com/images/titles/c386938f631cd7d44b3e206778a63630.gif",
+    "crafting_slots": 6,
+    "description": "- Hunt in the Catacombs, Forbidden Grove, Acolyte Realm, S.S. Huntington IV, Cape Clawed, Elub Shore, Nerg Plains, and the Derr Dunes\n- Can now open Scavenger Hunt Scrolls\n- Combine 6 items while crafting"
   },
   {
     "id": "hero",
@@ -69,7 +101,11 @@
     "icon": "https://www.mousehuntgame.com/images/titles/0567284d6e12aaaed35ca5912007e070.png",
     "name": "Hero",
     "name_female": "Hero",
-    "name_male": "Hero"
+    "name_male": "Hero",
+    "title_id": 8,
+    "icon_border": "https://www.mousehuntgame.com/images/titles/99e295301cccf13779fa1fc872f13665.gif",
+    "crafting_slots": 7,
+    "description": "- Hunt in the Jungle of Dread, and the King's Gauntlet\n- Toxic Spill: Limited contamination level clearance granted\n- Combine 7 items while crafting"
   },
   {
     "id": "knight",
@@ -77,7 +113,11 @@
     "icon": "https://www.mousehuntgame.com/images/titles/398dca9a8c7703de969769491622ca32.png",
     "name": "Knight",
     "name_female": "Knight",
-    "name_male": "Knight"
+    "name_male": "Knight",
+    "title_id": 11,
+    "icon_border": "https://www.mousehuntgame.com/images/titles/5994cd65966ac07da55476042d2ccde6.gif",
+    "crafting_slots": 8,
+    "description": "- Hunt in Dracano and Balack's Cove\n- Toxic Spill: Higher contamination level clearance granted\n- Combine 8 items while crafting"
   },
   {
     "id": "lord_lady",
@@ -85,7 +125,11 @@
     "icon": "https://www.mousehuntgame.com/images/titles/9a6acd429a9a3a4849ed13901288b0b8.png",
     "name": "Lord/Lady",
     "name_female": "Lady",
-    "name_male": "Lord"
+    "name_male": "Lord",
+    "title_id": 13,
+    "icon_border": "https://www.mousehuntgame.com/images/titles/4993ead03b94593d74a0f274cb0a6c14.gif",
+    "crafting_slots": 9,
+    "description": "- Hunt in the Seasonal Garden, Zugzwang's Tower, Crystal Library, Slushy Shoreline, the Iceberg, Claw Shot City, and Gnawnian Express Station\n- Toxic Spill: Higher contamination level clearance granted\n- Combine 9 items while crafting"
   },
   {
     "id": "baron_baroness",
@@ -93,7 +137,11 @@
     "icon": "https://www.mousehuntgame.com/images/titles/ea9c0ec2e6d3d81c14e61f5ce924d0e1.png",
     "name": "Baron/Baroness",
     "name_female": "Baroness",
-    "name_male": "Baron"
+    "name_male": "Baron",
+    "title_id": 3,
+    "icon_border": "https://www.mousehuntgame.com/images/titles/ba40cd7d40c3f4de10b66f523aa15318.gif",
+    "crafting_slots": 10,
+    "description": "- Hunt at Fort Rox, Fiery Warpath, Muridae Market, Living Garden, Lost City, and Sand Dunes\n- Toxic Spill: Higher contamination level clearance granted\n- Combine 10 items while crafting\n- Charge your Tower Amplifier to 160% when hunting in the Seasonal Garden"
   },
   {
     "id": "count_countess",
@@ -101,7 +149,11 @@
     "icon": "https://www.mousehuntgame.com/images/titles/dd11711a25b80db90e0306193f2e8d78.png",
     "name": "Count/Countess",
     "name_female": "Countess",
-    "name_male": "Count"
+    "name_male": "Count",
+    "title_id": 4,
+    "icon_border": "https://www.mousehuntgame.com/images/titles/4c1690ab872114c052a019874cc75f08.gif",
+    "crafting_slots": 11,
+    "description": "- Hunt at the Gnawnian Rift, Queso River, Prickly Plains, Cantera Quarry, Queso Geyser, and the Sunken City\n- Toxic Spill: Higher contamination level clearance granted\n- Combine 11 items while crafting\n- Charge your Tower Amplifier to 175% when hunting in the Seasonal Garden"
   },
   {
     "id": "duke_dutchess",
@@ -109,7 +161,11 @@
     "icon": "https://www.mousehuntgame.com/images/titles/eb46ac1e8197b13299ab860f07d963db.png",
     "name": "Duke/Duchess",
     "name_female": "Duchess",
-    "name_male": "Duke"
+    "name_male": "Duke",
+    "title_id": 5,
+    "icon_border": "https://www.mousehuntgame.com/images/titles/9f930616f82f2ff0fb57a38aaa511f16.gif",
+    "crafting_slots": 12,
+    "description": "- Hunt at the Burroughs Rift, Whisker Woods Rift, Fungal Cavern, Labyrinth and Zokor\n- Toxic Spill: Higher contamination level clearance granted\n- Combine 12 items while crafting"
   },
   {
     "id": "grand_duke",
@@ -117,7 +173,11 @@
     "icon": "https://www.mousehuntgame.com/images/titles/87937fa96bbb3b2dd3225df883002642.png",
     "name": "Grand Duke/Duchess",
     "name_female": "Grand Duchess",
-    "name_male": "Grand Duke"
+    "name_male": "Grand Duke",
+    "title_id": 6,
+    "icon_border": "https://www.mousehuntgame.com/images/titles/065e8bbd86d10304736db6e306d0aa95.gif",
+    "crafting_slots": 12,
+    "description": "- Hunt at the Furoma Rift, Bristle Woods Rift and Moussu Picchu\n- Toxic Spill: Higher contamination level clearance granted\n- Combine 12 items while crafting"
   },
   {
     "id": "archduke_archduchess",
@@ -125,7 +185,11 @@
     "icon": "https://www.mousehuntgame.com/images/titles/043efe31de4f0f2e0ddca590fe829032.png",
     "name": "Archduke/Archduchess",
     "name_female": "Archduchess",
-    "name_male": "Archduke"
+    "name_male": "Archduke",
+    "title_id": 2,
+    "icon_border": "https://www.mousehuntgame.com/images/titles/b69cf4e828938970eec75ffbb42fe020.gif",
+    "crafting_slots": 12,
+    "description": "- Hunt at the Valour Rift, Floating Islands, Cerulean Skyport, Foreword Farm, Prologue Pond, and Table of Contents\n- Toxic Spill: Maximum contamination level clearance granted\n- Combine 12 items while crafting"
   },
   {
     "id": "viceroy",
@@ -133,15 +197,23 @@
     "icon": "https://www.mousehuntgame.com/images/titles/e2e79f6f9201a4d4e7a89684fbb5356f.png",
     "name": "Viceroy",
     "name_female": "Viceroy",
-    "name_male": "Viceroy"
+    "name_male": "Viceroy",
+    "title_id": 22,
+    "icon_border": "https://www.mousehuntgame.com/images/titles/43d1eef8eaa3fc9eeadbf785ff0d2ced.gif",
+    "crafting_slots": 12,
+    "description": "- Hunt at the Bountiful Beanstalk, School of Sorcery, Draconic Depths, Afterword Acres, Epilogue Falls, and Conclusion Cliffs\n- Combine 12 items while crafting"
   },
   {
     "id": "elder",
     "order": 18,
-    "icon": "https://www.mousehuntgame.com/images/titles/ccb7073950cc3b6e77b1d1ace7640fe7.gif?cv=3",
+    "icon": "https://www.mousehuntgame.com/images/titles/ccb7073950cc3b6e77b1d1ace7640fe7.gif",
     "name": "Elder",
     "name_female": "Elder",
-    "name_male": "Elder"
+    "name_male": "Elder",
+    "title_id": 19,
+    "icon_border": "https://www.mousehuntgame.com/images/titles/ccb7073950cc3b6e77b1d1ace7640fe7.gif",
+    "crafting_slots": 13,
+    "description": "- Combine 13 items while crafting"
   },
   {
     "id": "sage",
@@ -149,7 +221,11 @@
     "icon": "https://www.mousehuntgame.com/images/titles/cb49e43c5e4460da7c09fe28ca4f44ce.png",
     "name": "Sage",
     "name_female": "Sage",
-    "name_male": "Sage"
+    "name_male": "Sage",
+    "title_id": 21,
+    "icon_border": "https://www.mousehuntgame.com/images/titles/0f12447b3f95af94e89981a414502a58.gif",
+    "crafting_slots": 14,
+    "description": "- Combine 14 items while crafting"
   },
   {
     "id": "fabled",
@@ -157,6 +233,10 @@
     "icon": "https://www.mousehuntgame.com/images/titles/5daba92a8d609834aa8b789f37544e08.png",
     "name": "Fabled",
     "name_female": "Fabled",
-    "name_male": "Fabled"
+    "name_male": "Fabled",
+    "title_id": 20,
+    "icon_border": "https://www.mousehuntgame.com/images/titles/97d707ac3783a31b8f518d80b89de162.gif",
+    "crafting_slots": 15,
+    "description": "- Combine 15 items while crafting"
   }
 ]
