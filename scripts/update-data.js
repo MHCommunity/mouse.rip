@@ -2,6 +2,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const DATA_DIR = path.join(__dirname, '../src/data/generated');
+// Override to update from a local `wrangler dev` of the API.
+const API_URL = process.env.API_URL ?? 'https://api.mouse.rip';
 const pendingFiles = new Map();
 
 const stage = (file, data, { pretty = false } = {}) => {
@@ -168,7 +170,7 @@ const updateDataFiles = async () => {
 };
 
 const fetchJson = async (endpoint) => {
-  const response = await fetch(`https://api.mouse.rip/${endpoint}`);
+  const response = await fetch(`${API_URL}/${endpoint}`);
   if (!response.ok) {
     throw new Error(`${endpoint} responded ${response.status}`);
   }
@@ -180,8 +182,8 @@ const fetchJson = async (endpoint) => {
 };
 
 /**
- * Fetch one endpoint per entity, a few at a time. These datasets have no bulk
- * endpoint, so the only way to bake them into the pages is to ask for each one.
+ * Fetch one endpoint per entity, a few at a time, for data the API only serves
+ * per entity.
  *
  * A 404 is a legitimate empty result. Any other failure after retries aborts the
  * update, because omitting even one failed entity would replace a complete
@@ -205,7 +207,7 @@ export const fetchPerEntity = async (
       let lastError = null;
       for (let attempt = 0; attempt < 3 && rows === null; attempt++) {
         try {
-          const response = await fetchImpl(`https://api.mouse.rip/${endpoint(id)}`);
+          const response = await fetchImpl(`${API_URL}/${endpoint(id)}`);
           // A 404 is a real answer: this entity has no rows.
           if (404 === response.status) {
             rows = [];
@@ -372,35 +374,75 @@ const updateRelationalData = async (items, mice) => {
   );
   stage('convertible-contents', contents);
 
-  // The three datasets with no bulk endpoint. Baked in so item and mouse pages
-  // ship their drop/attraction tables in the HTML instead of fetching them on
-  // every view.
+  // MHCT drop, attraction and map tables, baked in so item and mouse pages
+  // ship them in the HTML instead of fetching them on every view. The API
+  // builds all three in bulk each week, so this is a handful of requests
+  // rather than one per item and mouse.
   //
   // Only the rows the pages actually render are kept. The long tail is mostly
-  // one-hunt noise — a single item has 1,490 recorded location/cheese rows — and
-  // storing all of it would triple these files for rows nobody ever sees.
+  // small-sample noise, and storing all of it would triple these files for rows
+  // nobody ever sees.
   const best = (rows, key, limit) => [...rows].sort((a, b) => Number(b[key]) - Number(a[key])).slice(0, limit);
 
-  console.log('Updating item-drops (one request per item)...');
-  const drops = await fetchPerEntity(
-    'item-drops',
-    items.map((item) => item.id),
-    (id) => `mhct-item/${id}`,
+  // Which mice drop each item, where. The API only serves this per mouse (or
+  // per item), but the files behind it are static, so asking for each mouse is
+  // quick and doesn't touch MHCT. Turned around here into rows per item.
+  console.log('Updating item-drops (one request per mouse)...');
+  const loot = await fetchPerEntity(
+    'mouse-loot',
+    mice.map((mouse) => mouse.id),
+    (id) => `mouse-loot/${id}`,
   );
+  const mouseNames = new Map(mice.map((mouse) => [mouse.id, mouse.name]));
+  const drops = {};
+  for (const [mouseId, rows] of Object.entries(loot)) {
+    for (const { item_id, ...row } of rows) {
+      (drops[item_id] ??= []).push({ ...row, mouse_id: Number(mouseId), mouse_name: mouseNames.get(Number(mouseId)) });
+    }
+  }
+  validateItemReferences('item-drops', Object.keys(drops), itemIds);
   validateMinimumCoverage('item-drops', Object.keys(drops).length, Object.keys(readGenerated('item-drops', {})).length);
+  const dropRow = (row) => ({
+    mouse_id: row.mouse_id,
+    mouse_name: row.mouse_name,
+    location: row.location,
+    catches: row.catches,
+    drop_likelihood: row.drop_likelihood,
+    min: row.min,
+    max: row.max,
+    baseline: row.baseline,
+  });
   stage(
     'item-drops',
     Object.fromEntries(
-      Object.entries(drops).map(([id, rows]) => [id, { rows: best(rows, 'drop_pct', 50), total: rows.length }]),
+      Object.entries(drops).map(([id, rows]) => [
+        id,
+        { rows: best(rows, 'drop_likelihood', 50).map(dropRow), total: rows.length },
+      ]),
     ),
   );
 
-  console.log('Updating mice-attraction (one request per mouse)...');
-  const attraction = await fetchPerEntity(
-    'mice-attraction',
-    mice.map((mouse) => mouse.id),
-    (id) => `mhct/${id}`,
-  );
+  // Attraction is published per population (location, stage, cheese, charm),
+  // so turn it around into the populations that attract each mouse.
+  console.log('Updating mice-attraction...');
+  const populations = requireArray(await fetchJson('attraction'), 'attraction');
+  const mouseIdByType = new Map(mice.map((mouse) => [mouse.type, mouse.id]));
+  const attraction = {};
+  for (const population of populations) {
+    for (const mouse of population.mice ?? []) {
+      const mouseId = mouseIdByType.get(mouse.type);
+      if (!mouseId) continue;
+      (attraction[mouseId] ??= []).push({
+        location: population.location_name,
+        stage: '-' === population.stage ? null : population.stage,
+        cheese: population.cheese_name,
+        charm: '-' === population.charm ? null : population.charm_name,
+        // In hundredths of a percent, as MHCT reports it.
+        rate: Math.round(mouse.rate * 100),
+        total_hunts: population.sample_size ?? null,
+      });
+    }
+  }
   validateMinimumCoverage(
     'mice-attraction',
     Object.keys(attraction).length,
@@ -411,18 +453,23 @@ const updateRelationalData = async (items, mice) => {
     Object.fromEntries(Object.entries(attraction).map(([id, rows]) => [id, best(rows, 'rate', 50)])),
   );
 
-  console.log('Updating mouse-maps (one request per mouse)...');
-  const mouseMaps = await fetchPerEntity(
-    'mouse-maps',
-    mice.map((mouse) => mouse.id),
-    (id) => `maps-for-mouse/${id}`,
-  );
+  // The maps each mouse turns up on. Maps seen fewer than five times, and
+  // retired maps, aren't worth listing.
+  console.log('Updating mouse-maps...');
+  const mapper = requireArray(await fetchJson('mhct/reverse-mapper'), 'mhct/reverse-mapper');
+  const mouseMaps = {};
+  for (const entry of mapper) {
+    const rows = (entry.maps ?? [])
+      .filter((map) => map.seen >= 5 && map.total >= 5 && !/\(retired\b/i.test(map.map))
+      .map((map) => ({ map: map.map, rate: map.rate, seen_maps: map.seen, total_maps: map.total }));
+    if (entry.id && rows.length > 0) mouseMaps[entry.id] = best(rows, 'rate', 40);
+  }
   validateMinimumCoverage(
     'mouse-maps',
     Object.keys(mouseMaps).length,
     Object.keys(readGenerated('mouse-maps', {})).length,
   );
-  stage('mouse-maps', Object.fromEntries(Object.entries(mouseMaps).map(([id, rows]) => [id, best(rows, 'rate', 40)])));
+  stage('mouse-maps', mouseMaps);
 
   // Record the refresh time for sitemap lastmod; checkout and build times do
   // not indicate when the data changed.

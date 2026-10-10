@@ -8,7 +8,11 @@ import type {
   ConvertibleRow,
   FoundInConvertible,
   GameItem,
+  ItemDropRow,
+  ItemDropper,
   ItemDrops,
+  ItemDropsData,
+  LocationLootRow,
   MapRelation,
   MiceGroup,
   MiceRegion,
@@ -210,23 +214,139 @@ export function getConvertibleContents(itemId: number): ConvertibleRow[] {
   }));
 }
 
-let dropsCache: Record<string, ItemDrops> | null = null;
+let dropsCache: Record<string, ItemDropsData> | null = null;
+
+let mouseSlugByIdCache: Map<number, string> | null = null;
+
+function mouseSlugForId(id: number): string | undefined {
+  if (!mouseSlugByIdCache) {
+    mouseSlugByIdCache = new Map(getAllMice().map((mouse) => [mouse.id, mouseSlug(mouse.type)]));
+  }
+  return mouseSlugByIdCache.get(id);
+}
 
 /**
- * The locations and cheeses that drop a given item (from MHCT). `rows` holds the
- * 50 best; `total` is how many combinations MHCT has actually recorded, so the
+ * The mice that drop a given item (from MHCT), one row each, best first. A mouse
+ * that drops it everywhere it's caught would otherwise fill the table with one
+ * row per location. `total` is how many mouse/location rows MHCT has, so the
  * page can say what it's leaving out.
  */
 export function getItemDrops(itemId: number): ItemDrops {
-  if (!dropsCache) {
-    dropsCache = readJson<Record<string, ItemDrops>>('item-drops.json');
+  const drops = getAllItemDrops()[String(itemId)];
+  if (!drops) return { rows: [], total: 0 };
+
+  const byMouse = new Map<number, ItemDropRow[]>();
+  for (const row of drops.rows) {
+    byMouse.set(row.mouse_id, [...(byMouse.get(row.mouse_id) ?? []), row]);
   }
-  return dropsCache[String(itemId)] ?? { rows: [], total: 0 };
+
+  const rows: ItemDropper[] = [...byMouse.values()].map((mouseRows) => {
+    const sorted = [...mouseRows].sort((a, b) => b.catches - a.catches);
+    const catches = sorted.reduce((sum, row) => sum + row.catches, 0);
+    const dropped = sorted.reduce((sum, row) => sum + (row.drop_likelihood / 100) * row.catches, 0);
+    return {
+      mouse_id: sorted[0].mouse_id,
+      mouse_name: sorted[0].mouse_name,
+      mouse_slug: mouseSlugForId(sorted[0].mouse_id),
+      location: sorted[0].location,
+      locations: sorted.map((row) => row.location),
+      catches,
+      drop_likelihood: Math.round((10000 * dropped) / catches) / 100,
+      min: Math.min(...sorted.map((row) => row.min)),
+      max: Math.max(...sorted.map((row) => row.max)),
+    };
+  });
+  rows.sort((a, b) => b.drop_likelihood - a.drop_likelihood || b.catches - a.catches);
+
+  return { rows, total: drops.total };
+}
+
+function getAllItemDrops(): Record<string, ItemDropsData> {
+  if (!dropsCache) {
+    dropsCache = readJson<Record<string, ItemDropsData>>('item-drops.json');
+  }
+  return dropsCache;
+}
+
+// From one mouse at a location, a small sample is mostly charm effects and event loot.
+const MIN_LOCATION_LOOT_CATCHES = 500;
+
+// MHCT logs a few areas under their own names, but they share a page here.
+const DROP_LOCATION_ALIASES: Record<string, string> = {
+  'Twisted Garden': 'Living Garden',
+  'Cursed City': 'Lost City',
+  'Sand Crypts': 'Sand Dunes',
+};
+
+let locationLootCache: Map<string, LocationLootRow[]> | null = null;
+
+/**
+ * Everything MHCT has seen drop at a location, best rate first. Each item is
+ * listed with the mouse most likely to drop it there and that mouse's drop
+ * chance, since a rate averaged across every mouse at the location hides that
+ * one mouse always drops it.
+ */
+export function getLocationLoot(locationName: string): LocationLootRow[] {
+  if (!locationLootCache) {
+    const pooled = new Map<string, Map<number, ItemDropRow>>();
+    for (const [id, { rows }] of Object.entries(getAllItemDrops())) {
+      const itemId = Number(id);
+      for (const row of rows) {
+        if (row.catches < MIN_LOCATION_LOOT_CATCHES) continue;
+        const location = DROP_LOCATION_ALIASES[row.location] ?? row.location;
+        const byItem = pooled.get(location) ?? new Map();
+        pooled.set(location, byItem);
+        const current = byItem.get(itemId);
+        if (
+          !current ||
+          row.drop_likelihood > current.drop_likelihood ||
+          (row.drop_likelihood === current.drop_likelihood && row.catches > current.catches)
+        ) {
+          byItem.set(itemId, row);
+        }
+      }
+    }
+
+    const itemsById = new Map(getAllGameItems().map((item) => [item.id, item]));
+    locationLootCache = new Map();
+    for (const [location, byItem] of pooled) {
+      const rows: LocationLootRow[] = [];
+      for (const [id, row] of byItem) {
+        const item = itemsById.get(id);
+        if (!item) continue;
+        rows.push({
+          id,
+          slug: itemSlug(item.type),
+          name: item.name,
+          rate: row.drop_likelihood,
+          mouse_name: row.mouse_name,
+          mouse_slug: mouseSlugForId(row.mouse_id),
+          catches: row.catches,
+          min: row.min,
+          max: row.max,
+        });
+      }
+      rows.sort((a, b) => b.rate - a.rate || a.name.localeCompare(b.name));
+      locationLootCache.set(location.toLowerCase(), rows);
+    }
+  }
+  return locationLootCache.get(locationName.toLowerCase()) ?? [];
+}
+
+/**
+ * Items the game associates with an environment. The `environment` field is
+ * only set on a handful of items (mostly map pieces); the location tags on
+ * cheese, potions, and gear carry the rest.
+ */
+export function getItemsForEnvironment(environmentId: string): GameItem[] {
+  return getAllGameItems().filter(
+    (item) => (item.environment ?? []).includes(environmentId) || (item.tags ?? []).includes(environmentId),
+  );
 }
 
 let attractionCache: Record<string, AttractionRow[]> | null = null;
 
-/** Where a mouse is attracted and how often, best rate first (from MHCT). */
+/** Where a mouse is attracted and how often, best rate first (from MHCT and MH-Tools). */
 export function getMouseAttraction(mouseId: number): AttractionRow[] {
   if (!attractionCache) {
     attractionCache = readJson<Record<string, AttractionRow[]>>('mice-attraction.json');

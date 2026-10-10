@@ -29,6 +29,15 @@ export function MouseData({ attraction, maps }: { attraction: AttractionRow[]; m
             className="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:hover:text-zinc-200"
           >
             MHCT
+          </a>{' '}
+          and{' '}
+          <a
+            href="https://github.com/tsitu/MH-Tools"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:hover:text-zinc-200"
+          >
+            MH-Tools
           </a>
           .
         </p>
@@ -50,18 +59,19 @@ export function MouseData({ attraction, maps }: { attraction: AttractionRow[]; m
               </thead>
               <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {attraction.slice(0, 50).map((row, index) => (
-                  <tr key={`${row.location}-${row.stage}-${row.cheese}-${index}`}>
+                  <tr key={`${row.location}-${row.stage}-${row.cheese}-${row.charm}-${index}`}>
                     <td className="px-4 py-2">
                       <LocationCell location={row.location} stage={row.stage} />
                     </td>
                     <td className="px-4 py-2">
                       <CheeseCell cheese={row.cheese} />
+                      {row.charm && <span className="text-zinc-400 dark:text-zinc-500"> · {row.charm}</span>}
                     </td>
                     <td className="px-4 py-2 text-right font-medium tabular-nums text-zinc-900 dark:text-white">
                       {formatRate(row.rate)}
                     </td>
                     <td className="hidden px-4 py-2 text-right tabular-nums text-zinc-400 sm:table-cell dark:text-zinc-500">
-                      {formatNumber(row.total_hunts)}
+                      {row.total_hunts ? formatNumber(row.total_hunts) : '—'}
                     </td>
                   </tr>
                 ))}

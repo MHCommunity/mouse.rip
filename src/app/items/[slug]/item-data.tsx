@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Link } from 'next-view-transitions';
 
-import { CheeseCell, LocationCell } from '@/components/mhct-cells';
+import { LocationCell } from '@/components/mhct-cells';
 import { sectionTitle } from '@/components/live-data';
 import type { ConvertibleRow, FoundInConvertible, ItemDrops, MapRelation } from '@/types';
 import { formatNumber } from '@/utils';
@@ -89,7 +89,7 @@ export function ItemData({
             <div className="mt-6">
               <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">Hunting drops</h3>
               <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-                Observed drop rates by location and cheese, from{' '}
+                The mice that drop it and how often, from{' '}
                 <a
                   href="https://mhct.win"
                   target="_blank"
@@ -104,42 +104,54 @@ export function ItemData({
                 <table className="w-full text-sm">
                   <thead className="bg-zinc-50 text-left text-xs uppercase tracking-wider text-zinc-500 dark:bg-zinc-900/60 dark:text-zinc-400">
                     <tr>
+                      <th className="px-4 py-2 font-medium">Mouse</th>
                       <th className="px-4 py-2 font-medium">Location</th>
-                      <th className="px-4 py-2 font-medium">Cheese</th>
                       <th className="hidden px-4 py-2 text-right font-medium sm:table-cell">Qty</th>
                       <th className="px-4 py-2 text-right font-medium">Drop rate</th>
                       <th className="hidden px-4 py-2 text-right font-medium sm:table-cell">Sample</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
-                    {drops.rows.map((row, index) => (
-                      <tr key={`${row.location}-${row.stage}-${row.cheese}-${index}`}>
+                    {drops.rows.map((row) => (
+                      <tr key={row.mouse_id}>
                         <td className="px-4 py-2">
-                          <LocationCell location={row.location} stage={row.stage} />
+                          {row.mouse_slug ? (
+                            <Link
+                              href={`/mice/${row.mouse_slug}`}
+                              className="text-zinc-900 hover:text-blue-700 dark:text-white dark:hover:text-blue-300"
+                            >
+                              {row.mouse_name}
+                            </Link>
+                          ) : (
+                            <span className="text-zinc-900 dark:text-white">{row.mouse_name}</span>
+                          )}
                         </td>
                         <td className="px-4 py-2">
-                          <CheeseCell cheese={row.cheese} />
+                          <LocationCell location={row.location} />
+                          {row.locations.length > 1 && (
+                            <span
+                              className="text-zinc-400 dark:text-zinc-500"
+                              title={row.locations.slice(1).join(', ')}
+                            >
+                              {' '}
+                              +{row.locations.length - 1} more
+                            </span>
+                          )}
                         </td>
                         <td className="hidden px-4 py-2 text-right tabular-nums text-zinc-400 sm:table-cell dark:text-zinc-500">
-                          {formatQuantity(row.min_amt, row.max_amt) || '—'}
+                          {formatQuantity(row.min, row.max) || '—'}
                         </td>
                         <td className="px-4 py-2 text-right font-medium tabular-nums text-zinc-900 dark:text-white">
-                          {row.drop_pct}%
+                          {row.drop_likelihood}%
                         </td>
                         <td className="hidden px-4 py-2 text-right tabular-nums text-zinc-400 sm:table-cell dark:text-zinc-500">
-                          {row.total_hunts ? `${formatNumber(row.total_hunts)} hunts` : '—'}
+                          {formatNumber(row.catches)} catches
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              {drops.total > drops.rows.length && (
-                <p className="mt-3 text-sm text-zinc-400 dark:text-zinc-500">
-                  Showing the {drops.rows.length} best of {formatNumber(drops.total)} recorded location/cheese
-                  combinations.
-                </p>
-              )}
             </div>
           )}
         </section>

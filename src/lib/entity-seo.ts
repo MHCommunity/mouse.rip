@@ -49,7 +49,7 @@ export function mouseSeo(mouse: Mouse, attraction: AttractionRow[]) {
   const minluck = bestMinluck(mouse);
 
   const where = best
-    ? `Best caught in ${best.location}${best.stage ? ` (${best.stage})` : ''} with ${best.cheese} — ${(best.rate / 100).toFixed(2)}% attraction rate.`
+    ? `Best caught in ${best.location}${best.stage ? ` (${best.stage})` : ''} with ${best.cheese}${best.charm ? ` and ${best.charm}` : ''} — ${(best.rate / 100).toFixed(2)}% attraction rate.`
     : null;
 
   const luck = minluck ? `Minluck ${formatNumber(minluck.value)} ${powerTypeLabel(minluck.type)}.` : null;
@@ -133,8 +133,8 @@ export function itemSeo(item: GameItem, { contents, drops }: { contents: Convert
     return {
       title: `${item.name} — Where It Drops & Drop Rates`,
       description: sentences(
-        `${item.name} drops in ${bestDrop.location}${bestDrop.stage ? ` (${bestDrop.stage})` : ''} with ${bestDrop.cheese}, at a ${bestDrop.drop_pct}% drop rate.`,
-        drops.total > 1 ? `Drop rates across ${formatNumber(drops.total)} location and cheese combinations.` : null,
+        `${item.name} drops from ${bestDrop.mouse_name} in ${bestDrop.location}, at a ${bestDrop.drop_likelihood}% drop rate.`,
+        drops.rows.length > 1 ? `Dropped by ${formatNumber(drops.rows.length)} mice.` : null,
       ),
     };
   }
@@ -204,7 +204,9 @@ export function itemJsonLd(
     stats?.has_luck && stats.luck ? property('Luck', stats.luck) : null,
     item.is_tradable ? property('Tradable', 'Yes') : null,
     context.contents.length > 0 ? property('Possible rewards', context.contents.length) : null,
-    bestDrop ? property('Best drop rate', `${bestDrop.drop_pct}% (${bestDrop.location})`) : null,
+    bestDrop
+      ? property('Best drop rate', `${bestDrop.drop_likelihood}% (${bestDrop.mouse_name}, ${bestDrop.location})`)
+      : null,
   ].filter(Boolean);
 
   return {

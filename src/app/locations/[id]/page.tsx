@@ -9,15 +9,14 @@ import { MouseGrid } from '@/components/mouse-grid';
 import { Link } from 'next-view-transitions';
 
 import { getItemsByLocation, getLocation, getLocations, getTitles, getTrapEffects } from '@/data';
-import { getAllGameItems, getMiceForRegionName, itemSlug } from '@/lib/game-data';
+import { getItemsForEnvironment, getLocationLoot, getMiceForRegionName, itemSlug } from '@/lib/game-data';
 import { ogCard, pageMetadata } from '@/seo';
-import { cleanDescription } from '@/utils';
+import { cleanDescription, formatNumber } from '@/utils';
 import { itemImageUrl, locationHeaderImageUrl, locationImageUrl, titleImageUrl } from '@/lib/image-urls';
 
 export const dynamicParams = false;
 
-// Keep the game-data sections hidden while their navigation is hidden.
-const SHOW_LOCATION_GAME_DATA = false;
+const LOOT_ROWS_SHOWN = 40;
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
@@ -73,15 +72,14 @@ export default async function Location({ params }: { params: Promise<{ id: strin
   }
   const items = getItemsByLocation(resolvedParams.id);
 
-  const mice = SHOW_LOCATION_GAME_DATA && location.name ? getMiceForRegionName(location.name) : [];
+  const mice = location.name ? getMiceForRegionName(location.name) : [];
   const minTitle = location.title ? getTitles().find((title) => title.id === location.title) : undefined;
   const trapEffects = location.name
     ? (getTrapEffects().find((entry) => entry.location === location.name)?.effects ?? [])
     : [];
   const environmentKey = location.environmentId ?? location.id;
-  const locationItems = SHOW_LOCATION_GAME_DATA
-    ? getAllGameItems().filter((item) => (item.environment ?? []).includes(environmentKey))
-    : [];
+  const locationItems = getItemsForEnvironment(environmentKey);
+  const loot = location.name ? getLocationLoot(location.name) : [];
 
   return (
     <>
@@ -143,6 +141,77 @@ export default async function Location({ params }: { params: Promise<{ id: strin
               );
             })}
           </ul>
+        </section>
+      )}
+
+      {loot.length > 0 && (
+        <section className="mt-12">
+          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
+            Loot found here
+          </h2>
+          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+            How often the mouse most likely to drop each item here drops it, from{' '}
+            <a
+              href="https://mhct.win"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:hover:text-zinc-200"
+            >
+              MHCT
+            </a>
+            .
+          </p>
+          <div className="mt-4 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
+            <table className="w-full text-sm">
+              <thead className="bg-zinc-50 text-left text-xs uppercase tracking-wider text-zinc-500 dark:bg-zinc-900/60 dark:text-zinc-400">
+                <tr>
+                  <th className="px-4 py-2 font-medium">Item</th>
+                  <th className="px-4 py-2 text-right font-medium">Drop rate</th>
+                  <th className="hidden px-4 py-2 text-right font-medium sm:table-cell">Sample</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                {loot.slice(0, LOOT_ROWS_SHOWN).map((row) => (
+                  <tr key={row.id}>
+                    <td className="px-4 py-2">
+                      <Link
+                        href={`/items/${row.slug}`}
+                        className="inline-flex items-center gap-2 text-zinc-900 hover:text-blue-700 dark:text-white dark:hover:text-blue-300"
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={itemImageUrl(row.slug)} alt="" loading="lazy" className="size-6 shrink-0 rounded" />
+                        {row.name}
+                      </Link>
+                      <div className="ml-8 text-xs text-zinc-400 dark:text-zinc-500">
+                        from{' '}
+                        {row.mouse_slug ? (
+                          <Link
+                            href={`/mice/${row.mouse_slug}`}
+                            className="hover:text-blue-700 dark:hover:text-blue-300"
+                          >
+                            {row.mouse_name}
+                          </Link>
+                        ) : (
+                          row.mouse_name
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-4 py-2 text-right font-medium tabular-nums text-zinc-900 dark:text-white">
+                      {row.rate.toFixed(2)}%
+                    </td>
+                    <td className="hidden px-4 py-2 text-right tabular-nums text-zinc-400 sm:table-cell dark:text-zinc-500">
+                      {formatNumber(row.catches)} catches
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {loot.length > LOOT_ROWS_SHOWN && (
+            <p className="mt-3 text-sm text-zinc-400 dark:text-zinc-500">
+              Showing the {LOOT_ROWS_SHOWN} most likely of {loot.length} items seen dropping here.
+            </p>
+          )}
         </section>
       )}
 

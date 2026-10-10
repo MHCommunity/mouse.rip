@@ -288,20 +288,60 @@ export interface ConvertibleRow {
   slug?: string;
 }
 
-/** One location/cheese combination that drops a given item. */
+/** A mouse that drops a given item, at one location. */
 export interface ItemDropRow {
+  mouse_id: number;
+  mouse_name: string;
   location: string;
-  stage: string | null;
-  cheese: string;
-  drop_pct: string | number;
-  total_hunts?: number;
-  min_amt: number;
-  max_amt: number;
+  catches: number;
+  /** Percent of catches that dropped at least one. */
+  drop_likelihood: number;
+  min: number;
+  max: number;
+  /** The average drop_likelihood across every mouse at the location. */
+  baseline: number;
 }
 
-/** The 50 best drop rows for an item, plus how many MHCT actually recorded. */
-export interface ItemDrops {
+/** A mouse that drops a given item, with its locations pooled. */
+export interface ItemDropper {
+  mouse_id: number;
+  mouse_name: string;
+  /** Filled in at build time when the mouse has a page. */
+  mouse_slug?: string;
+  /** Where it's been caught most. */
+  location: string;
+  /** Every location it's been seen dropping the item, most catches first. */
+  locations: string[];
+  catches: number;
+  /** Percent of catches that dropped at least one, across its locations. */
+  drop_likelihood: number;
+  min: number;
+  max: number;
+}
+
+/** An item that drops at a location, with the mouse most likely to drop it there. */
+export interface LocationLootRow {
+  id: number;
+  slug: string;
+  name: string;
+  /** That mouse's drop_likelihood: percent of its catches that dropped one. */
+  rate: number;
+  mouse_name: string;
+  mouse_slug?: string;
+  catches: number;
+  min: number;
+  max: number;
+}
+
+/** The 50 best drop rows for an item, plus how many there are in all, as stored. */
+export interface ItemDropsData {
   rows: ItemDropRow[];
+  total: number;
+}
+
+/** The mice that drop an item, best first, plus how many mouse/location rows there are in all. */
+export interface ItemDrops {
+  rows: ItemDropper[];
   total: number;
 }
 
@@ -310,8 +350,10 @@ export interface AttractionRow {
   location: string;
   stage: string | null;
   cheese: string;
+  charm: string | null;
   rate: number;
-  total_hunts: number;
+  /** Null for MH-Tools rates, which don't publish a sample size. */
+  total_hunts: number | null;
 }
 
 /** A treasure map a mouse can appear on. */
