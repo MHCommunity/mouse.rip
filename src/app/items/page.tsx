@@ -21,7 +21,7 @@ export default function ItemsIndexPage() {
   // Only the per-type totals cross to the client. The item list itself is a
   // code-split chunk the browser fetches on demand (see @/lib/client-index) —
   // inlining all 4,033 items here would put ~70 KB of duplicated JSON into this
-  // page's HTML, and again into /marketplace's, and again into search's.
+  // page's HTML, and again into search's.
   const counts: Record<string, number> = {};
   for (const item of items) {
     const key = item.classification || 'other';
