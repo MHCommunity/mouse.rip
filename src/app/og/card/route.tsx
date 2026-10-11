@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 
 // Dynamic 1200×630 social card driven by query params, shared by mouse, item,
 // and group pages (see `ogCard` in src/seo.ts). Rendered on demand — typically
@@ -26,14 +27,52 @@ function safeImage(value: string | null): string {
   }
 }
 
-export function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
+// Rendering a card costs real worker CPU, so finished cards go in the
+// Cloudflare edge cache. Not available under `next dev`.
+function edgeCache(): Cache | undefined {
+  return typeof caches === 'undefined' ? undefined : (caches as unknown as { default?: Cache }).default;
+}
+
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  const { searchParams } = url;
   const title = (searchParams.get('title') || 'mouse.rip').slice(0, 90);
   const subtitle = (searchParams.get('subtitle') || '').slice(0, 120);
   const eyebrow = (searchParams.get('eyebrow') || 'mouse.rip').slice(0, 60);
   const image = safeImage(searchParams.get('image'));
-  const accent = ACCENTS[searchParams.get('accent') || 'pink'] ?? ACCENTS.pink;
+  const accentName = searchParams.get('accent') || 'pink';
+  const accent = ACCENTS[accentName] ?? ACCENTS.pink;
 
+  // Key on the params we actually use, so junk or reordered params share an entry.
+  const cacheKey = new URL('/og/card', url.origin);
+  for (const [key, value] of Object.entries({ title, subtitle, eyebrow, image, accent: accentName })) {
+    cacheKey.searchParams.set(key, value);
+  }
+  const cache = edgeCache();
+  const cached = await cache?.match(cacheKey);
+  if (cached) return cached;
+
+  const response = renderCard({ title, subtitle, eyebrow, image, accent });
+  response.headers.set('Cache-Control', 'public, max-age=86400, s-maxage=604800');
+  if (cache) {
+    getCloudflareContext().ctx.waitUntil(cache.put(cacheKey, response.clone()));
+  }
+  return response;
+}
+
+function renderCard({
+  title,
+  subtitle,
+  eyebrow,
+  image,
+  accent,
+}: {
+  title: string;
+  subtitle: string;
+  eyebrow: string;
+  image: string;
+  accent: (typeof ACCENTS)[string];
+}) {
   return new ImageResponse(
     <div
       style={{
