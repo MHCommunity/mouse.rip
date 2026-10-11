@@ -19,6 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 import type { Metadata, Viewport } from 'next';
+import { scriptJson } from '@/components/json-ld';
 
 const SITE_DESCRIPTION =
   'Your comprehensive resource for MouseHunt guides, browser extensions, tools, spreadsheets, and userscripts to enhance your MouseHunt experience.';
@@ -97,7 +98,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
+            __html: scriptJson({
               '@context': 'https://schema.org',
               '@type': 'WebSite',
               name: 'mouse.rip',

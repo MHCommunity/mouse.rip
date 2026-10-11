@@ -6,9 +6,10 @@ import { PageHeader } from '@/components/page-header';
 import { Markdown } from '@/components/markdown';
 import { PageLink } from '@/components/page-link';
 
-import { getGuide, getOnSiteGuides } from '@/data';
+import { getGuide, getOnSiteGuides } from '@/lib/site-data';
 import { pageMetadata } from '@/seo';
 import { getGuideBody } from './guide-content';
+import { scriptJson } from '@/components/json-ld';
 
 // Only build the guides we know about; unknown slugs 404 instead of trying to
 // render on the edge (where the filesystem isn't available).
@@ -54,7 +55,7 @@ export default async function Guide({ params }: { params: Promise<{ slug: string
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: scriptJson({
             '@context': 'https://schema.org',
             '@type': 'Article',
             headline: guide.name,

@@ -2,6 +2,7 @@ import React from 'react';
 
 import { ChevronRightIcon } from '@heroicons/react/20/solid';
 import { Link } from '@/components/link';
+import { scriptJson } from '@/components/json-ld';
 
 const SITE_URL = 'https://mouse.rip';
 
@@ -56,7 +57,7 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
           );
         })}
       </ol>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: scriptJson(jsonLd) }} />
     </nav>
   );
 }
