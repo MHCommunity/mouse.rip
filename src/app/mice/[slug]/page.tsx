@@ -30,6 +30,7 @@ import { ogCard, pageMetadata } from '@/seo';
 import { mouseImageUrl } from '@/lib/image-urls';
 
 import { MouseData } from './mouse-data';
+import { SectionHeading } from '@/components/section-heading';
 
 export const dynamicParams = false;
 
@@ -173,9 +174,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
 
       {typeRows.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
-            Power types
-          </h2>
+          <SectionHeading>Power types</SectionHeading>
           <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
             Effectiveness and the minimum luck needed to guarantee a catch with each type.
           </p>
@@ -232,9 +231,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
 
       {relatedMice.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
-            More {mouse.group} mice
-          </h2>
+          <SectionHeading>More from {mouse.group}</SectionHeading>
           <ul className="mt-4 flex flex-wrap gap-2">
             {relatedMice.map((other) => {
               const otherSlug = mouseSlug(other.type);
@@ -257,7 +254,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
                   href={`/groups/${group.id}`}
                   className="text-sm font-medium text-emerald-700 hover:text-emerald-800 dark:text-emerald-300 dark:hover:text-emerald-200"
                 >
-                  All {group.mouse_ids.length} {mouse.group} mice →
+                  See all {group.mouse_ids.length} →
                 </Link>
               </li>
             )}

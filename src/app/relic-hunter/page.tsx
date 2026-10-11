@@ -4,10 +4,11 @@ import { MapPinIcon } from '@heroicons/react/20/solid';
 import { Link } from '@/components/link';
 import { PageHeader } from '@/components/page-header';
 
-import { getEnvironments, getLocations, getRelicHunterHints } from '@/data';
+import { getEnvironments, getLocations, getRelicHunterHints } from '@/lib/site-data';
 import { RelicHunterLive } from './relic-hunter-live';
 import { pageMetadata } from '@/seo';
 import { locationImageUrl } from '@/lib/image-urls';
+import { SectionHeading } from '@/components/section-heading';
 
 export const metadata = pageMetadata({
   title: 'Relic Hunter Location & Hints',
@@ -46,9 +47,7 @@ export default function RelicHunterPage() {
 
       <RelicHunterLive />
 
-      <h2 className="mt-12 text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
-        Riddles by location
-      </h2>
+      <SectionHeading className="mt-12">Riddles by location</SectionHeading>
       <p className="mt-2 max-w-2xl text-sm text-zinc-500 dark:text-zinc-400">
         Match the riddle she&rsquo;s giving to a location below to track her down.
       </p>
