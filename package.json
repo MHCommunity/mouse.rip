@@ -19,18 +19,15 @@
     "start": "next start",
     "update": "bun run update:data && bun run update:images",
     "update:data": "bun ./scripts/update-data.js",
-    "update:images": "concurrently \"bun run update:images:mice\" \"bun run update:images:items\" \"bun run update:images:meta\"",
-    "update:images:mice": "bun ./scripts/update-mice-images.js",
-    "update:images:items": "bun ./scripts/update-item-images.js",
-    "update:images:meta": "bun ./scripts/update-meta-images.js"
+    "update:images": "bun ./scripts/update-images.js"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.10",
     "@heroicons/react": "^2.2.0",
-    "@opennextjs/cloudflare": "^1.19.1",
+    "@opennextjs/cloudflare": "^1.20.8",
     "clsx": "^2.1.1",
     "framer-motion": "^12.38.0",
-    "next": "15.5.15",
+    "next": "^15.5.27",
     "next-view-transitions": "^0.3.5",
     "postcss": "^8.5.10",
     "react": "^19.2.5",
@@ -49,11 +46,10 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/react-window": "^1.8.8",
-    "concurrently": "^9.2.1",
     "oxfmt": "^0.62.0",
     "oxlint": "^1.76.0",
     "tailwindcss": "^4.2.2",
     "typescript": "^5.9.3",
-    "wrangler": "^4.83.0"
+    "wrangler": "^4.148.0"
   }
 }
