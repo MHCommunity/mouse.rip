@@ -9,6 +9,7 @@ import { getAllMiceGroups, getMiceForGroup, getMiceGroupBySlug } from '@/lib/gam
 import { ogCard, pageMetadata } from '@/seo';
 import { cleanDescription } from '@/utils';
 import { mouseGroupImageUrl } from '@/lib/image-urls';
+import { SectionHeading } from '@/components/section-heading';
 
 export const dynamicParams = false;
 
@@ -63,9 +64,7 @@ export default async function GroupPage({ params }: { params: Promise<{ slug: st
         </p>
       )}
 
-      <h2 className="mt-10 text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
-        {mice.length} mice in this group
-      </h2>
+      <SectionHeading className="mt-10">{mice.length} mice in this group</SectionHeading>
       <div className="mt-4">
         <MouseGrid mice={mice} />
       </div>

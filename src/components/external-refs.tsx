@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { ArrowUpRightIcon } from '@heroicons/react/20/solid';
+import { SectionHeading } from '@/components/section-heading';
 
 function wikiName(name: string): string {
   return encodeURIComponent(name.trim().replaceAll(' ', '_'));
@@ -43,9 +44,7 @@ export function ExternalRefs({
 
   return (
     <div className="mt-10 border-t border-zinc-100 pt-6 dark:border-zinc-800">
-      <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
-        More references
-      </h2>
+      <SectionHeading>More references</SectionHeading>
       <div className="mt-3 flex flex-wrap gap-2">
         {refs.map((ref) => (
           <a

@@ -5,8 +5,9 @@ import { Link } from '@/components/link';
 import { PageHeader } from '@/components/page-header';
 import { PageLink } from '@/components/page-link';
 
-import { getLocations, getTrapEffects } from '@/data';
+import { getLocations, getTrapEffects } from '@/lib/site-data';
 import { pageMetadata } from '@/seo';
+import { SectionHeading } from '@/components/section-heading';
 
 export const metadata = pageMetadata({
   title: 'Location-Specific Trap & Base Effects',
@@ -58,9 +59,7 @@ export default function TrapSpecialEffectsPage() {
       <div className="space-y-12">
         {regions.map(({ region, entries }) => (
           <section key={region}>
-            <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
-              {region}
-            </h2>
+            <SectionHeading>{region}</SectionHeading>
             <div className="mt-4 space-y-6">
               {entries.map((entry) => {
                 const locationId = locationIdByName.get(entry.location.toLowerCase());

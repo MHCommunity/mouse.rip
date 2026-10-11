@@ -1,9 +1,10 @@
 import React from 'react';
 
 import { CheeseCell, LocationCell } from '@/components/mhct-cells';
-import { sectionTitle } from '@/components/live-data';
 import type { AttractionRow, MouseMapRow } from '@/types';
 import { formatNumber } from '@/utils';
+import { SectionHeading } from '@/components/section-heading';
+import { SourceLink } from '@/components/source-link';
 
 /** MHCT reports rates in hundredths of a percent. */
 function formatRate(rate: number): string {
@@ -19,27 +20,10 @@ export function MouseData({ attraction, maps }: { attraction: AttractionRow[]; m
   return (
     <div className="mt-10 space-y-10">
       <section>
-        <h2 className={sectionTitle}>Where to find it</h2>
+        <SectionHeading>Where to find it</SectionHeading>
         <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-          Best attraction rates by location and cheese, from{' '}
-          <a
-            href="https://mhct.win"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:hover:text-zinc-200"
-          >
-            MHCT
-          </a>{' '}
-          and{' '}
-          <a
-            href="https://github.com/tsitu/MH-Tools"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:hover:text-zinc-200"
-          >
-            MH-Tools
-          </a>
-          .
+          Best attraction rates by location and cheese, from <SourceLink source="mhct" /> and{' '}
+          <SourceLink source="mh-tools" />.
         </p>
 
         {attraction.length === 0 ? (
@@ -83,7 +67,7 @@ export function MouseData({ attraction, maps }: { attraction: AttractionRow[]; m
 
       {maps.length > 0 && (
         <section>
-          <h2 className={sectionTitle}>Found on maps</h2>
+          <SectionHeading>Found on maps</SectionHeading>
           <div className="mt-4 flex flex-wrap gap-2">
             {maps.slice(0, 40).map((row) => (
               <span
