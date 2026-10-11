@@ -6,12 +6,41 @@ const DATA_DIR = path.join(__dirname, '../src/data/generated');
 const API_URL = process.env.API_URL ?? 'https://api.mouse.rip';
 const pendingFiles = new Map();
 
-const stage = (file, data, { pretty = false } = {}) => {
-  pendingFiles.set(file, `${JSON.stringify(data, null, pretty ? 2 : undefined)}\n`);
+// Written compact: only the build reads these, and it keeps the weekly diffs small.
+const stage = (file, data) => {
+  pendingFiles.set(file, `${JSON.stringify(data)}\n`);
+};
+
+const slugify = (value) => String(value).replaceAll('_', '-');
+
+// MHCT logs a few areas under their own names, but they share a page here.
+const DROP_LOCATION_ALIASES = {
+  'Twisted Garden': 'Living Garden',
+  'Cursed City': 'Lost City',
+  'Sand Crypts': 'Sand Dunes',
+};
+
+const MIN_LOCATION_LOOT_CATCHES = 500;
+
+// Without a timeout, one hung request would stall the weekly job until GitHub kills it.
+const REQUEST_TIMEOUT_MS = 60_000;
+
+const readGeneratedText = (file) => {
+  try {
+    return fs.readFileSync(path.join(DATA_DIR, `${file}.json`), 'utf-8');
+  } catch {
+    return null;
+  }
 };
 
 const flushPendingFiles = () => {
-  for (const [file, contents] of pendingFiles) {
+  const changed = [...pendingFiles].filter(([file, contents]) => readGeneratedText(file) !== contents);
+  // Only move the refresh time (sitemap lastmod) when the data itself changed,
+  // so a week with no new data doesn't produce a commit.
+  if (changed.length > 0) {
+    changed.push(['data-updated', `${JSON.stringify({ updatedAt: new Date().toISOString() })}\n`]);
+  }
+  for (const [file, contents] of changed) {
     fs.writeFileSync(path.join(DATA_DIR, `${file}.json`), contents, 'utf-8');
   }
 };
@@ -75,8 +104,7 @@ const updateDataFiles = async () => {
   let mice = [];
 
   // Fetch and validate every source before replacing any generated file.
-  // 'game-items' is the full game item catalog (served at /items), saved compact
-  // since it is large and only read at build time.
+  // 'game-items' is the full game item catalog (served at /items).
   for (const config of files) {
     const { file } = config;
     const endpoint = 'game-items' === file ? 'items' : file;
@@ -100,7 +128,7 @@ const updateDataFiles = async () => {
       stage(file, json);
 
       // The client-side item index: the only item data that ever reaches the
-      // browser. Shared by site search, the /items browser, and /marketplace, so
+      // browser. Shared by site search and the /items browser, so
       // it downloads once and stays cached — carry every field they filter on.
       const slim = json.map((item) => ({
         id: item.id,
@@ -114,7 +142,6 @@ const updateDataFiles = async () => {
 
       // Small cheese (bait) + location name → slug lookup, used to cross-link
       // MHCT attraction/drop tables to item and location pages.
-      const slugify = (value) => String(value).replaceAll('_', '-');
       const cheese = {};
       for (const item of json) {
         if (item.classification !== 'bait') continue;
@@ -133,7 +160,7 @@ const updateDataFiles = async () => {
       continue;
     }
 
-    stage(file, json, { pretty: true });
+    stage(file, json);
 
     if ('mice' === file) {
       mice = json;
@@ -170,7 +197,7 @@ const updateDataFiles = async () => {
 };
 
 const fetchJson = async (endpoint) => {
-  const response = await fetch(`${API_URL}/${endpoint}`);
+  const response = await fetch(`${API_URL}/${endpoint}`, { signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
   if (!response.ok) {
     throw new Error(`${endpoint} responded ${response.status}`);
   }
@@ -207,7 +234,9 @@ export const fetchPerEntity = async (
       let lastError = null;
       for (let attempt = 0; attempt < 3 && rows === null; attempt++) {
         try {
-          const response = await fetchImpl(`${API_URL}/${endpoint(id)}`);
+          const response = await fetchImpl(`${API_URL}/${endpoint(id)}`, {
+            signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+          });
           // A 404 is a real answer: this entity has no rows.
           if (404 === response.status) {
             rows = [];
@@ -327,17 +356,6 @@ const updateRelationalData = async (items, mice) => {
   );
   stage('item-found-in', foundIn);
 
-  // Junk items (gift baskets, blueprints) that shouldn't clutter the marketplace.
-  console.log('Updating marketplace-hidden-items...');
-  const hidden = requireArray(await fetchJson('marketplace-hidden-items'), 'marketplace-hidden-items');
-  const hiddenIds = hidden.map((item) => item.id).filter((id) => Number.isFinite(id));
-  validateMinimumCoverage(
-    'marketplace-hidden-items',
-    hiddenIds.length,
-    readGenerated('marketplace-hidden-items', []).length,
-  );
-  stage('marketplace-hidden-items', hiddenIds);
-
   // What each convertible opens into. Inverted out of the reverse-convertibles
   // data we already have above, rather than asking /convertible/{id} 1,380 more
   // times: an item's entry there carries the same quantities, and its chance is
@@ -386,38 +404,94 @@ const updateRelationalData = async (items, mice) => {
 
   // Which mice drop each item, where. The API only serves this per mouse (or
   // per item), but the files behind it are static, so asking for each mouse is
-  // quick and doesn't touch MHCT. Turned around here into rows per item.
-  console.log('Updating item-drops (one request per mouse)...');
+  // quick and doesn't touch MHCT.
+  console.log('Updating item-drops and location-loot (one request per mouse)...');
   const loot = await fetchPerEntity(
     'mouse-loot',
     mice.map((mouse) => mouse.id),
     (id) => `mouse-loot/${id}`,
   );
-  const mouseNames = new Map(mice.map((mouse) => [mouse.id, mouse.name]));
+  const miceById = new Map(mice.map((mouse) => [mouse.id, mouse]));
+  validateItemReferences(
+    'mouse-loot',
+    Object.values(loot).flatMap((rows) => rows.map((row) => row.item_id)),
+    itemIds,
+  );
+
+  // Item pages: one row per mouse, its locations pooled, so a mouse that drops
+  // the item everywhere it's caught doesn't fill the table on its own.
   const drops = {};
   for (const [mouseId, rows] of Object.entries(loot)) {
-    for (const { item_id, ...row } of rows) {
-      (drops[item_id] ??= []).push({ ...row, mouse_id: Number(mouseId), mouse_name: mouseNames.get(Number(mouseId)) });
+    const mouse = miceById.get(Number(mouseId));
+    const byItem = Map.groupBy(rows, (row) => row.item_id);
+    for (const [itemId, itemRows] of byItem) {
+      const sorted = itemRows.toSorted((a, b) => b.catches - a.catches);
+      const catches = sorted.reduce((sum, row) => sum + row.catches, 0);
+      const dropped = sorted.reduce((sum, row) => sum + (row.drop_likelihood / 100) * row.catches, 0);
+      (drops[itemId] ??= []).push({
+        mouse_name: mouse.name,
+        mouse_slug: slugify(mouse.type),
+        locations: sorted.map((row) => row.location),
+        catches,
+        drop_likelihood: Math.round((10000 * dropped) / catches) / 100,
+        min: Math.min(...sorted.map((row) => row.min)),
+        max: Math.max(...sorted.map((row) => row.max)),
+      });
     }
   }
-  validateItemReferences('item-drops', Object.keys(drops), itemIds);
   validateMinimumCoverage('item-drops', Object.keys(drops).length, Object.keys(readGenerated('item-drops', {})).length);
-  const dropRow = (row) => ({
-    mouse_id: row.mouse_id,
-    mouse_name: row.mouse_name,
-    location: row.location,
-    catches: row.catches,
-    drop_likelihood: row.drop_likelihood,
-    min: row.min,
-    max: row.max,
-    baseline: row.baseline,
-  });
   stage(
     'item-drops',
     Object.fromEntries(
       Object.entries(drops).map(([id, rows]) => [
         id,
-        { rows: best(rows, 'drop_likelihood', 50).map(dropRow), total: rows.length },
+        rows.sort((a, b) => b.drop_likelihood - a.drop_likelihood || b.catches - a.catches).slice(0, 50),
+      ]),
+    ),
+  );
+
+  // Location pages: each item seen dropping there, with the mouse most likely
+  // to drop it and that mouse's drop chance. A rate averaged across every mouse
+  // at the location would hide that one mouse always drops it. Built from every
+  // row, not just the ones the item pages keep.
+  const itemsById = new Map(items.map((item) => [item.id, item]));
+  const lootByLocation = new Map();
+  for (const [mouseId, rows] of Object.entries(loot)) {
+    const mouse = miceById.get(Number(mouseId));
+    for (const row of rows) {
+      // From one mouse at a location, a small sample is mostly charm effects and event loot.
+      if (row.catches < MIN_LOCATION_LOOT_CATCHES) continue;
+      const location = (DROP_LOCATION_ALIASES[row.location] ?? row.location).toLowerCase();
+      const byItem = lootByLocation.get(location) ?? new Map();
+      lootByLocation.set(location, byItem);
+      const current = byItem.get(row.item_id);
+      if (
+        current &&
+        (current.rate > row.drop_likelihood || (current.rate === row.drop_likelihood && current.catches >= row.catches))
+      ) {
+        continue;
+      }
+      const item = itemsById.get(row.item_id);
+      byItem.set(row.item_id, {
+        id: item.id,
+        slug: slugify(item.type),
+        name: item.name,
+        rate: row.drop_likelihood,
+        mouse_name: mouse.name,
+        mouse_slug: slugify(mouse.type),
+        catches: row.catches,
+        min: row.min,
+        max: row.max,
+      });
+    }
+  }
+  validateMinimumCoverage('location-loot', lootByLocation.size, Object.keys(readGenerated('location-loot', {})).length);
+  stage(
+    'location-loot',
+    Object.fromEntries(
+      [...lootByLocation].map(([location, byItem]) => [
+        location,
+        [...byItem.values()].sort((a, b) => b.rate - a.rate || a.name.localeCompare(b.name)),
       ]),
     ),
   );
@@ -471,9 +545,8 @@ const updateRelationalData = async (items, mice) => {
   );
   stage('mouse-maps', mouseMaps);
 
-  // Record the refresh time for sitemap lastmod; checkout and build times do
-  // not indicate when the data changed.
-  stage('data-updated', { updatedAt: new Date().toISOString() });
+  // data-updated (the refresh time for sitemap lastmod) is written by
+  // flushPendingFiles, and only when some other file changed.
 };
 
 if (import.meta.main) {

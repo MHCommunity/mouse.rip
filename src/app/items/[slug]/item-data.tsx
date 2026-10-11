@@ -3,11 +3,16 @@ import React from 'react';
 import { Link } from 'next-view-transitions';
 
 import { LocationCell } from '@/components/mhct-cells';
-import { sectionTitle } from '@/components/live-data';
-import type { ConvertibleRow, FoundInConvertible, ItemDrops, MapRelation } from '@/types';
+import type { ConvertibleRow, FoundInConvertible, ItemDropper, MapRelation } from '@/types';
 import { formatNumber } from '@/utils';
 import { itemImageUrl } from '@/lib/image-urls';
 import { ConvertibleContents } from './convertible-contents';
+import { SectionHeading } from '@/components/section-heading';
+import { SourceLink } from '@/components/source-link';
+
+// Common items (Gold, SB+) come from hundreds of openables; listing them all
+// makes the page several hundred KB.
+const FOUND_IN_LIMIT = 50;
 
 function formatQuantity(min: number, max: number): string {
   if (!min && !max) return '';
@@ -33,7 +38,7 @@ export function ItemData({
   itemId: number;
   obtainHint?: string;
   contents: ConvertibleRow[];
-  drops: ItemDrops;
+  drops: ItemDropper[];
   foundIn: FoundInConvertible[];
   mapRelations: MapRelation[];
   /** Slugs for the ids named in `mapRelations`. */
@@ -41,9 +46,9 @@ export function ItemData({
 }) {
   return (
     <div className="mt-10 space-y-10">
-      {(obtainHint || drops.rows.length > 0 || foundIn.length > 0) && (
+      {(obtainHint || drops.length > 0 || foundIn.length > 0) && (
         <section>
-          <h2 className={sectionTitle}>How to get it</h2>
+          <SectionHeading>How to get it</SectionHeading>
 
           {obtainHint && (
             <p className="mt-3 rounded-lg bg-blue-50 px-4 py-3 text-sm font-medium text-blue-900 dark:bg-blue-950/50 dark:text-blue-200">
@@ -58,7 +63,7 @@ export function ItemData({
                 Chests, baskets, and other items that can contain this.
               </p>
               <ul className="mt-3 flex flex-wrap gap-2">
-                {foundIn.map((source) => (
+                {foundIn.slice(0, FOUND_IN_LIMIT).map((source) => (
                   <li key={source.id ?? source.name}>
                     {source.slug ? (
                       <Link
@@ -81,24 +86,21 @@ export function ItemData({
                     )}
                   </li>
                 ))}
+                {foundIn.length > FOUND_IN_LIMIT && (
+                  <li className="inline-flex items-center px-1 text-sm text-zinc-500 dark:text-zinc-400">
+                    and {formatNumber(foundIn.length - FOUND_IN_LIMIT)} more
+                  </li>
+                )}
               </ul>
             </div>
           )}
 
-          {drops.rows.length > 0 && (
+          {drops.length > 0 && (
             <div className="mt-6">
               <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">Hunting drops</h3>
               <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-                The mice that drop it and how often, from{' '}
-                <a
-                  href="https://mhct.win"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:hover:text-zinc-200"
-                >
-                  MHCT
-                </a>
-                . Rates are crowdsourced — check the sample size before trusting one.
+                The mice that drop it and how often, from <SourceLink source="mhct" />. Rates are crowdsourced — check
+                the sample size before trusting one.
               </p>
               <div className="mt-4 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
                 <table className="w-full text-sm">
@@ -112,22 +114,18 @@ export function ItemData({
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
-                    {drops.rows.map((row) => (
-                      <tr key={row.mouse_id}>
+                    {drops.map((row) => (
+                      <tr key={row.mouse_slug}>
                         <td className="px-4 py-2">
-                          {row.mouse_slug ? (
-                            <Link
-                              href={`/mice/${row.mouse_slug}`}
-                              className="text-zinc-900 hover:text-blue-700 dark:text-white dark:hover:text-blue-300"
-                            >
-                              {row.mouse_name}
-                            </Link>
-                          ) : (
-                            <span className="text-zinc-900 dark:text-white">{row.mouse_name}</span>
-                          )}
+                          <Link
+                            href={`/mice/${row.mouse_slug}`}
+                            className="text-zinc-900 hover:text-blue-700 dark:text-white dark:hover:text-blue-300"
+                          >
+                            {row.mouse_name}
+                          </Link>
                         </td>
                         <td className="px-4 py-2">
-                          <LocationCell location={row.location} />
+                          <LocationCell location={row.locations[0]} />
                           {row.locations.length > 1 && (
                             <span
                               className="text-zinc-400 dark:text-zinc-500"
@@ -181,7 +179,7 @@ function MapRelations({
 
   return (
     <section>
-      <h2 className={sectionTitle}>{isScrollCase ? 'Maps it opens' : 'Which map awards it'}</h2>
+      <SectionHeading>{isScrollCase ? 'Maps it opens' : 'Which map awards it'}</SectionHeading>
       <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
         {isScrollCase
           ? 'Opening this scroll case starts one of these maps. Completing a map awards its treasure chest.'

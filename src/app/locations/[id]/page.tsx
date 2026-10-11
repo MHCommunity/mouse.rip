@@ -8,11 +8,13 @@ import { ItemList } from '@/components/item-list';
 import { MouseGrid } from '@/components/mouse-grid';
 import { Link } from 'next-view-transitions';
 
-import { getItemsByLocation, getLocation, getLocations, getTitles, getTrapEffects } from '@/data';
+import { getResourcesForLocation, getLocation, getLocations, getTitles, getTrapEffects } from '@/lib/site-data';
 import { getItemsForEnvironment, getLocationLoot, getMiceForRegionName, itemSlug } from '@/lib/game-data';
 import { ogCard, pageMetadata } from '@/seo';
 import { cleanDescription, formatNumber } from '@/utils';
 import { itemImageUrl, locationHeaderImageUrl, locationImageUrl, titleImageUrl } from '@/lib/image-urls';
+import { SectionHeading } from '@/components/section-heading';
+import { SourceLink } from '@/components/source-link';
 
 export const dynamicParams = false;
 
@@ -70,7 +72,7 @@ export default async function Location({ params }: { params: Promise<{ id: strin
   if (!location) {
     notFound();
   }
-  const items = getItemsByLocation(resolvedParams.id);
+  const items = getResourcesForLocation(resolvedParams.id);
 
   const mice = location.name ? getMiceForRegionName(location.name) : [];
   const minTitle = location.title ? getTitles().find((title) => title.id === location.title) : undefined;
@@ -118,9 +120,7 @@ export default async function Location({ params }: { params: Promise<{ id: strin
 
       {locationItems.length > 0 && (
         <section className="mt-12">
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
-            Items for this location
-          </h2>
+          <SectionHeading>Items for this location</SectionHeading>
           <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
             Gear, bait, and other items that are specific to hunting here.
           </p>
@@ -146,20 +146,9 @@ export default async function Location({ params }: { params: Promise<{ id: strin
 
       {loot.length > 0 && (
         <section className="mt-12">
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
-            Loot found here
-          </h2>
+          <SectionHeading>Loot found here</SectionHeading>
           <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-            How often the mouse most likely to drop each item here drops it, from{' '}
-            <a
-              href="https://mhct.win"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:hover:text-zinc-200"
-            >
-              MHCT
-            </a>
-            .
+            How often the mouse most likely to drop each item here drops it, from <SourceLink source="mhct" />.
           </p>
           <div className="mt-4 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
             <table className="w-full text-sm">
@@ -184,16 +173,9 @@ export default async function Location({ params }: { params: Promise<{ id: strin
                       </Link>
                       <div className="ml-8 text-xs text-zinc-400 dark:text-zinc-500">
                         from{' '}
-                        {row.mouse_slug ? (
-                          <Link
-                            href={`/mice/${row.mouse_slug}`}
-                            className="hover:text-blue-700 dark:hover:text-blue-300"
-                          >
-                            {row.mouse_name}
-                          </Link>
-                        ) : (
-                          row.mouse_name
-                        )}
+                        <Link href={`/mice/${row.mouse_slug}`} className="hover:text-blue-700 dark:hover:text-blue-300">
+                          {row.mouse_name}
+                        </Link>
                       </div>
                     </td>
                     <td className="px-4 py-2 text-right font-medium tabular-nums text-zinc-900 dark:text-white">
@@ -217,9 +199,7 @@ export default async function Location({ params }: { params: Promise<{ id: strin
 
       {trapEffects.length > 0 && (
         <section className="mt-12">
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
-            Trap special effects here
-          </h2>
+          <SectionHeading>Trap special effects here</SectionHeading>
           <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
             Traps with unique behavior in this location. See{' '}
             <Link
@@ -255,9 +235,7 @@ export default async function Location({ params }: { params: Promise<{ id: strin
 
       {mice.length > 0 && (
         <section className="mt-12">
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
-            {mice.length} mice found here
-          </h2>
+          <SectionHeading>{mice.length} mice found here</SectionHeading>
           <div className="mt-4">
             <MouseGrid mice={mice} />
           </div>

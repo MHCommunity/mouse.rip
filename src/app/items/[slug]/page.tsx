@@ -6,7 +6,7 @@ import { ExternalRefs } from '@/components/external-refs';
 import { Heading } from '@/components/heading';
 import { Link } from 'next-view-transitions';
 
-import { getLocations } from '@/data';
+import { getLocations } from '@/lib/site-data';
 import {
   getAllGameItems,
   getConvertibleContents,
@@ -26,6 +26,7 @@ import { ogCard, pageMetadata } from '@/seo';
 import { formatNumber, titleCase } from '@/utils';
 import { ItemData } from './item-data';
 import { MarketPrice } from './market-price';
+import { SectionHeading } from '@/components/section-heading';
 
 export const dynamicParams = false;
 
@@ -88,13 +89,29 @@ function pickImage(item: ReturnType<typeof getGameItemBySlug>): string | undefin
   return item?.images ? itemImageUrl(item.type, 'large') : undefined;
 }
 
+let itemsByClassification: Map<string, GameItem[]> | null = null;
+let skinTargets: Map<string, GameItem> | null = null;
+
+/** All items, grouped by classification. Built once per build, not once per page. */
+function itemsWithClassification(classification: string): GameItem[] {
+  if (!itemsByClassification) {
+    itemsByClassification = new Map();
+    for (const item of getAllGameItems()) {
+      const key = item.classification;
+      const group = itemsByClassification.get(key);
+      if (group) group.push(item);
+      else itemsByClassification.set(key, [item]);
+    }
+  }
+  return itemsByClassification.get(classification) ?? [];
+}
+
 /** How this item's power and luck rank among comparable items (same classification,
  *  and same power type for weapons). */
 function rankNote(item: GameItem, stats: GameItemStats): string | null {
   if (item.classification !== 'weapon' && item.classification !== 'base') return null;
 
-  const peers = getAllGameItems().filter((peer) => {
-    if (peer.classification !== item.classification) return false;
+  const peers = itemsWithClassification(item.classification).filter((peer) => {
     if (!peer.has_stats || typeof peer.has_stats !== 'object') return false;
     if (item.classification === 'weapon' && peer.has_stats.power_type !== stats.power_type) return false;
     return true;
@@ -141,9 +158,16 @@ function itemEnvironments(item: GameItem): { id: string | null; name: string }[]
 /** For a skin, the weapon it applies to (the item whose skin list contains it). */
 function skinTarget(item: GameItem): GameItem | undefined {
   if (!item.is_skin) return undefined;
-  return getAllGameItems().find(
-    (peer) => peer.has_stats && typeof peer.has_stats === 'object' && peer.has_stats.skins?.includes(item.type),
-  );
+  if (!skinTargets) {
+    skinTargets = new Map();
+    for (const peer of getAllGameItems()) {
+      if (!peer.has_stats || typeof peer.has_stats !== 'object') continue;
+      for (const skin of peer.has_stats.skins ?? []) {
+        if (!skinTargets.has(skin)) skinTargets.set(skin, peer);
+      }
+    }
+  }
+  return skinTargets.get(item.type);
 }
 
 /** Items of the same classification that share the most tags with this one. */
@@ -151,8 +175,8 @@ function relatedItems(item: GameItem): GameItem[] {
   const tags = new Set((item.tags ?? []).filter((tag) => tag !== item.classification));
   if (tags.size === 0) return [];
 
-  return getAllGameItems()
-    .filter((peer) => peer.id !== item.id && peer.classification === item.classification)
+  return itemsWithClassification(item.classification)
+    .filter((peer) => peer.id !== item.id)
     .map((peer) => ({
       peer,
       shared: (peer.tags ?? []).filter((tag) => tags.has(tag)).length,
@@ -351,9 +375,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
 
       {environments.length > 0 && (
         <section className="mt-8">
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
-            Where you can use it
-          </h2>
+          <SectionHeading>Where you can use it</SectionHeading>
           <div className="mt-3 flex flex-wrap gap-2">
             {environments.map((environment) =>
               environment.id ? (
@@ -379,7 +401,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
 
       {skins.length > 0 && (
         <section className="mt-8">
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">Skins</h2>
+          <SectionHeading>Skins</SectionHeading>
           <div className="mt-3 flex flex-wrap gap-2">
             {skins.map((skin) => (
               <Link
@@ -400,9 +422,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
 
       {paragraphs.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
-            About this item
-          </h2>
+          <SectionHeading>About this item</SectionHeading>
           <div className="mt-3 max-w-3xl space-y-3 text-base/7 text-pretty text-zinc-600 dark:text-zinc-300">
             {paragraphs.map((paragraph, index) => (
               <p key={index}>{paragraph}</p>
@@ -413,9 +433,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
 
       {related.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
-            Related {titleCase(item.classification).toLowerCase()}s
-          </h2>
+          <SectionHeading>Related {titleCase(item.classification).toLowerCase()}s</SectionHeading>
           <ul className="mt-4 flex flex-wrap gap-2">
             {related.map((peer) => (
               <li key={peer.id}>
