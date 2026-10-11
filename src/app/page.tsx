@@ -5,26 +5,25 @@ import React from 'react';
 import {
   AcademicCapIcon,
   ArrowRightIcon,
-  // ArrowTrendingUpIcon,
   BoltIcon,
   SwatchIcon,
   TableCellsIcon,
   WrenchIcon,
 } from '@heroicons/react/20/solid';
-// import { CheeseIcon, MouseIcon } from '@/components/game-icons';
+import { CheeseIcon, MouseIcon } from '@/components/game-icons';
 import { Subheading } from '@/components/heading';
 import { ItemList } from '@/components/item-list';
-// import { SearchBar } from '@/components/search/search-button';
+import { SearchBar } from '@/components/search/search-button';
 
-import { getItemsByCategory, getPopularItems } from '@/data';
-// import { getAllGameItems, getAllMice } from '@/lib/game-data';
+import { getResourcesByCategory, getPopularResources } from '@/lib/site-data';
+import { getAllGameItems, getAllMice } from '@/lib/game-data';
 import { pageMetadata } from '@/seo';
 import { formatNumber } from '@/utils';
 
 export const metadata = pageMetadata({
   title: 'MouseHunt Guides, Tools, and a Full Mouse & Item Database',
   description:
-    'A community-built collection of MouseHunt guides, extensions, tools, and userscripts, plus every mouse, every item, and live marketplace prices.',
+    'A community-built collection of MouseHunt guides, extensions, tools, and userscripts, plus every mouse and every item.',
   path: '/',
 });
 
@@ -62,45 +61,31 @@ const categories: Array<Category> = [
     hoverBorder: 'hover:border-pink-300 dark:hover:border-pink-800',
     ring: 'focus-visible:ring-pink-500',
   },
-  // Temporarily hidden
-  // {
-  //   href: '/mice',
-  //   name: 'Mice',
-  //   description:
-  //     'Every mouse in the game with stats, minlucks, and the best cheese and location to catch each one.',
-  //   countLabel: 'mice',
-  //   icon: MouseIcon,
-  //   count: getAllMice().length,
-  //   featured: true,
-  //   span: 'lg:col-span-3',
-  //   chip: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
-  //   hoverBorder: 'hover:border-emerald-300 dark:hover:border-emerald-800',
-  //   ring: 'focus-visible:ring-emerald-500',
-  // },
-  // {
-  //   href: '/items',
-  //   name: 'Items',
-  //   description: 'Weapons, bases, charms, cheese, and chests, with stats and where they drop.',
-  //   countLabel: 'items',
-  //   icon: CheeseIcon,
-  //   count: getAllGameItems().length,
-  //   span: 'lg:col-span-2',
-  //   chip: 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
-  //   hoverBorder: 'hover:border-amber-300 dark:hover:border-amber-800',
-  //   ring: 'focus-visible:ring-amber-500',
-  // },
-  // {
-  //   href: '/marketplace',
-  //   name: 'Marketplace',
-  //   description: 'Live gold and SUPER|brie+ prices for every tradable item.',
-  //   countLabel: 'tradable items',
-  //   icon: ArrowTrendingUpIcon,
-  //   count: getAllGameItems().filter((item) => item.is_tradable).length,
-  //   span: 'lg:col-span-2',
-  //   chip: 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300',
-  //   hoverBorder: 'hover:border-blue-300 dark:hover:border-blue-800',
-  //   ring: 'focus-visible:ring-blue-500',
-  // },
+  {
+    href: '/mice',
+    name: 'Mice',
+    description: 'Every mouse in the game with stats, minlucks, and the best cheese and location to catch each one.',
+    countLabel: 'mice',
+    icon: MouseIcon,
+    count: getAllMice().length,
+    featured: true,
+    span: 'lg:col-span-3',
+    chip: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
+    hoverBorder: 'hover:border-emerald-300 dark:hover:border-emerald-800',
+    ring: 'focus-visible:ring-emerald-500',
+  },
+  {
+    href: '/items',
+    name: 'Items',
+    description: 'Weapons, bases, charms, cheese, and chests, with stats and where they drop.',
+    countLabel: 'items',
+    icon: CheeseIcon,
+    count: getAllGameItems().length,
+    span: 'lg:col-span-2',
+    chip: 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
+    hoverBorder: 'hover:border-amber-300 dark:hover:border-amber-800',
+    ring: 'focus-visible:ring-amber-500',
+  },
   {
     href: '/extensions',
     name: 'Extensions',
@@ -132,7 +117,7 @@ const categories: Array<Category> = [
     countLabel: 'userscripts',
     icon: SwatchIcon,
     category: 'userscript',
-    span: 'lg:col-span-2',
+    span: 'lg:col-span-3',
     chip: 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300',
     hoverBorder: 'hover:border-purple-300 dark:hover:border-purple-800',
     ring: 'focus-visible:ring-purple-500',
@@ -144,7 +129,7 @@ const categories: Array<Category> = [
     countLabel: 'spreadsheets',
     icon: TableCellsIcon,
     category: 'spreadsheet',
-    span: 'lg:col-span-2',
+    span: 'md:col-span-2 lg:col-span-3',
     chip: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300',
     hoverBorder: 'hover:border-indigo-300 dark:hover:border-indigo-800',
     ring: 'focus-visible:ring-indigo-500',
@@ -154,7 +139,7 @@ const categories: Array<Category> = [
 const easing = 'ease-[cubic-bezier(0.32,0.72,0,1)]';
 
 export default function Home() {
-  const popular = getPopularItems();
+  const popular = getPopularResources();
 
   return (
     <div className="mx-auto max-w-5xl">
@@ -179,11 +164,9 @@ export default function Home() {
             need to hunt smarter, in one place.
           </p>
 
-          {/* Temporarily hidden
           <div className="mt-8">
             <SearchBar />
           </div>
-          */}
         </div>
       </section>
 
@@ -216,7 +199,7 @@ export default function Home() {
               hoverBorder,
               ring,
             }) => {
-              const count = fixedCount ?? getItemsByCategory(category!).length;
+              const count = fixedCount ?? getResourcesByCategory(category!).length;
 
               return (
                 <Link
