@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 
-import { getItemsByCategory, getLocations, getOnSiteGuides } from '@/data';
+import { getResourcesByCategory, getLocations, getOnSiteGuides } from '@/lib/site-data';
 import { getAllGameItems, getAllMice, getAllMiceGroups, getDataUpdatedAt, itemSlug, mouseSlug } from '@/lib/game-data';
 import { orderClassifications } from '@/lib/item-classifications';
 
@@ -20,7 +20,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/userscripts',
     '/mice',
     '/items',
-    '/marketplace',
     '/about',
     '/minlucks',
     '/valour-rift-floors',
@@ -49,7 +48,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   );
 
-  const userscriptRoutes = getItemsByCategory('userscript').map((item) => ({
+  const userscriptRoutes = getResourcesByCategory('userscript').map((item) => ({
     url: `${BASE_URL}/userscripts/${item.id}`,
     changeFrequency: 'monthly' as const,
     priority: 0.5,

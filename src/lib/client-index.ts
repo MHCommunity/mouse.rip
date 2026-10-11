@@ -2,7 +2,7 @@
  * The item and mouse data that reaches the browser.
  *
  * Both files are code-split and fetched on demand, and everything that needs
- * them — site search, the /items and /mice browsers, /marketplace — goes through
+ * them — site search, the /items and /mice browsers — goes through
  * here. That's deliberate: these are the same lists, so sharing one lazily-loaded
  * chunk each means a visitor downloads them at most once for the whole session,
  * instead of every page inlining its own copy into the HTML it ships.

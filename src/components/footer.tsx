@@ -7,7 +7,6 @@ const browse = [
   { href: '/mice', label: 'Mice' },
   { href: '/items', label: 'Items' },
   { href: '/minlucks', label: 'Minlucks' },
-  { href: '/marketplace', label: 'Marketplace' },
   { href: '/tools', label: 'Tools' },
 ];
 
