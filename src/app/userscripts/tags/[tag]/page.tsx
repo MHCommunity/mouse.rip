@@ -8,18 +8,21 @@ import { PageHeader } from '@/components/page-header';
 import { ItemList } from '@/components/item-list';
 import { pageMetadata } from '@/seo';
 
-import { getItemsByCategory } from '@/data';
-import { MouseRipItem } from '@/types';
+import { getResourcesByCategory } from '@/lib/site-data';
+import { Resource } from '@/types';
 
-function getUserscriptsByTag(tag: string): MouseRipItem[] {
-  return getItemsByCategory('userscript').filter((item) => item.tags?.includes(tag));
+function getUserscriptsByTag(tag: string): Resource[] {
+  return getResourcesByCategory('userscript').filter((item) => item.tags?.includes(tag));
 }
 
 export function generateStaticParams() {
   const tags = new Set<string>();
-  getItemsByCategory('userscript').forEach((item) => item.tags?.forEach((tag) => tags.add(tag)));
-  return [...tags].map((tag) => ({ tag: encodeURIComponent(tag) }));
+  getResourcesByCategory('userscript').forEach((item) => item.tags?.forEach((tag) => tags.add(tag)));
+  // Next encodes params when it builds the paths, so pass the tags as-is.
+  return [...tags].map((tag) => ({ tag }));
 }
+
+export const dynamicParams = false;
 
 export async function generateMetadata({ params }: { params: Promise<{ tag: string }> }) {
   const { tag } = await params;
