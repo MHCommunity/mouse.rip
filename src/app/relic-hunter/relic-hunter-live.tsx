@@ -40,7 +40,7 @@ export function RelicHunterLive() {
     let active = true;
 
     fetch('https://api.mouse.rip/relic-hunter')
-      .then((res) => res.json() as Promise<Environment>)
+      .then((res) => (res.ok ? (res.json() as Promise<Environment>) : Promise.reject()))
       .then((data) => {
         if (!active) return;
         if (!data || data.id === 'unknown' || !data.name) {

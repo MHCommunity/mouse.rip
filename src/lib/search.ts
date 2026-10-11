@@ -1,4 +1,4 @@
-import { getItems, getLocations, getTitles, getEnvironments } from '@/data';
+import { getResources, getLocations, getTitles, getEnvironments } from '@/lib/site-data';
 import { titleCase } from '@/utils';
 import miceGroups from '@/data/generated/mice-groups.json';
 import type { SlimMouse } from '@/types';
@@ -42,12 +42,6 @@ const PAGE_RECORDS: SearchRecord[] = [
     'mice mouse bestiary stats minluck groups clan tribe',
   ],
   ['/items', 'Items', 'Browse every item', 'items weapons bases charms cheese collectibles'],
-  [
-    '/marketplace',
-    'Marketplace',
-    'Live tradable item prices',
-    'marketplace market prices gold sb supplies trade markethunt',
-  ],
   ['/guides', 'Guides', 'Walkthroughs and strategy', 'guides walkthrough strategy how to'],
   ['/extensions', 'Extensions', 'Browser add-ons', 'extensions browser add-ons addons'],
   ['/tools', 'Tools', 'Calculators and lookups', 'tools calculators simulators lookups'],
@@ -165,7 +159,7 @@ export function getStaticSearchRecords(): SearchRecord[] {
     }
   }
 
-  for (const item of getItems()) {
+  for (const item of getResources()) {
     const isGuide = item.category === 'guide';
     // Userscripts always resolve to their on-site detail page, like the Item card.
     const href = item.category === 'userscript' ? `/userscripts/${item.id}` : item.url;
@@ -211,7 +205,7 @@ function toGameItemRecord(item: IndexedItem): SearchRecord {
 
 /**
  * Game items and mice are numerous, so their indexes load lazily on first
- * search — from the same shared chunks the /items, /mice and /marketplace
+ * search — from the same shared chunks the /items and /mice
  * browsers use, so whichever comes first pays for both.
  */
 export function loadGameItemRecords(): Promise<SearchRecord[]> {
@@ -233,6 +227,19 @@ export function normalizeSearchText(value: string): string {
     .replace(/\s+/g, ' ');
 }
 
+// Records never change once built, so normalize each one once rather than on
+// every keystroke across thousands of records.
+const normalizedRecords = new WeakMap<SearchRecord, { keywords: string; title: string }>();
+
+function normalizedRecord(record: SearchRecord) {
+  let normalized = normalizedRecords.get(record);
+  if (!normalized) {
+    normalized = { keywords: normalizeSearchText(record.keywords), title: normalizeSearchText(record.title) };
+    normalizedRecords.set(record, normalized);
+  }
+  return normalized;
+}
+
 /** AND-match every token against keywords, then rank by how well the title matches. */
 export function searchRecords(records: SearchRecord[], query: string, limit = 40): SearchRecord[] {
   const q = normalizeSearchText(query);
@@ -242,7 +249,7 @@ export function searchRecords(records: SearchRecord[], query: string, limit = 40
   const scored: { record: SearchRecord; score: number }[] = [];
 
   for (const record of records) {
-    const keywords = normalizeSearchText(record.keywords);
+    const { keywords, title } = normalizedRecord(record);
     let matchesAll = true;
     for (const token of tokens) {
       if (!keywords.includes(token)) {
@@ -252,7 +259,6 @@ export function searchRecords(records: SearchRecord[], query: string, limit = 40
     }
     if (!matchesAll) continue;
 
-    const title = normalizeSearchText(record.title);
     let score = 0;
     if (title === q) score += 1000;
     else if (title.startsWith(q)) score += 600;
