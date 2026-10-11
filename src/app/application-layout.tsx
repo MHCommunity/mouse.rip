@@ -16,14 +16,16 @@ import {
 import { Logo } from '@/components/logo';
 import { SidebarLayout } from '@/components/sidebar-layout';
 import { SearchProvider } from '@/components/search/search-context';
-// import { SearchButton } from '@/components/search/search-button';
+import { SearchButton } from '@/components/search/search-button';
 import { Footer } from '@/components/footer';
 
-import { getLocations } from '@/data';
+// Imported directly: going through @/lib/site-data would bundle every site
+// dataset into this client component, and so into every page.
+import locationsData from '@/data/locations.json';
+import type { LocationRegion } from '@/types';
 
 import {
   AcademicCapIcon,
-  // ArrowTrendingUpIcon,
   BoltIcon,
   HomeIcon,
   QuestionMarkCircleIcon,
@@ -31,10 +33,12 @@ import {
   TableCellsIcon,
   WrenchIcon,
 } from '@heroicons/react/20/solid';
-// import { CheeseIcon, MouseIcon } from '@/components/game-icons';
+import { CheeseIcon, MouseIcon } from '@/components/game-icons';
 import { DiscordIcon, GitHubIcon } from '@/components/social-icon';
 import { Avatar } from '@/components/avatar';
 import { locationImageUrl } from '@/lib/image-urls';
+
+const locations = locationsData as LocationRegion[];
 
 interface ApplicationLayoutProps {
   children: ReactNode;
@@ -42,7 +46,6 @@ interface ApplicationLayoutProps {
 
 export function ApplicationLayout({ children }: ApplicationLayoutProps) {
   const pathname = usePathname();
-  const locations = getLocations();
 
   return (
     <SearchProvider>
@@ -58,11 +61,9 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
               </NavbarItem>
             </NavbarSection>
             <NavbarSpacer />
-            {/* Temporarily hidden
-          <NavbarSection>
-            <SearchButton className="w-auto" />
-          </NavbarSection>
-          */}
+            <NavbarSection>
+              <SearchButton className="w-auto" />
+            </NavbarSection>
           </Navbar>
         }
         sidebar={
@@ -77,11 +78,9 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
             </SidebarHeader>
 
             <SidebarBody>
-              {/* Temporarily hidden
-            <div className="px-2 pb-2">
-              <SearchButton className="w-full" />
-            </div>
-            */}
+              <div className="px-2 pb-2">
+                <SearchButton className="w-full" />
+              </div>
               <SidebarSection>
                 <SidebarItem
                   href="/"
@@ -146,41 +145,30 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                     Userscripts
                   </SidebarLabel>
                 </SidebarItem>
-                {/* Temporarily hidden
-              <SidebarItem
-                href="/mice"
-                current={pathname.startsWith('/mice') || pathname.startsWith('/mouse') || pathname.startsWith('/groups')}
-                aria-label="Mice"
-                className="rounded focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              >
-                <MouseIcon aria-hidden="true" />
-                <SidebarLabel className="text-emerald-800 hover:text-emerald-900 dark:text-emerald-200 dark:hover:text-emerald-300">
-                  Mice
-                </SidebarLabel>
-              </SidebarItem>
-              <SidebarItem
-                href="/items"
-                current={pathname.startsWith('/item')}
-                aria-label="Items"
-                className="rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
-              >
-                <CheeseIcon aria-hidden="true" />
-                <SidebarLabel className="text-amber-800 hover:text-amber-900 dark:text-amber-200 dark:hover:text-amber-300">
-                  Items
-                </SidebarLabel>
-              </SidebarItem>
-              <SidebarItem
-                href="/marketplace"
-                current={pathname.startsWith('/marketplace')}
-                aria-label="Marketplace"
-                className="rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <ArrowTrendingUpIcon aria-hidden="true" />
-                <SidebarLabel className="text-blue-800 hover:text-blue-900 dark:text-blue-200 dark:hover:text-blue-300">
-                  Marketplace
-                </SidebarLabel>
-              </SidebarItem>
-              */}
+                <SidebarItem
+                  href="/mice"
+                  current={
+                    pathname.startsWith('/mice') || pathname.startsWith('/mouse') || pathname.startsWith('/groups')
+                  }
+                  aria-label="Mice"
+                  className="rounded focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                >
+                  <MouseIcon aria-hidden="true" />
+                  <SidebarLabel className="text-emerald-800 hover:text-emerald-900 dark:text-emerald-200 dark:hover:text-emerald-300">
+                    Mice
+                  </SidebarLabel>
+                </SidebarItem>
+                <SidebarItem
+                  href="/items"
+                  current={pathname.startsWith('/item')}
+                  aria-label="Items"
+                  className="rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
+                >
+                  <CheeseIcon aria-hidden="true" />
+                  <SidebarLabel className="text-amber-800 hover:text-amber-900 dark:text-amber-200 dark:hover:text-amber-300">
+                    Items
+                  </SidebarLabel>
+                </SidebarItem>
               </SidebarSection>
 
               <SidebarDivider />
@@ -198,6 +186,7 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                         <SidebarItem
                           key={location.id}
                           href={`/locations/${location.id}`}
+                          prefetch={false}
                           current={pathname === `/locations/${location.id}`}
                           className="rounded-md text-xs font-semibold text-gray-400 hover:bg-gray-800 hover:text-white"
                         >
