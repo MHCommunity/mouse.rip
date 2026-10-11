@@ -1,9 +1,11 @@
 import { defineCloudflareConfig } from '@opennextjs/cloudflare';
+import staticAssetsIncrementalCache from '@opennextjs/cloudflare/overrides/incremental-cache/static-assets-incremental-cache';
 
 export default defineCloudflareConfig({
-  // Uncomment to enable R2 cache,
-  // It should be imported as:
-  // `import r2IncrementalCache from "@opennextjs/cloudflare/overrides/incremental-cache/r2-incremental-cache";`
-  // See https://opennext.js.org/cloudflare/caching for more details
-  // incrementalCache: r2IncrementalCache,
+  // Every page is prerendered at build time and never revalidated, so serve
+  // the build output straight from Workers static assets. Without a cache the
+  // worker re-renders each page on every request, and pages that read
+  // src/data/generated from disk (sitemap, items, mice) fail at runtime.
+  // See https://opennext.js.org/cloudflare/caching
+  incrementalCache: staticAssetsIncrementalCache,
 });
