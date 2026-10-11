@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { formatGold, formatSb } from '@/utils';
+import { SectionHeading } from '@/components/section-heading';
 
 export interface PricePoint {
   date: string;
@@ -189,6 +190,8 @@ export function MarketPrice({ itemId }: { itemId: number }) {
 
   useEffect(() => {
     let active = true;
+    // Don't leave the previous item's chart up while this one loads.
+    setState({ status: 'loading' });
     fetch(`https://api.markethunt.win/items/${itemId}`)
       .then((res) => (res.ok ? (res.json() as Promise<MarkethuntResponse>) : Promise.reject()))
       .then((data) => {
@@ -210,9 +213,7 @@ export function MarketPrice({ itemId }: { itemId: number }) {
 
   return (
     <section className="mt-10">
-      <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
-        Marketplace price
-      </h2>
+      <SectionHeading>Marketplace price</SectionHeading>
 
       {state.status === 'loading' && (
         <div className="mt-4 h-64 animate-pulse rounded-xl bg-zinc-100 dark:bg-zinc-800" />

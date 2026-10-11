@@ -10,6 +10,19 @@ import { loadItemIndex, type IndexedItem } from '@/lib/client-index';
 import { CLASSIFICATION_DESCRIPTIONS } from '@/lib/item-classifications';
 import { itemImageUrl } from '@/lib/image-urls';
 import { formatNumber, titleCase } from '@/utils';
+import { SectionHeading } from '@/components/section-heading';
+
+/** The mice browser's cap too: past this, rows render on request. */
+const ROW_LIMIT = 400;
+
+function useDebouncedValue<T>(value: T, delay: number) {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+  return debounced;
+}
 
 const pillBase =
   'shrink-0 rounded-full px-3 py-1 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500';
@@ -34,7 +47,7 @@ export function ItemsBrowser({
 }) {
   // The item list itself is code-split and only fetched once the visitor
   // actually filters — the landing view is just the type cards, and the chunk is
-  // shared with search and /marketplace, so it's often already cached.
+  // shared with search, so it's often already cached.
   const [items, setItems] = useState<IndexedItem[] | null>(null);
   const [loadFailed, setLoadFailed] = useState(false);
 
@@ -52,20 +65,24 @@ export function ItemsBrowser({
   // Reflect the active filters back into the URL so the view stays shareable.
   // replaceState feeds back into useSearchParams, so remember what we wrote to
   // tell our own edits apart from a real navigation.
+  // Writes are deferred so typing doesn't call replaceState on every keystroke.
   const written = useRef(search);
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (active) params.set('type', active);
-    else params.delete('type');
-    if (query.trim()) params.set('q', query.trim());
-    else params.delete('q');
-    if (tradableOnly) params.set('tradable', '1');
-    else params.delete('tradable');
-    if (tag) params.set('tag', tag);
-    else params.delete('tag');
-    const next = params.toString();
-    written.current = next;
-    window.history.replaceState(null, '', next ? `?${next}` : window.location.pathname);
+    const timer = setTimeout(() => {
+      const params = new URLSearchParams(window.location.search);
+      if (active) params.set('type', active);
+      else params.delete('type');
+      if (query.trim()) params.set('q', query.trim());
+      else params.delete('q');
+      if (tradableOnly) params.set('tradable', '1');
+      else params.delete('tradable');
+      if (tag) params.set('tag', tag);
+      else params.delete('tag');
+      const next = params.toString();
+      written.current = next;
+      window.history.replaceState(null, '', next ? `?${next}` : window.location.pathname);
+    }, 200);
+    return () => clearTimeout(timer);
   }, [active, query, tradableOnly, tag]);
 
   // A soft navigation (the sidebar's Items link, a /items?type= card) changes the
@@ -80,9 +97,12 @@ export function ItemsBrowser({
     setTag(next.tag);
   }, [search, classificationOrder]);
 
+  // Filtering 4,000+ items on every keystroke is wasted work; wait for a pause.
+  const debouncedQuery = useDebouncedValue(query, 150);
+
   // Like the mice page: the default view is a grid of type cards, and the full
   // item list (with icons) only renders once a filter is active.
-  const filtering = Boolean(query.trim()) || active !== null || tradableOnly || tag !== null;
+  const filtering = Boolean(debouncedQuery.trim()) || active !== null || tradableOnly || tag !== null;
 
   // Nothing is filterable until the list arrives, so only pay for it when the
   // visitor filters. Kicking the load off on mount would defeat the point.
@@ -97,25 +117,45 @@ export function ItemsBrowser({
     };
   }, [filtering, items, loadFailed]);
 
+  // Lowercase and sort once per load, not once per filter change.
+  const sortedItems = useMemo(
+    () =>
+      items
+        ?.map((item) => ({ item, lowerName: item.name.toLowerCase() }))
+        .sort((a, b) => a.item.name.localeCompare(b.item.name)) ?? [],
+    [items],
+  );
+
   const grouped = useMemo(() => {
-    if (!items) return [];
-    const q = query.trim().toLowerCase();
+    const q = debouncedQuery.trim().toLowerCase();
     const map = new Map<string, IndexedItem[]>();
-    for (const item of items) {
+    for (const { item, lowerName } of sortedItems) {
       if (active && item.classification !== active) continue;
       if (tradableOnly && !item.tradable) continue;
       if (tag && !item.tags?.includes(tag)) continue;
-      if (q && !item.name.toLowerCase().includes(q)) continue;
+      if (q && !lowerName.includes(q)) continue;
       const list = map.get(item.classification) ?? [];
       list.push(item);
       map.set(item.classification, list);
     }
-    return classificationOrder
-      .filter((key) => map.has(key))
-      .map((key) => [key, map.get(key)!.sort((a, b) => a.name.localeCompare(b.name))] as const);
-  }, [items, query, active, tradableOnly, tag, classificationOrder]);
+    return classificationOrder.filter((key) => map.has(key)).map((key) => [key, map.get(key)!] as const);
+  }, [sortedItems, debouncedQuery, active, tradableOnly, tag, classificationOrder]);
 
   const total = grouped.reduce((sum, [, list]) => sum + list.length, 0);
+
+  // Broad filters (a whole type, tradable only) can match thousands of items, so
+  // render the first ROW_LIMIT until asked. Changing the filters re-caps it.
+  const filterKey = [debouncedQuery.trim(), active, tradableOnly, tag].join('|');
+  const [expandedFor, setExpandedFor] = useState<string | null>(null);
+  const showAll = expandedFor === filterKey;
+  let budget = showAll ? Number.POSITIVE_INFINITY : ROW_LIMIT;
+  const visible = grouped
+    .map(([key, list]) => {
+      const shown = list.slice(0, budget);
+      budget -= shown.length;
+      return [key, list, shown] as const;
+    })
+    .filter(([, , shown]) => shown.length > 0);
 
   return (
     <div>
@@ -188,9 +228,7 @@ export function ItemsBrowser({
 
       {!filtering ? (
         <div className="mt-8">
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
-            Browse by type
-          </h2>
+          <SectionHeading>Browse by type</SectionHeading>
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {classificationOrder.map((key) => (
               <Link
@@ -229,7 +267,7 @@ export function ItemsBrowser({
         <p className="mt-10 text-sm text-zinc-500 dark:text-zinc-400">No items match your filters.</p>
       ) : (
         <div className="mt-8 space-y-10">
-          {grouped.map(([key, list]) => (
+          {visible.map(([key, list, shown]) => (
             <section key={key}>
               <h2 className="text-sm font-semibold tracking-tight text-zinc-900 dark:text-white">
                 {titleCase(key)}
@@ -238,12 +276,13 @@ export function ItemsBrowser({
                 </span>
               </h2>
               <ul className="mt-3 columns-2 gap-x-6 sm:columns-3 lg:columns-4">
-                {list.map((item) => {
+                {shown.map((item) => {
                   const slug = item.type.replaceAll('_', '-');
                   return (
                     <li key={item.id} className="break-inside-avoid">
                       <Link
                         href={`/items/${slug}`}
+                        prefetch={false}
                         className="flex items-center gap-2 py-1 text-sm text-zinc-600 transition hover:text-blue-700 dark:text-zinc-400 dark:hover:text-blue-300"
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -264,6 +303,18 @@ export function ItemsBrowser({
               </ul>
             </section>
           ))}
+          {total > ROW_LIMIT && !showAll && (
+            <p className="text-sm text-zinc-400 dark:text-zinc-500">
+              Showing the first {formatNumber(ROW_LIMIT)} of {formatNumber(total)}.{' '}
+              <button
+                type="button"
+                onClick={() => setExpandedFor(filterKey)}
+                className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+              >
+                Show all
+              </button>
+            </p>
+          )}
         </div>
       )}
     </div>

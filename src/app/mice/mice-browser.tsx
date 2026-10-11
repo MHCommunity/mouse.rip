@@ -9,6 +9,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import { loadMouseIndex, type IndexedMouse } from '@/lib/client-index';
 import { POWER_TYPES, POWER_TYPE_CHIP, bestPowerTypes, powerTypeLabel } from '@/lib/power-types';
 import { mouseImageUrl } from '@/lib/image-urls';
+import { SectionHeading } from '@/components/section-heading';
 
 export interface SlimGroup {
   slug: string;
@@ -149,6 +150,7 @@ export function MiceBrowser({ groups }: { groups: SlimGroup[] }) {
                 <li key={mouse.id}>
                   <Link
                     href={`/mice/${slug}`}
+                    prefetch={false}
                     className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 shadow-sm transition hover:border-emerald-300 hover:text-emerald-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-emerald-800 dark:hover:text-emerald-300"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -167,9 +169,7 @@ export function MiceBrowser({ groups }: { groups: SlimGroup[] }) {
         )
       ) : (
         <div className="mt-8">
-          <h2 className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
-            Browse by group
-          </h2>
+          <SectionHeading>Browse by group</SectionHeading>
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {groups.map((group) => (
               <Link

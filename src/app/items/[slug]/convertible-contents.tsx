@@ -4,10 +4,11 @@ import React, { useEffect, useState } from 'react';
 
 import { Link } from 'next-view-transitions';
 
-import { sectionTitle } from '@/components/live-data';
 import type { ConvertibleRow } from '@/types';
 import { formatGold } from '@/utils';
 import { itemImageUrl } from '@/lib/image-urls';
+import { SectionHeading } from '@/components/section-heading';
+import { SourceLink } from '@/components/source-link';
 
 interface MarkethuntListRow {
   item_info: { item_id: number };
@@ -22,6 +23,31 @@ interface MarkethuntListRow {
  */
 const INTRINSIC_PRICES: Record<number, number> = { 431: 1 };
 
+// The list covers every item, so share one request across convertible pages for
+// the whole session instead of refetching it on each navigation.
+let pricesPromise: Promise<Map<number, number>> | null = null;
+
+function loadMarketPrices(): Promise<Map<number, number>> {
+  if (!pricesPromise) {
+    pricesPromise = fetch('https://api.markethunt.win/items')
+      .then((res) => (res.ok ? (res.json() as Promise<MarkethuntListRow[]>) : Promise.reject()))
+      .then((rows) => {
+        if (!Array.isArray(rows)) throw new Error('Unexpected Markethunt response');
+        return new Map(
+          rows.flatMap((row) =>
+            row.latest_market_data ? [[row.item_info.item_id, row.latest_market_data.price] as [number, number]] : [],
+          ),
+        );
+      })
+      .catch((error) => {
+        // Don't cache the failure — the next page should be able to retry.
+        pricesPromise = null;
+        throw error;
+      });
+  }
+  return pricesPromise;
+}
+
 /**
  * Current marketplace prices by item id, fetched once from Markethunt. Stays
  * null unless the fetch actually succeeds: with no market data, the only rewards
@@ -33,18 +59,8 @@ function useMarketPrices(): Map<number, number> | null {
 
   useEffect(() => {
     let active = true;
-    fetch('https://api.markethunt.win/items')
-      .then((res) => (res.ok ? (res.json() as Promise<MarkethuntListRow[]>) : Promise.reject()))
-      .then((rows) => {
-        if (!active || !Array.isArray(rows)) return;
-        setPrices(
-          new Map(
-            rows.flatMap((row) =>
-              row.latest_market_data ? [[row.item_info.item_id, row.latest_market_data.price] as [number, number]] : [],
-            ),
-          ),
-        );
-      })
+    loadMarketPrices()
+      .then((loaded) => active && setPrices(loaded))
       .catch(() => {});
     return () => {
       active = false;
@@ -86,18 +102,9 @@ export function ConvertibleContents({ itemId, rows }: { itemId: number; rows: Co
 
   return (
     <section>
-      <h2 className={sectionTitle}>What&rsquo;s inside</h2>
+      <SectionHeading>What&rsquo;s inside</SectionHeading>
       <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-        Possible rewards from opening this, with observed chances from{' '}
-        <a
-          href="https://mhct.win"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:hover:text-zinc-200"
-        >
-          MHCT
-        </a>
-        .
+        Possible rewards from opening this, with observed chances from <SourceLink source="mhct" />.
       </p>
 
       <div className="mt-4 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
