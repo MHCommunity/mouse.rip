@@ -1,6 +1,6 @@
 import 'server-only';
 
-import type { AttractionRow, ConvertibleRow, GameItem, ItemDrops, Mouse } from '@/types';
+import type { AttractionRow, ConvertibleRow, GameItem, ItemDropper, Mouse } from '@/types';
 import { POWER_TYPES, powerTypeLabel } from '@/lib/power-types';
 import { cleanDescription, formatNumber } from '@/utils';
 import { mouseImageUrl } from '@/lib/image-urls';
@@ -88,7 +88,7 @@ interface ItemStats {
  * contents, a trap for its stats, a loot item for where it drops. Lead with
  * whichever one this item actually has.
  */
-export function itemSeo(item: GameItem, { contents, drops }: { contents: ConvertibleRow[]; drops: ItemDrops }) {
+export function itemSeo(item: GameItem, { contents, drops }: { contents: ConvertibleRow[]; drops: ItemDropper[] }) {
   const stats = (item.has_stats && typeof item.has_stats === 'object' ? item.has_stats : null) as ItemStats | null;
   const fallback = cleanDescription(item.description ?? '');
 
@@ -128,13 +128,13 @@ export function itemSeo(item: GameItem, { contents, drops }: { contents: Convert
   }
 
   // Loot: where it drops and how often.
-  const bestDrop = drops.rows[0];
+  const bestDrop = drops[0];
   if (bestDrop) {
     return {
       title: `${item.name} — Where It Drops & Drop Rates`,
       description: sentences(
-        `${item.name} drops from ${bestDrop.mouse_name} in ${bestDrop.location}, at a ${bestDrop.drop_likelihood}% drop rate.`,
-        drops.rows.length > 1 ? `Dropped by ${formatNumber(drops.rows.length)} mice.` : null,
+        `${item.name} drops from ${bestDrop.mouse_name} in ${bestDrop.locations[0]}, at a ${bestDrop.drop_likelihood}% drop rate.`,
+        drops.length > 1 ? `Dropped by ${formatNumber(drops.length)} mice.` : null,
       ),
     };
   }
@@ -189,13 +189,13 @@ export function mouseJsonLd(mouse: Mouse, attraction: AttractionRow[], slug: str
 
 export function itemJsonLd(
   item: GameItem,
-  context: { contents: ConvertibleRow[]; drops: ItemDrops },
+  context: { contents: ConvertibleRow[]; drops: ItemDropper[] },
   slug: string,
   image?: string,
 ) {
   const { description } = itemSeo(item, context);
   const stats = (item.has_stats && typeof item.has_stats === 'object' ? item.has_stats : null) as ItemStats | null;
-  const bestDrop = context.drops.rows[0];
+  const bestDrop = context.drops[0];
 
   const properties = [
     item.classification ? property('Type', item.classification) : null,
@@ -205,7 +205,7 @@ export function itemJsonLd(
     item.is_tradable ? property('Tradable', 'Yes') : null,
     context.contents.length > 0 ? property('Possible rewards', context.contents.length) : null,
     bestDrop
-      ? property('Best drop rate', `${bestDrop.drop_likelihood}% (${bestDrop.mouse_name}, ${bestDrop.location})`)
+      ? property('Best drop rate', `${bestDrop.drop_likelihood}% (${bestDrop.mouse_name}, ${bestDrop.locations[0]})`)
       : null,
   ].filter(Boolean);
 

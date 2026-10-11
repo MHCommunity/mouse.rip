@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const MouseRipItemSchema = z.object({
+export const ResourceSchema = z.object({
   id: z.string(),
   name: z.string(),
   description: z.string(),
@@ -13,7 +13,7 @@ export const MouseRipItemSchema = z.object({
   highlight: z.boolean().optional(),
   tags: z.array(z.string()).optional(),
 });
-export type MouseRipItem = z.infer<typeof MouseRipItemSchema>;
+export type Resource = z.infer<typeof ResourceSchema>;
 
 export const LocationSchema = z.object({
   id: z.string(),
@@ -288,28 +288,10 @@ export interface ConvertibleRow {
   slug?: string;
 }
 
-/** A mouse that drops a given item, at one location. */
-export interface ItemDropRow {
-  mouse_id: number;
-  mouse_name: string;
-  location: string;
-  catches: number;
-  /** Percent of catches that dropped at least one. */
-  drop_likelihood: number;
-  min: number;
-  max: number;
-  /** The average drop_likelihood across every mouse at the location. */
-  baseline: number;
-}
-
 /** A mouse that drops a given item, with its locations pooled. */
 export interface ItemDropper {
-  mouse_id: number;
   mouse_name: string;
-  /** Filled in at build time when the mouse has a page. */
-  mouse_slug?: string;
-  /** Where it's been caught most. */
-  location: string;
+  mouse_slug: string;
   /** Every location it's been seen dropping the item, most catches first. */
   locations: string[];
   catches: number;
@@ -327,22 +309,10 @@ export interface LocationLootRow {
   /** That mouse's drop_likelihood: percent of its catches that dropped one. */
   rate: number;
   mouse_name: string;
-  mouse_slug?: string;
+  mouse_slug: string;
   catches: number;
   min: number;
   max: number;
-}
-
-/** The 50 best drop rows for an item, plus how many there are in all, as stored. */
-export interface ItemDropsData {
-  rows: ItemDropRow[];
-  total: number;
-}
-
-/** The mice that drop an item, best first, plus how many mouse/location rows there are in all. */
-export interface ItemDrops {
-  rows: ItemDropper[];
-  total: number;
 }
 
 /** Where a mouse is attracted, and how often. `rate` is in hundredths of a percent. */
