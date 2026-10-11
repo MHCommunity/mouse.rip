@@ -5,10 +5,10 @@ import { Link } from 'next-view-transitions';
 import { Badge } from '@/components/badge';
 import { isOurUrl, isInternalPath } from '@/utils';
 
-import { MouseRipItem } from '@/types';
+import { Resource } from '@/types';
 
 interface ItemProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-  item: MouseRipItem;
+  item: Resource;
   showtags?: boolean;
 }
 

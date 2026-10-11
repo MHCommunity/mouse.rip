@@ -3,7 +3,7 @@ import React from 'react';
 import { TrophyIcon } from '@heroicons/react/20/solid';
 import { PageHeader } from '@/components/page-header';
 
-import { getTitles } from '@/data';
+import { getTitles } from '@/lib/site-data';
 import { pageMetadata } from '@/seo';
 import { titleImageUrl } from '@/lib/image-urls';
 
