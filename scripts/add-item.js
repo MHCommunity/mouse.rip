@@ -97,6 +97,11 @@ async function addItem() {
             options: locationOptions,
           });
 
+          if (isCancel(selectedRegionLocations)) {
+            cancel('Operation cancelled.');
+            process.exit(0);
+          }
+
           // If 'all' is selected, add all location IDs from this region
           if (selectedRegionLocations.includes('all')) {
             selectedLocations.push(...region.locations.map((loc) => loc.id));
@@ -166,12 +171,12 @@ ${JSON.stringify(newItem, null, 2)}`;
       process.exit(0);
     }
 
-    item.dateAdded = new Date().toISOString();
+    newItem.dateAdded = new Date().toISOString();
 
     const itemsPath =
       'userscript' === item.category
         ? path.join('src', 'data', 'userscripts.json')
-        : path.join('src', 'data', 'items.json');
+        : path.join('src', 'data', 'resources.json');
 
     // Read existing items or create empty array
     let items = [];
