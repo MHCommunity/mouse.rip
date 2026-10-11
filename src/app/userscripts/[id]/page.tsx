@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 
-import { getItem, getItemsByCategory } from '@/data';
+import { getResourcesByCategory } from '@/lib/site-data';
 
 import React from 'react';
 
@@ -12,9 +12,16 @@ import { Link } from '@/components/link';
 import { PageLink } from '@/components/page-link';
 import { pageMetadata } from '@/seo';
 
+/** Only userscripts get a page here; other resources share the same id space. */
+function getUserscript(id: string) {
+  return getResourcesByCategory('userscript').find((item) => item.category === 'userscript' && item.id === id);
+}
+
+export const dynamicParams = false;
+
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
-  const item = getItem(resolvedParams.id);
+  const item = getUserscript(resolvedParams.id);
 
   if (!item) {
     return { title: 'Not Found' };
@@ -28,7 +35,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 }
 
 export function generateStaticParams() {
-  const paths: { id: string }[] = getItemsByCategory('userscript').map((item) => ({
+  const paths: { id: string }[] = getResourcesByCategory('userscript').map((item) => ({
     id: item.id,
   }));
 
@@ -43,7 +50,7 @@ export default async function UserscriptPage({ params }: { params: Promise<{ id:
   }
 
   // Fetch the item based on the ID from the params
-  const item = getItem(resolvedParams.id);
+  const item = getUserscript(resolvedParams.id);
 
   if (!item) {
     notFound();
