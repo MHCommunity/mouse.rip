@@ -1,4 +1,4 @@
-import { getItemsByCategory } from '@/data';
+import { getResourcesByCategory } from '@/lib/site-data';
 import { PageHeader } from '@/components/page-header';
 import { ItemList } from '@/components/item-list';
 import { TableCellsIcon } from '@heroicons/react/20/solid';
@@ -14,7 +14,7 @@ export const metadata = pageMetadata({
 });
 
 export default async function Spreadsheets() {
-  const items = await getItemsByCategory('spreadsheet');
+  const items = await getResourcesByCategory('spreadsheet');
 
   return (
     <>

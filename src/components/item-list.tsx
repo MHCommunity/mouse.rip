@@ -1,8 +1,8 @@
 import { Item } from '@/components/item';
-import { MouseRipItem } from '@/types';
+import { Resource } from '@/types';
 
 type ItemListProps = {
-  items: Array<MouseRipItem>;
+  items: Array<Resource>;
   showtags?: boolean;
 };
 

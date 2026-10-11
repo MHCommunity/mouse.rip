@@ -4,7 +4,7 @@ import { ItemList } from '@/components/item-list';
 
 import React from 'react';
 
-import { getItemsByCategory } from '@/data';
+import { getResourcesByCategory } from '@/lib/site-data';
 import { pageMetadata } from '@/seo';
 
 export const metadata = pageMetadata({
@@ -15,7 +15,7 @@ export const metadata = pageMetadata({
 });
 
 export default async function Guides() {
-  const items = await getItemsByCategory('guide');
+  const items = await getResourcesByCategory('guide');
 
   return (
     <>
