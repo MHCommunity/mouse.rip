@@ -11,7 +11,6 @@ import {
   TableCellsIcon,
   WrenchIcon,
 } from '@heroicons/react/20/solid';
-import { CheeseIcon, MouseIcon } from '@/components/game-icons';
 import { Heading } from '@/components/heading';
 
 export const metadata = {
@@ -19,8 +18,6 @@ export const metadata = {
 };
 
 const sections = [
-  { href: '/mice', label: 'Mice', icon: MouseIcon },
-  { href: '/items', label: 'Items', icon: CheeseIcon },
   { href: '/guides', label: 'Guides', icon: AcademicCapIcon },
   { href: '/extensions', label: 'Extensions', icon: BoltIcon },
   { href: '/tools', label: 'Tools', icon: WrenchIcon },
