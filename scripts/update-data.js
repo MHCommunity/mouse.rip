@@ -67,8 +67,16 @@ const requireRecord = (value, label) => {
   return value;
 };
 
+// Labels allowed to shrink past the coverage floor on this run, for when the API
+// deliberately serves less (e.g. ALLOW_SHRINK=item-drops,location-loot).
+const ALLOW_SHRINK = new Set((process.env.ALLOW_SHRINK ?? '').split(',').map((label) => label.trim()).filter(Boolean));
+
 export const validateMinimumCoverage = (label, currentCount, previousCount, ratio = 0.9) => {
   const minimum = Math.max(1, Math.floor(previousCount * ratio));
+  if (currentCount < minimum && ALLOW_SHRINK.has(label)) {
+    console.warn(`${label}: ${currentCount} records, down from ${previousCount}; allowed by ALLOW_SHRINK`);
+    return;
+  }
   if (currentCount < minimum) {
     throw new Error(
       `${label}: received ${currentCount} records; expected at least ${minimum} ` +
