@@ -55,9 +55,11 @@ export function SearchDialog({ open, onClose }: { open: boolean; onClose: () => 
   }, [open]);
 
   // Reset the query each time the dialog is dismissed.
-  useEffect(() => {
+  const [wasOpen, setWasOpen] = useState(open);
+  if (open !== wasOpen) {
+    setWasOpen(open);
     if (!open) setQuery('');
-  }, [open]);
+  }
 
   const records = useMemo(() => [...getStaticSearchRecords(), ...lazyRecords], [lazyRecords]);
 

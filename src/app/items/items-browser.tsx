@@ -148,14 +148,17 @@ export function ItemsBrowser({
   const filterKey = [debouncedQuery.trim(), active, tradableOnly, tag].join('|');
   const [expandedFor, setExpandedFor] = useState<string | null>(null);
   const showAll = expandedFor === filterKey;
-  let budget = showAll ? Number.POSITIVE_INFINITY : ROW_LIMIT;
-  const visible = grouped
-    .map(([key, list]) => {
+  const visible = useMemo(() => {
+    let budget = showAll ? Number.POSITIVE_INFINITY : ROW_LIMIT;
+    const out = [];
+    for (const [key, list] of grouped) {
+      if (budget <= 0) break;
       const shown = list.slice(0, budget);
       budget -= shown.length;
-      return [key, list, shown] as const;
-    })
-    .filter(([, , shown]) => shown.length > 0);
+      out.push([key, list, shown] as const);
+    }
+    return out;
+  }, [grouped, showAll]);
 
   return (
     <div>

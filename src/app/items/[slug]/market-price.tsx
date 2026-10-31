@@ -186,12 +186,13 @@ export function PriceChart({ points }: { points: PricePoint[] }) {
 }
 
 export function MarketPrice({ itemId }: { itemId: number }) {
-  const [state, setState] = useState<State>({ status: 'loading' });
+  const [result, setResult] = useState<{ itemId: number; state: State } | null>(null);
+  // Don't leave the previous item's chart up while this one loads.
+  const state: State = result?.itemId === itemId ? result.state : { status: 'loading' };
 
   useEffect(() => {
     let active = true;
-    // Don't leave the previous item's chart up while this one loads.
-    setState({ status: 'loading' });
+    const setState = (next: State) => setResult({ itemId, state: next });
     fetch(`https://api.markethunt.win/items/${itemId}`)
       .then((res) => (res.ok ? (res.json() as Promise<MarkethuntResponse>) : Promise.reject()))
       .then((data) => {

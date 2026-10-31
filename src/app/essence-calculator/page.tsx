@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 
-import React, { useEffect, useState, useRef, type ChangeEvent } from 'react';
+import React, { useEffect, useState, type ChangeEvent } from 'react';
 
 import { Heading } from '@/components/heading';
 import { Input } from '@/components/input';
@@ -14,8 +14,6 @@ const ESSENCES: string[] = ['Aleth', 'Ber', 'Cynd', 'Dol', 'Est', 'Fel', 'Gur', 
 export default function EssenceCalculator() {
   const [amounts, setAmounts] = useState<string[]>(Array(ESSENCES.length).fill(''));
   const [finalCounts, setFinalCounts] = useState<number[] | null>(null);
-  const amountsRef = useRef(amounts);
-  amountsRef.current = amounts;
 
   const handleChange = (idx: number, value: string) => {
     const newAmounts = [...amounts];
@@ -54,17 +52,18 @@ export default function EssenceCalculator() {
     const handlePaste = (e: ClipboardEvent) => {
       if (!e.clipboardData) return;
       const text = e.clipboardData.getData('text');
-      const newAmounts = [...amountsRef.current];
 
-      ESSENCES.forEach((essence, idx) => {
-        const regex = new RegExp(`(\\d+[\\d,]*)\\s+${essence} Essence`, 'i');
-        const match = text.match(regex);
-        if (match) {
-          newAmounts[idx] = match[1].replace(/,/g, '');
-        }
+      setAmounts((current) => {
+        const newAmounts = [...current];
+        ESSENCES.forEach((essence, idx) => {
+          const regex = new RegExp(`(\\d+[\\d,]*)\\s+${essence} Essence`, 'i');
+          const match = text.match(regex);
+          if (match) {
+            newAmounts[idx] = match[1].replace(/,/g, '');
+          }
+        });
+        return newAmounts;
       });
-
-      setAmounts(newAmounts);
     };
 
     window.addEventListener('paste', handlePaste);
