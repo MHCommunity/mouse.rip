@@ -8,17 +8,20 @@ import { ItemList } from '@/components/item-list';
 import { MouseGrid } from '@/components/mouse-grid';
 import { Link } from 'next-view-transitions';
 
-import { getResourcesForLocation, getLocation, getLocations, getTitles, getTrapEffects } from '@/lib/site-data';
+import { getResourcesForLocation, getLocation, getLocations, getTrapEffects } from '@/lib/site-data';
 import { getItemsForEnvironment, getLocationLoot, getMiceForRegionName, itemSlug } from '@/lib/game-data';
 import { ogCard, pageMetadata } from '@/seo';
 import { cleanDescription, formatNumber } from '@/utils';
-import { itemImageUrl, locationHeaderImageUrl, locationImageUrl, titleImageUrl } from '@/lib/image-urls';
+import { itemImageUrl, locationHeaderImageUrl, locationImageUrl } from '@/lib/image-urls';
 import { SectionHeading } from '@/components/section-heading';
 import { SourceLink } from '@/components/source-link';
 
 export const dynamicParams = false;
 
 const LOOT_ROWS_SHOWN = 40;
+
+// Temporarily hidden: "Items for this location", "Loot found here", and the mice grid.
+const SHOW_EXTRA_SECTIONS = false;
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
@@ -75,7 +78,6 @@ export default async function Location({ params }: { params: Promise<{ id: strin
   const items = getResourcesForLocation(resolvedParams.id);
 
   const mice = location.name ? getMiceForRegionName(location.name) : [];
-  const minTitle = location.title ? getTitles().find((title) => title.id === location.title) : undefined;
   const trapEffects = location.name
     ? (getTrapEffects().find((entry) => entry.location === location.name)?.effects ?? [])
     : [];
@@ -101,24 +103,9 @@ export default async function Location({ params }: { params: Promise<{ id: strin
         MouseHunt Resources for {location.article ? location.article : location.name}
       </Heading>
 
-      {minTitle && (
-        <p className="mt-3 flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={titleImageUrl(minTitle.id)} alt="" className="size-5 shrink-0" />
-          Requires the{' '}
-          <Link
-            href="/titles"
-            className="font-medium text-zinc-700 underline decoration-zinc-300 decoration-dotted underline-offset-2 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
-          >
-            {minTitle.name}
-          </Link>{' '}
-          title to enter.
-        </p>
-      )}
-
       <ItemList items={items} />
 
-      {locationItems.length > 0 && (
+      {SHOW_EXTRA_SECTIONS && locationItems.length > 0 && (
         <section className="mt-12">
           <SectionHeading>Items for this location</SectionHeading>
           <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
@@ -144,7 +131,7 @@ export default async function Location({ params }: { params: Promise<{ id: strin
         </section>
       )}
 
-      {loot.length > 0 && (
+      {SHOW_EXTRA_SECTIONS && loot.length > 0 && (
         <section className="mt-12">
           <SectionHeading>Loot found here</SectionHeading>
           <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
@@ -233,7 +220,7 @@ export default async function Location({ params }: { params: Promise<{ id: strin
         </section>
       )}
 
-      {mice.length > 0 && (
+      {SHOW_EXTRA_SECTIONS && mice.length > 0 && (
         <section className="mt-12">
           <SectionHeading>{mice.length} mice found here</SectionHeading>
           <div className="mt-4">

@@ -2,17 +2,20 @@
 
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
+import React, { useSyncExternalStore } from 'react';
 
 import { useSearch } from './search-context';
 
+const subscribeNoop = () => () => {};
+
+// The platform never changes, so there's nothing to subscribe to; the server
+// snapshot keeps hydration matching before the client label takes over.
 function useShortcutLabel() {
-  const [label, setLabel] = useState('Ctrl K');
-  useEffect(() => {
-    const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform);
-    setLabel(isMac ? '⌘ K' : 'Ctrl K');
-  }, []);
-  return label;
+  return useSyncExternalStore(
+    subscribeNoop,
+    () => (/Mac|iPhone|iPad/.test(navigator.platform) ? '⌘ K' : 'Ctrl K'),
+    () => 'Ctrl K',
+  );
 }
 
 /** Full-width search box for the home page. Looks like an input, opens the palette. */
