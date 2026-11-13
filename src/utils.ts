@@ -20,9 +20,15 @@ export function formatNumber(num: number): string {
  */
 export function cleanDescription(description: string): string {
   if (!description) return '';
-  return description
-    .replace(/<[^>]*>/g, '') // Remove HTML tags
-    .trim();
+  return (
+    description
+      .replace(/<[^>]*>/g, '') // Remove HTML tags
+      // The game bakes a live countdown into some descriptions ("Current season:
+      // Winter / Changing to Spring… in 1 day 18 hours"). Captured at data-refresh
+      // time it's wrong by the time anyone reads it, and the page shows a live timer.
+      .replace(/\s*Current season:[\s\S]*$/, '')
+      .trim()
+  );
 }
 
 /**
@@ -72,8 +78,9 @@ export function isInternalPath(url: string): boolean {
 }
 
 /**
- * Whether a URL points to one of our own pages — either a relative path or a
- * `mouse.rip` (or subdomain) host. Used to attribute and style links to
+ * Whether a URL points to one of our own pages — either a relative path or the
+ * `mouse.rip` site itself. Sibling services on subdomains (api.mouse.rip) are
+ * separate sites, so they count as outbound. Used to attribute and style links to
  * mouse.rip differently from outbound links.
  *
  * @param {string} url The URL to check
@@ -84,7 +91,7 @@ export function isOurUrl(url: string): boolean {
   if (isInternalPath(url)) return true;
   try {
     const { hostname } = new URL(url);
-    return hostname === 'mouse.rip' || hostname.endsWith('.mouse.rip');
+    return hostname === 'mouse.rip' || hostname === 'www.mouse.rip';
   } catch {
     return false;
   }
