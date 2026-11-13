@@ -36,8 +36,7 @@ export default function NotFound() {
     <div className="max-w-2xl py-12">
       <Heading>This page scurried off</Heading>
       <p className="mt-4 text-base/7 text-pretty text-zinc-600 dark:text-zinc-300">
-        We couldn&apos;t find the page you were looking for (error 404). It may have moved, or the link might be out of
-        date. Try searching for it instead.
+        We couldn&apos;t find that page. Try searching for it instead.
       </p>
 
       <div className="mt-6">

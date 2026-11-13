@@ -56,7 +56,6 @@ export default async function UserscriptTagPage({ params }: { params: Promise<{ 
 
       <PageHeader
         title={`Tagged “${decoded}”`}
-        description={`Userscripts tagged “${decoded}”.`}
         count={items.length}
         countLabel={items.length === 1 ? 'userscript' : 'userscripts'}
         icon={SwatchIcon}

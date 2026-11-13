@@ -110,7 +110,11 @@ export default async function UserscriptPage({ params }: { params: Promise<{ id:
                 (recommended) or <PageLink href="https://www.tampermonkey.net/">Tampermonkey</PageLink>
               </li>
               <li>
-                Android: <PageLink href="https://kiwibrowser.com/">Kiwibrowser</PageLink>
+                Android:{' '}
+                <PageLink href="https://play.google.com/store/apps/details?id=org.mozilla.firefox">
+                  Firefox
+                </PageLink>{' '}
+                with Violentmonkey
               </li>
               <li>
                 iOS: <PageLink href="https://itunes.apple.com/us/app/userscripts/id1463298887">Userscripts</PageLink>
@@ -120,7 +124,6 @@ export default async function UserscriptPage({ params }: { params: Promise<{ id:
           <li>
             Click the <strong className="font-semibold text-zinc-950 dark:text-white">install</strong> button above.
           </li>
-          <li>Follow the prompts to install the userscript.</li>
           <li>Refresh the MouseHunt page to see the changes.</li>
         </ol>
       </section>

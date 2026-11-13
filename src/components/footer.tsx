@@ -29,7 +29,7 @@ export function Footer() {
         <div className="max-w-sm">
           <div className="text-base font-semibold text-pink-800 dark:text-pink-200">mouse.rip</div>
           <p className="mt-2 text-zinc-500 dark:text-zinc-400">
-            A community-built collection of MouseHunt guides, tools, and data. Not affiliated with HitGrab Inc.
+            A community-built collection of MouseHunt guides, tools, and data.
           </p>
         </div>
 

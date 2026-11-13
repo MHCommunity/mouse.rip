@@ -81,8 +81,7 @@ export default async function Guide({ params }: { params: Promise<{ slug: string
 
       {guide.sourceUrl && (
         <footer className="mt-12 border-t border-zinc-200 pt-4 text-sm text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
-          Originally published at <PageLink href={guide.sourceUrl}>{guide.sourceUrl}</PageLink>. Reproduced here for
-          easier reading.
+          Originally published at <PageLink href={guide.sourceUrl}>{guide.sourceUrl}</PageLink>.
         </footer>
       )}
     </div>
