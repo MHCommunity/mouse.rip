@@ -98,10 +98,11 @@ export default async function Location({ params }: { params: Promise<{ id: strin
   const environmentKey = location.environmentId ?? location.id;
   const locationItems = getItemsForEnvironment(environmentKey);
 
-  // Guides and tools written for this location first, then the site-wide ones.
-  const resources = getResourcesForLocation(resolvedParams.id).sort(
-    (a, b) => Number(a.locations?.includes('all') ?? false) - Number(b.locations?.includes('all') ?? false),
-  );
+  // Guides and tools written for this location lead the page; the site-wide ones
+  // (useful everywhere, the same on every location) wait at the bottom.
+  const resources = getResourcesForLocation(resolvedParams.id);
+  const localResources = resources.filter((resource) => !resource.locations?.includes('all'));
+  const generalResources = resources.filter((resource) => resource.locations?.includes('all'));
 
   return (
     <>
@@ -151,6 +152,13 @@ export default async function Location({ params }: { params: Promise<{ id: strin
 
       {location.name && TIMER_LOCATION_NAMES.includes(location.name) && (
         <LocationTimerPanel locationName={location.name} />
+      )}
+
+      {localResources.length > 0 && (
+        <section className="mt-10">
+          <SectionHeading>Guides and tools for {name}</SectionHeading>
+          <ItemList items={localResources} headingLevel={3} />
+        </section>
       )}
 
       {miceTotal > 0 && location.name && (
@@ -217,10 +225,10 @@ export default async function Location({ params }: { params: Promise<{ id: strin
         </section>
       )}
 
-      {resources.length > 0 && (
+      {generalResources.length > 0 && (
         <section className="mt-10">
-          <SectionHeading>Guides and tools</SectionHeading>
-          <ItemList items={resources} headingLevel={3} />
+          <SectionHeading>Tools for every location</SectionHeading>
+          <ItemList items={generalResources} headingLevel={3} />
         </section>
       )}
 
