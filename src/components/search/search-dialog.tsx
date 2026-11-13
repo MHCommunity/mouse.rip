@@ -269,7 +269,7 @@ export function SearchDialog({
               <div className="px-4 py-10 text-center text-sm text-zinc-600 dark:text-zinc-400">
                 <p>No results for &ldquo;{trimmed}&rdquo;.</p>
                 <p className="mt-1">
-                  Check the spelling, try part of the name, browse{' '}
+                  Browse{' '}
                   <Link
                     href="/mice"
                     onClick={finish}
@@ -438,8 +438,7 @@ export function SearchDialog({
             {trimmed.length === 0 && (
               <ComboboxOptions static className="p-2">
                 <div className="px-2 pt-1.5 pb-1 text-xs text-zinc-600 dark:text-zinc-400">
-                  Search mice, items, locations, guides, and tools. Try &ldquo;zombie&rdquo; or &ldquo;beginner
-                  guide&rdquo;.
+                  Try &ldquo;zombie&rdquo; or &ldquo;beginner guide&rdquo;.
                 </div>
                 <div className="px-2 pt-2 pb-1 text-xs font-semibold text-zinc-700 dark:text-zinc-300">
                   Quick lookups

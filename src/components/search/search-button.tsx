@@ -78,7 +78,7 @@ export function SearchBar({ className }: { className?: string }) {
         spellCheck={false}
         enterKeyHint="search"
         aria-haspopup="dialog"
-        placeholder="Type a mouse, item, or guide…"
+        placeholder="Search mice, items, guides…"
         onFocus={preload}
         onClick={() => {
           if (value) open(value);
