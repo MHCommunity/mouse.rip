@@ -26,7 +26,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { ColorScaleBadge } from '@/components/color-scale-badge';
 import { GameImage } from '@/components/game-image';
-import { POWER_TYPES, POWER_TYPE_CHIP, powerTypeLabel } from '@/lib/power-types';
+import { POWER_TYPES, POWER_TYPE_CHIP, powerTypeLabel, powerTypeSetLabel } from '@/lib/power-types';
 import {
   getStaticSearchRecords,
   loadGameItemRecords,
@@ -37,8 +37,14 @@ import {
   type SearchRecord,
 } from '@/lib/search';
 
-/** Shown before anything is typed: the lookups people open search to reach. */
-const QUICK_LINKS = ['/minlucks', '/relic-hunter', '/valour-rift-floors', '/essence-calculator', '/guides'];
+/** Shown before anything is typed: the same lookups as the sidebar, in the same order. */
+const QUICK_LINKS = [
+  '/minlucks',
+  '/relic-hunter',
+  '/valour-rift-floors',
+  '/essence-calculator',
+  '/queso-pump-calculator',
+];
 
 /** Records without game art get the same icon the sidebar uses for their section. */
 const KIND_ICONS: Partial<Record<SearchKind, React.ComponentType<React.SVGProps<SVGSVGElement>>>> = {
@@ -66,14 +72,36 @@ function KindIcon({ kind }: { kind: SearchKind }) {
 function weakToSummary(weakTo: string[]): React.ReactNode | null {
   const missing = POWER_TYPES.filter((type) => !weakTo.includes(type));
   if (missing.length > 2) return null;
-  const text =
-    missing.length === 0 ? 'All power types' : `All but ${missing.map((type) => powerTypeLabel(type)).join(' and ')}`;
-  return <span className="text-xs font-medium text-zinc-800 dark:text-zinc-200">{text}</span>;
+  return <span className="text-xs font-medium text-zinc-800 dark:text-zinc-200">{powerTypeSetLabel(weakTo)}</span>;
 }
 
-/** MHCT reports rates in hundredths of a percent. */
+/**
+ * The weakness row only earns its line when it says something the minluck rows don't.
+ * For most mice the weakest-to types are exactly one minluck row ("All but Rift").
+ */
+function weaknessAddsInfo(weakTo: string[], minluckLabels: string[]): boolean {
+  return weakTo.length > 0 && !minluckLabels.includes(powerTypeSetLabel(weakTo));
+}
+
+/** The best record when the query names it exactly ("zombie" → Zombie Mouse), for Enter to open. */
+function exactMatch(records: SearchRecord[], query: string): SearchRecord | undefined {
+  const wanted = query.trim().toLowerCase();
+  if (!wanted) return undefined;
+  const top = records[0];
+  if (!top) return undefined;
+  const title = top.title.toLowerCase();
+  return title === wanted || title === `${wanted} mouse` ? top : undefined;
+}
+
+/** MHCT reports rates in hundredths of a percent; one decimal is all the samples support. */
 function formatRate(rate: number): string {
-  return `${(rate / 100).toFixed(2)}%`;
+  return `${(rate / 100).toFixed(1)}%`;
+}
+
+/** Where the best-attraction figure comes from: MHCT rows carry a sample, MH-Tools rows don't. */
+function rateSource(hunts?: number | null): string {
+  if (!hunts) return 'From MH-Tools';
+  return `From MHCT · ${new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(hunts)} hunts`;
 }
 
 function useDebouncedValue<T>(value: T, delay: number) {
@@ -92,11 +120,14 @@ export function SearchDialog({
 }: {
   open: boolean;
   initialQuery?: string;
-  onClose: () => void;
+  /** Called with what was typed when dismissed, or with "" once a result was chosen. */
+  onClose: (query: string) => void;
 }) {
   const router = useRouter();
   const [query, setQuery] = useState(open ? initialQuery : '');
   const [lazyRecords, setLazyRecords] = useState<SearchRecord[]>([]);
+  // False until the mouse and item indexes have arrived (or failed), the first time search opens.
+  const [indexSettled, setIndexSettled] = useState(false);
   const debouncedQuery = useDebouncedValue(query, 120);
 
   // Pull in the (large) mouse and item indexes the first time search is opened.
@@ -109,6 +140,7 @@ export function SearchDialog({
       if (!active) return;
       const loaded = results.flatMap((result) => (result.status === 'fulfilled' ? result.value : []));
       if (loaded.length > 0) setLazyRecords(loaded);
+      setIndexSettled(true);
     });
     return () => {
       active = false;
@@ -157,9 +189,13 @@ export function SearchDialog({
     [],
   );
 
+  // Dismissing hands the text back to the field it came from; choosing a result spends it.
+  const dismiss = () => onClose(query);
+  const finish = () => onClose('');
+
   function handleSelect(record: SearchRecord | null) {
     if (!record) return;
-    onClose();
+    finish();
     if (record.external) {
       window.open(record.href, '_blank', 'noopener,noreferrer');
     } else {
@@ -170,7 +206,7 @@ export function SearchDialog({
   const trimmed = debouncedQuery.trim();
 
   return (
-    <Dialog open={open} onClose={onClose} className="relative z-50">
+    <Dialog open={open} onClose={dismiss} className="relative z-50">
       <DialogBackdrop
         transition
         className="fixed inset-0 bg-zinc-950/40 backdrop-blur-sm transition-opacity data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in dark:bg-black/60"
@@ -194,7 +230,16 @@ export function SearchDialog({
                   // The combobox would spend the first Escape closing its option list; close the palette instead.
                   if (event.key === 'Escape') {
                     event.preventDefault();
-                    onClose();
+                    dismiss();
+                    return;
+                  }
+                  // Enter with nothing highlighted opens an exact match ("zombie" → Zombie Mouse) straight away.
+                  if (event.key === 'Enter' && !event.currentTarget.getAttribute('aria-activedescendant')) {
+                    const match = exactMatch(searchRecords(records, query), query);
+                    if (match) {
+                      event.preventDefault();
+                      handleSelect(match);
+                    }
                   }
                 }}
                 displayValue={() => query}
@@ -204,21 +249,30 @@ export function SearchDialog({
               </kbd>
               <button
                 type="button"
-                onClick={onClose}
+                onClick={dismiss}
                 className="-mr-1 shrink-0 rounded-md px-2 py-1.5 text-sm font-medium text-zinc-600 pointer-fine:hidden dark:text-zinc-300"
               >
                 Cancel
               </button>
             </div>
 
-            {trimmed.length > 0 && results.length === 0 && (
+            {trimmed.length > 0 && !indexSettled && (
+              <p
+                role="status"
+                className="border-b border-zinc-200 px-4 py-2 text-xs text-zinc-600 dark:border-zinc-800 dark:text-zinc-400"
+              >
+                Loading mice and items…
+              </p>
+            )}
+
+            {trimmed.length > 0 && indexSettled && results.length === 0 && (
               <div className="px-4 py-10 text-center text-sm text-zinc-600 dark:text-zinc-400">
                 <p>No results for &ldquo;{trimmed}&rdquo;.</p>
                 <p className="mt-1">
-                  Check the spelling, try part of the name, or browse{' '}
+                  Check the spelling, try part of the name, browse{' '}
                   <Link
                     href="/mice"
-                    onClick={onClose}
+                    onClick={finish}
                     className="font-medium text-pink-700 underline-offset-2 hover:underline dark:text-pink-400"
                   >
                     all mice
@@ -226,11 +280,21 @@ export function SearchDialog({
                   and{' '}
                   <Link
                     href="/items"
-                    onClick={onClose}
+                    onClick={finish}
                     className="font-medium text-pink-700 underline-offset-2 hover:underline dark:text-pink-400"
                   >
                     all items
                   </Link>
+                  , or{' '}
+                  <a
+                    href={`https://mhwiki.hitgrab.com/wiki/index.php?search=${encodeURIComponent(trimmed)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium text-pink-700 underline-offset-2 hover:underline dark:text-pink-400"
+                  >
+                    search MHWiki
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  </a>
                   .
                 </p>
               </div>
@@ -293,14 +357,20 @@ export function SearchDialog({
                               {answer.mouse.best.location}
                               {answer.mouse.best.stage ? ` · ${answer.mouse.best.stage}` : ''}
                             </span>
+                            <span className="mt-0.5 block text-xs text-zinc-600 tabular-nums dark:text-zinc-400">
+                              {rateSource(answer.mouse.best.hunts)}
+                            </span>
                           </dd>
                         </div>
                       )}
                     </dl>
 
-                    {answer.mouse.weakTo.length > 0 && (
+                    {weaknessAddsInfo(
+                      answer.mouse.weakTo,
+                      answer.mouse.minlucks.map((row) => row.label),
+                    ) && (
                       <div className="mt-3 flex flex-wrap items-center gap-1.5">
-                        <span className="text-xs text-zinc-600 dark:text-zinc-400">Weak to</span>
+                        <span className="text-xs text-zinc-600 dark:text-zinc-400">Weakness</span>
                         {weakToSummary(answer.mouse.weakTo) ??
                           answer.mouse.weakTo.map((type) => (
                             <span

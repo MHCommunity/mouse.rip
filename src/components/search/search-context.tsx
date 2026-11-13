@@ -15,6 +15,8 @@ interface SearchContextValue {
   /** Load the palette's code ahead of time (e.g. when a search field gains focus). */
   preload: () => void;
   isOpen: boolean;
+  /** What was in the palette when it was last dismissed (empty after a result was chosen). */
+  closedQuery: string;
 }
 
 const SearchContext = createContext<SearchContextValue | null>(null);
@@ -38,6 +40,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
   // Stays true once search has been opened, so the dialog keeps its loaded chunk.
   const [mounted, setMounted] = useState(false);
   const [initialQuery, setInitialQuery] = useState('');
+  const [closedQuery, setClosedQuery] = useState('');
 
   // Mirrors isOpen, but is set the moment search opens, before React re-renders,
   // so keys pressed in that gap are still caught.
@@ -57,6 +60,8 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
+      // Already handled (e.g. the home page's type-to-search passed this key on itself).
+      if (event.defaultPrevented) return;
       // The first open downloads the palette, and its input isn't focused until that
       // lands. Hold what's typed meanwhile and hand it over, instead of losing it.
       if (
@@ -96,13 +101,14 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <SearchContext.Provider value={{ open, preload, isOpen }}>
+    <SearchContext.Provider value={{ open, preload, isOpen, closedQuery }}>
       {children}
       {mounted && (
         <SearchDialog
           open={isOpen}
           initialQuery={initialQuery}
-          onClose={() => {
+          onClose={(query) => {
+            setClosedQuery(query);
             isOpenRef.current = false;
             setIsOpen(false);
           }}

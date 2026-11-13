@@ -2,7 +2,7 @@
 
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import clsx from 'clsx';
-import React, { useState, useSyncExternalStore } from 'react';
+import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 
 import { useSearch } from './search-context';
 
@@ -21,18 +21,42 @@ function useShortcutLabel() {
 /**
  * Search field for the home page. It's a real input, so a tap brings up the
  * keyboard straight away; the first keystroke hands the text to the palette.
+ * Closing the palette (Esc, Cancel) leaves the text here, so a typo isn't a retype.
  */
 export function SearchBar({ className }: { className?: string }) {
-  const { open, preload, isOpen } = useSearch();
+  const { open, preload, isOpen, closedQuery } = useSearch();
   const shortcut = useShortcutLabel();
   const [value, setValue] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  // Once the palette closes, the text it took over is spent.
+  // When the palette closes, take back whatever was typed in it.
   const [wasOpen, setWasOpen] = useState(isOpen);
   if (isOpen !== wasOpen) {
     setWasOpen(isOpen);
-    if (!isOpen) setValue('');
+    if (!isOpen) setValue(closedQuery);
   }
+
+  // Typing anywhere on the page starts a search, so desktop visitors can type at once
+  // without the field grabbing focus on load (which would skip the skip link and
+  // start screen readers past the heading). Touch screens never see a keypress here.
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) return;
+      if (event.key.length !== 1 || event.key === ' ' || event.key === '/') return;
+      const target = event.target as HTMLElement | null;
+      if (
+        target &&
+        (target.closest('input, textarea, select, [contenteditable="true"]') || target.closest('[role="dialog"]'))
+      )
+        return;
+      event.preventDefault();
+      inputRef.current?.focus({ preventScroll: true });
+      setValue(event.key);
+      open(event.key);
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [open]);
 
   return (
     <label
@@ -47,6 +71,7 @@ export function SearchBar({ className }: { className?: string }) {
       />
       <span className="sr-only">Search mice, items, locations, guides, and tools</span>
       <input
+        ref={inputRef}
         type="search"
         value={value}
         autoComplete="off"
@@ -55,6 +80,9 @@ export function SearchBar({ className }: { className?: string }) {
         aria-haspopup="dialog"
         placeholder="Type a mouse, item, or guide…"
         onFocus={preload}
+        onClick={() => {
+          if (value) open(value);
+        }}
         onChange={(event) => {
           setValue(event.target.value);
           if (event.target.value) open(event.target.value);
@@ -78,7 +106,15 @@ export function SearchBar({ className }: { className?: string }) {
  * Real mice to try, so the in-place answer (minluck, best cheese, weaknesses)
  * can be seen before anyone knows to type for it.
  */
-export function SearchExamples({ examples, className }: { examples: string[]; className?: string }) {
+export function SearchExamples({
+  examples,
+  label = 'Try',
+  className,
+}: {
+  examples: string[];
+  label?: string;
+  className?: string;
+}) {
   const { open, preload } = useSearch();
 
   return (
@@ -88,15 +124,19 @@ export function SearchExamples({ examples, className }: { examples: string[]; cl
         className,
       )}
     >
-      <span>Try</span>
-      {examples.map((name) => (
+      <span>{label}</span>
+      {examples.map((name, index) => (
         <button
           key={name}
           type="button"
           onPointerEnter={preload}
           onFocus={preload}
           onClick={() => open(name)}
-          className="rounded-md border border-zinc-200 bg-white px-2 py-1 font-medium text-zinc-800 transition-colors hover:border-pink-300 hover:bg-pink-50/50 hover:text-pink-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-pink-800 dark:hover:bg-pink-950/20 dark:hover:text-pink-300"
+          // Two fit on one line at phone width; the rest join from sm up.
+          className={clsx(
+            index >= 2 && 'max-sm:hidden',
+            'inline-flex items-center rounded-md border border-zinc-200 bg-white px-2 py-1 font-medium pointer-coarse:min-h-11 pointer-coarse:px-3 text-zinc-800 transition-colors hover:border-pink-300 hover:bg-pink-50/50 hover:text-pink-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-pink-800 dark:hover:bg-pink-950/20 dark:hover:text-pink-300',
+          )}
         >
           {name}
         </button>
