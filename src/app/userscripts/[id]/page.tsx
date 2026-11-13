@@ -7,8 +7,7 @@ import React from 'react';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { BadgeButton } from '@/components/badge';
 import { Breadcrumbs } from '@/components/breadcrumbs';
-import { Heading } from '@/components/heading';
-import { Link } from '@/components/link';
+import { PageHeader } from '@/components/page-header';
 import { PageLink } from '@/components/page-link';
 import { pageMetadata } from '@/seo';
 
@@ -57,13 +56,14 @@ export default async function UserscriptPage({ params }: { params: Promise<{ id:
   }
 
   return (
-    <div className="space-y-8">
+    <div className="max-w-3xl">
       <Breadcrumbs
         items={[{ name: 'Home', href: '/' }, { name: 'Userscripts', href: '/userscripts' }, { name: item.name }]}
       />
-      <h1 className="mb-2 text-3xl font-extrabold text-gray-900 dark:text-gray-100">{item.name}</h1>
 
-      <div className="mb-4 text-lg text-gray-700 dark:text-gray-300">{item.description}</div>
+      <div className="mt-6">
+        <PageHeader title={item.name} description={item.description} />
+      </div>
 
       {/* Tags */}
       {item.tags && item.tags.length > 0 && (
@@ -76,30 +76,35 @@ export default async function UserscriptPage({ params }: { params: Promise<{ id:
         </div>
       )}
 
-      <div className="my-6">
-        <Link
+      <div className="mt-6">
+        {/* The install page is another site, so a plain outbound link (the shared Button's link mode breaks prerendering). */}
+        <a
           href={item.url || '#'}
-          className="inline-flex items-center rounded bg-sky-600 px-4 py-2 text-base font-semibold text-white hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 dark:bg-sky-500 dark:hover:bg-sky-600 dark:focus:ring-offset-gray-800"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-pink-600 px-4 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-pink-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-900"
         >
-          {item.source ? `Install via ${item.source}` : 'Install Script'}
-          <ArrowRightIcon className="ml-2 size-5" aria-hidden="true" />
-        </Link>
+          {item.source ? `Install via ${item.source}` : 'Install script'}
+          <ArrowRightIcon className="size-4" aria-hidden="true" />
+          <span className="sr-only"> (opens in a new tab)</span>
+        </a>
       </div>
 
-      {/* How to Use Section */}
-      <div className="mt-8 rounded-lg border border-gray-200 bg-gray-50 p-6 text-sm/6 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
-        <Heading level={2} className="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100">
+      <section
+        aria-labelledby="how-to-heading"
+        className="mt-10 rounded-lg border border-zinc-200 bg-white p-5 text-sm/6 text-zinc-700 sm:p-6 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+      >
+        <h2 id="how-to-heading" className="text-lg font-semibold text-zinc-950 dark:text-white">
           How to use MouseHunt userscripts
-        </Heading>
-        <p className="mb-4 text-gray-700 dark:text-gray-200">
-          Userscripts are small pieces of code that can be installed in your browser to modify the behavior of websites.
-          They can be used to add new features, fix bugs, or update styles on websites like MouseHunt. If you want to
-          use this userscript, follow these steps:
+        </h2>
+        <p className="mt-3">
+          Userscripts are small pieces of code you install in your browser to change how a website behaves. They can add
+          features, fix bugs or restyle sites like MouseHunt. To use this one:
         </p>
-        <ol className="ml-4 list-inside list-decimal space-y-2 text-gray-700 dark:text-gray-300">
+        <ol className="mt-3 list-inside list-decimal space-y-2">
           <li>
             Install a userscript manager for your browser:
-            <ul className="ml-4 list-inside list-disc">
+            <ul className="mt-1 ml-5 list-inside list-disc space-y-1">
               <li>
                 Chrome, Firefox, or Edge: <PageLink href="https://violentmonkey.github.io/">Violentmonkey</PageLink>{' '}
                 (recommended) or <PageLink href="https://www.tampermonkey.net/">Tampermonkey</PageLink>
@@ -113,12 +118,12 @@ export default async function UserscriptPage({ params }: { params: Promise<{ id:
             </ul>
           </li>
           <li>
-            Click the <strong>Install this script</strong> button above.
+            Click the <strong className="font-semibold text-zinc-950 dark:text-white">install</strong> button above.
           </li>
           <li>Follow the prompts to install the userscript.</li>
-          <li>Refresh the page to see the changes.</li>
+          <li>Refresh the MouseHunt page to see the changes.</li>
         </ol>
-      </div>
+      </section>
     </div>
   );
 }
