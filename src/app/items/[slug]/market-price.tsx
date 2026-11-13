@@ -336,8 +336,6 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
           </div>
           <div className="text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
             High {formatCompact(high.price)} ({high.date}) · Low {formatCompact(low.price)} ({low.date})
-            {/* The chart's axis is fitted to this range, so say how wide it really is. */}
-            {low.price > 0 && <> · {(((high.price - low.price) / low.price) * 100).toFixed(0)}% spread</>}
           </div>
         </div>
       </div>
@@ -349,9 +347,8 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
       <div className="mt-4 flex flex-wrap items-end justify-between gap-x-4 gap-y-2 border-t border-zinc-100 pt-3 text-xs text-zinc-600 dark:border-zinc-800 dark:text-zinc-400">
         <span>
           <span className="block tabular-nums">
-            {latest.volume != null ? `${formatGold(latest.volume)} traded` : 'Volume unavailable'} · as of {latest.date}
+            {latest.volume != null && `${formatGold(latest.volume)} traded · `}as of {latest.date}
           </span>
-          <span className="block">Data from Markethunt</span>
         </span>
         <a
           href={`https://markethunt.win/?item_id=${itemId}`}

@@ -36,7 +36,7 @@ export default function ItemsIndexPage() {
       <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Items' }]} />
       <PageHeader
         title="Items"
-        description="Every item in MouseHunt — weapons, bases, charms, cheese, chests, and collectibles. Pick a type or search by name; each item has its own page with its stats, where it drops, and what's inside it."
+        description="Every item in MouseHunt — weapons, bases, charms, cheese, chests, and collectibles — with stats, drop sources, and contents."
         count={items.length}
         countLabel="items"
         icon={CheeseIcon}

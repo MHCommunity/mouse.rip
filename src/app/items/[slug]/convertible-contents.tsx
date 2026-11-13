@@ -104,7 +104,7 @@ export function ConvertibleContents({ itemId, rows }: { itemId: number; rows: Co
     <section>
       <SectionHeading>What&rsquo;s inside</SectionHeading>
       <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-        Possible rewards from opening this, with observed chances from <SourceLink source="mhct" />.
+        From <SourceLink source="mhct" />.
       </p>
 
       <div className="mt-4 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
@@ -175,8 +175,7 @@ export function ConvertibleContents({ itemId, rows }: { itemId: number; rows: Co
           )}
           .{' '}
           <span className="text-zinc-400 dark:text-zinc-500">
-            Covers {pricedCount} of {valued.length} possible rewards, at current Markethunt prices; each reward&rsquo;s
-            average value is its chance × quantity × price.
+            Covers {pricedCount} of {valued.length} rewards, at current Markethunt prices.
           </span>
         </p>
       )}

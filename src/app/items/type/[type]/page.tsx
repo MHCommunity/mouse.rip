@@ -84,8 +84,8 @@ export default async function ItemTypePage({ params }: { params: Promise<{ type:
 
       <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-white">{label}</h1>
       <p className="mt-2 max-w-2xl text-pretty text-zinc-500 dark:text-zinc-400">
-        {CLASSIFICATION_DESCRIPTIONS[type] ?? `Every ${label.toLowerCase()} in MouseHunt.`} {formatNumber(items.length)}{' '}
-        in total — open any one for its stats, where it drops, and what&rsquo;s inside it.
+        {CLASSIFICATION_DESCRIPTIONS[type] ?? `All ${label.toLowerCase()} in MouseHunt.`} {formatNumber(items.length)}{' '}
+        in total.
       </p>
 
       <ul className="mt-8 columns-2 gap-x-6 sm:columns-3 lg:columns-4">

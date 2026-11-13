@@ -130,8 +130,7 @@ export function ItemData({
             <div className="mt-5">
               <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">Hunting drops</h3>
               <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-                The mice that drop it and how often, from <SourceLink source="mhct" />. Rates are crowdsourced — check
-                the sample size before trusting one.
+                From <SourceLink source="mhct" />.
               </p>
               <div className="mt-4">
                 <DropsTable rows={drops.slice(0, DROPS_PREVIEW)} />
@@ -155,9 +154,6 @@ export function ItemData({
                 From openables{' '}
                 <span className="font-normal text-zinc-600 dark:text-zinc-400">({formatNumber(foundIn.length)})</span>
               </h3>
-              <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-                Chests, baskets, and other items that can contain this.
-              </p>
               <ul className="mt-3 flex flex-wrap gap-2">
                 {foundIn.slice(0, FOUND_IN_PREVIEW).map((source) => (
                   <li key={source.id ?? source.name}>
@@ -243,11 +239,6 @@ function MapRelations({
   return (
     <section>
       <SectionHeading>{isScrollCase ? 'Maps it opens' : 'Which map awards it'}</SectionHeading>
-      <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-        {isScrollCase
-          ? 'Opening this scroll case starts one of these maps. Completing a map awards its treasure chest.'
-          : 'This chest is awarded for completing the map below, which starts from its scroll case.'}
-      </p>
       <div className="mt-4 space-y-3">
         {relations.map((relation) => (
           <div
