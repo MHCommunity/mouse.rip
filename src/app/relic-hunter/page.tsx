@@ -40,7 +40,7 @@ export default function RelicHunterPage() {
     <div>
       <PageHeader
         title="Relic Hunter"
-        description="Each day the Relic Hunter slips away to a new corner of the kingdom and leaves behind a riddle about where she's gone. See where she's hiding right now, and browse the riddles she drops for every location below."
+        description="Each day the Relic Hunter slips away to a new corner of the kingdom and leaves behind a riddle about where she's gone."
         icon={MapPinIcon}
         iconClassName="bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300"
       />
@@ -48,9 +48,6 @@ export default function RelicHunterPage() {
       <RelicHunterLive />
 
       <SectionHeading className="mt-12">Riddles by location</SectionHeading>
-      <p className="mt-2 max-w-2xl text-sm text-zinc-500 dark:text-zinc-400">
-        Match the riddle she&rsquo;s giving to a location below to track her down.
-      </p>
       <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
         {entries.map(([envId, list]) => {
           const name = nameById.get(envId) ?? envId;
@@ -82,9 +79,6 @@ export default function RelicHunterPage() {
                       name
                     )}
                   </h3>
-                  <p className="text-xs text-zinc-400 dark:text-zinc-500">
-                    {list.length} {list.length === 1 ? 'riddle' : 'riddles'}
-                  </p>
                 </div>
               </div>
               <ul className="mt-4 space-y-2">

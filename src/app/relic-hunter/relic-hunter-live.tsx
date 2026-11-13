@@ -101,14 +101,11 @@ export function RelicHunterLive() {
   const message =
     state.status === 'unknown'
       ? "We're not tracking the Relic Hunter's location right now — check back soon."
-      : "Couldn't reach the tracker just now. Give it a moment and try again.";
+      : "Couldn't load her current location. Reload to try again.";
 
   return (
     <Card>
-      <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
-        Relic Hunter
-      </div>
-      <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{message}</p>
+      <p className="text-sm text-zinc-600 dark:text-zinc-400">{message}</p>
     </Card>
   );
 }

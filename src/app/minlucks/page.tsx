@@ -91,7 +91,7 @@ export default function MinLucksPage() {
     <div>
       <PageHeader
         title="Mouse Minlucks"
-        description="The minimum luck that guarantees a catch with each power type. Search by mouse or group, or pick a power type to see only what it can catch."
+        description="The minimum luck that guarantees a catch with each power type."
       />
       {/* Until the link's filters are readable, show the page unfiltered rather than nothing. */}
       <Suspense fallback={<MinLucks initialQuery="" initialPower={null} syncUrl={false} />}>

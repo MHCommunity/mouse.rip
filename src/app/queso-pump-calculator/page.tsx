@@ -57,10 +57,9 @@ export default function QuesoPumpCalculator() {
         title="Queso Pump Calculator"
         description={
           <>
-            Pumping the volcano in <PageLink href="/locations/queso-river">Queso Canyon</PageLink> costs Nachore. Enter
-            how much Nachore you need and this works out the most time-efficient cheese to farm it with, comparing Bland
-            Queso all the way up to Flamin&apos; Queso. Ported from fysh&apos;s original Queso Canyon Resource
-            Calculator.
+            Nachore upgrades the volcano pump in <PageLink href="/locations/queso-river">Queso Canyon</PageLink>.
+            Enter how much Nachore you need to find the most time-efficient Queso to farm it with. Ported from
+            fysh&apos;s original Queso Canyon Resource Calculator.
           </>
         }
       />
@@ -101,7 +100,7 @@ export default function QuesoPumpCalculator() {
               onChange={(e) => setUseMagicEssence(e.target.checked)}
               className={checkboxClasses}
             />
-            Using Magic Essence (doubles cheese per craft)
+            Magic Essence (doubles cheese per craft)
           </label>
           <label className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
             <input
@@ -175,9 +174,8 @@ export default function QuesoPumpCalculator() {
             </p>
             {best.essenceSavedHunts > 0 && (
               <p className="mt-1 text-sm/6 text-zinc-600 dark:text-zinc-400">
-                {useMagicEssence ? 'Using' : 'Not using'} Magic Essence {useMagicEssence ? 'saves' : 'costs'} you{' '}
-                {formatNumber(best.essenceSavedHunts)} hunts ({best.essenceSavedPercent.toFixed(2)}%) versus the
-                alternative.
+                Magic Essence {useMagicEssence ? 'saves' : 'would save'} {formatNumber(best.essenceSavedHunts)} hunts (
+                {best.essenceSavedPercent.toFixed(2)}%).
               </p>
             )}
           </>

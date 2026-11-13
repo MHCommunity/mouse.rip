@@ -37,7 +37,7 @@ export default function ValourRiftFloorsPage() {
     <div className="max-w-2xl">
       <PageHeader
         title="Valour Rift Floors"
-        description="Floor types in the Valour Rift tower repeat in a cycle of eight. Enter the floor you're on and the list reorders to start with that floor's type, so you can see what's coming next. Floors 1 to 24 are listed; past that, the same cycle of eight carries on."
+        description="Floor types in the Valour Rift tower repeat in a cycle of eight. Enter your floor to see what's coming next."
       />
       {/* useSearchParams needs a Suspense boundary so the header can still be prerendered. */}
       {/* Until the link's floor is readable, show the full cycle rather than nothing. */}
