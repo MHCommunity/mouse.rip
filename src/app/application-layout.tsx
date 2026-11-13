@@ -120,7 +120,7 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
         sidebar={
           <Sidebar>
             <SidebarHeader>
-              <SidebarItem href="/" aria-label="Home">
+              <SidebarItem href="/" aria-label="mouse.rip home">
                 <Logo aria-hidden="true" />
                 <SidebarLabel className="rounded text-2xl text-pink-800 hover:text-pink-900 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:text-pink-200 dark:hover:text-pink-300">
                   mouse.rip
@@ -151,7 +151,6 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                     pathname.startsWith('/titles') ||
                     pathname.startsWith('/trap-special-effects')
                   }
-                  aria-label="Guides"
                   className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
                 >
                   <AcademicCapIcon aria-hidden="true" />
@@ -162,7 +161,6 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                 <SidebarItem
                   href="/extensions"
                   current={pathname.startsWith('/extension')}
-                  aria-label="Extensions"
                   className="rounded focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 >
                   <BoltIcon aria-hidden="true" />
@@ -173,7 +171,6 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                 <SidebarItem
                   href="/tools"
                   current={pathname === '/tools' || pathname.startsWith('/tools/')}
-                  aria-label="Tools"
                   className="rounded focus:outline-none focus:ring-2 focus:ring-green-500"
                 >
                   <WrenchIcon aria-hidden="true" />
@@ -184,7 +181,6 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                 <SidebarItem
                   href="/spreadsheets"
                   current={pathname.startsWith('/spreadsheet')}
-                  aria-label="Spreadsheets"
                   className="rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <TableCellsIcon aria-hidden="true" />
@@ -195,7 +191,6 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                 <SidebarItem
                   href="/userscripts"
                   current={pathname.startsWith('/userscript')}
-                  aria-label="Userscripts"
                   className="rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
                   <SwatchIcon aria-hidden="true" />
@@ -208,7 +203,6 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                   current={
                     pathname.startsWith('/mice') || pathname.startsWith('/mouse') || pathname.startsWith('/groups')
                   }
-                  aria-label="Mice"
                   className="rounded focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 >
                   <MouseIcon aria-hidden="true" />
@@ -219,7 +213,6 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                 <SidebarItem
                   href="/items"
                   current={pathname.startsWith('/item')}
-                  aria-label="Items"
                   className="rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
                 >
                   <CheeseIcon aria-hidden="true" />
