@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import React from 'react';
 
 import { Breadcrumbs } from '@/components/breadcrumbs';
+import { ExternalRefs } from '@/components/external-refs';
 import { Heading } from '@/components/heading';
 import { ItemList } from '@/components/item-list';
 import { Link } from 'next-view-transitions';
@@ -12,6 +13,8 @@ import { ogCard, pageMetadata } from '@/seo';
 import { cleanDescription } from '@/utils';
 import { itemImageUrl, locationHeaderImageUrl, locationImageUrl } from '@/lib/image-urls';
 import { SectionHeading } from '@/components/section-heading';
+import { ClampedText } from '@/components/clamped-text';
+import { GameImage } from '@/components/game-image';
 
 import { LocationMice, getLocationMiceByCheese } from './location-mice';
 import { LocationLoot } from './location-loot';
@@ -144,15 +147,15 @@ export default async function Location({ params }: { params: Promise<{ id: strin
         </div>
       </header>
 
-      {description && (
-        <p className="mt-4 max-w-prose text-base/7 text-pretty text-zinc-600 dark:text-zinc-300">{description}</p>
-      )}
+      {description && <ClampedText className="mt-4 max-w-prose">{description}</ClampedText>}
 
       {location.name && TIMER_LOCATION_NAMES.includes(location.name) && (
         <LocationTimerPanel locationName={location.name} />
       )}
 
-      {miceTotal > 0 && <LocationMice groups={cheeseGroups} total={miceTotal} />}
+      {miceTotal > 0 && location.name && (
+        <LocationMice locationName={location.name} groups={cheeseGroups} total={miceTotal} />
+      )}
 
       {location.name && <LocationLoot rows={getLocationLoot(location.name)} />}
 
@@ -171,15 +174,7 @@ export default async function Location({ params }: { params: Promise<{ id: strin
                     href={`/items/${slug}`}
                     className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:border-pink-300 hover:text-pink-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-pink-800 dark:hover:text-pink-300"
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={itemImageUrl(slug)}
-                      alt=""
-                      width={24}
-                      height={24}
-                      loading="lazy"
-                      className="size-6 shrink-0 rounded"
-                    />
+                    <GameImage src={itemImageUrl(slug)} width={24} height={24} className="size-6 shrink-0 rounded" />
                     {item.name}
                   </Link>
                 </li>
@@ -228,6 +223,8 @@ export default async function Location({ params }: { params: Promise<{ id: strin
           <ItemList items={resources} headingLevel={3} />
         </section>
       )}
+
+      {location.name && <ExternalRefs name={location.name} kind="locations" />}
     </>
   );
 }

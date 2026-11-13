@@ -19,7 +19,8 @@ export function ExternalRefs({
   tradable,
 }: {
   name: string;
-  kind: 'mice' | 'items';
+  /** Locations get the MHWiki link only: MHCT and Markethunt have no location pages to link to. */
+  kind: 'mice' | 'items' | 'locations';
   id?: number;
   tradable?: boolean;
 }) {
@@ -28,7 +29,7 @@ export function ExternalRefs({
       label: 'MHWiki',
       href: `https://mhwiki.hitgrab.com/wiki/index.php/${wikiName(name)}`,
     },
-    ...(id != null
+    ...(id != null && kind !== 'locations'
       ? [
           {
             label: 'MHCT',

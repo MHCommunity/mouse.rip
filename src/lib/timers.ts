@@ -135,6 +135,20 @@ export function formatLocalTime(iso: string): string {
   );
 }
 
+/**
+ * The timer API and the MHCT attraction data name two stages differently. Checked
+ * against both datasets: every other stage name matches exactly.
+ */
+const ATTRACTION_STAGE_NAMES: Record<string, string> = {
+  'Mid Tide': 'Medium Tide',
+  'Grand Duke/Duchess': 'Grand Duke/Grand Duchess',
+};
+
+/** A timer stage's name as the attraction data spells it. */
+export function attractionStageName(timerStageName: string): string {
+  return ATTRACTION_STAGE_NAMES[timerStageName] ?? timerStageName;
+}
+
 export function stageLabel(stage: TimerStage): string {
   return stage.note ? `${stage.name} (${stage.note})` : stage.name;
 }

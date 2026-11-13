@@ -11,12 +11,11 @@ import lookup from '@/data/generated/name-lookup.json';
 import { getMiceForRegionName, getMouseAttraction, mouseSlug } from '@/lib/game-data';
 import { itemImageUrl, mouseImageUrl } from '@/lib/image-urls';
 import { POWER_TYPES, powerTypeSetLabel } from '@/lib/power-types';
+import { bestAttractionRow } from '@/lib/attraction';
+import { LiveStageLabel, LiveStageProvider, LiveStageRow } from './live-stage';
 import type { AttractionRow, Mouse } from '@/types';
 
 const cheeseLookup = lookup.cheese as Record<string, string>;
-
-/** Rows from this few hunts are noise; only fall back to them when nothing better exists. */
-const MIN_SAMPLE = 100;
 
 interface LocationMouse {
   mouse: Mouse;
@@ -37,10 +36,9 @@ function cheeseSlug(cheese: string): string | undefined {
 
 /** The best charm-free attraction row for a mouse here, skipping tiny samples when possible. */
 function bestRowAt(mouseId: number, locationName: string): AttractionRow | undefined {
-  const rows = getMouseAttraction(mouseId).filter((row) => row.location === locationName && row.charm === null);
-  const trusted = rows.filter((row) => row.total_hunts === null || row.total_hunts >= MIN_SAMPLE);
-  const pool = trusted.length > 0 ? trusted : rows;
-  return pool.reduce<AttractionRow | undefined>((best, row) => (!best || row.rate > best.rate ? row : best), undefined);
+  return bestAttractionRow(
+    getMouseAttraction(mouseId).filter((row) => row.location === locationName && row.charm === null),
+  );
 }
 
 /** The lowest minluck a mouse has, and every power type that shares it. */
@@ -135,7 +133,7 @@ function CheeseTitle({ cheese }: { cheese: string | null }) {
 function MouseRow({ entry }: { entry: LocationMouse }) {
   const { mouse, slug, best, minluck } = entry;
   return (
-    <li className="flex items-center gap-3 px-3 py-2.5 sm:px-4">
+    <LiveStageRow stage={best?.stage} className="flex items-center gap-3 px-3 py-2.5 sm:px-4">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={mouseImageUrl(slug)}
@@ -155,7 +153,7 @@ function MouseRow({ entry }: { entry: LocationMouse }) {
         {best && (
           <div className="mt-0.5 text-sm text-zinc-600 dark:text-zinc-400">
             <span className="tabular-nums">{formatRate(best.rate)}</span> attraction
-            {best.stage && <> · {best.stage}</>}
+            {best.stage && <LiveStageLabel stage={best.stage} />}
           </div>
         )}
       </div>
@@ -171,48 +169,58 @@ function MouseRow({ entry }: { entry: LocationMouse }) {
           <span className="text-sm text-zinc-600 dark:text-zinc-400">No minluck</span>
         )}
       </div>
-    </li>
+    </LiveStageRow>
   );
 }
 
-export function LocationMice({ groups, total }: { groups: CheeseGroup[]; total: number }) {
+export function LocationMice({
+  locationName,
+  groups,
+  total,
+}: {
+  locationName: string;
+  groups: CheeseGroup[];
+  total: number;
+}) {
   return (
-    <section className="mt-10">
-      <SectionHeading>
-        <span className="tabular-nums">{total}</span> {total === 1 ? 'mouse' : 'mice'} found here
-      </SectionHeading>
-      <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-        Grouped by the cheese that attracts each mouse best here, with its lowest minluck. Attraction rates from{' '}
-        <SourceLink source="mhct" /> and <SourceLink source="mh-tools" />. See the{' '}
-        <Link
-          href="/minlucks"
-          className="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-900 dark:decoration-zinc-600 dark:hover:text-zinc-200"
-        >
-          full minluck table
-        </Link>
-        .
-      </p>
-
-      <div className="mt-4 space-y-4">
-        {groups.map((group) => (
-          <div
-            key={group.cheese ?? 'none'}
-            className="overflow-hidden rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900"
+    <LiveStageProvider locationName={locationName}>
+      <section className="mt-10">
+        <SectionHeading>
+          <span className="tabular-nums">{total}</span> {total === 1 ? 'mouse' : 'mice'} found here
+        </SectionHeading>
+        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+          Grouped by the cheese that attracts each mouse best here, with its lowest minluck. Attraction rates from{' '}
+          <SourceLink source="mhct" /> and <SourceLink source="mh-tools" />. See the{' '}
+          <Link
+            href="/minlucks"
+            className="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-900 dark:decoration-zinc-600 dark:hover:text-zinc-200"
           >
-            <h3 className="flex items-center justify-between gap-3 border-b border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-semibold sm:px-4 dark:border-zinc-800 dark:bg-zinc-900/60">
-              <CheeseTitle cheese={group.cheese} />
-              <span className="shrink-0 text-xs font-normal tabular-nums text-zinc-600 dark:text-zinc-400">
-                {group.mice.length} {group.mice.length === 1 ? 'mouse' : 'mice'}
-              </span>
-            </h3>
-            <ul className="divide-y divide-zinc-100 dark:divide-zinc-800">
-              {group.mice.map((entry) => (
-                <MouseRow key={entry.mouse.id} entry={entry} />
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </section>
+            full minluck table
+          </Link>
+          .
+        </p>
+
+        <div className="mt-4 space-y-4">
+          {groups.map((group) => (
+            <div
+              key={group.cheese ?? 'none'}
+              className="overflow-hidden rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900"
+            >
+              <h3 className="flex items-center justify-between gap-3 border-b border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-semibold sm:px-4 dark:border-zinc-800 dark:bg-zinc-900/60">
+                <CheeseTitle cheese={group.cheese} />
+                <span className="shrink-0 text-xs font-normal tabular-nums text-zinc-600 dark:text-zinc-400">
+                  {group.mice.length} {group.mice.length === 1 ? 'mouse' : 'mice'}
+                </span>
+              </h3>
+              <ul className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                {group.mice.map((entry) => (
+                  <MouseRow key={entry.mouse.id} entry={entry} />
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+    </LiveStageProvider>
   );
 }
