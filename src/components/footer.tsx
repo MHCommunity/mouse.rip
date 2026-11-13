@@ -96,7 +96,7 @@ export function Footer() {
           href="https://mhct.win"
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:text-zinc-600 dark:hover:text-zinc-300"
+          className="underline decoration-zinc-400 underline-offset-2 hover:text-zinc-900 hover:decoration-zinc-600 dark:decoration-zinc-500 dark:hover:text-white dark:hover:decoration-zinc-300"
         >
           MHCT
         </a>{' '}
@@ -105,7 +105,7 @@ export function Footer() {
           href="https://tsitu.github.io/MH-Tools/"
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:text-zinc-600 dark:hover:text-zinc-300"
+          className="underline decoration-zinc-400 underline-offset-2 hover:text-zinc-900 hover:decoration-zinc-600 dark:decoration-zinc-500 dark:hover:text-white dark:hover:decoration-zinc-300"
         >
           MH-Tools
         </a>
@@ -114,7 +114,7 @@ export function Footer() {
           href="https://markethunt.win"
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:text-zinc-600 dark:hover:text-zinc-300"
+          className="underline decoration-zinc-400 underline-offset-2 hover:text-zinc-900 hover:decoration-zinc-600 dark:decoration-zinc-500 dark:hover:text-white dark:hover:decoration-zinc-300"
         >
           Markethunt
         </a>
