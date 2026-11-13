@@ -39,14 +39,18 @@ function computeCraftables(base: number[]): number[] {
   return craftable;
 }
 
-function Summary({ finalCounts }: { finalCounts: number[] }) {
+function Summary({ finalCounts, crafted }: { finalCounts: number[]; crafted: boolean }) {
+  if (!crafted) {
+    return <>Nothing to craft.</>;
+  }
+
   const highest = finalCounts
     .map((val, idx) => ({ idx, val }))
     .reverse()
     .find((e) => e.val > 0);
 
   if (!highest) {
-    return <>You cannot craft any essences.</>;
+    return <>Nothing to craft.</>;
   }
 
   const highestIdx = highest.idx;
@@ -65,11 +69,11 @@ function Summary({ finalCounts }: { finalCounts: number[] }) {
 
   return (
     <>
-      You can craft{' '}
+      You&rsquo;ll end up with{' '}
       <strong className="font-semibold text-zinc-950 dark:text-white">
         {formatNumber(highest.val)} {ESSENCES[highestIdx]}
       </strong>
-      {remaining.length > 0 && <> with {prettyRemaining} remaining</>}.
+      {remaining.length > 0 && <>, with {prettyRemaining} left over</>}.
     </>
   );
 }
@@ -187,9 +191,16 @@ export default function EssenceCalculator() {
         </div>
       </form>
 
-      <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
+      {/* The live region stays mounted so the first summary is announced; the box only appears with input. */}
+      <div
+        className={
+          hasInput
+            ? 'mt-6 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900'
+            : undefined
+        }
+      >
         <p aria-live="polite" className="text-base/7 text-zinc-700 dark:text-zinc-300">
-          {hasInput ? <Summary finalCounts={finalCounts} /> : 'Enter your essence amounts to see what you can craft.'}
+          {hasInput && <Summary finalCounts={finalCounts} crafted={craftableFromLower.some((n) => n > 0)} />}
         </p>
         {hasInput && (
           <Button outline onClick={() => setAmounts(Array(ESSENCES.length).fill(''))}>
