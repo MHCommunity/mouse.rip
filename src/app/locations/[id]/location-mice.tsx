@@ -5,6 +5,7 @@ import React from 'react';
 import { Link } from 'next-view-transitions';
 
 import { ColorScaleBadge } from '@/components/color-scale-badge';
+import { GameImage } from '@/components/game-image';
 import { SectionHeading } from '@/components/section-heading';
 import { SourceLink } from '@/components/source-link';
 import lookup from '@/data/generated/name-lookup.json';
@@ -104,17 +105,7 @@ function CheeseTitle({ cheese }: { cheese: string | null }) {
   const slug = cheeseSlug(cheese);
   const content = (
     <>
-      {slug && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={itemImageUrl(slug)}
-          alt=""
-          width={28}
-          height={28}
-          loading="lazy"
-          className="size-7 shrink-0 rounded"
-        />
-      )}
+      {slug && <GameImage src={itemImageUrl(slug)} width={28} height={28} className="size-7 shrink-0 rounded" />}
       <span>{cheese}</span>
     </>
   );
@@ -135,14 +126,7 @@ function MouseRow({ entry }: { entry: LocationMouse }) {
   return (
     <LiveStageRow stage={best?.stage} className="flex items-center gap-3 px-3 py-2.5 sm:px-4">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={mouseImageUrl(slug)}
-        alt=""
-        width={40}
-        height={40}
-        loading="lazy"
-        className="size-10 shrink-0 rounded-md"
-      />
+      <img src={mouseImageUrl(slug)} alt="" width={40} height={40} loading="lazy" className="size-10 shrink-0" />
       <div className="min-w-0 flex-1">
         <Link
           href={`/mice/${slug}`}

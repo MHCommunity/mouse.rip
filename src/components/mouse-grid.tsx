@@ -21,7 +21,7 @@ export function MouseGrid({ mice }: { mice: Mouse[] }) {
               src={mouseImageUrl(mouse.type)}
               alt=""
               loading="lazy"
-              className="size-10 shrink-0 rounded-md object-cover ring-1 ring-zinc-950/5 dark:ring-white/10"
+              className="size-10 shrink-0 object-cover ring-1 ring-zinc-950/5 dark:ring-white/10"
             />
             <div className="min-w-0">
               <div className="truncate text-sm font-medium text-zinc-900 transition-colors group-hover:text-emerald-700 dark:text-zinc-100 dark:group-hover:text-emerald-300">

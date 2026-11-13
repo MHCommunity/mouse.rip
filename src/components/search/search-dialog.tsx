@@ -247,7 +247,7 @@ export function SearchDialog({
                       {answer.image && (
                         <GameImage
                           src={answer.image}
-                          className="size-12 shrink-0 rounded-lg object-cover ring-1 ring-zinc-950/5 dark:ring-white/10"
+                          className="size-12 shrink-0 object-cover ring-1 ring-zinc-950/5 dark:ring-white/10"
                         />
                       )}
                       <div className="min-w-0 flex-1">
@@ -326,7 +326,7 @@ export function SearchDialog({
                         {record.image ? (
                           <GameImage
                             src={record.image}
-                            className="size-9 shrink-0 rounded-md object-cover ring-1 ring-zinc-950/5 dark:ring-white/10"
+                            className={`size-9 shrink-0 object-cover ring-1 ring-zinc-950/5 dark:ring-white/10 ${record.kind === 'mouse' ? '' : 'rounded-md'}`}
                             fallback={<KindIcon kind={record.kind} />}
                           />
                         ) : (

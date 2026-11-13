@@ -48,7 +48,7 @@ function MouseRow({ mouse, power }: { mouse: SlimMouse; power: string | null }) 
 
   return (
     <li className="flex items-center gap-3 border-b border-zinc-100 py-2.5 [contain-intrinsic-size:auto_72px] [content-visibility:auto] last:border-b-0 dark:border-zinc-800">
-      <GameImage src={mouseImageUrl(mouse.type)} width={48} height={48} className="size-12 shrink-0 rounded-md" />
+      <GameImage src={mouseImageUrl(mouse.type)} width={48} height={48} className="size-12 shrink-0" />
       <div className="min-w-0 flex-1">
         <Link
           href={`/mice/${mouse.type.replaceAll('_', '-')}`}

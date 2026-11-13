@@ -135,7 +135,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
           <img
             src={image}
             alt=""
-            className={`shrink-0 rounded-xl object-cover ring-1 ring-zinc-950/5 dark:ring-white/10 ${
+            className={`shrink-0 object-cover ring-1 ring-zinc-950/5 dark:ring-white/10 ${
               mouse.images?.is_landscape ? 'h-20 w-32 sm:h-40 sm:w-72' : 'size-20 sm:size-40'
             }`}
           />
@@ -321,7 +321,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
                     className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:border-emerald-300 hover:text-emerald-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-emerald-800 dark:hover:text-emerald-300"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={mouseImageUrl(otherSlug)} alt="" loading="lazy" className="size-6 shrink-0 rounded" />
+                    <img src={mouseImageUrl(otherSlug)} alt="" loading="lazy" className="size-6 shrink-0" />
                     {other.name}
                   </Link>
                 </li>

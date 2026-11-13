@@ -154,7 +154,7 @@ export function MiceBrowser({ groups }: { groups: SlimGroup[] }) {
                     className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 shadow-sm transition hover:border-emerald-300 hover:text-emerald-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-emerald-800 dark:hover:text-emerald-300"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={mouseImageUrl(slug)} alt="" loading="lazy" className="size-6 shrink-0 rounded" />
+                    <img src={mouseImageUrl(slug)} alt="" loading="lazy" className="size-6 shrink-0" />
                     {mouse.name}
                   </Link>
                 </li>
