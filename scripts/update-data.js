@@ -375,7 +375,14 @@ export const bestSpot = (rows) => {
   const trusted = pool.filter((row) => null === row.total_hunts || row.total_hunts >= 100);
   const pick = [...(trusted.length > 0 ? trusted : pool)].sort((a, b) => b.rate - a.rate)[0];
   if (!pick) return undefined;
-  return { location: pick.location, stage: pick.stage ?? undefined, cheese: pick.cheese, rate: pick.rate };
+  return {
+    location: pick.location,
+    stage: pick.stage ?? undefined,
+    cheese: pick.cheese,
+    rate: pick.rate,
+    // Null for MH-Tools rates, which publish no sample size.
+    hunts: pick.total_hunts ?? null,
+  };
 };
 
 /**
