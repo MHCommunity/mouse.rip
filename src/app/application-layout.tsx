@@ -34,8 +34,6 @@ import {
   MapPinIcon,
   QueueListIcon,
   ScaleIcon,
-  SparklesIcon,
-  TrophyIcon,
   QuestionMarkCircleIcon,
   SwatchIcon,
   TableCellsIcon,
@@ -48,15 +46,16 @@ import { locationImageUrl } from '@/lib/image-urls';
 
 const locations = locationsData as LocationRegion[];
 
-/** The lookups and calculators built into mouse.rip, as opposed to the tools it links out to. */
+/**
+ * The lookups and calculators built into mouse.rip, as opposed to the tools it links out to.
+ * Titles and trap effects live on the Guides page as game reference, to keep this list short.
+ */
 const lookups = [
   { href: '/minlucks', name: 'Minlucks', icon: ScaleIcon },
   { href: '/relic-hunter', name: 'Relic Hunter', icon: MapPinIcon },
   { href: '/valour-rift-floors', name: 'Valour Rift floors', icon: QueueListIcon },
   { href: '/essence-calculator', name: 'Essence calculator', icon: BeakerIcon },
   { href: '/queso-pump-calculator', name: 'Queso pump calculator', icon: CalculatorIcon },
-  { href: '/titles', name: 'Titles', icon: TrophyIcon },
-  { href: '/trap-special-effects', name: 'Trap effects', icon: SparklesIcon },
 ];
 
 /**
@@ -163,7 +162,12 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                 </SidebarItem>
                 <SidebarItem
                   href="/guides"
-                  current={pathname.startsWith('/guide')}
+                  // Titles and trap effects are listed on the Guides page, so Guides stays lit there.
+                  current={
+                    pathname.startsWith('/guide') ||
+                    pathname.startsWith('/titles') ||
+                    pathname.startsWith('/trap-special-effects')
+                  }
                   aria-label="Guides"
                   className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
                 >
