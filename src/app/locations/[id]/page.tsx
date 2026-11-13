@@ -170,9 +170,6 @@ export default async function Location({ params }: { params: Promise<{ id: strin
       {locationItems.length > 0 && (
         <section className="mt-10">
           <SectionHeading>Items for this location</SectionHeading>
-          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-            Cheese, charms, gear and other items made for hunting here.
-          </p>
           <ul className="mt-4 flex flex-wrap gap-2">
             {locationItems.map((item) => {
               const slug = itemSlug(item.type);
@@ -196,7 +193,7 @@ export default async function Location({ params }: { params: Promise<{ id: strin
         <section className="mt-10">
           <SectionHeading>Trap special effects here</SectionHeading>
           <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-            Traps with unique behavior in this location. See{' '}
+            See{' '}
             <Link href="/trap-special-effects" className={linkClass}>
               all trap special effects
             </Link>

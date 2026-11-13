@@ -32,7 +32,7 @@ export default function MiceIndexPage() {
       <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Mice' }]} />
       <PageHeader
         title="Mice"
-        description="Every mouse in MouseHunt. Browse by group, or filter by the power type it's weakest to — each mouse has its own page with stats, minlucks, and the best cheese and location to catch it. Catch data comes from MHCT."
+        description="Every mouse in MouseHunt, with stats, minlucks, and the best cheese and location to catch each one."
         count={mice.length}
         countLabel="mice"
         icon={MouseIcon}

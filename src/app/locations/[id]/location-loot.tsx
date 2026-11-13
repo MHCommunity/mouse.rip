@@ -83,8 +83,7 @@ export function LocationLoot({ rows }: { rows: LocationLootRow[] }) {
     <section className="mt-10">
       <SectionHeading>Loot found here</SectionHeading>
       <p className="mt-1 max-w-prose text-sm text-zinc-600 dark:text-zinc-400">
-        What the mice that live here drop, with the mouse most likely to drop each item. From{' '}
-        <SourceLink source="mhct" />; event and site-wide drops are left out.
+        From <SourceLink source="mhct" />. Event and site-wide drops are left out.
       </p>
       <div className="mt-4">
         <LootTable rows={preview} />

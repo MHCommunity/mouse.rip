@@ -59,7 +59,7 @@ function AttractionTable({ rows }: { rows: AttractionRow[] }) {
                 {formatRate(row.rate)}
                 {/* On phones the Sample column is hidden, so the sample rides under the rate. */}
                 <span className="block text-xs font-normal whitespace-nowrap text-zinc-600 sm:hidden dark:text-zinc-400">
-                  {row.total_hunts ? `${formatCompactNumber(row.total_hunts)} hunts` : 'no sample'}
+                  {row.total_hunts ? `${formatCompactNumber(row.total_hunts)} hunts` : '—'}
                 </span>
               </td>
               <td className="hidden px-3 py-2 text-right align-top tabular-nums text-zinc-600 sm:table-cell sm:px-4 dark:text-zinc-400">
@@ -80,7 +80,7 @@ function MapChips({ rows }: { rows: MouseMapRow[] }) {
         <li
           key={row.map}
           className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
-          title={`Appears on ${formatNumber(row.seen_maps)} of ${formatNumber(row.total_maps)} of these maps`}
+          title={`On ${formatNumber(row.seen_maps)} of ${formatNumber(row.total_maps)} maps`}
         >
           {row.map}
           <span className="text-xs tabular-nums text-zinc-600 dark:text-zinc-400">{formatRate(row.rate)}</span>
@@ -104,8 +104,7 @@ export function MouseData({ attraction, maps }: { attraction: AttractionRow[]; m
       <section>
         <SectionHeading>Where to find it</SectionHeading>
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-          Best attraction rates by location and cheese, from <SourceLink source="mhct" /> and{' '}
-          <SourceLink source="mh-tools" />.
+          From <SourceLink source="mhct" /> and <SourceLink source="mh-tools" />.
         </p>
 
         {attraction.length === 0 ? (

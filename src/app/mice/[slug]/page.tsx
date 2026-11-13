@@ -210,7 +210,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
                   <span className="mt-0.5 block text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
                     {bestSpot.total_hunts
                       ? `From ${formatNumber(bestSpot.total_hunts)} hunts`
-                      : 'From MH-Tools (no sample size)'}
+                      : 'From MH-Tools'}
                   </span>
                 </dd>
               </div>
@@ -232,9 +232,6 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
       {typeRows.length > 0 && (
         <section className="mt-10">
           <SectionHeading>Power types</SectionHeading>
-          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-            Effectiveness and the minimum luck needed to guarantee a catch with each type.
-          </p>
           <div className="mt-4 overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-800">
             <table className="w-full text-sm">
               <thead className="bg-zinc-50 text-left text-xs text-zinc-600 dark:bg-zinc-900/60 dark:text-zinc-400">
@@ -278,8 +275,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
           </div>
           {immuneTypes.length > 0 && (
             <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
-              No effect: {immuneTypes.map((type) => powerTypeLabel(type)).join(', ')} traps can&rsquo;t catch this
-              mouse.
+              {immuneTypes.map((type) => powerTypeLabel(type)).join(', ')} traps can&rsquo;t catch this mouse.
             </p>
           )}
           <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
