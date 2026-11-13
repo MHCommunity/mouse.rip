@@ -65,9 +65,13 @@ export function SidebarSpacer({ className, ...props }: React.ComponentPropsWitho
   return <div aria-hidden="true" {...props} className={clsx(className, 'mt-8 flex-1')} />;
 }
 
-export function SidebarHeading({ className, ...props }: React.ComponentPropsWithoutRef<'h3'>) {
+/**
+ * A label for a group of sidebar links. Not a real heading: the sidebar comes before
+ * the page's h1 in the document, and h3s there would break every page's outline.
+ */
+export function SidebarHeading({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
   return (
-    <h3 {...props} className={clsx(className, 'mb-1 px-2 text-xs/6 font-medium text-zinc-600 dark:text-zinc-400')} />
+    <div {...props} className={clsx(className, 'mb-1 px-2 text-xs/6 font-medium text-zinc-600 dark:text-zinc-400')} />
   );
 }
 

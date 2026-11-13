@@ -64,13 +64,15 @@ function MouseRow({ mouse, power }: { mouse: SlimMouse; power: string | null }) 
           </div>
         )}
       </div>
-      <dl className="flex shrink-0 flex-col items-end gap-1">
+      <dl className="flex max-w-[60%] min-w-0 flex-col items-end gap-1">
         {rows.length === 0 ? (
           <dd className="text-sm text-zinc-600 dark:text-zinc-400">No data</dd>
         ) : (
           rows.map((row) => (
             <div key={row.value} className="flex items-center gap-2">
-              <dt className="text-right text-sm text-zinc-700 dark:text-zinc-300">{powerTypeSetLabel(row.types)}</dt>
+              <dt className="text-right text-sm text-pretty text-zinc-700 dark:text-zinc-300">
+                {powerTypeSetLabel(row.types)}
+              </dt>
               <dd>
                 <ColorScaleBadge value={row.value} />
               </dd>

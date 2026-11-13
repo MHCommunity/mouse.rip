@@ -1,12 +1,21 @@
 import clsx from 'clsx';
 
-/** Minluck bands, easiest to hardest. Each band reads in both themes. */
+/**
+ * Minluck bands, easiest to hardest: one red ramp from pale to deep. A single hue
+ * reads as a difficulty scale and stays clear of the power-type chips, which use
+ * sky, green, amber, blue, yellow, fuchsia, purple and teal.
+ */
 export const MINLUCK_BANDS = [
-  { max: 9, label: 'Under 10', className: 'bg-sky-100 text-sky-900 dark:bg-sky-950 dark:text-sky-200' },
-  { max: 39, label: '10–39', className: 'bg-green-100 text-green-900 dark:bg-green-950 dark:text-green-200' },
-  { max: 99, label: '40–99', className: 'bg-yellow-100 text-yellow-900 dark:bg-yellow-950 dark:text-yellow-200' },
-  { max: 300, label: '100–300', className: 'bg-orange-100 text-orange-900 dark:bg-orange-950 dark:text-orange-200' },
-  { max: Infinity, label: 'Over 300', className: 'bg-red-100 text-red-900 dark:bg-red-950 dark:text-red-200' },
+  {
+    max: 9,
+    label: 'Under 10',
+    className:
+      'bg-red-50 text-red-900 ring-1 ring-red-200 ring-inset dark:bg-red-950/40 dark:text-red-200 dark:ring-red-900/60',
+  },
+  { max: 39, label: '10–39', className: 'bg-red-100 text-red-900 dark:bg-red-950 dark:text-red-200' },
+  { max: 99, label: '40–99', className: 'bg-red-200 text-red-950 dark:bg-red-900 dark:text-red-100' },
+  { max: 300, label: '100–300', className: 'bg-red-600 text-white dark:bg-red-700 dark:text-white' },
+  { max: Infinity, label: 'Over 300', className: 'bg-red-900 text-white dark:bg-red-400 dark:text-red-950' },
 ] as const;
 
 function bandFor(value: number) {
