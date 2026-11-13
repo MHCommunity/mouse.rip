@@ -1,6 +1,6 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import React, { type ReactNode } from 'react';
+import React, { useState, type ReactNode } from 'react';
 
 import { Navbar, NavbarItem, NavbarSection, NavbarSpacer } from '@/components/navbar';
 import {
@@ -26,8 +26,16 @@ import type { LocationRegion } from '@/types';
 
 import {
   AcademicCapIcon,
+  BeakerIcon,
   BoltIcon,
+  CalculatorIcon,
+  ChevronRightIcon,
   HomeIcon,
+  MapPinIcon,
+  QueueListIcon,
+  ScaleIcon,
+  SparklesIcon,
+  TrophyIcon,
   QuestionMarkCircleIcon,
   SwatchIcon,
   TableCellsIcon,
@@ -39,6 +47,63 @@ import { Avatar } from '@/components/avatar';
 import { locationImageUrl } from '@/lib/image-urls';
 
 const locations = locationsData as LocationRegion[];
+
+/** The lookups and calculators built into mouse.rip, as opposed to the tools it links out to. */
+const lookups = [
+  { href: '/minlucks', name: 'Minlucks', icon: ScaleIcon },
+  { href: '/relic-hunter', name: 'Relic Hunter', icon: MapPinIcon },
+  { href: '/valour-rift-floors', name: 'Valour Rift floors', icon: QueueListIcon },
+  { href: '/essence-calculator', name: 'Essence calculator', icon: BeakerIcon },
+  { href: '/queso-pump-calculator', name: 'Queso pump calculator', icon: CalculatorIcon },
+  { href: '/titles', name: 'Titles', icon: TrophyIcon },
+  { href: '/trap-special-effects', name: 'Trap effects', icon: SparklesIcon },
+];
+
+/**
+ * One region of locations, collapsed unless the current page is inside it, so the
+ * sidebar isn't 70 links long.
+ */
+function LocationRegionGroup({ region, pathname }: { region: LocationRegion; pathname: string }) {
+  const containsCurrent = region.locations.some((location) => pathname === `/locations/${location.id}`);
+  const [open, setOpen] = useState(containsCurrent);
+  const expanded = open || containsCurrent;
+  const listId = `region-${region.id}`;
+
+  return (
+    <div>
+      <button
+        type="button"
+        aria-expanded={expanded}
+        aria-controls={listId}
+        onClick={() => setOpen(!expanded)}
+        className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left text-sm/5 font-medium text-zinc-700 hover:bg-zinc-950/5 hover:text-zinc-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 sm:py-1.5 dark:text-zinc-300 dark:hover:bg-white/5 dark:hover:text-white"
+      >
+        <ChevronRightIcon
+          aria-hidden="true"
+          className={`size-4 shrink-0 fill-zinc-500 transition-transform motion-reduce:transition-none dark:fill-zinc-400 ${expanded ? 'rotate-90' : ''}`}
+        />
+        <span className="flex-1 truncate">{region.name}</span>
+        <span className="text-xs tabular-nums text-zinc-500 dark:text-zinc-400">{region.locations.length}</span>
+      </button>
+      {expanded && (
+        <div id={listId} className="mb-2 ml-3 border-l border-zinc-950/5 pl-1 dark:border-white/10">
+          {region.locations.map((location) => (
+            <SidebarItem
+              key={location.id}
+              href={`/locations/${location.id}`}
+              prefetch={false}
+              current={pathname === `/locations/${location.id}`}
+              className="rounded-md"
+            >
+              <Avatar slot="icon" src={locationImageUrl(location.id)} alt="" square />
+              <SidebarLabel>{location.name}</SidebarLabel>
+            </SidebarItem>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 interface ApplicationLayoutProps {
   children: ReactNode;
@@ -114,7 +179,7 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                 </SidebarItem>
                 <SidebarItem
                   href="/tools"
-                  current={pathname.startsWith('/tool')}
+                  current={pathname === '/tools' || pathname.startsWith('/tools/')}
                   aria-label="Tools"
                   className="rounded focus:outline-none focus:ring-2 focus:ring-green-500"
                 >
@@ -171,39 +236,27 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                 </SidebarItem>
               </SidebarSection>
 
-              <SidebarDivider />
               <SidebarSection>
+                <SidebarHeading>Lookups</SidebarHeading>
+                {lookups.map(({ href, name, icon: Icon }) => (
+                  <SidebarItem key={href} href={href} current={pathname.startsWith(href)}>
+                    <Icon aria-hidden="true" />
+                    <SidebarLabel>{name}</SidebarLabel>
+                  </SidebarItem>
+                ))}
+              </SidebarSection>
+
+              <SidebarSection>
+                <SidebarHeading>Locations</SidebarHeading>
                 {locations.map((region) => (
-                  <div key={region.id}>
-                    <SidebarHeading
-                      className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400"
-                      aria-label={`${region.name} region`}
-                    >
-                      {region.name}
-                    </SidebarHeading>
-                    <div>
-                      {region.locations.map((location) => (
-                        <SidebarItem
-                          key={location.id}
-                          href={`/locations/${location.id}`}
-                          prefetch={false}
-                          current={pathname === `/locations/${location.id}`}
-                          className="rounded-md text-xs font-semibold text-gray-400 hover:bg-gray-800 hover:text-white"
-                        >
-                          <Avatar slot="icon" src={locationImageUrl(location.id)} alt={location.name} square />
-                          {location.name}
-                        </SidebarItem>
-                      ))}
-                    </div>
-                    <div className="mt-4 flex-1" aria-hidden="true" />
-                  </div>
+                  <LocationRegionGroup key={region.id} region={region} pathname={pathname} />
                 ))}
               </SidebarSection>
 
               <SidebarDivider />
               <SidebarSection>
                 <SidebarItem href="/about" current={pathname.startsWith('/about')}>
-                  <QuestionMarkCircleIcon />
+                  <QuestionMarkCircleIcon aria-hidden="true" />
                   <SidebarLabel>About</SidebarLabel>
                 </SidebarItem>
                 <SidebarItem href="https://github.com/MHCommunity">
