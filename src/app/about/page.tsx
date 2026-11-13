@@ -49,7 +49,7 @@ export default async function About() {
       <div className="space-y-4 text-base/7 text-zinc-700 dark:text-zinc-300">
         <p>
           It&apos;s built by hunters, for hunters. Use it to learn the game or to look something up mid-hunt, then
-          follow the links out to MHWiki, MHCT and MarketHunt when you want more detail.
+          follow the links out to MHWiki, MHCT and Markethunt when you want more detail.
         </p>
       </div>
 

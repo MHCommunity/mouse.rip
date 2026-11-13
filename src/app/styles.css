@@ -42,6 +42,12 @@
   }
 }
 
+/* Safety net: one over-wide element shouldn't make the whole page scroll sideways on a phone. */
+html,
+body {
+  overflow-x: clip;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
