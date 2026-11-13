@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useRef, useState, type ChangeEvent } from 'react';
+import clsx from 'clsx';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import React, { Suspense, useState, type ChangeEvent } from 'react';
 
-import { Input, InputGroup } from '@/components/input';
-import { Heading } from '@/components/heading';
+import { Input } from '@/components/input';
+import { PageHeader } from '@/components/page-header';
 
 interface FloorGroup {
   name: string;
@@ -21,60 +23,117 @@ const FLOOR_ORDER: FloorGroup[] = [
   { name: 'Eclipse', floors: [8, 16, 24] },
 ];
 
-export default function ValourRiftFloors() {
-  const [currentFloor, setCurrentFloor] = useState<string>('');
-  const [reorderedFloors, setReorderedFloors] = useState<FloorGroup[]>(FLOOR_ORDER);
-  const inputRef = useRef<HTMLInputElement>(null);
+/** Rotate the cycle so the entered floor's type comes first. */
+function reorderFloors(floorNum: number): FloorGroup[] {
+  if (!floorNum || isNaN(floorNum) || floorNum < 1) {
+    return FLOOR_ORDER;
+  }
+  const index = (floorNum - 1) % FLOOR_ORDER.length;
+  return [...FLOOR_ORDER.slice(index), ...FLOOR_ORDER.slice(0, index)];
+}
 
-  const reorderFloors = (floorNum: number) => {
-    if (!floorNum || isNaN(floorNum) || floorNum < 1) {
-      setReorderedFloors(FLOOR_ORDER);
-      return;
-    }
-    const index = (floorNum - 1) % FLOOR_ORDER.length;
-    setReorderedFloors([...FLOOR_ORDER.slice(index), ...FLOOR_ORDER.slice(0, index)]);
-  };
+export default function ValourRiftFloorsPage() {
+  return (
+    <div className="max-w-2xl">
+      <PageHeader
+        title="Valour Rift Floors"
+        description="Floor types in the Valour Rift tower repeat in a cycle of eight. Enter the floor you're on and the list reorders to start with that floor's type, so you can see what's coming next. Floors 1 to 24 are listed; past that, the same cycle of eight carries on."
+      />
+      {/* useSearchParams needs a Suspense boundary so the header can still be prerendered. */}
+      {/* Until the link's floor is readable, show the full cycle rather than nothing. */}
+      <Suspense fallback={<ValourRiftFloors initialFloor="" syncUrl={false} />}>
+        <ValourRiftFloorsFromUrl />
+      </Suspense>
+    </div>
+  );
+}
+
+function ValourRiftFloorsFromUrl() {
+  const searchParams = useSearchParams();
+  return <ValourRiftFloors initialFloor={(searchParams.get('floor') ?? '').replace(/\D/g, '')} syncUrl />;
+}
+
+function ValourRiftFloors({
+  initialFloor,
+  syncUrl,
+}: {
+  initialFloor: string;
+  /** Off for the prerendered fallback, which mustn't rewrite a link it couldn't read. */
+  syncUrl: boolean;
+}) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [currentFloor, setCurrentFloor] = useState(initialFloor);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, ''); // Only digits
     setCurrentFloor(value);
-    reorderFloors(Number(value));
+
+    if (!syncUrl) return;
+    const params = new URLSearchParams(window.location.search);
+    if (value) params.set('floor', value);
+    else params.delete('floor');
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
   };
 
+  const floorNum = Number(currentFloor);
+  const hasFloor = floorNum >= 1;
+  const reorderedFloors = reorderFloors(floorNum);
+
   return (
-    <div>
-      <Heading>Valour Rift Floors</Heading>
-      <div className="relative mb-3 mt-2 flex flex-col items-center justify-center">
-        <InputGroup>
-          <Input
-            id="floor-search"
-            type="number"
-            placeholder="1, 2, 3, …"
-            className="flex rounded-md bg-white outline outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 dark:bg-gray-800 dark:outline-gray-700 dark:focus:outline-indigo-500"
-            ref={inputRef}
-            onChange={handleInputChange}
-            value={currentFloor}
-            inputMode="numeric"
-            pattern="[0-9]*"
-            aria-label="Floor number"
-          />
-          <label htmlFor="floor-search" className="mt-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Enter a floor number to reorder the list.
-          </label>
-        </InputGroup>
+    <>
+      <div className="max-w-xs">
+        <label htmlFor="floor-search" className="block text-sm font-medium text-zinc-950 dark:text-white">
+          Current floor
+        </label>
+        <Input
+          id="floor-search"
+          type="text"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          autoComplete="off"
+          placeholder="e.g. 12"
+          className="mt-1.5"
+          onChange={handleInputChange}
+          value={currentFloor}
+        />
       </div>
-      <div className="overflow-hidden">
-        <ul>
-          {reorderedFloors.map((floor) => (
-            <li key={floor.name} className="relative flex flex-col items-center justify-center gap-x-6 rounded-xl p-4">
-              <div className="text-balance text-xl font-semibold tracking-tight text-gray-900 sm:text-3xl dark:text-gray-100">
-                {floor.name}
-              </div>
-              <div className="text-sm text-slate-500 dark:text-slate-400">Floors: {floor.floors.join(', ')}</div>
+
+      <ol className="mt-6 divide-y divide-zinc-200 overflow-hidden rounded-lg border border-zinc-200 bg-white dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-900">
+        {reorderedFloors.map((floor, idx) => {
+          const isCurrent = hasFloor && idx === 0;
+
+          return (
+            <li
+              key={floor.name}
+              aria-current={isCurrent ? 'step' : undefined}
+              className={clsx(
+                'flex items-baseline justify-between gap-4 px-4 py-3 sm:px-5',
+                isCurrent && 'bg-pink-50 dark:bg-pink-950/30',
+              )}
+            >
+              <span className="flex items-baseline gap-2">
+                <span
+                  className={clsx(
+                    'text-base font-semibold',
+                    isCurrent ? 'text-pink-700 dark:text-pink-300' : 'text-zinc-950 dark:text-white',
+                  )}
+                >
+                  {floor.name}
+                </span>
+                {isCurrent && (
+                  <span className="text-sm font-medium text-pink-700 dark:text-pink-300">Floor {floorNum}</span>
+                )}
+              </span>
+              <span className="text-sm tabular-nums text-zinc-600 dark:text-zinc-400">
+                <span className="sr-only">Floors </span>
+                {floor.floors.join(', ')}
+              </span>
             </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+          );
+        })}
+      </ol>
+    </>
   );
 }
