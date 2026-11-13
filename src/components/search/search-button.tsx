@@ -53,7 +53,7 @@ export function SearchBar({ className }: { className?: string }) {
         spellCheck={false}
         enterKeyHint="search"
         aria-haspopup="dialog"
-        placeholder="Search mice, items, guides…"
+        placeholder="Type a mouse, item, or guide…"
         onFocus={preload}
         onChange={(event) => {
           setValue(event.target.value);
@@ -74,6 +74,37 @@ export function SearchBar({ className }: { className?: string }) {
   );
 }
 
+/**
+ * Real mice to try, so the in-place answer (minluck, best cheese, weaknesses)
+ * can be seen before anyone knows to type for it.
+ */
+export function SearchExamples({ examples, className }: { examples: string[]; className?: string }) {
+  const { open, preload } = useSearch();
+
+  return (
+    <p
+      className={clsx(
+        'flex flex-wrap items-center gap-x-1.5 gap-y-2 text-sm text-zinc-600 dark:text-zinc-400',
+        className,
+      )}
+    >
+      <span>Try</span>
+      {examples.map((name) => (
+        <button
+          key={name}
+          type="button"
+          onPointerEnter={preload}
+          onFocus={preload}
+          onClick={() => open(name)}
+          className="rounded-md border border-zinc-200 bg-white px-2 py-1 font-medium text-zinc-800 transition-colors hover:border-pink-300 hover:bg-pink-50/50 hover:text-pink-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-pink-800 dark:hover:bg-pink-950/20 dark:hover:text-pink-300"
+        >
+          {name}
+        </button>
+      ))}
+    </p>
+  );
+}
+
 /** Compact search trigger for the sidebar / navbar. */
 export function SearchButton({ className }: { className?: string }) {
   const { open } = useSearch();
@@ -85,12 +116,12 @@ export function SearchButton({ className }: { className?: string }) {
       onClick={() => open()}
       aria-label="Search"
       className={clsx(
-        'group flex items-center gap-2.5 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-left text-sm shadow-sm transition hover:border-pink-300 hover:shadow-md active:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-pink-800',
+        'group flex shrink-0 items-center gap-2.5 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-left text-sm shadow-sm transition hover:border-pink-300 hover:shadow-md active:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-pink-800',
         className,
       )}
     >
       <MagnifyingGlassIcon className="size-4 shrink-0 text-zinc-500 dark:text-zinc-400" aria-hidden="true" />
-      <span className="flex-1 text-zinc-500 dark:text-zinc-400">Search…</span>
+      <span className="flex-1 text-zinc-600 max-[359px]:sr-only dark:text-zinc-400">Search…</span>
       <kbd className="hidden shrink-0 rounded border whitespace-nowrap border-zinc-200 bg-zinc-50 px-1.5 py-0.5 text-[11px] font-medium text-zinc-500 pointer-fine:block dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400">
         {shortcut}
       </kbd>

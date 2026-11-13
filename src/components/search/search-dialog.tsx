@@ -26,7 +26,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { ColorScaleBadge } from '@/components/color-scale-badge';
 import { GameImage } from '@/components/game-image';
-import { POWER_TYPE_CHIP, powerTypeLabel } from '@/lib/power-types';
+import { POWER_TYPES, POWER_TYPE_CHIP, powerTypeLabel } from '@/lib/power-types';
 import {
   getStaticSearchRecords,
   loadGameItemRecords,
@@ -50,6 +50,26 @@ const KIND_ICONS: Partial<Record<SearchKind, React.ComponentType<React.SVGProps<
   title: TrophyIcon,
   page: DocumentTextIcon,
 };
+
+function KindIcon({ kind }: { kind: SearchKind }) {
+  return (
+    <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+      {React.createElement(KIND_ICONS[kind] ?? MagnifyingGlassIcon, { className: 'size-4', 'aria-hidden': true })}
+    </span>
+  );
+}
+
+/**
+ * Most mice are weak to every power type but one or two. Eight chips say less than
+ * "All but Rift", so name the exceptions instead when there are only a few.
+ */
+function weakToSummary(weakTo: string[]): React.ReactNode | null {
+  const missing = POWER_TYPES.filter((type) => !weakTo.includes(type));
+  if (missing.length > 2) return null;
+  const text =
+    missing.length === 0 ? 'All power types' : `All but ${missing.map((type) => powerTypeLabel(type)).join(' and ')}`;
+  return <span className="text-xs font-medium text-zinc-800 dark:text-zinc-200">{text}</span>;
+}
 
 /** MHCT reports rates in hundredths of a percent. */
 function formatRate(rate: number): string {
@@ -232,7 +252,9 @@ export function SearchDialog({
                       )}
                       <div className="min-w-0 flex-1">
                         <div className="flex items-baseline justify-between gap-2">
-                          <span className="truncate font-semibold text-zinc-900 dark:text-white">{answer.title}</span>
+                          <span className="min-w-0 font-semibold text-pretty text-zinc-900 dark:text-white">
+                            {answer.title}
+                          </span>
                           <span className="shrink-0 text-xs font-medium text-pink-700 dark:text-pink-300">
                             Open page →
                           </span>
@@ -279,14 +301,15 @@ export function SearchDialog({
                     {answer.mouse.weakTo.length > 0 && (
                       <div className="mt-3 flex flex-wrap items-center gap-1.5">
                         <span className="text-xs text-zinc-600 dark:text-zinc-400">Weak to</span>
-                        {answer.mouse.weakTo.map((type) => (
-                          <span
-                            key={type}
-                            className={`inline-flex rounded-md px-1.5 py-0.5 text-xs font-medium ${POWER_TYPE_CHIP[type] ?? ''}`}
-                          >
-                            {powerTypeLabel(type)}
-                          </span>
-                        ))}
+                        {weakToSummary(answer.mouse.weakTo) ??
+                          answer.mouse.weakTo.map((type) => (
+                            <span
+                              key={type}
+                              className={`inline-flex rounded-md px-1.5 py-0.5 text-xs font-medium ${POWER_TYPE_CHIP[type] ?? ''}`}
+                            >
+                              {powerTypeLabel(type)}
+                            </span>
+                          ))}
                       </div>
                     )}
                   </ComboboxOption>
@@ -304,14 +327,10 @@ export function SearchDialog({
                           <GameImage
                             src={record.image}
                             className="size-9 shrink-0 rounded-md object-cover ring-1 ring-zinc-950/5 dark:ring-white/10"
+                            fallback={<KindIcon kind={record.kind} />}
                           />
                         ) : (
-                          <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
-                            {React.createElement(KIND_ICONS[record.kind] ?? MagnifyingGlassIcon, {
-                              className: 'size-4',
-                              'aria-hidden': true,
-                            })}
-                          </span>
+                          <KindIcon kind={record.kind} />
                         )}
                         <span className="min-w-0 flex-1">
                           <span className="flex items-center gap-1.5">
