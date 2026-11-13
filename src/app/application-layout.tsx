@@ -26,14 +26,9 @@ import type { LocationRegion } from '@/types';
 
 import {
   AcademicCapIcon,
-  BeakerIcon,
   BoltIcon,
-  CalculatorIcon,
   ChevronRightIcon,
   HomeIcon,
-  MapPinIcon,
-  QueueListIcon,
-  ScaleIcon,
   QuestionMarkCircleIcon,
   SwatchIcon,
   TableCellsIcon,
@@ -45,18 +40,6 @@ import { Avatar } from '@/components/avatar';
 import { locationImageUrl } from '@/lib/image-urls';
 
 const locations = locationsData as LocationRegion[];
-
-/**
- * The lookups and calculators built into mouse.rip, as opposed to the tools it links out to.
- * Titles and trap effects live on the Guides page as game reference, to keep this list short.
- */
-const lookups = [
-  { href: '/minlucks', name: 'Minlucks', icon: ScaleIcon },
-  { href: '/relic-hunter', name: 'Relic Hunter', icon: MapPinIcon },
-  { href: '/valour-rift-floors', name: 'Valour Rift floors', icon: QueueListIcon },
-  { href: '/essence-calculator', name: 'Essence calculator', icon: BeakerIcon },
-  { href: '/queso-pump-calculator', name: 'Queso pump calculator', icon: CalculatorIcon },
-];
 
 /**
  * One region of locations, collapsed unless the current page is inside it, so the
@@ -244,16 +227,6 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                     Items
                   </SidebarLabel>
                 </SidebarItem>
-              </SidebarSection>
-
-              <SidebarSection>
-                <SidebarHeading>Lookups</SidebarHeading>
-                {lookups.map(({ href, name, icon: Icon }) => (
-                  <SidebarItem key={href} href={href} current={pathname.startsWith(href)}>
-                    <Icon aria-hidden="true" />
-                    <SidebarLabel>{name}</SidebarLabel>
-                  </SidebarItem>
-                ))}
               </SidebarSection>
 
               <SidebarSection>
