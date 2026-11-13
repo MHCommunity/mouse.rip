@@ -2,7 +2,9 @@ import { Link } from 'next-view-transitions';
 
 import React from 'react';
 
-import { ArrowRightIcon, ArrowUpRightIcon } from '@heroicons/react/20/solid';
+import clsx from 'clsx';
+
+import { ItemList } from '@/components/item-list';
 import { SearchBar, SearchExamples } from '@/components/search/search-button';
 import { TimersStrip } from '@/components/timers';
 
@@ -10,7 +12,7 @@ import { getResourcesByCategory, getPopularResources } from '@/lib/site-data';
 import { getAllGameItems, getAllMice } from '@/lib/game-data';
 import { itemImageUrl, locationImageUrl, mouseImageUrl } from '@/lib/image-urls';
 import { pageMetadata } from '@/seo';
-import { formatNumber, isInternalPath, isOurUrl } from '@/utils';
+import { formatNumber } from '@/utils';
 
 export const metadata = pageMetadata({
   title: 'MouseHunt Guides, Tools, and a Full Mouse & Item Database',
@@ -32,12 +34,14 @@ const quickLookups = [
     name: 'Minlucks',
     description: 'Luck that guarantees a catch',
     image: mouseImageUrl('dragon'),
+    mouse: true,
   },
   {
     href: '/relic-hunter',
     name: 'Relic Hunter',
     description: 'Where she is right now',
     image: mouseImageUrl('relic_hunter'),
+    mouse: true,
   },
   {
     href: '/valour-rift-floors',
@@ -51,12 +55,6 @@ const quickLookups = [
     description: 'What your essences craft into',
     image: '/images/essence/icuri.png',
   },
-  {
-    href: '/queso-pump-calculator',
-    name: 'Queso pump calculator',
-    description: 'Fastest way to farm Nachore',
-    image: itemImageUrl('bland_queso_cheese'),
-  },
 ];
 
 type DirectoryEntry = {
@@ -67,6 +65,8 @@ type DirectoryEntry = {
   countLabel?: string;
   /** A few in-game portraits that show what's inside. */
   preview?: string[];
+  /** Mouse portraits stay square; item art gets soft corners. */
+  previewIsMice?: boolean;
 };
 
 type DirectoryGroup = {
@@ -90,6 +90,7 @@ function directory(): DirectoryGroup[] {
           count: getAllMice().length,
           countLabel: 'mice',
           preview: ['bark', 'cheesy_party', 'high_roller', 'dragon'].map((type) => mouseImageUrl(type)),
+          previewIsMice: true,
         },
         {
           href: '/items',
@@ -162,16 +163,19 @@ export default function Home() {
       {/* ---------- Search first ---------- */}
       <section className="pt-2">
         <h1 className="text-3xl font-semibold tracking-tight text-balance text-zinc-950 sm:text-4xl dark:text-white">
-          Look up any mouse, item, or location
+          MouseHunt guides, tools, and resources
         </h1>
         <p className="mt-3 max-w-2xl text-base/7 text-pretty text-zinc-600 sm:text-lg/8 dark:text-zinc-300">
-          Type a mouse to see its minluck, best cheese, and where to hunt it, right in the search box. Guides and
-          community tools are a search away too.
+          A community-built collection of guides, extensions, tools, spreadsheets, and userscripts. Everything you need
+          to hunt smarter, in one place.
         </p>
 
         <div className="mt-6 max-w-2xl">
           <SearchBar />
-          <SearchExamples examples={searchExamples} className="mt-3" />
+          <p className="mt-3 text-sm text-pretty text-zinc-600 dark:text-zinc-400">
+            Type a mouse to see its minluck, best cheese, and where to hunt it, right in the search box.
+          </p>
+          <SearchExamples examples={searchExamples} className="mt-2" />
         </div>
 
         <p className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
@@ -188,10 +192,9 @@ export default function Home() {
           <h2 id="lookups-heading" className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
             Quick lookups
           </h2>
-          <ul className="mt-3 grid grid-cols-2 gap-2 lg:grid-cols-5">
-            {quickLookups.map(({ href, name, description, image }, index) => (
-              // An odd count leaves the last tile alone in the two-column layout; let it span the row.
-              <li key={href} className={index === quickLookups.length - 1 ? 'col-span-2 lg:col-span-1' : undefined}>
+          <ul className="mt-3 grid grid-cols-2 gap-2 lg:grid-cols-4">
+            {quickLookups.map(({ href, name, description, image, mouse }) => (
+              <li key={href}>
                 <Link
                   href={href}
                   className="group flex h-full items-center gap-2.5 rounded-lg border border-zinc-200 bg-white px-3 py-2.5 transition-colors hover:border-pink-300 hover:bg-pink-50/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 sm:items-start sm:gap-3 sm:px-3.5 sm:py-3 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-pink-800 dark:hover:bg-pink-950/20"
@@ -204,7 +207,8 @@ export default function Home() {
                     height={32}
                     loading="lazy"
                     decoding="async"
-                    className="size-8 shrink-0 rounded-md object-cover sm:mt-0.5"
+                    // Mouse art stays square, as it is in the game; other art gets soft corners.
+                    className={clsx('size-8 shrink-0 object-cover sm:mt-0.5', !mouse && 'rounded-md')}
                   />
                   <span className="min-w-0">
                     <span className="block text-sm/5 font-semibold text-zinc-900 group-hover:text-pink-700 dark:text-zinc-100 dark:group-hover:text-pink-300">
@@ -232,7 +236,7 @@ export default function Home() {
         <ul className="mt-3 grid gap-2 sm:grid-cols-2">
           {groups
             .flatMap((group) => group.entries)
-            .map(({ href, name, description, count, countLabel, preview }) => (
+            .map(({ href, name, description, count, countLabel, preview, previewIsMice }) => (
               <li key={href}>
                 <Link
                   href={href}
@@ -262,7 +266,10 @@ export default function Home() {
                             height={28}
                             loading="lazy"
                             decoding="async"
-                            className="size-7 rounded-md bg-white object-cover ring-2 ring-white dark:bg-zinc-800 dark:ring-zinc-900"
+                            className={clsx(
+                              'size-7 bg-white object-cover ring-2 ring-white dark:bg-zinc-800 dark:ring-zinc-900',
+                              !previewIsMice && 'rounded-md',
+                            )}
                           />
                         ))}
                       </span>
@@ -283,65 +290,9 @@ export default function Home() {
           <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
             Resources experienced hunters reach for most often.
           </p>
-          <ul className="mt-3 grid gap-x-8 border-t border-zinc-200 sm:grid-cols-2 dark:border-zinc-800">
-            {popular.map((resource) => {
-              const href = resource.category === 'userscript' ? `/userscripts/${resource.id}` : resource.url;
-              const internal = isInternalPath(href);
-              const outbound = !isOurUrl(href) && !hostIsMouseRip(href);
-              const Arrow = outbound ? ArrowUpRightIcon : ArrowRightIcon;
-              const className =
-                'group -mx-2 flex items-start gap-3 rounded-md px-2 py-3 transition-colors hover:bg-pink-50/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:hover:bg-pink-950/20';
-              const content = (
-                <>
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-sm font-semibold text-zinc-900 group-hover:text-pink-700 dark:text-zinc-100 dark:group-hover:text-pink-300">
-                      {resource.name}
-                    </span>
-                    <span className="mt-0.5 block text-sm/6 text-pretty text-zinc-600 dark:text-zinc-400">
-                      {resource.description}
-                    </span>
-                    {outbound && resource.source && (
-                      <span className="mt-0.5 block text-xs text-zinc-600 dark:text-zinc-400">{resource.source}</span>
-                    )}
-                  </span>
-                  <Arrow
-                    className="mt-0.5 size-4 shrink-0 text-zinc-500 group-hover:text-pink-600 dark:text-zinc-400 dark:group-hover:text-pink-400"
-                    aria-hidden="true"
-                  />
-                </>
-              );
-              return (
-                <li key={resource.id} className="border-b border-zinc-200 dark:border-zinc-800">
-                  {internal ? (
-                    <Link href={href} className={className}>
-                      {content}
-                    </Link>
-                  ) : (
-                    <a
-                      href={href}
-                      className={className}
-                      {...(outbound ? { target: '_blank', rel: 'noreferrer noopener' } : {})}
-                    >
-                      {content}
-                      {outbound && <span className="sr-only"> (opens in a new tab)</span>}
-                    </a>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
+          <ItemList items={popular} headingLevel={3} />
         </section>
       )}
     </div>
   );
-}
-
-/** mouse.rip's own sub-sites (guide.mouse.rip) aren't outbound, even though they're a different host. */
-function hostIsMouseRip(url: string): boolean {
-  try {
-    const { hostname } = new URL(url);
-    return hostname === 'mouse.rip' || hostname.endsWith('.mouse.rip');
-  } catch {
-    return false;
-  }
 }
