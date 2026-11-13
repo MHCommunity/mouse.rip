@@ -7,9 +7,9 @@ import { useSearchParams } from 'next/navigation';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 
 import { loadItemIndex, type IndexedItem } from '@/lib/client-index';
-import { CLASSIFICATION_DESCRIPTIONS } from '@/lib/item-classifications';
+import { CLASSIFICATION_DESCRIPTIONS, classificationName } from '@/lib/item-classifications';
 import { itemImageUrl } from '@/lib/image-urls';
-import { formatNumber, titleCase } from '@/utils';
+import { formatNumber } from '@/utils';
 import { SectionHeading } from '@/components/section-heading';
 
 /** The mice browser's cap too: past this, rows render on request. */
@@ -200,7 +200,7 @@ export function ItemsBrowser({
                 : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
             }`}
           >
-            {titleCase(key)}
+            {classificationName(key)}
             <span className="ml-1.5 text-xs tabular-nums opacity-60">{formatNumber(counts[key] ?? 0)}</span>
           </button>
         ))}
@@ -241,7 +241,7 @@ export function ItemsBrowser({
               >
                 <div className="flex w-full items-baseline justify-between gap-2">
                   <span className="font-semibold tracking-tight text-zinc-900 transition-colors group-hover:text-blue-700 dark:text-white dark:group-hover:text-blue-300">
-                    {titleCase(key)}
+                    {classificationName(key)}
                   </span>
                   <span className="shrink-0 text-xs tabular-nums text-zinc-400 dark:text-zinc-500">
                     {formatNumber(counts[key] ?? 0)}
@@ -273,7 +273,7 @@ export function ItemsBrowser({
           {visible.map(([key, list, shown]) => (
             <section key={key}>
               <h2 className="text-sm font-semibold tracking-tight text-zinc-900 dark:text-white">
-                {titleCase(key)}
+                {classificationName(key)}
                 <span className="ml-2 text-xs font-normal tabular-nums text-zinc-400 dark:text-zinc-500">
                   {formatNumber(list.length)}
                 </span>

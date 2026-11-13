@@ -24,6 +24,7 @@ import { itemJsonLd, itemSeo } from '@/lib/entity-seo';
 import { itemImageUrl } from '@/lib/image-urls';
 import { ogCard, pageMetadata } from '@/seo';
 import { formatNumber, titleCase } from '@/utils';
+import { classificationLabel, classificationName } from '@/lib/item-classifications';
 import { ItemData } from './item-data';
 import { MarketPrice } from './market-price';
 import { SectionHeading } from '@/components/section-heading';
@@ -62,7 +63,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     path: `/items/${slug}`,
     image: ogCard({
       title: item.name,
-      eyebrow: titleCase(item.classification),
+      eyebrow: classificationName(item.classification),
       subtitle: cardSubtitle || undefined,
       image: cardImage,
       accent: 'blue',
@@ -281,8 +282,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
   const flags: { label: string; limit?: boolean }[] = [
     item.is_tradable ? { label: 'Tradable' } : null,
     item.is_givable ? { label: 'Givable' } : null,
-    isConvertible ? { label: 'Openable' } : null,
-    item.is_limited_edition ? { label: 'Limited edition', limit: true } : null,
+        item.is_limited_edition ? { label: 'Limited edition', limit: true } : null,
     item.is_quantity_limited
       ? {
           label:
@@ -327,10 +327,10 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
           <div className="mt-3 flex flex-wrap items-center gap-2">
             <Link
               href={`/items/type/${item.classification}`}
-              title={`All ${titleCase(item.classification).toLowerCase()}s`}
+              title={`All ${classificationLabel(item.classification).toLowerCase()}`}
               className="inline-flex rounded-md bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600 transition hover:ring-2 hover:ring-pink-400 dark:bg-zinc-800 dark:text-zinc-300"
             >
-              {titleCase(item.classification)}
+              {classificationName(item.classification)}
             </Link>
             {flags.map((flag) => (
               <span
@@ -433,7 +433,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
 
       {related.length > 0 && (
         <section className="mt-10">
-          <SectionHeading>Related {titleCase(item.classification).toLowerCase()}s</SectionHeading>
+          <SectionHeading>Related {classificationLabel(item.classification).toLowerCase()}</SectionHeading>
           <ul className="mt-4 flex flex-wrap gap-2">
             {related.map((peer) => (
               <li key={peer.id}>

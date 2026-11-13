@@ -25,12 +25,23 @@ export const CLASSIFICATION_DESCRIPTIONS: Record<string, string> = {
   skin: 'Cosmetic skins that change how a trap looks.',
 };
 
+/** The game calls charms "trinkets" internally; players don't. */
+const CLASSIFICATION_NAMES: Record<string, string> = { trinket: 'Charm' };
+
+/** Singular display name for a classification, e.g. `crafting_item` → "Crafting Item". */
+export function classificationName(key: string): string {
+  return (
+    CLASSIFICATION_NAMES[key] ??
+    key
+      .split('_')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ')
+  );
+}
+
 /** Plural display name for a classification, e.g. `crafting_item` → "Crafting Items". */
 export function classificationLabel(key: string): string {
-  const words = key
-    .split('_')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+  const words = classificationName(key);
   return words.endsWith('s') ? words : `${words}s`;
 }
 
