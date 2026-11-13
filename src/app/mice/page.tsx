@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 
 import { MouseIcon } from '@/components/game-icons';
 import { PageHeader } from '@/components/page-header';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 
 import { getAllMice, getAllMiceGroups } from '@/lib/game-data';
 import { pageMetadata } from '@/seo';
@@ -28,6 +29,7 @@ export default function MiceIndexPage() {
 
   return (
     <div>
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Mice' }]} />
       <PageHeader
         title="Mice"
         description="Every mouse in MouseHunt. Browse by group, or filter by the power type it's weakest to — each mouse has its own page with stats, minlucks, and the best cheese and location to catch it. Catch data comes from MHCT."

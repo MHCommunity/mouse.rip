@@ -21,19 +21,19 @@ export function MouseData({ attraction, maps }: { attraction: AttractionRow[]; m
     <div className="mt-10 space-y-10">
       <section>
         <SectionHeading>Where to find it</SectionHeading>
-        <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
           Best attraction rates by location and cheese, from <SourceLink source="mhct" /> and{' '}
           <SourceLink source="mh-tools" />.
         </p>
 
         {attraction.length === 0 ? (
-          <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
             No attraction data recorded for this mouse yet.
           </p>
         ) : (
-          <div className="mt-4 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
+          <div className="mt-4 overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-800">
             <table className="w-full text-sm">
-              <thead className="bg-zinc-50 text-left text-xs uppercase tracking-wider text-zinc-500 dark:bg-zinc-900/60 dark:text-zinc-400">
+              <thead className="bg-zinc-50 text-left text-xs text-zinc-600 dark:bg-zinc-900/60 dark:text-zinc-400">
                 <tr>
                   <th className="px-4 py-2 font-medium">Location</th>
                   <th className="px-4 py-2 font-medium">Cheese</th>
@@ -49,12 +49,16 @@ export function MouseData({ attraction, maps }: { attraction: AttractionRow[]; m
                     </td>
                     <td className="px-4 py-2">
                       <CheeseCell cheese={row.cheese} />
-                      {row.charm && <span className="text-zinc-400 dark:text-zinc-500"> · {row.charm}</span>}
+                      {row.charm && <span className="text-zinc-600 dark:text-zinc-400"> · {row.charm}</span>}
                     </td>
                     <td className="px-4 py-2 text-right font-medium tabular-nums text-zinc-900 dark:text-white">
                       {formatRate(row.rate)}
+                      {/* On phones the Sample column is hidden, so the sample rides under the rate. */}
+                      <span className="block text-xs font-normal whitespace-nowrap text-zinc-600 sm:hidden dark:text-zinc-400">
+                        {row.total_hunts ? `${formatNumber(row.total_hunts)} hunts` : 'no sample'}
+                      </span>
                     </td>
-                    <td className="hidden px-4 py-2 text-right tabular-nums text-zinc-400 sm:table-cell dark:text-zinc-500">
+                    <td className="hidden px-4 py-2 text-right tabular-nums text-zinc-600 sm:table-cell dark:text-zinc-400">
                       {row.total_hunts ? formatNumber(row.total_hunts) : '—'}
                     </td>
                   </tr>
@@ -76,7 +80,7 @@ export function MouseData({ attraction, maps }: { attraction: AttractionRow[]; m
                 title={`Appears on ${formatNumber(row.seen_maps)} of ${formatNumber(row.total_maps)} of these maps`}
               >
                 {row.map}
-                <span className="text-xs tabular-nums text-zinc-400 dark:text-zinc-500">{formatRate(row.rate)}</span>
+                <span className="text-xs tabular-nums text-zinc-600 dark:text-zinc-400">{formatRate(row.rate)}</span>
               </span>
             ))}
           </div>

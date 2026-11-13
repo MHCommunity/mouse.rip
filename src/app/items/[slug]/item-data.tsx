@@ -9,10 +9,13 @@ import { itemImageUrl } from '@/lib/image-urls';
 import { ConvertibleContents } from './convertible-contents';
 import { SectionHeading } from '@/components/section-heading';
 import { SourceLink } from '@/components/source-link';
+import { GameImage } from '@/components/game-image';
 
 // Common items (Gold, SB+) come from hundreds of openables; listing them all
 // makes the page several hundred KB.
 const FOUND_IN_LIMIT = 50;
+// Shown before the "Show all" disclosure, so the ranked drop table isn't pushed down.
+const FOUND_IN_PREVIEW = 8;
 
 function formatQuantity(min: number, max: number): string {
   if (!min && !max) return '';
@@ -56,55 +59,16 @@ export function ItemData({
             </p>
           )}
 
-          {foundIn.length > 0 && (
-            <div className="mt-5">
-              <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">From openables</h3>
-              <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-                Chests, baskets, and other items that can contain this.
-              </p>
-              <ul className="mt-3 flex flex-wrap gap-2">
-                {foundIn.slice(0, FOUND_IN_LIMIT).map((source) => (
-                  <li key={source.id ?? source.name}>
-                    {source.slug ? (
-                      <Link
-                        href={`/items/${source.slug}`}
-                        className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 shadow-sm transition hover:border-blue-300 hover:text-blue-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-blue-800 dark:hover:text-blue-300"
-                      >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={itemImageUrl(source.slug)}
-                          alt=""
-                          loading="lazy"
-                          className="size-5 shrink-0 rounded"
-                        />
-                        {source.name}
-                      </Link>
-                    ) : (
-                      <span className="inline-flex rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
-                        {source.name}
-                      </span>
-                    )}
-                  </li>
-                ))}
-                {foundIn.length > FOUND_IN_LIMIT && (
-                  <li className="inline-flex items-center px-1 text-sm text-zinc-500 dark:text-zinc-400">
-                    and {formatNumber(foundIn.length - FOUND_IN_LIMIT)} more
-                  </li>
-                )}
-              </ul>
-            </div>
-          )}
-
           {drops.length > 0 && (
-            <div className="mt-6">
+            <div className="mt-5">
               <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">Hunting drops</h3>
-              <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+              <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
                 The mice that drop it and how often, from <SourceLink source="mhct" />. Rates are crowdsourced — check
                 the sample size before trusting one.
               </p>
-              <div className="mt-4 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
+              <div className="mt-4 overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-800">
                 <table className="w-full text-sm">
-                  <thead className="bg-zinc-50 text-left text-xs uppercase tracking-wider text-zinc-500 dark:bg-zinc-900/60 dark:text-zinc-400">
+                  <thead className="bg-zinc-50 text-left text-xs text-zinc-600 dark:bg-zinc-900/60 dark:text-zinc-400">
                     <tr>
                       <th className="px-4 py-2 font-medium">Mouse</th>
                       <th className="px-4 py-2 font-medium">Location</th>
@@ -119,30 +83,40 @@ export function ItemData({
                         <td className="px-4 py-2">
                           <Link
                             href={`/mice/${row.mouse_slug}`}
-                            className="text-zinc-900 hover:text-blue-700 dark:text-white dark:hover:text-blue-300"
+                            className="text-zinc-900 hover:text-pink-700 dark:text-white dark:hover:text-pink-300"
                           >
                             {row.mouse_name}
                           </Link>
                         </td>
-                        <td className="px-4 py-2">
+                        <td className="px-4 py-2 align-top">
                           <LocationCell location={row.locations[0]} />
                           {row.locations.length > 1 && (
-                            <span
-                              className="text-zinc-400 dark:text-zinc-500"
-                              title={row.locations.slice(1).join(', ')}
-                            >
-                              {' '}
-                              +{row.locations.length - 1} more
-                            </span>
+                            <details className="group">
+                              <summary className="cursor-pointer text-xs text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200">
+                                <span className="group-open:hidden">+{row.locations.length - 1} more</span>
+                                <span className="hidden group-open:inline">Fewer</span>
+                              </summary>
+                              <ul className="mt-1 space-y-0.5">
+                                {row.locations.slice(1).map((location) => (
+                                  <li key={location}>
+                                    <LocationCell location={location} />
+                                  </li>
+                                ))}
+                              </ul>
+                            </details>
                           )}
                         </td>
-                        <td className="hidden px-4 py-2 text-right tabular-nums text-zinc-400 sm:table-cell dark:text-zinc-500">
+                        <td className="hidden px-4 py-2 text-right tabular-nums text-zinc-600 sm:table-cell dark:text-zinc-400">
                           {formatQuantity(row.min, row.max) || '—'}
                         </td>
                         <td className="px-4 py-2 text-right font-medium tabular-nums text-zinc-900 dark:text-white">
                           {row.drop_likelihood}%
+                          {/* On phones Qty and Sample are hidden, so the sample rides under the rate. */}
+                          <span className="block text-xs font-normal whitespace-nowrap text-zinc-600 sm:hidden dark:text-zinc-400">
+                            {formatNumber(row.catches)} catches
+                          </span>
                         </td>
-                        <td className="hidden px-4 py-2 text-right tabular-nums text-zinc-400 sm:table-cell dark:text-zinc-500">
+                        <td className="hidden px-4 py-2 text-right tabular-nums text-zinc-600 sm:table-cell dark:text-zinc-400">
                           {formatNumber(row.catches)} catches
                         </td>
                       </tr>
@@ -150,6 +124,68 @@ export function ItemData({
                   </tbody>
                 </table>
               </div>
+            </div>
+          )}
+          {foundIn.length > 0 && (
+            <div className={drops.length > 0 ? 'mt-8' : 'mt-5'}>
+              <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">
+                From openables{' '}
+                <span className="font-normal text-zinc-600 dark:text-zinc-400">({formatNumber(foundIn.length)})</span>
+              </h3>
+              <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+                Chests, baskets, and other items that can contain this.
+              </p>
+              <ul className="mt-3 flex flex-wrap gap-2">
+                {foundIn.slice(0, FOUND_IN_PREVIEW).map((source) => (
+                  <li key={source.id ?? source.name}>
+                    {source.slug ? (
+                      <Link
+                        href={`/items/${source.slug}`}
+                        className="inline-flex min-h-9 items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:border-pink-300 hover:text-pink-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-pink-800 dark:hover:text-pink-300"
+                      >
+                        <GameImage src={itemImageUrl(source.slug)} className="size-5 shrink-0 rounded" />
+                        {source.name}
+                      </Link>
+                    ) : (
+                      <span className="inline-flex min-h-9 items-center rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+                        {source.name}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+              {foundIn.length > FOUND_IN_PREVIEW && (
+                <details className="group mt-2">
+                  <summary className="inline-flex min-h-9 cursor-pointer items-center rounded-md px-1 text-sm font-medium text-pink-700 hover:text-pink-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:text-pink-300 dark:hover:text-pink-200">
+                    <span className="group-open:hidden">Show all {formatNumber(foundIn.length)}</span>
+                    <span className="hidden group-open:inline">Show fewer</span>
+                  </summary>
+                  <ul className="mt-2 flex flex-wrap gap-2">
+                    {foundIn.slice(FOUND_IN_PREVIEW, FOUND_IN_LIMIT).map((source) => (
+                      <li key={source.id ?? source.name}>
+                        {source.slug ? (
+                          <Link
+                            href={`/items/${source.slug}`}
+                            className="inline-flex min-h-9 items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:border-pink-300 hover:text-pink-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-pink-800 dark:hover:text-pink-300"
+                          >
+                            <GameImage src={itemImageUrl(source.slug)} className="size-5 shrink-0 rounded" />
+                            {source.name}
+                          </Link>
+                        ) : (
+                          <span className="inline-flex min-h-9 items-center rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+                            {source.name}
+                          </span>
+                        )}
+                      </li>
+                    ))}
+                    {foundIn.length > FOUND_IN_LIMIT && (
+                      <li className="inline-flex items-center px-1 text-sm text-zinc-600 dark:text-zinc-400">
+                        and {formatNumber(foundIn.length - FOUND_IN_LIMIT)} more
+                      </li>
+                    )}
+                  </ul>
+                </details>
+              )}
             </div>
           )}
         </section>
@@ -180,7 +216,7 @@ function MapRelations({
   return (
     <section>
       <SectionHeading>{isScrollCase ? 'Maps it opens' : 'Which map awards it'}</SectionHeading>
-      <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+      <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
         {isScrollCase
           ? 'Opening this scroll case starts one of these maps. Completing a map awards its treasure chest.'
           : 'This chest is awarded for completing the map below, which starts from its scroll case.'}
@@ -189,12 +225,12 @@ function MapRelations({
         {relations.map((relation) => (
           <div
             key={`${relation.map.mhctId}-${relation.scrollCase.id}`}
-            className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
+            className="rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900"
           >
             <div className="flex flex-wrap items-baseline gap-x-2">
               <span className="font-semibold tracking-tight text-zinc-900 dark:text-white">{relation.map.name}</span>
               {!isScrollCase && (
-                <span className="text-sm text-zinc-500 dark:text-zinc-400">
+                <span className="text-sm text-zinc-600 dark:text-zinc-400">
                   from{' '}
                   <ItemChipLink id={relation.scrollCase.id} name={relation.scrollCase.name} itemSlugs={itemSlugs} />
                 </span>
@@ -242,7 +278,7 @@ function ItemChipLink({
   const slug = itemSlugs[id];
   if (plain || !slug) return <>{name}</>;
   return (
-    <Link href={`/items/${slug}`} className="transition hover:text-blue-700 dark:hover:text-blue-300">
+    <Link href={`/items/${slug}`} className="transition hover:text-pink-700 dark:hover:text-pink-300">
       {name}
     </Link>
   );

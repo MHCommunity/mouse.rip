@@ -27,6 +27,7 @@ import { formatNumber, titleCase } from '@/utils';
 import { ItemData } from './item-data';
 import { MarketPrice } from './market-price';
 import { SectionHeading } from '@/components/section-heading';
+import { GameImage } from '@/components/game-image';
 
 export const dynamicParams = false;
 
@@ -190,7 +191,7 @@ function relatedItems(item: GameItem): GameItem[] {
 function StatRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex items-center justify-between gap-4 px-4 py-2.5">
-      <span className="text-sm text-zinc-500 dark:text-zinc-400">{label}</span>
+      <span className="text-sm text-zinc-600 dark:text-zinc-400">{label}</span>
       <span className="text-sm font-medium tabular-nums text-zinc-900 dark:text-white">{value}</span>
     </div>
   );
@@ -254,8 +255,8 @@ function StatsTable({ stats }: { stats: GameItemStats }) {
 
   return (
     <section className="mt-6">
-      <h2 className="text-xs font-semibold tracking-wide text-zinc-500 dark:text-zinc-400">Trap stats</h2>
-      <div className="mt-2 divide-y divide-zinc-100 overflow-hidden rounded-xl border border-zinc-200 dark:divide-zinc-800 dark:border-zinc-800">
+      <SectionHeading>Trap stats</SectionHeading>
+      <div className="mt-2 divide-y divide-zinc-100 overflow-hidden rounded-lg border border-zinc-200 dark:divide-zinc-800 dark:border-zinc-800">
         {rows}
       </div>
     </section>
@@ -312,13 +313,13 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
 
       <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Items', href: '/items' }, { name: item.name }]} />
 
-      <header className="flex flex-col gap-6 sm:flex-row sm:items-start">
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6">
         {image && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={image}
-            alt={item.name}
-            className="h-40 w-40 shrink-0 rounded-2xl bg-white object-contain p-2 ring-1 ring-zinc-950/5 dark:bg-zinc-900 dark:ring-white/10"
+            alt=""
+            className="size-20 shrink-0 rounded-xl sm:size-40 bg-white object-contain p-2 ring-1 ring-zinc-950/5 dark:bg-zinc-900 dark:ring-white/10"
           />
         )}
         <div className="min-w-0">
@@ -327,7 +328,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
             <Link
               href={`/items/type/${item.classification}`}
               title={`All ${titleCase(item.classification).toLowerCase()}s`}
-              className="inline-flex rounded-md bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600 transition hover:ring-2 hover:ring-blue-400 dark:bg-zinc-800 dark:text-zinc-300"
+              className="inline-flex rounded-md bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600 transition hover:ring-2 hover:ring-pink-400 dark:bg-zinc-800 dark:text-zinc-300"
             >
               {titleCase(item.classification)}
             </Link>
@@ -345,11 +346,11 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
             ))}
           </div>
           {skinFor && (
-            <p className="mt-3 text-sm text-zinc-500 dark:text-zinc-400">
+            <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
               A skin for the{' '}
               <Link
                 href={`/items/${itemSlug(skinFor.type)}`}
-                className="font-medium text-blue-700 hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-200"
+                className="font-medium text-pink-700 hover:text-pink-800 dark:text-pink-300 dark:hover:text-pink-200"
               >
                 {skinFor.name}
               </Link>
@@ -357,7 +358,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
             </p>
           )}
           {stats && <StatsTable stats={stats} />}
-          {ranks && <p className="mt-2 text-xs tabular-nums text-zinc-400 dark:text-zinc-500">{ranks}</p>}
+          {ranks && <p className="mt-2 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">{ranks}</p>}
         </div>
       </header>
 
@@ -382,7 +383,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
                 <Link
                   key={environment.name}
                   href={`/locations/${environment.id}`}
-                  className="inline-flex rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 shadow-sm transition hover:border-blue-300 hover:text-blue-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-blue-800 dark:hover:text-blue-300"
+                  className="inline-flex rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:border-pink-300 hover:text-pink-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-pink-800 dark:hover:text-pink-300"
                 >
                   {environment.name}
                 </Link>
@@ -407,11 +408,10 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
               <Link
                 key={skin.id}
                 href={`/items/${itemSlug(skin.type)}`}
-                className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 shadow-sm transition hover:border-blue-300 hover:text-blue-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-blue-800 dark:hover:text-blue-300"
+                className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:border-pink-300 hover:text-pink-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-pink-800 dark:hover:text-pink-300"
               >
                 {skin.images?.thumbnail && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={itemImageUrl(skin.type)} alt="" loading="lazy" className="size-6 shrink-0 rounded" />
+                  <GameImage src={itemImageUrl(skin.type)} className="size-6 shrink-0 rounded" />
                 )}
                 {skin.name}
               </Link>
@@ -439,11 +439,10 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
               <li key={peer.id}>
                 <Link
                   href={`/items/${itemSlug(peer.type)}`}
-                  className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 shadow-sm transition hover:border-blue-300 hover:text-blue-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-blue-800 dark:hover:text-blue-300"
+                  className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:border-pink-300 hover:text-pink-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-pink-800 dark:hover:text-pink-300"
                 >
                   {peer.images?.thumbnail && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={itemImageUrl(peer.type)} alt="" loading="lazy" className="size-6 shrink-0 rounded" />
+                    <GameImage src={itemImageUrl(peer.type)} className="size-6 shrink-0 rounded" />
                   )}
                   {peer.name}
                 </Link>

@@ -37,12 +37,11 @@ function formatCompact(value: number): string {
 
 // Chart geometry (SVG user units; the element itself is responsive).
 const W = 640;
-const H = 240;
+const H = 220;
 const PRICE_TOP = 10;
 const PRICE_BOTTOM = 168;
 const VOL_TOP = 178;
 const VOL_BOTTOM = 214;
-const LABEL_Y = 234;
 
 export function PriceChart({ points }: { points: PricePoint[] }) {
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
@@ -88,10 +87,16 @@ export function PriceChart({ points }: { points: PricePoint[] }) {
   };
 
   const stroke = geometry.up ? '#059669' : '#e11d48';
+  // Screen readers get the shape of the chart as a sentence, since the chart itself is visual only.
+  const first = series[0];
+  const last = series[series.length - 1];
+  const summary = `Price history from ${first.date} to ${last.date}: ${formatGold(first.price)} to ${formatGold(
+    last.price,
+  )} gold, ranging ${formatGold(geometry.min)} to ${formatGold(geometry.max)}.`;
 
   return (
     <div>
-      <div className="flex h-5 items-center justify-end gap-3 text-xs tabular-nums text-zinc-400 dark:text-zinc-500">
+      <div className="flex h-5 items-center justify-end gap-3 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
         {hovered ? (
           <>
             <span>{hovered.date}</span>
@@ -105,94 +110,105 @@ export function PriceChart({ points }: { points: PricePoint[] }) {
           </span>
         )}
       </div>
-      <svg
-        viewBox={`0 0 ${W} ${H}`}
-        className="mt-1 w-full"
-        preserveAspectRatio="none"
-        role="img"
-        aria-label="Price history chart"
-        onPointerMove={handlePointerMove}
-        onPointerLeave={() => setHoverIndex(null)}
-      >
-        {/* Gridlines at min / mid / max */}
+      <div className="relative mt-1">
+        {/* Text lives in HTML, not the SVG: the SVG stretches to fit, which would distort it. */}
         {[geometry.max, (geometry.max + geometry.min) / 2, geometry.min].map((value, i) => (
-          <g key={i}>
-            <line
-              x1={0}
-              x2={W}
-              y1={geometry.yFor(value)}
-              y2={geometry.yFor(value)}
-              className="stroke-zinc-200 dark:stroke-zinc-800"
-              strokeWidth={1}
-              strokeDasharray="4 4"
-            />
-            <text x={4} y={geometry.yFor(value) - 4} className="fill-zinc-400 dark:fill-zinc-500" fontSize={11}>
-              {formatCompact(value)}
-            </text>
-          </g>
+          <span
+            key={i}
+            aria-hidden="true"
+            className="pointer-events-none absolute left-1 -translate-y-full text-[11px] tabular-nums text-zinc-600 dark:text-zinc-400"
+            style={{ top: `${(geometry.yFor(value) / H) * 100}%` }}
+          >
+            {formatCompact(value)}
+          </span>
         ))}
+        <svg
+          viewBox={`0 0 ${W} ${H}`}
+          className="w-full"
+          preserveAspectRatio="none"
+          role="img"
+          aria-label={summary}
+          onPointerMove={handlePointerMove}
+          onPointerLeave={() => setHoverIndex(null)}
+        >
+          {/* Gridlines at min / mid / max */}
+          {[geometry.max, (geometry.max + geometry.min) / 2, geometry.min].map((value, i) => (
+            <g key={i}>
+              <line
+                x1={0}
+                x2={W}
+                y1={geometry.yFor(value)}
+                y2={geometry.yFor(value)}
+                className="stroke-zinc-200 dark:stroke-zinc-800"
+                strokeWidth={1}
+                strokeDasharray="4 4"
+              />
+            </g>
+          ))}
 
-        <path d={geometry.area} fill={stroke} opacity={0.08} />
-        <path
-          d={geometry.line}
-          fill="none"
-          stroke={stroke}
-          strokeWidth={2}
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        />
+          <path d={geometry.area} fill={stroke} opacity={0.08} />
+          <path
+            d={geometry.line}
+            fill="none"
+            stroke={stroke}
+            strokeWidth={2}
+            strokeLinejoin="round"
+            strokeLinecap="round"
+          />
 
-        {/* Volume bars */}
-        {series.map((point, index) => {
-          const volume = point.volume ?? 0;
-          if (volume <= 0) return null;
-          const height = (volume / geometry.maxVolume) * (VOL_BOTTOM - VOL_TOP);
-          return (
-            <rect
-              key={index}
-              x={geometry.xFor(index) - 1}
-              y={VOL_BOTTOM - height}
-              width={Math.max(2, W / series.length - 1)}
-              height={height}
-              className="fill-zinc-300 dark:fill-zinc-700"
-            />
-          );
-        })}
+          {/* Volume bars */}
+          {series.map((point, index) => {
+            const volume = point.volume ?? 0;
+            if (volume <= 0) return null;
+            const height = (volume / geometry.maxVolume) * (VOL_BOTTOM - VOL_TOP);
+            return (
+              <rect
+                key={index}
+                x={geometry.xFor(index) - 1}
+                y={VOL_BOTTOM - height}
+                width={Math.max(2, W / series.length - 1)}
+                height={height}
+                className="fill-zinc-300 dark:fill-zinc-700"
+              />
+            );
+          })}
 
-        {/* Hover crosshair */}
-        {hovered && hoverIndex !== null && (
-          <g>
-            <line
-              x1={geometry.xFor(hoverIndex)}
-              x2={geometry.xFor(hoverIndex)}
-              y1={PRICE_TOP}
-              y2={VOL_BOTTOM}
-              className="stroke-zinc-400 dark:stroke-zinc-500"
-              strokeWidth={1}
-            />
-            <circle cx={geometry.xFor(hoverIndex)} cy={geometry.yFor(hovered.price)} r={3.5} fill={stroke} />
-          </g>
-        )}
-
-        <text x={4} y={LABEL_Y} className="fill-zinc-400 dark:fill-zinc-500" fontSize={11}>
-          {series[0].date}
-        </text>
-        <text x={W - 4} y={LABEL_Y} textAnchor="end" className="fill-zinc-400 dark:fill-zinc-500" fontSize={11}>
-          {series[series.length - 1].date}
-        </text>
-      </svg>
+          {/* Hover crosshair */}
+          {hovered && hoverIndex !== null && (
+            <g>
+              <line
+                x1={geometry.xFor(hoverIndex)}
+                x2={geometry.xFor(hoverIndex)}
+                y1={PRICE_TOP}
+                y2={VOL_BOTTOM}
+                className="stroke-zinc-400 dark:stroke-zinc-500"
+                strokeWidth={1}
+              />
+              <circle cx={geometry.xFor(hoverIndex)} cy={geometry.yFor(hovered.price)} r={3.5} fill={stroke} />
+            </g>
+          )}
+        </svg>
+      </div>
+      <div
+        aria-hidden="true"
+        className="mt-1 flex justify-between text-[11px] tabular-nums text-zinc-600 dark:text-zinc-400"
+      >
+        <span>{series[0].date}</span>
+        <span>{series[series.length - 1].date}</span>
+      </div>
     </div>
   );
 }
 
 export function MarketPrice({ itemId }: { itemId: number }) {
-  const [result, setResult] = useState<{ itemId: number; state: State } | null>(null);
+  const [result, setResult] = useState<{ itemId: number; attempt: number; state: State } | null>(null);
+  const [attempt, setAttempt] = useState(0);
   // Don't leave the previous item's chart up while this one loads.
-  const state: State = result?.itemId === itemId ? result.state : { status: 'loading' };
+  const state: State = result?.itemId === itemId && result.attempt === attempt ? result.state : { status: 'loading' };
 
   useEffect(() => {
     let active = true;
-    const setState = (next: State) => setResult({ itemId, state: next });
+    const setState = (next: State) => setResult({ itemId, attempt, state: next });
     fetch(`https://api.markethunt.win/items/${itemId}`)
       .then((res) => (res.ok ? (res.json() as Promise<MarkethuntResponse>) : Promise.reject()))
       .then((data) => {
@@ -207,17 +223,40 @@ export function MarketPrice({ itemId }: { itemId: number }) {
     return () => {
       active = false;
     };
-  }, [itemId]);
+  }, [itemId, attempt]);
 
-  // Don't render the section at all if this item isn't on the marketplace.
-  if (state.status === 'empty' || state.status === 'error') return null;
+  // Items with no marketplace history get no section at all.
+  if (state.status === 'empty') return null;
 
   return (
     <section className="mt-10">
       <SectionHeading>Marketplace price</SectionHeading>
 
       {state.status === 'loading' && (
-        <div className="mt-4 h-64 animate-pulse rounded-xl bg-zinc-100 dark:bg-zinc-800" />
+        <div className="mt-4 h-64 animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800" />
+      )}
+
+      {state.status === 'error' && (
+        <p className="mt-4 rounded-lg border border-zinc-200 px-4 py-3 text-sm text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
+          Couldn&rsquo;t load prices from Markethunt.{' '}
+          <button
+            type="button"
+            onClick={() => setAttempt((n) => n + 1)}
+            className="font-medium text-pink-700 underline underline-offset-2 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200"
+          >
+            Try again
+          </button>{' '}
+          or{' '}
+          <a
+            href={`https://markethunt.win/?item_id=${itemId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-pink-700 underline underline-offset-2 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200"
+          >
+            open it on Markethunt
+          </a>
+          .
+        </p>
       )}
 
       {state.status === 'ready' && <MarketCard itemId={itemId} data={state.data} />}
@@ -249,12 +288,12 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
   const low = window.reduce((best, point) => (point.price < best.price ? point : best), window[0]);
 
   return (
-    <div className="mt-4 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="mt-4 rounded-lg border border-zinc-200 bg-white p-4 sm:p-5 dark:border-zinc-800 dark:bg-zinc-900">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <div className="text-3xl font-semibold tabular-nums text-zinc-900 dark:text-white">
             {formatGold(latest.price)}
-            <span className="ml-1.5 text-base font-normal text-zinc-400 dark:text-zinc-500">gold</span>
+            <span className="ml-1.5 text-base font-normal text-zinc-600 dark:text-zinc-400">gold</span>
           </div>
           <div className="mt-1 flex items-center gap-3 text-sm">
             <span
@@ -264,30 +303,41 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
                   : 'font-medium text-rose-600 dark:text-rose-400'
               }
             >
-              {up ? '▲' : '▼'} {Math.abs(change).toFixed(1)}% / 30d
+              <span aria-hidden="true">{up ? '▲' : '▼'}</span>
+              <span className="sr-only">{up ? 'Up' : 'Down'}</span> {Math.abs(change).toFixed(1)}% over 30 days
             </span>
-            <span className="text-zinc-400 dark:text-zinc-500">{formatSb(latest.sb_price)} SB</span>
+            {/* SUPER|brie+ priced in itself is always 1 SB; skip the noise. */}
+            {Math.abs(latest.sb_price - 1) > 0.001 && (
+              <span className="text-zinc-600 dark:text-zinc-400">{formatSb(latest.sb_price)} SB</span>
+            )}
           </div>
         </div>
         <div className="flex flex-col items-end gap-2">
-          <div className="flex items-center gap-1 rounded-lg border border-zinc-200 p-0.5 dark:border-zinc-800">
+          <div
+            role="group"
+            aria-label="Chart range"
+            className="flex items-center gap-1 rounded-lg border border-zinc-200 p-0.5 dark:border-zinc-800"
+          >
             {RANGES.map((option) => (
               <button
                 key={option.key}
                 type="button"
                 onClick={() => setRange(option.key)}
-                className={`rounded-md px-2.5 py-1 text-xs font-medium transition ${
+                aria-pressed={range === option.key}
+                className={`min-h-9 min-w-11 rounded-md px-3 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 ${
                   range === option.key
                     ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900'
-                    : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
+                    : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
                 }`}
               >
                 {option.label}
               </button>
             ))}
           </div>
-          <div className="text-xs tabular-nums text-zinc-400 dark:text-zinc-500">
+          <div className="text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
             High {formatCompact(high.price)} ({high.date}) · Low {formatCompact(low.price)} ({low.date})
+            {/* The chart's axis is fitted to this range, so say how wide it really is. */}
+            {low.price > 0 && <> · {(((high.price - low.price) / low.price) * 100).toFixed(0)}% spread</>}
           </div>
         </div>
       </div>
@@ -296,7 +346,7 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
         <PriceChart points={window} />
       </div>
 
-      <div className="mt-4 flex items-center justify-between border-t border-zinc-100 pt-3 text-xs text-zinc-400 dark:border-zinc-800 dark:text-zinc-500">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-zinc-100 pt-3 text-xs text-zinc-600 dark:border-zinc-800 dark:text-zinc-400">
         <span>
           {latest.volume != null ? `${formatGold(latest.volume)} traded` : 'Volume unavailable'} · as of {latest.date} ·
           data from Markethunt
@@ -305,7 +355,7 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
           href={`https://markethunt.win/?item_id=${itemId}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+          className="font-medium text-pink-700 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200"
         >
           View on Markethunt →
         </a>

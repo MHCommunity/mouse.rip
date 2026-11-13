@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 
 import { CheeseIcon } from '@/components/game-icons';
 import { PageHeader } from '@/components/page-header';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 
 import { getAllGameItems } from '@/lib/game-data';
 import { orderClassifications } from '@/lib/item-classifications';
@@ -32,6 +33,7 @@ export default function ItemsIndexPage() {
 
   return (
     <div>
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Items' }]} />
       <PageHeader
         title="Items"
         description="Every item in MouseHunt — weapons, bases, charms, cheese, chests, and collectibles. Pick a type or search by name; each item has its own page with its stats, where it drops, and what's inside it."
