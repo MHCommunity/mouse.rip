@@ -24,6 +24,16 @@ function PowerChip({ type }: { type?: string }) {
   );
 }
 
+/** Tides and Toxic Spill: whether the level is rising or falling. */
+function NoteChip({ note }: { note?: string }) {
+  if (!note) return null;
+  return (
+    <span className="inline-flex rounded-md bg-zinc-100 px-1.5 py-0.5 text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+      {note.charAt(0).toUpperCase() + note.slice(1)}
+    </span>
+  );
+}
+
 function EndsIn({ stage, now, prefix = 'ends in' }: { stage: TimerStage; now: number; prefix?: string }) {
   return (
     <time dateTime={stage.ends_at} title={formatLocalTime(stage.ends_at)} className="tabular-nums">
@@ -80,13 +90,15 @@ export function TimersStrip({ className }: { className?: string }) {
                       <span className="text-xs text-zinc-600 dark:text-zinc-400">{timer.name}</span>
                       <span className="mt-0.5 flex flex-wrap items-center gap-1.5">
                         <span className="text-sm font-semibold text-zinc-900 group-hover:text-pink-700 dark:text-zinc-100 dark:group-hover:text-pink-300">
-                          {stageLabel(stages.current)}
+                          {stages.current.name}
                         </span>
                         <PowerChip type={stages.current.power_type} />
+                        <NoteChip note={stages.current.note} />
                       </span>
                       <span className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">
                         <EndsIn stage={stages.current} now={now} />
-                        {next && <> · then {stageLabel(next)}</>}
+                        {next && next.name !== stages.current.name && <> · then {next.name}</>}
+                        {next && next.name === stages.current.name && next.note && <> · then {next.note}</>}
                       </span>
                     </Link>
                   </li>

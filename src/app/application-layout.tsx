@@ -118,17 +118,21 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
         navbar={
           <Navbar>
             <NavbarSection>
-              <NavbarItem href="/" current={pathname === '/'}>
+              {/* The logo is the home link; a current-page underline beneath it reads as a stray rule. */}
+              <NavbarItem href="/" aria-label="mouse.rip home">
                 <Logo />
-                <span className="text-2xl text-pink-800 hover:text-pink-900 dark:text-pink-200 dark:hover:text-pink-300">
+                <span className="text-xl text-pink-800 hover:text-pink-900 min-[360px]:text-2xl dark:text-pink-200 dark:hover:text-pink-300">
                   mouse.rip
                 </span>
               </NavbarItem>
             </NavbarSection>
             <NavbarSpacer />
-            <NavbarSection>
-              <SearchButton className="w-auto" />
-            </NavbarSection>
+            {/* The home page leads with its own search field; a second one up here only splits attention. */}
+            {pathname !== '/' && (
+              <NavbarSection>
+                <SearchButton className="w-auto" />
+              </NavbarSection>
+            )}
           </Navbar>
         }
         sidebar={
@@ -143,9 +147,11 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
             </SidebarHeader>
 
             <SidebarBody>
-              <div className="px-2 pb-2">
-                <SearchButton className="w-full" />
-              </div>
+              {pathname !== '/' && (
+                <div className="px-2 pb-2">
+                  <SearchButton className="w-full" />
+                </div>
+              )}
               <SidebarSection>
                 <SidebarItem
                   href="/"
