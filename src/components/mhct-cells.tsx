@@ -34,7 +34,7 @@ export function LocationCell({ location, stage }: { location: string; stage?: st
       ) : (
         location
       )}
-      {stage && <span className="text-zinc-400 dark:text-zinc-500"> · {stage}</span>}
+      {stage && <span className="text-zinc-500 dark:text-zinc-400"> · {stage}</span>}
     </span>
   );
 }

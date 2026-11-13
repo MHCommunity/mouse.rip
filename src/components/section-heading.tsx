@@ -6,7 +6,7 @@ import clsx from 'clsx';
 export function SectionHeading({ className, children }: { className?: string; children: React.ReactNode }) {
   return (
     <h2
-      className={clsx('text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500', className)}
+      className={clsx('text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400', className)}
     >
       {children}
     </h2>

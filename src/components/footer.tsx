@@ -23,7 +23,7 @@ export function Footer() {
 
         <div className="grid grid-cols-2 gap-8">
           <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+            <div className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
               Browse
             </div>
             <ul className="mt-3 space-y-2">
@@ -41,7 +41,7 @@ export function Footer() {
           </div>
 
           <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+            <div className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
               Community
             </div>
             <ul className="mt-3 space-y-2">
@@ -78,7 +78,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="mt-8 border-t border-zinc-100 py-6 text-xs text-zinc-400 dark:border-zinc-800/60 dark:text-zinc-500">
+      <div className="mt-8 border-t border-zinc-100 py-6 text-xs text-zinc-500 dark:border-zinc-800/60 dark:text-zinc-400">
         Mouse, item, and catch data from{' '}
         <a
           href="https://mhct.win"
@@ -88,7 +88,16 @@ export function Footer() {
         >
           MHCT
         </a>{' '}
-        and marketplace prices from{' '}
+        and{' '}
+        <a
+          href="https://tsitu.github.io/MH-Tools/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-zinc-600 dark:hover:text-zinc-300"
+        >
+          MH-Tools
+        </a>
+        , marketplace prices from{' '}
         <a
           href="https://markethunt.win"
           target="_blank"

@@ -73,7 +73,7 @@ const components: Components = {
       {...props}
       className={clsx(
         className,
-        'my-4 border-l-4 border-pink-300 pl-4 text-zinc-600 italic dark:border-pink-700 dark:text-zinc-400',
+        'my-4 max-w-prose border-l-2 border-zinc-300 pl-4 text-zinc-700 italic dark:border-zinc-600 dark:text-zinc-300',
       )}
     />
   ),
@@ -134,7 +134,7 @@ const components: Components = {
 
 export function Markdown({ children, className }: { children: string; className?: string }) {
   return (
-    <div className={clsx(className, 'max-w-none')}>
+    <div className={clsx(className, '[&>:is(p,ul,ol,h1,h2,h3,h4)]:max-w-prose [&_p]:text-pretty')}>
       <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} components={components}>
         {children}
       </ReactMarkdown>
