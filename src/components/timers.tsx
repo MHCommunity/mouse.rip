@@ -25,12 +25,14 @@ function PowerChip({ type }: { type?: string }) {
 }
 
 /** Tides and Toxic Spill: whether the level is rising or falling. */
-function NoteChip({ note }: { note?: string }) {
-  if (!note) return null;
+function NoteText({ note }: { note: string }) {
   return (
-    <span className="inline-flex rounded-md bg-zinc-100 px-1.5 py-0.5 text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
-      {note.charAt(0).toUpperCase() + note.slice(1)}
-    </span>
+    <>
+      <span className="font-medium text-zinc-800 dark:text-zinc-200">
+        {note.charAt(0).toUpperCase() + note.slice(1)}
+      </span>
+      {' · '}
+    </>
   );
 }
 
@@ -56,7 +58,7 @@ export function TimersStrip({ className }: { className?: string }) {
           Right now
         </h2>
         {state.status === 'ready' && (
-          <p className="text-xs text-zinc-600 dark:text-zinc-400">
+          <p className="text-sm text-zinc-600 sm:text-xs dark:text-zinc-400">
             Daily reset in{' '}
             <time
               dateTime={state.data.daily_reset.at}
@@ -93,12 +95,13 @@ export function TimersStrip({ className }: { className?: string }) {
                           {stages.current.name}
                         </span>
                         <PowerChip type={stages.current.power_type} />
-                        <NoteChip note={stages.current.note} />
                       </span>
                       <span className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">
+                        {/* Rising/falling rides in this line, so a long stage name doesn't push a label onto its own row. */}
+                        {stages.current.note && <NoteText note={stages.current.note} />}
                         <EndsIn stage={stages.current} now={now} />
-                        {next && next.name !== stages.current.name && <> · then {next.name}</>}
-                        {next && next.name === stages.current.name && next.note && <> · then {next.note}</>}
+                        {next && next.name !== stages.current.name && <> · next: {next.name}</>}
+                        {next && next.name === stages.current.name && next.note && <> · next: {next.note}</>}
                       </span>
                     </Link>
                   </li>
