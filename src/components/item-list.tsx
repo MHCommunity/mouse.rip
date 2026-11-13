@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+
 import { Item } from '@/components/item';
 import { Resource } from '@/types';
 
@@ -8,9 +10,23 @@ type ItemListProps = {
   headingLevel?: 2 | 3;
   /** Hide the per-card category badge on pages that list a single category. */
   showCategory?: boolean;
+  /** Smaller cards for a short list that sits below a page's main tools (the home page). */
+  compact?: boolean;
 };
 
-export function ItemList({ items, showtags = false, headingLevel = 2, showCategory = true, ...props }: ItemListProps) {
+/** In a compact list, the last card spans the gap a short final row would leave. */
+function lastCardSpan(count: number): string {
+  return [count % 2 === 1 ? 'sm:col-span-2' : '', count % 3 === 2 ? 'lg:col-span-2' : 'lg:col-span-1'].join(' ');
+}
+
+export function ItemList({
+  items,
+  showtags = false,
+  headingLevel = 2,
+  showCategory = true,
+  compact = false,
+  ...props
+}: ItemListProps) {
   if (!items.length) {
     return (
       <div className="mt-8 rounded-xl border border-dashed border-zinc-300 p-10 text-center text-sm text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
@@ -22,6 +38,18 @@ export function ItemList({ items, showtags = false, headingLevel = 2, showCatego
           Discord
         </a>
         .
+      </div>
+    );
+  }
+
+  if (compact) {
+    return (
+      <div className="relative mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {items.map((item, index) => (
+          <div key={item.id} className={clsx('flex', index === items.length - 1 && lastCardSpan(items.length))}>
+            <Item item={item} headingLevel={headingLevel} showCategory={showCategory} compact />
+          </div>
+        ))}
       </div>
     );
   }

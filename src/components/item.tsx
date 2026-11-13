@@ -14,6 +14,8 @@ interface ItemProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   headingLevel?: 2 | 3;
   /** The category badge only helps in mixed lists; a page of one category hides it. */
   showCategory?: boolean;
+  /** A smaller, flatter card for a short list beneath a page's main content. */
+  compact?: boolean;
 }
 
 const cardStyles: Record<string, string> = {
@@ -24,7 +26,14 @@ const cardStyles: Record<string, string> = {
   userscript: 'hover:border-purple-300 focus-visible:ring-purple-500 dark:hover:border-purple-800',
 };
 
-export function Item({ item, showtags = false, headingLevel = 2, showCategory = true, ...props }: ItemProps) {
+export function Item({
+  item,
+  showtags = false,
+  headingLevel = 2,
+  showCategory = true,
+  compact = false,
+  ...props
+}: ItemProps) {
   const Title = `h${headingLevel}` as const;
   // Userscripts always resolve to their on-site detail page.
   const href = item.category === 'userscript' ? `/userscripts/${item.id}` : item.url;
@@ -38,13 +47,23 @@ export function Item({ item, showtags = false, headingLevel = 2, showCategory = 
   const opensNewTab = !internal && !ours;
 
   const className = clsx(
-    'group flex rounded-xl border border-zinc-200 bg-white text-sm font-medium text-zinc-700 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg active:translate-y-0 active:shadow-sm motion-reduce:transform-none focus:outline-none focus-visible:ring-2 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300',
+    'group flex rounded-xl border border-zinc-200 bg-white text-sm font-medium text-zinc-700 shadow-sm transition duration-200 focus:outline-none focus-visible:ring-2 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300',
+    compact
+      ? 'w-full rounded-lg hover:shadow-md'
+      : 'hover:-translate-y-1 hover:shadow-lg active:translate-y-0 active:shadow-sm motion-reduce:transform-none',
     cardStyles[item.category],
   );
 
   const body = (
-    <div className="flex h-full flex-1 flex-col gap-2 p-5">
-      <Title className="text-lg font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">{item.name}</Title>
+    <div className={clsx('flex h-full flex-1 flex-col', compact ? 'gap-1 p-4' : 'gap-2 p-5')}>
+      <Title
+        className={clsx(
+          'font-semibold tracking-tight text-zinc-900 dark:text-zinc-100',
+          compact ? 'text-base' : 'text-lg',
+        )}
+      >
+        {item.name}
+      </Title>
       <div className="text-sm/6 font-normal text-pretty text-zinc-600 dark:text-zinc-400">{item.description}</div>
       {item.tags && showtags && (
         <div className="flex flex-wrap items-end gap-x-2">
@@ -55,7 +74,7 @@ export function Item({ item, showtags = false, headingLevel = 2, showCategory = 
           ))}
         </div>
       )}
-      <div className="mt-auto flex items-end justify-between pt-2">
+      <div className={clsx('mt-auto flex items-end justify-between', compact ? 'pt-3' : 'pt-2')}>
         {item.category && showCategory && (
           <Badge key={item.category} id={`${item.id}-${item.category}`} color={`${item.category}Badge`}>
             {item.category}
@@ -63,7 +82,7 @@ export function Item({ item, showtags = false, headingLevel = 2, showCategory = 
         )}
         <span
           className={clsx(
-            'ml-auto flex items-center text-sm font-semibold transition-colors',
+            'ml-auto flex items-center text-sm font-semibold whitespace-nowrap transition-colors',
             ours
               ? 'text-pink-600 group-hover:text-pink-700 dark:text-pink-400 dark:group-hover:text-pink-300'
               : 'text-zinc-500 group-hover:text-zinc-800 dark:text-zinc-400 dark:group-hover:text-zinc-100',
