@@ -12,6 +12,11 @@ export function formatNumber(num: number): string {
   return num?.toLocaleString('en-US') || '0';
 }
 
+/** "19.7K": for sample sizes squeezed under a rate in a phone-width table cell. */
+export function formatCompactNumber(num: number): string {
+  return new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(num ?? 0);
+}
+
 /**
  * Cleans and formats a description by removing HTML tags and normalizing whitespace.
  *
