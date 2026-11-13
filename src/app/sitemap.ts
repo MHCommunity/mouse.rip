@@ -48,6 +48,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   );
 
+  const regionRoutes = getLocations().map((region) => ({
+    url: `${BASE_URL}/regions/${region.id}`,
+    changeFrequency: 'monthly' as const,
+    priority: 0.5,
+  }));
+
   const userscriptRoutes = getResourcesByCategory('userscript').map((item) => ({
     url: `${BASE_URL}/userscripts/${item.id}`,
     changeFrequency: 'monthly' as const,
@@ -89,6 +95,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...staticRoutes,
     ...guideRoutes,
     ...locationRoutes,
+    ...regionRoutes,
     ...userscriptRoutes,
     ...mouseRoutes,
     ...groupRoutes,
