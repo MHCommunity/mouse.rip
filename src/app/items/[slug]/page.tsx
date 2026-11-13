@@ -313,7 +313,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
 
       <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Items', href: '/items' }, { name: item.name }]} />
 
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6">
+      <header className="flex items-start gap-4 sm:gap-6">
         {image && (
           // eslint-disable-next-line @next/next/no-img-element
           <img

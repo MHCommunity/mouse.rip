@@ -346,10 +346,12 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
         <PriceChart points={window} />
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-zinc-100 pt-3 text-xs text-zinc-600 dark:border-zinc-800 dark:text-zinc-400">
+      <div className="mt-4 flex flex-wrap items-end justify-between gap-x-4 gap-y-2 border-t border-zinc-100 pt-3 text-xs text-zinc-600 dark:border-zinc-800 dark:text-zinc-400">
         <span>
-          {latest.volume != null ? `${formatGold(latest.volume)} traded` : 'Volume unavailable'} · as of {latest.date} ·
-          data from Markethunt
+          <span className="block tabular-nums">
+            {latest.volume != null ? `${formatGold(latest.volume)} traded` : 'Volume unavailable'} · as of {latest.date}
+          </span>
+          <span className="block">Data from Markethunt</span>
         </span>
         <a
           href={`https://markethunt.win/?item_id=${itemId}`}

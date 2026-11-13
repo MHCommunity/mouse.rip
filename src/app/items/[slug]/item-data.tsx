@@ -4,7 +4,7 @@ import { Link } from 'next-view-transitions';
 
 import { LocationCell } from '@/components/mhct-cells';
 import type { ConvertibleRow, FoundInConvertible, ItemDropper, MapRelation } from '@/types';
-import { formatNumber } from '@/utils';
+import { formatCompactNumber, formatNumber } from '@/utils';
 import { itemImageUrl } from '@/lib/image-urls';
 import { ConvertibleContents } from './convertible-contents';
 import { SectionHeading } from '@/components/section-heading';
@@ -16,11 +16,78 @@ import { GameImage } from '@/components/game-image';
 const FOUND_IN_LIMIT = 50;
 // Shown before the "Show all" disclosure, so the ranked drop table isn't pushed down.
 const FOUND_IN_PREVIEW = 8;
+// Drop rows shown before "Show all"; the long tail is mostly tiny samples.
+const DROPS_PREVIEW = 10;
 
 function formatQuantity(min: number, max: number): string {
   if (!min && !max) return '';
   if (min === max) return `${min}`;
   return `${min}–${max}`;
+}
+
+function DropsTable({ rows }: { rows: ItemDropper[] }) {
+  return (
+    <div className="overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-800">
+      <table className="w-full text-sm">
+        <thead className="bg-zinc-50 text-left text-xs text-zinc-600 dark:bg-zinc-900/60 dark:text-zinc-400">
+          <tr>
+            <th className="px-3 py-2 font-medium sm:px-4">Mouse</th>
+            <th className="px-3 py-2 font-medium sm:px-4">Location</th>
+            <th className="hidden px-3 py-2 text-right font-medium sm:table-cell sm:px-4">Qty</th>
+            <th className="py-2 pr-3 pl-1 text-right font-medium sm:px-4">
+              <span className="sm:hidden">Rate</span>
+              <span className="hidden sm:inline">Drop rate</span>
+            </th>
+            <th className="hidden px-3 py-2 text-right font-medium sm:table-cell sm:px-4">Sample</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+          {rows.map((row) => (
+            <tr key={row.mouse_slug}>
+              <td className="px-3 py-2 align-top sm:px-4">
+                <Link
+                  href={`/mice/${row.mouse_slug}`}
+                  className="text-zinc-900 hover:text-pink-700 dark:text-white dark:hover:text-pink-300"
+                >
+                  {row.mouse_name}
+                </Link>
+              </td>
+              <td className="px-3 py-2 align-top sm:px-4">
+                <LocationCell location={row.locations[0]} />
+                {row.locations.length > 1 && (
+                  <details className="group">
+                    <summary className="cursor-pointer text-xs text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200">
+                      <span className="group-open:hidden">+{row.locations.length - 1} more</span>
+                      <span className="hidden group-open:inline">Fewer</span>
+                    </summary>
+                    <ul className="mt-1 space-y-0.5">
+                      {row.locations.slice(1).map((location) => (
+                        <li key={location}>
+                          <LocationCell location={location} />
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+                )}
+              </td>
+              <td className="hidden px-3 py-2 text-right align-top tabular-nums text-zinc-600 sm:table-cell sm:px-4 dark:text-zinc-400">
+                {formatQuantity(row.min, row.max) || '—'}
+              </td>
+              <td className="py-2 pr-3 pl-1 text-right align-top font-medium tabular-nums text-zinc-900 sm:px-4 dark:text-white">
+                {row.drop_likelihood}%{/* On phones Qty and Sample are hidden, so the sample rides under the rate. */}
+                <span className="block text-xs font-normal text-zinc-600 sm:hidden dark:text-zinc-400">
+                  {formatCompactNumber(row.catches)} catches
+                </span>
+              </td>
+              <td className="hidden px-3 py-2 text-right align-top tabular-nums text-zinc-600 sm:table-cell sm:px-4 dark:text-zinc-400">
+                {formatNumber(row.catches)} catches
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 /**
@@ -66,64 +133,20 @@ export function ItemData({
                 The mice that drop it and how often, from <SourceLink source="mhct" />. Rates are crowdsourced — check
                 the sample size before trusting one.
               </p>
-              <div className="mt-4 overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-800">
-                <table className="w-full text-sm">
-                  <thead className="bg-zinc-50 text-left text-xs text-zinc-600 dark:bg-zinc-900/60 dark:text-zinc-400">
-                    <tr>
-                      <th className="px-4 py-2 font-medium">Mouse</th>
-                      <th className="px-4 py-2 font-medium">Location</th>
-                      <th className="hidden px-4 py-2 text-right font-medium sm:table-cell">Qty</th>
-                      <th className="px-4 py-2 text-right font-medium">Drop rate</th>
-                      <th className="hidden px-4 py-2 text-right font-medium sm:table-cell">Sample</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
-                    {drops.map((row) => (
-                      <tr key={row.mouse_slug}>
-                        <td className="px-4 py-2">
-                          <Link
-                            href={`/mice/${row.mouse_slug}`}
-                            className="text-zinc-900 hover:text-pink-700 dark:text-white dark:hover:text-pink-300"
-                          >
-                            {row.mouse_name}
-                          </Link>
-                        </td>
-                        <td className="px-4 py-2 align-top">
-                          <LocationCell location={row.locations[0]} />
-                          {row.locations.length > 1 && (
-                            <details className="group">
-                              <summary className="cursor-pointer text-xs text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200">
-                                <span className="group-open:hidden">+{row.locations.length - 1} more</span>
-                                <span className="hidden group-open:inline">Fewer</span>
-                              </summary>
-                              <ul className="mt-1 space-y-0.5">
-                                {row.locations.slice(1).map((location) => (
-                                  <li key={location}>
-                                    <LocationCell location={location} />
-                                  </li>
-                                ))}
-                              </ul>
-                            </details>
-                          )}
-                        </td>
-                        <td className="hidden px-4 py-2 text-right tabular-nums text-zinc-600 sm:table-cell dark:text-zinc-400">
-                          {formatQuantity(row.min, row.max) || '—'}
-                        </td>
-                        <td className="px-4 py-2 text-right font-medium tabular-nums text-zinc-900 dark:text-white">
-                          {row.drop_likelihood}%
-                          {/* On phones Qty and Sample are hidden, so the sample rides under the rate. */}
-                          <span className="block text-xs font-normal whitespace-nowrap text-zinc-600 sm:hidden dark:text-zinc-400">
-                            {formatNumber(row.catches)} catches
-                          </span>
-                        </td>
-                        <td className="hidden px-4 py-2 text-right tabular-nums text-zinc-600 sm:table-cell dark:text-zinc-400">
-                          {formatNumber(row.catches)} catches
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <div className="mt-4">
+                <DropsTable rows={drops.slice(0, DROPS_PREVIEW)} />
               </div>
+              {drops.length > DROPS_PREVIEW && (
+                <details className="group mt-2">
+                  <summary className="inline-flex min-h-9 cursor-pointer items-center rounded-md px-1 text-sm font-medium text-pink-700 hover:text-pink-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:text-pink-300 dark:hover:text-pink-200">
+                    <span className="group-open:hidden">Show all {formatNumber(drops.length)}</span>
+                    <span className="hidden group-open:inline">Show fewer</span>
+                  </summary>
+                  <div className="mt-2">
+                    <DropsTable rows={drops.slice(DROPS_PREVIEW)} />
+                  </div>
+                </details>
+              )}
             </div>
           )}
           {foundIn.length > 0 && (
@@ -157,7 +180,11 @@ export function ItemData({
               {foundIn.length > FOUND_IN_PREVIEW && (
                 <details className="group mt-2">
                   <summary className="inline-flex min-h-9 cursor-pointer items-center rounded-md px-1 text-sm font-medium text-pink-700 hover:text-pink-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:text-pink-300 dark:hover:text-pink-200">
-                    <span className="group-open:hidden">Show all {formatNumber(foundIn.length)}</span>
+                    <span className="group-open:hidden">
+                      {foundIn.length > FOUND_IN_LIMIT
+                        ? `Show ${formatNumber(FOUND_IN_LIMIT)} of ${formatNumber(foundIn.length)}`
+                        : `Show all ${formatNumber(foundIn.length)}`}
+                    </span>
                     <span className="hidden group-open:inline">Show fewer</span>
                   </summary>
                   <ul className="mt-2 flex flex-wrap gap-2">
@@ -248,7 +275,7 @@ function MapRelations({
                   >
                     <ItemChipLink id={chest.id} name={chest.name} itemSlugs={itemSlugs} plain={chest.id === itemId} />
                     {chest.rare && (
-                      <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-amber-700 dark:bg-amber-950 dark:text-amber-300">
+                      <span className="rounded bg-amber-100 px-1.5 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-950 dark:text-amber-300">
                         Rare
                       </span>
                     )}
