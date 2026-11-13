@@ -29,6 +29,8 @@ import { JsonLd } from '@/components/json-ld';
 import { mouseJsonLd, mouseSeo } from '@/lib/entity-seo';
 import { ogCard, pageMetadata } from '@/seo';
 import { mouseImageUrl } from '@/lib/image-urls';
+import { bestAttractionRow } from '@/lib/attraction';
+import { formatNumber } from '@/utils';
 
 import { MouseData } from './mouse-data';
 import { SectionHeading } from '@/components/section-heading';
@@ -119,7 +121,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
   const catchRows = typeRows.filter((row) => row.minluck > 0).sort((a, b) => a.minluck - b.minluck);
 
   const attraction = getMouseAttraction(mouse.id);
-  const bestSpot = attraction[0];
+  const bestSpot = bestAttractionRow(attraction);
 
   return (
     <div>
@@ -205,6 +207,11 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
                     <CheeseCell cheese={bestSpot.cheese} />
                     {bestSpot.charm && <span className="text-zinc-600 dark:text-zinc-400"> · {bestSpot.charm}</span>}
                   </span>
+                  <span className="mt-0.5 block text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
+                    {bestSpot.total_hunts
+                      ? `From ${formatNumber(bestSpot.total_hunts)} hunts`
+                      : 'From MH-Tools (no sample size)'}
+                  </span>
                 </dd>
               </div>
             )}
@@ -228,19 +235,19 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
           <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
             Effectiveness and the minimum luck needed to guarantee a catch with each type.
           </p>
-          <div className="mt-4 overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-800">
+          <div className="mt-4 overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-800">
             <table className="w-full text-sm">
               <thead className="bg-zinc-50 text-left text-xs text-zinc-600 dark:bg-zinc-900/60 dark:text-zinc-400">
                 <tr>
-                  <th className="px-4 py-2 font-medium">Power type</th>
-                  <th className="px-4 py-2 text-right font-medium">Effectiveness</th>
-                  <th className="px-4 py-2 text-right font-medium">Minluck</th>
+                  <th className="px-3 py-2 sm:px-4 font-medium">Power type</th>
+                  <th className="px-3 py-2 sm:px-4 text-right font-medium">Effectiveness</th>
+                  <th className="px-3 py-2 sm:px-4 text-right font-medium">Minluck</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {typeRows.map((row) => (
                   <tr key={row.types.join('-')}>
-                    <td className="px-4 py-2">
+                    <td className="px-3 py-2 sm:px-4">
                       {row.types.length > 3 ? (
                         <span className="font-medium text-zinc-900 dark:text-zinc-100">
                           {powerTypeSetLabel(row.types)}
@@ -258,10 +265,10 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
                         </span>
                       )}
                     </td>
-                    <td className="px-4 py-2 text-right tabular-nums text-zinc-700 dark:text-zinc-300">
+                    <td className="px-3 py-2 sm:px-4 text-right tabular-nums text-zinc-700 dark:text-zinc-300">
                       {row.effectiveness}%
                     </td>
-                    <td className="px-4 py-2 text-right font-medium tabular-nums text-zinc-900 dark:text-white">
+                    <td className="px-3 py-2 sm:px-4 text-right font-medium tabular-nums text-zinc-900 dark:text-white">
                       {row.minluck > 0 ? row.minluck : '—'}
                     </td>
                   </tr>
