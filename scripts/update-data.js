@@ -69,7 +69,12 @@ const requireRecord = (value, label) => {
 
 // Labels allowed to shrink past the coverage floor on this run, for when the API
 // deliberately serves less (e.g. ALLOW_SHRINK=item-drops,location-loot).
-const ALLOW_SHRINK = new Set((process.env.ALLOW_SHRINK ?? '').split(',').map((label) => label.trim()).filter(Boolean));
+const ALLOW_SHRINK = new Set(
+  (process.env.ALLOW_SHRINK ?? '')
+    .split(',')
+    .map((label) => label.trim())
+    .filter(Boolean),
+);
 
 export const validateMinimumCoverage = (label, currentCount, previousCount, ratio = 0.9) => {
   const minimum = Math.max(1, Math.floor(previousCount * ratio));
@@ -83,6 +88,23 @@ export const validateMinimumCoverage = (label, currentCount, previousCount, rati
         `based on the previous ${previousCount} — refusing to replace the snapshot`,
     );
   }
+};
+
+// The game API sometimes returns names HTML-escaped (e.g. "&lt3 Gift Basket",
+// without the semicolon). React renders those literally, so decode them once here.
+const NAME_KEYS = new Set(['name', 'mouse_name', 'abbreviated_name', 'convertible']);
+const ENTITIES = { lt: '<', gt: '>', amp: '&', quot: '"', apos: "'", '#39': "'" };
+
+const decodeEntities = (value) => value.replace(/&(lt|gt|amp|quot|apos|#39);?/g, (_, entity) => ENTITIES[entity]);
+
+const decodeNameEntities = (value) => {
+  if (Array.isArray(value)) return value.map(decodeNameEntities);
+  if (value && 'object' === typeof value) {
+    for (const [key, child] of Object.entries(value)) {
+      value[key] = NAME_KEYS.has(key) && 'string' === typeof child ? decodeEntities(child) : decodeNameEntities(child);
+    }
+  }
+  return value;
 };
 
 const updateDataFiles = async () => {
@@ -213,7 +235,9 @@ const fetchJson = async (endpoint) => {
   if (undefined === json || null === json) {
     throw new TypeError(`${endpoint} returned no JSON data`);
   }
-  return json;
+  // Every response, not just the item list: names reach the site from several
+  // endpoints (reverse convertibles, attraction, map relations…).
+  return decodeNameEntities(json);
 };
 
 /**
@@ -252,7 +276,7 @@ export const fetchPerEntity = async (
           }
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const json = await response.json();
-          rows = requireArray(json, `${label} entity ${id}`);
+          rows = decodeNameEntities(requireArray(json, `${label} entity ${id}`));
         } catch (error) {
           lastError = error;
           if (attempt === 2) break;
@@ -309,6 +333,49 @@ export const validateItemReferences = (label, ids, itemIds) => {
       `${label}: references ${missing.length} item IDs absent from game-items.json: ` + missing.slice(0, 20).join(', '),
     );
   }
+};
+
+/**
+ * Event and global drops (Party, Snowball and Wealth charms, SUPER|brie+, Ful'Mina's Gift…)
+ * turn up at nearly every location, often at high rates, and would top every
+ * location's loot list without saying anything about the place. Real location
+ * loot is the opposite: almost every item drops in fewer than five locations.
+ * Anything seen in at least this share of locations is left off.
+ */
+export const GLOBAL_LOOT_SHARE = 0.4;
+
+/**
+ * Seasonal event loot that any mouse can drop while the event runs (Lunar New
+ * Year candles, Spring Egg Hunt eggs and charge charms, Winter Hunt gift boxes,
+ * birthday cupcakes, the yearly charms). It reaches too few locations for the
+ * share rule to catch, but says nothing about the place.
+ */
+export const EVENT_LOOT =
+  /\b(lunar lantern|pocket envelope|charge (charm|egg)|egg|gift box|festive|snowball|spooky|cupcake|party charm|\d{4} charm|winter hunt|gift wrapped|dreaded|plushie)\b/i;
+
+export const withoutGlobalLoot = (lootByLocation) => {
+  const locationCount = Object.keys(lootByLocation).length;
+  const seenIn = new Map();
+  for (const rows of Object.values(lootByLocation)) {
+    for (const row of rows) seenIn.set(row.id, (seenIn.get(row.id) ?? 0) + 1);
+  }
+  const isGlobal = (id) => seenIn.get(id) >= locationCount * GLOBAL_LOOT_SHARE;
+  return Object.fromEntries(
+    Object.entries(lootByLocation).map(([location, rows]) => [location, rows.filter((row) => !isGlobal(row.id))]),
+  );
+};
+
+/**
+ * The most useful single place to hunt a mouse: the highest rate without a charm,
+ * preferring rows with a real sample (MH-Tools rows have none and count as fine).
+ */
+export const bestSpot = (rows) => {
+  const plain = rows.filter((row) => !row.charm);
+  const pool = plain.length > 0 ? plain : rows;
+  const trusted = pool.filter((row) => null === row.total_hunts || row.total_hunts >= 100);
+  const pick = [...(trusted.length > 0 ? trusted : pool)].sort((a, b) => b.rate - a.rate)[0];
+  if (!pick) return undefined;
+  return { location: pick.location, stage: pick.stage ?? undefined, cheese: pick.cheese, rate: pick.rate };
 };
 
 /**
@@ -463,6 +530,12 @@ const updateRelationalData = async (items, mice) => {
   // at the location would hide that one mouse always drops it. Built from every
   // row, not just the ones the item pages keep.
   const itemsById = new Map(items.map((item) => [item.id, item]));
+  // The mice that live at each location. A drop recorded there from any other
+  // mouse came from an event visitor, not from the place itself.
+  const regionList = pendingFiles.has('mice-regions')
+    ? JSON.parse(pendingFiles.get('mice-regions'))
+    : readGenerated('mice-regions', []);
+  const nativeMice = new Map(regionList.map((region) => [region.name.toLowerCase(), new Set(region.mouse_ids)]));
   const lootByLocation = new Map();
   for (const [mouseId, rows] of Object.entries(loot)) {
     const mouse = miceById.get(Number(mouseId));
@@ -470,6 +543,10 @@ const updateRelationalData = async (items, mice) => {
       // From one mouse at a location, a small sample is mostly charm effects and event loot.
       if (row.catches < MIN_LOCATION_LOOT_CATCHES) continue;
       const location = (DROP_LOCATION_ALIASES[row.location] ?? row.location).toLowerCase();
+      const native = nativeMice.get(location);
+      if (native && !native.has(Number(mouseId))) continue;
+      const item = itemsById.get(row.item_id);
+      if (EVENT_LOOT.test(item.name)) continue;
       const byItem = lootByLocation.get(location) ?? new Map();
       lootByLocation.set(location, byItem);
       const current = byItem.get(row.item_id);
@@ -479,7 +556,6 @@ const updateRelationalData = async (items, mice) => {
       ) {
         continue;
       }
-      const item = itemsById.get(row.item_id);
       byItem.set(row.item_id, {
         id: item.id,
         slug: slugify(item.type),
@@ -496,11 +572,13 @@ const updateRelationalData = async (items, mice) => {
   validateMinimumCoverage('location-loot', lootByLocation.size, Object.keys(readGenerated('location-loot', {})).length);
   stage(
     'location-loot',
-    Object.fromEntries(
-      [...lootByLocation].map(([location, byItem]) => [
-        location,
-        [...byItem.values()].sort((a, b) => b.rate - a.rate || a.name.localeCompare(b.name)),
-      ]),
+    withoutGlobalLoot(
+      Object.fromEntries(
+        [...lootByLocation].map(([location, byItem]) => [
+          location,
+          [...byItem.values()].sort((a, b) => b.rate - a.rate || a.name.localeCompare(b.name)),
+        ]),
+      ),
     ),
   );
 
@@ -533,6 +611,19 @@ const updateRelationalData = async (items, mice) => {
   stage(
     'mice-attraction',
     Object.fromEntries(Object.entries(attraction).map(([id, rows]) => [id, best(rows, 'rate', 50)])),
+  );
+
+  // Fold each mouse's best place to hunt into the client search index, so search
+  // can answer "where do I catch it" without shipping the full attraction table.
+  const searchIndex = pendingFiles.has('mice-search')
+    ? JSON.parse(pendingFiles.get('mice-search'))
+    : readGenerated('mice-search', []);
+  stage(
+    'mice-search',
+    searchIndex.map((mouse) => {
+      const spot = bestSpot(attraction[mouse.id] ?? []);
+      return spot ? { ...mouse, best: spot } : mouse;
+    }),
   );
 
   // The maps each mouse turns up on. Maps seen fewer than five times, and
