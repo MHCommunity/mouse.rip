@@ -8,7 +8,7 @@ import React from 'react';
 export const metadata = pageMetadata({
   title: 'About mouse.rip',
   description:
-    'mouse.rip is a community-built MouseHunt site with guides, a mouse and item database, minlucks, calculators and links to community tools.',
+    'mouse.rip is a community-built MouseHunt site with guides, a mouse and item database, minlucks, calculators, and links to community tools.',
   path: '/about',
 });
 
@@ -17,14 +17,14 @@ const features: { href: string; name: string; description: string }[] = [
   {
     href: '/mice',
     name: 'Mice',
-    description: 'every mouse, with stats, minlucks, attraction rates and where to catch it.',
+    description: 'every mouse, with stats, minlucks, attraction rates, and where to catch it.',
   },
   { href: '/items', name: 'Items', description: 'every item, with drop sources and marketplace prices.' },
   { href: '/minlucks', name: 'Minlucks', description: 'the luck you need to guarantee a catch with each power type.' },
   {
     href: '/essence-calculator',
     name: 'Essence calculator',
-    description: 'what your essences craft up into.',
+    description: 'what your essences craft into.',
   },
   {
     href: '/queso-pump-calculator',
@@ -43,13 +43,13 @@ export default async function About() {
     <div className="max-w-2xl">
       <PageHeader
         title="About mouse.rip"
-        description="mouse.rip collects MouseHunt guides, game data and community tools in one place, so you can find what you need without hopping between sites."
+        description="mouse.rip collects MouseHunt guides, game data, and community tools in one place."
       />
 
       <div className="space-y-4 text-base/7 text-zinc-700 dark:text-zinc-300">
         <p>
-          It&apos;s built by hunters, for hunters. Use it to learn the game or to look something up mid-hunt, then
-          follow the links out to MHWiki, MHCT and Markethunt when you want more detail.
+          Use it to learn the game or to look something up mid-hunt, then
+          follow the links out to MHWiki, MHCT, and Markethunt when you want more detail.
         </p>
       </div>
 
@@ -70,7 +70,7 @@ export default async function About() {
 
       <p className="mt-3 text-base/7 text-zinc-700 dark:text-zinc-300">
         Come say hi on the <PageLink href="https://discord.gg/mousehunt">MouseHunt Community Discord</PageLink> to ask
-        questions, suggest something or share a tool you&apos;ve made. The code lives on{' '}
+        questions, suggest something, or share a tool you&apos;ve made. The code lives on{' '}
         <PageLink href="https://github.com/MHCommunity">GitHub</PageLink>, and pull requests are welcome.
       </p>
 
@@ -78,7 +78,7 @@ export default async function About() {
         <Subheading>Disclaimer</Subheading>
         <p className="mt-3 text-sm/6 text-zinc-600 dark:text-zinc-400">
           mouse.rip is a fan-made site created by and for the MouseHunt community. It is not affiliated with, endorsed
-          or sponsored by HitGrab. All game content and materials belong to{' '}
+          by, or sponsored by HitGrab. All game content and materials belong to{' '}
           <PageLink href="https://hitgrab.com/">HitGrab</PageLink>.
         </p>
       </div>

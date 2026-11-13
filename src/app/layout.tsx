@@ -22,7 +22,7 @@ import type { Metadata, Viewport } from 'next';
 import { scriptJson } from '@/components/json-ld';
 
 const SITE_DESCRIPTION =
-  'A community-built MouseHunt hub: every mouse and item with minlucks, drops and prices, plus guides, calculators, extensions, userscripts and spreadsheets.';
+  'A community-built MouseHunt hub: every mouse and item with minlucks, drops, and prices, plus guides, calculators, extensions, userscripts, and spreadsheets.';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://mouse.rip'),

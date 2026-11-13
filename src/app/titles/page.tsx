@@ -43,37 +43,37 @@ const WISDOM_BY_TITLE: Record<string, number> = {
 // What each title unlocks, keyed by title id.
 const PERKS_BY_TITLE: Record<string, string[]> = {
   novice: ['Access to 1 of 70 locations in the Kingdom', 'Your starting title', 'Hunt in the Meadow'],
-  recruit: ['Access to 3 of 70 locations in the Kingdom', 'Hunt in the Town of Gnawnia'],
+  recruit: ['Access to 2 of 70 locations in the Kingdom', 'Hunt in the Town of Gnawnia'],
   apprentice: [
-    'Access to 6 of 70 locations in the Kingdom',
+    'Access to 5 of 70 locations in the Kingdom',
     "Hunt at the Windmill, the King's Arms, and the Tournament Hall",
   ],
-  initiate: ['Access to 7 of 70 locations in the Kingdom', 'Hunt at the Harbour', 'Combine 2 items while crafting'],
+  initiate: ['Access to 6 of 70 locations in the Kingdom', 'Hunt at the Harbour', 'Combine 2 items while crafting'],
   journeyman: [
-    'Access to 9 of 70 locations in the Kingdom',
+    'Access to 8 of 70 locations in the Kingdom',
     'Hunt in the Mountain and the Calm Clearing',
     'Combine 3 items while crafting',
     'Use Charms by visiting the Charm Shoppe in the Mountain',
   ],
   master: [
-    'Access to 13 of 70 locations in the Kingdom',
+    'Access to 12 of 70 locations in the Kingdom',
     'Hunt in the Laboratory, Town of Digby, Mousoleum, and the Great Gnarled Tree',
     'Combine 4 items while crafting',
   ],
   grandmaster: [
-    'Access to 19 of 70 locations in the Kingdom',
+    'Access to 18 of 70 locations in the Kingdom',
     'Hunt in the Bazaar, Training Grounds, Dojo, Meditation Room, Pinnacle Chamber, and the Lagoon',
     'Combine 5 items while crafting',
   ],
   legendary: [
-    'Access to 27 of 70 locations in the Kingdom',
+    'Access to 26 of 70 locations in the Kingdom',
     'Hunt in the Catacombs, Forbidden Grove, Acolyte Realm, S.S. Huntington IV, Cape Clawed, Elub Shore, Nerg Plains, and the Derr Dunes',
-    'Can now open Scavenger Hunt Scrolls',
+    'Open Scavenger Hunt Scrolls',
     'Combine 6 items while crafting',
   ],
   hero: [
     'Access to 29 of 70 locations in the Kingdom',
-    "Hunt in the Jungle of Dread, and the King's Gauntlet",
+    "Hunt in the Jungle of Dread, the King's Gauntlet, and the Toxic Spill",
     'Toxic Spill: Limited contamination level clearance granted',
     'Combine 7 items while crafting',
   ],
@@ -97,26 +97,26 @@ const PERKS_BY_TITLE: Record<string, string[]> = {
     'Charge your Tower Amplifier to 160% when hunting in the Seasonal Garden',
   ],
   count_countess: [
-    'Access to 51 of 70 locations in the Kingdom',
+    'Access to 50 of 70 locations in the Kingdom',
     'Hunt at the Gnawnian Rift, Queso River, Prickly Plains, Cantera Quarry, Queso Geyser, and the Sunken City',
     'Toxic Spill: Higher contamination level clearance granted',
     'Combine 11 items while crafting',
     'Charge your Tower Amplifier to 175% when hunting in the Seasonal Garden',
   ],
   duke_dutchess: [
-    'Access to 56 of 70 locations in the Kingdom',
-    'Hunt at the Burroughs Rift, Whisker Woods Rift, Fungal Cavern, Labyrinth and Zokor',
+    'Access to 55 of 70 locations in the Kingdom',
+    'Hunt at the Burroughs Rift, Whisker Woods Rift, Fungal Cavern, Labyrinth, and Zokor',
     'Toxic Spill: Higher contamination level clearance granted',
     'Combine 12 items while crafting',
   ],
   grand_duke: [
-    'Access to 59 of 70 locations in the Kingdom',
-    'Hunt at the Furoma Rift, Bristle Woods Rift and Moussu Picchu',
+    'Access to 58 of 70 locations in the Kingdom',
+    'Hunt at the Furoma Rift, Bristle Woods Rift, and Moussu Picchu',
     'Toxic Spill: Higher contamination level clearance granted',
   ],
   archduke_archduchess: [
     'Access to 64 of 70 locations in the Kingdom',
-    'Hunt at the Valour Rift, Floating Islands, Foreword Farm, Prologue Pond, and Table of Contents',
+    'Hunt at the Valour Rift, Floating Islands, Cerulean Skyport, Foreword Farm, Prologue Pond, and Table of Contents',
     'Toxic Spill: Maximum contamination level clearance granted',
   ],
   viceroy: [
@@ -127,7 +127,7 @@ const PERKS_BY_TITLE: Record<string, string[]> = {
   sage: ['Access to 70 of 70 locations in the Kingdom', 'Combine 14 items while crafting'],
   fabled: [
     'Access to 70 of 70 locations in the Kingdom',
-    'Combine 15 items while crafting (reference the wiki for the locations)',
+    'Combine 15 items while crafting',
   ],
 };
 
@@ -137,7 +137,7 @@ export default function TitlesPage() {
   return (
     <div>
       <PageHeader
-        title="Titles &amp; ranks"
+        title="Titles and ranks"
         description={
           <>
             Your rank climbs as you stack{' '}
@@ -149,7 +149,7 @@ export default function TitlesPage() {
             >
               wisdom
             </a>{' '}
-            from catching mice. Here&rsquo;s what each title unlocks, and the wisdom it takes to get there.
+            from catching mice.
           </>
         }
         count={titles.length}
