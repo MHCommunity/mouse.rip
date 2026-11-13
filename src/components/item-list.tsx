@@ -4,9 +4,13 @@ import { Resource } from '@/types';
 type ItemListProps = {
   items: Array<Resource>;
   showtags?: boolean;
+  /** Heading level for each card title; pass 3 when the list sits under a section h2. */
+  headingLevel?: 2 | 3;
+  /** Hide the per-card category badge on pages that list a single category. */
+  showCategory?: boolean;
 };
 
-export function ItemList({ items, showtags = false, ...props }: ItemListProps) {
+export function ItemList({ items, showtags = false, headingLevel = 2, showCategory = true, ...props }: ItemListProps) {
   if (!items.length) {
     return (
       <div className="mt-8 rounded-xl border border-dashed border-zinc-300 p-10 text-center text-sm text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
@@ -25,7 +29,14 @@ export function ItemList({ items, showtags = false, ...props }: ItemListProps) {
   return (
     <div className="relative mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3" {...props}>
       {items.map((item) => (
-        <Item key={item.id} item={item} showtags={showtags} {...props} />
+        <Item
+          key={item.id}
+          item={item}
+          showtags={showtags}
+          headingLevel={headingLevel}
+          showCategory={showCategory}
+          {...props}
+        />
       ))}
     </div>
   );

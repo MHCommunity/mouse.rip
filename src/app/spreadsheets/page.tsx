@@ -26,7 +26,7 @@ export default async function Spreadsheets() {
         icon={TableCellsIcon}
         iconClassName="bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
       />
-      <ItemList items={items} />
+      <ItemList items={items} showCategory={false} />
     </>
   );
 }

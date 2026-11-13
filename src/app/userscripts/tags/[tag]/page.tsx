@@ -63,7 +63,7 @@ export default async function UserscriptTagPage({ params }: { params: Promise<{ 
         iconClassName="bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300"
       />
 
-      <ItemList items={items} showtags />
+      <ItemList items={items} showCategory={false} showtags />
     </>
   );
 }

@@ -27,7 +27,7 @@ export default async function Guides() {
         icon={AcademicCapIcon}
         iconClassName="bg-pink-100 text-pink-700 dark:bg-pink-950 dark:text-pink-300"
       />
-      <ItemList items={items} />
+      <ItemList items={items} showCategory={false} />
     </>
   );
 }

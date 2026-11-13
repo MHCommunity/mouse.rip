@@ -27,7 +27,7 @@ export default async function Extensions() {
         icon={BoltIcon}
         iconClassName="bg-cyan-100 text-cyan-700 dark:bg-cyan-950 dark:text-cyan-300"
       />
-      <ItemList items={items} />
+      <ItemList items={items} showCategory={false} />
     </>
   );
 }
