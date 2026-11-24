@@ -13,7 +13,7 @@ import { getMiceForRegionName, getMouseAttraction, mouseSlug } from '@/lib/game-
 import { itemImageUrl, mouseImageUrl } from '@/lib/image-urls';
 import { POWER_TYPES, powerTypeSetLabel } from '@/lib/power-types';
 import { bestAttractionRow } from '@/lib/attraction';
-import { LiveStageLabel, LiveStageProvider, LiveStageRow } from './live-stage';
+import { LiveStageLabel, LiveStageNote, LiveStageProvider, LiveStageRow } from './live-stage';
 import type { AttractionRow, Mouse } from '@/types';
 
 const cheeseLookup = lookup.cheese as Record<string, string>;
@@ -126,7 +126,14 @@ function MouseRow({ entry }: { entry: LocationMouse }) {
   return (
     <LiveStageRow stage={best?.stage} className="flex items-center gap-3 px-3 py-2.5 sm:px-4">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={mouseImageUrl(slug)} alt="" width={40} height={40} loading="lazy" className="size-10 shrink-0" />
+      <img
+        src={mouseImageUrl(slug)}
+        alt=""
+        width={40}
+        height={40}
+        loading="lazy"
+        className="size-10 shrink-0 transition-[opacity,filter] group-data-[off-stage]:opacity-40 group-data-[off-stage]:grayscale motion-reduce:transition-none"
+      />
       <div className="min-w-0 flex-1">
         <Link
           href={`/mice/${slug}`}
@@ -183,6 +190,9 @@ export function LocationMice({
           </Link>
           .
         </p>
+        <LiveStageNote
+          stages={[...new Set(groups.flatMap((group) => group.mice.flatMap((entry) => entry.best?.stage ?? [])))]}
+        />
 
         <div className="mt-4 space-y-4">
           {groups.map((group) => (

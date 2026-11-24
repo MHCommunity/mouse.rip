@@ -26,7 +26,11 @@ export function LiveStageProvider({ locationName, children }: { locationName: st
   );
 }
 
-/** A mouse row that lights up when the stage it's best in is the one running now. */
+/**
+ * A mouse row. When the location's timer is known and this mouse is best caught
+ * in a different stage, its portrait greys out; rows for the running stage stay
+ * as they are, since at most locations that's most of the list.
+ */
 export function LiveStageRow({
   stage,
   className,
@@ -37,26 +41,38 @@ export function LiveStageRow({
   children: React.ReactNode;
 }) {
   const live = useContext(LiveStageContext);
-  const now = Boolean(stage && live && stage === live);
+  const offStage = Boolean(stage && live && stage !== live);
   return (
-    <li className={clsx(className, now && 'bg-pink-50 dark:bg-pink-950/30')} data-live-stage={now || undefined}>
+    <li className={clsx('group', className)} data-off-stage={offStage || undefined}>
       {children}
     </li>
   );
 }
 
-/** The row's stage text, with a "Now" label when it's the running stage. */
+/** The row's stage, with a "not now" tag when a different stage is running. */
 export function LiveStageLabel({ stage }: { stage: string }) {
   const live = useContext(LiveStageContext);
   return (
     <>
-      {' · '}
+      {' during '}
       {stage}
-      {live === stage && (
-        <span className="ml-1.5 inline-flex rounded-md bg-pink-100 px-1.5 py-0.5 align-middle text-xs font-medium text-pink-800 dark:bg-pink-900/60 dark:text-pink-200">
-          Now
+      {live && live !== stage && (
+        <span className="ml-1.5 inline-flex rounded-md bg-zinc-100 px-1.5 py-0.5 align-middle text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+          not now
         </span>
       )}
     </>
+  );
+}
+
+/** One line saying which stage is running, shown only when some mice here need another. */
+export function LiveStageNote({ stages }: { stages: string[] }) {
+  const live = useContext(LiveStageContext);
+  if (!live || !stages.some((stage) => stage !== live)) return null;
+  return (
+    <p className="mt-2 text-sm text-zinc-700 dark:text-zinc-300">
+      <span className="font-medium text-zinc-900 dark:text-white">{live}</span> is running now. Mice best caught in
+      another stage are greyed out.
+    </p>
   );
 }
