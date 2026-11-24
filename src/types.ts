@@ -12,6 +12,8 @@ export const ResourceSchema = z.object({
   priority: z.number().optional(),
   highlight: z.boolean().optional(),
   tags: z.array(z.string()).optional(),
+  /** Userscripts only: MouseHunt Improved has the same feature built in. */
+  mhImproved: z.boolean().optional(),
 });
 export type Resource = z.infer<typeof ResourceSchema>;
 
