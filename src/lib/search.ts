@@ -1,5 +1,5 @@
 import { getResources, getLocations, getTitles, getEnvironments } from '@/lib/site-data';
-import { titleCase } from '@/utils';
+import { classificationName } from '@/lib/item-classifications';
 import miceGroups from '@/data/generated/mice-groups.json';
 import { loadItemIndex, loadMouseIndex, type IndexedItem, type IndexedMouse } from '@/lib/client-index';
 import { POWER_TYPES, bestPowerTypes, powerTypeSetLabel } from '@/lib/power-types';
@@ -76,9 +76,9 @@ const PAGE_RECORDS: SearchRecord[] = [
   ['/relic-hunter', 'Relic Hunter', "Where she's hiding and her riddles", 'relic hunter riddle hint'],
   [
     '/trap-special-effects',
-    'Trap Special Effects',
-    'Location-specific trap effects',
-    'trap special effects bonus location',
+    'Trap and Base Special Effects',
+    'Location-specific trap and base effects',
+    'trap base special effects bonus location',
   ],
   ['/valour-rift-floors', 'Valour Rift Floors', 'Floor-by-floor reference', 'valour rift floors tower eclipse'],
   ['/essence-calculator', 'Essence Calculator', 'Floating Islands essence', 'essence calculator floating islands'],
@@ -240,7 +240,7 @@ function toGameItemRecord(item: IndexedItem): SearchRecord {
     group: 'Items',
     kind: 'item',
     title: item.name,
-    subtitle: titleCase(item.classification),
+    subtitle: classificationName(item.classification),
     href: `/items/${item.type.replaceAll('_', '-')}`,
     image: itemImageUrl(item.type),
     keywords:

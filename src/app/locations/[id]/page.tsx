@@ -191,11 +191,11 @@ export default async function Location({ params }: { params: Promise<{ id: strin
 
       {trapEffects.length > 0 && (
         <section className="mt-10">
-          <SectionHeading>Trap special effects here</SectionHeading>
+          <SectionHeading>Trap and base special effects here</SectionHeading>
           <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
             See{' '}
             <Link href="/trap-special-effects" className={linkClass}>
-              all trap special effects
+              all trap and base special effects
             </Link>
             .
           </p>

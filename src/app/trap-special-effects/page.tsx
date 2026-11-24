@@ -10,9 +10,9 @@ import { pageMetadata } from '@/seo';
 import { SectionHeading } from '@/components/section-heading';
 
 export const metadata = pageMetadata({
-  title: 'Location-Specific Trap & Base Effects',
+  title: 'Trap and Base Special Effects',
   description:
-    'Which traps, bases, and charms have special effects in each MouseHunt location — bonus loot, instacatches, attraction tweaks, and more.',
+    'Which traps, bases, and charms have special effects in each MouseHunt location, such as bonus loot, instacatches, and attraction tweaks.',
   path: '/trap-special-effects',
 });
 
@@ -41,13 +41,13 @@ export default function TrapSpecialEffectsPage() {
   return (
     <div>
       <PageHeader
-        title="Location trap &amp; base effects"
+        title="Trap and base special effects"
         description={
           <>
-            Traps, bases, and charms with special effects that only apply in certain locations — bonus loot,
-            instacatches, attraction tweaks, and more. Adapted from the community{' '}
+            Traps, bases, and charms with special effects that only apply in certain locations, such as bonus loot,
+            instacatches, and attraction tweaks. Adapted from the community{' '}
             <PageLink href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRg_s_It1mDCefWgwc-7Gexr5Hc7lKBztFue9kYZidI76iodSUan3BoGsagLCI1M26U_zG7uVMe9kgK/pubhtml?gid=0&single=true">
-              Location Specific Trap Effects
+              Location Trap Effects
             </PageLink>{' '}
             spreadsheet.
           </>

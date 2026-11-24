@@ -11,8 +11,7 @@ import { pageMetadata } from '@/seo';
 
 export const metadata = pageMetadata({
   title: 'MouseHunt Guides',
-  description:
-    'MouseHunt strategy and how-to guides, from your first hunt to endgame optimization, written and curated by experienced hunters.',
+  description: 'MouseHunt strategy and how-to guides, from your first hunt to endgame optimization.',
   path: '/guides',
 });
 
@@ -26,7 +25,7 @@ const reference = [
   },
   {
     href: '/trap-special-effects',
-    name: 'Trap and base effects',
+    name: 'Trap and base special effects',
     description: 'Traps and bases that behave differently in specific locations',
     icon: SparklesIcon,
   },
@@ -39,7 +38,7 @@ export default async function Guides() {
     <>
       <PageHeader
         title="MouseHunt guides"
-        description="From your first hunt to endgame optimization, strategy and how-tos written by experienced hunters."
+        description="Strategy and how-tos, from your first hunt to endgame optimization."
         count={items.length}
         countLabel="guides"
         icon={AcademicCapIcon}
