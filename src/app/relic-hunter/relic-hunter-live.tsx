@@ -100,7 +100,7 @@ export function RelicHunterLive() {
 
   const message =
     state.status === 'unknown'
-      ? "We're not tracking the Relic Hunter's location right now — check back soon."
+      ? "We're not tracking the Relic Hunter's location right now. Check back soon."
       : "Couldn't load her current location. Reload to try again.";
 
   return (

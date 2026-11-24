@@ -10,7 +10,7 @@ import { titleImageUrl } from '@/lib/image-urls';
 export const metadata = pageMetadata({
   title: 'MouseHunt Titles & Ranks',
   description:
-    'Every MouseHunt hunter title from Novice to Fabled, in order — what each rank unlocks and the wisdom needed to reach it.',
+    'Every MouseHunt hunter title from Novice to Fabled, in order, with what each rank unlocks and the wisdom needed to reach it.',
   path: '/titles',
 });
 
@@ -125,10 +125,7 @@ const PERKS_BY_TITLE: Record<string, string[]> = {
   ],
   elder: ['Access to 70 of 70 locations in the Kingdom', 'Combine 13 items while crafting'],
   sage: ['Access to 70 of 70 locations in the Kingdom', 'Combine 14 items while crafting'],
-  fabled: [
-    'Access to 70 of 70 locations in the Kingdom',
-    'Combine 15 items while crafting',
-  ],
+  fabled: ['Access to 70 of 70 locations in the Kingdom', 'Combine 15 items while crafting'],
 };
 
 export default function TitlesPage() {

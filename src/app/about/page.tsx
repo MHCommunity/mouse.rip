@@ -32,7 +32,7 @@ const features: { href: string; name: string; description: string }[] = [
     description: 'the fastest cheese for farming Nachore.',
   },
   { href: '/valour-rift-floors', name: 'Valour Rift floors', description: 'which floor types come next.' },
-  { href: '/tools', name: 'Tools', description: 'community calculators, simulators and planners.' },
+  { href: '/tools', name: 'Tools', description: 'community calculators, simulators, and planners.' },
   { href: '/extensions', name: 'Extensions', description: 'browser add-ons for the game.' },
   { href: '/userscripts', name: 'Userscripts', description: 'small scripts that tweak the game page.' },
   { href: '/spreadsheets', name: 'Spreadsheets', description: 'trackers and number-crunching sheets.' },
@@ -48,8 +48,8 @@ export default async function About() {
 
       <div className="space-y-4 text-base/7 text-zinc-700 dark:text-zinc-300">
         <p>
-          Use it to learn the game or to look something up mid-hunt, then
-          follow the links out to MHWiki, MHCT, and Markethunt when you want more detail.
+          Use it to learn the game or to look something up mid-hunt, then follow the links out to MHWiki, MHCT, and
+          Markethunt when you want more detail.
         </p>
       </div>
 
