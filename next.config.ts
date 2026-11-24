@@ -5,6 +5,17 @@ const nextConfig: NextConfig = {
     return [
       // Prices are on each item's page now.
       { source: '/marketplace', destination: '/items?tradable=1', permanent: true },
+      // Retired userscripts that a listed one replaces.
+      {
+        source: '/userscripts/minluck-and-catch-rate-estimate',
+        destination: '/userscripts/minluck-and-cre-tool',
+        permanent: true,
+      },
+      {
+        source: '/userscripts/449489-mousehunt-better-gifts-gift-buttons',
+        destination: '/userscripts/gifting-buttons',
+        permanent: true,
+      },
     ];
   },
   async headers() {
