@@ -72,8 +72,9 @@ export function descriptionToParagraphs(description?: string): string[] {
 }
 
 /**
- * A short label for a set of power types that share a value: "Any" only when
- * every type is present, "All but Rift" when one or two are missing, and a plain
+ * A short label for a set of power types that share a value.
+ *
+ * "Any" only when every type is present, "All but Rift" when one or two are missing, and a plain
  * list otherwise. Saying "Any" for a mouse one type can't catch sends hunters
  * into hunts that can't succeed.
  */

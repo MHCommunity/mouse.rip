@@ -38,9 +38,10 @@ export function ogCard(params: {
 }
 
 /**
- * Builds a complete, consistent metadata object for a page: title, description,
- * a self-referencing canonical URL, and fully-populated Open Graph + Twitter
- * cards. Next.js replaces (does not deep-merge) the `openGraph`/`twitter`
+ * A complete metadata object for a page, with its Open Graph and Twitter cards in full.
+ *
+ * Title, description, a self-referencing canonical URL, and fully-populated Open
+ * Graph + Twitter cards. Next.js replaces (does not deep-merge) the `openGraph`/`twitter`
  * objects from the root layout, so they must be defined in full here.
  */
 export function pageMetadata({ title, description, path, type = 'website', image }: PageMetadataOptions): Metadata {

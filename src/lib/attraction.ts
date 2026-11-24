@@ -4,9 +4,10 @@ import type { AttractionRow } from '@/types';
 export const MIN_SAMPLE = 100;
 
 /**
- * The most useful single place to hunt a mouse: the highest rate without a charm,
- * preferring rows with a real sample (MH-Tools rows have none and count as fine).
- * Used by the mouse page, its metadata and structured data. Keep in step with
+ * The most useful single place to hunt a mouse, for its page, metadata and structured data.
+ *
+ * The highest rate without a charm, preferring rows with a real sample (MH-Tools
+ * rows have none and count as fine). Keep in step with
  * bestSpot() in scripts/update-data.js, which bakes the same answer into the
  * search index from the same stored rows.
  */

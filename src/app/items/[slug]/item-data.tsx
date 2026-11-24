@@ -92,6 +92,7 @@ function DropsTable({ rows }: { rows: ItemDropper[] }) {
 
 /**
  * Everything an item page knows about where it comes from and where it goes.
+ *
  * All of it is baked in at build time (see scripts/update-data.js), so it
  * server-renders — the only thing still fetched from the client is the live
  * Markethunt price, inside ConvertibleContents.

@@ -33,8 +33,9 @@ function lazy<T>(load: () => T): () => T {
 }
 
 /**
- * When scripts/update-data.js last actually refreshed the game data. The sitemap
- * reports this as lastmod — a file mtime would be wrong (a CI clone stamps every
+ * When scripts/update-data.js last actually refreshed the game data.
+ *
+ * The sitemap reports this as lastmod — a file mtime would be wrong (a CI clone stamps every
  * file with the checkout time), and a lastmod that always reads "just now"
  * teaches crawlers to ignore it.
  */

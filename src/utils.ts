@@ -83,8 +83,9 @@ export function isInternalPath(url: string): boolean {
 }
 
 /**
- * Whether a URL points to one of our own pages — either a relative path or the
- * `mouse.rip` site itself. Sibling services on subdomains (api.mouse.rip) are
+ * Whether a URL points to one of our own pages: a relative path or mouse.rip itself.
+ *
+ * Sibling services on subdomains (api.mouse.rip) are
  * separate sites, so they count as outbound. Used to attribute and style links to
  * mouse.rip differently from outbound links.
  *
