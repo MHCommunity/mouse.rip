@@ -42,7 +42,7 @@ function LootRow({ row }: { row: LocationLootRow }) {
         <span className="font-medium text-zinc-900 dark:text-white">{row.rate}%</span>
         {quantity(row) && <span className="ml-1 text-zinc-600 dark:text-zinc-400">{quantity(row)}</span>}
         <span className="block text-xs whitespace-nowrap text-zinc-600 dark:text-zinc-400">
-          {formatNumber(row.catches)} catches
+          {formatNumber(row.catches)} {row.catches === 1 ? 'catch' : 'catches'}
         </span>
       </td>
     </tr>

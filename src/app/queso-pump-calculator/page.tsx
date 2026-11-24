@@ -57,9 +57,9 @@ export default function QuesoPumpCalculator() {
         title="Queso Pump Calculator"
         description={
           <>
-            Nachore upgrades the volcano pump in <PageLink href="/locations/queso-river">Queso Canyon</PageLink>.
-            Enter how much Nachore you need to find the most time-efficient Queso to farm it with. Ported from
-            fysh&apos;s original Queso Canyon Resource Calculator.
+            Nachore upgrades the volcano pump in <PageLink href="/locations/queso-river">Queso Canyon</PageLink>. Enter
+            how much Nachore you need to find the most time-efficient Queso to farm it with. Ported from fysh&apos;s
+            original Queso Canyon Resource Calculator.
           </>
         }
       />
@@ -84,7 +84,7 @@ export default function QuesoPumpCalculator() {
             <select className={selectClasses} value={pumpLevel} onChange={(e) => setPumpLevel(Number(e.target.value))}>
               {PUMP_LEVELS.map((amount, idx) => (
                 <option key={idx + 1} value={idx + 1}>
-                  Level {idx + 1} — {amount} Bland Queso/catch
+                  Level {idx + 1}: {amount} Bland Queso/catch
                 </option>
               ))}
             </select>
@@ -153,7 +153,8 @@ export default function QuesoPumpCalculator() {
             <p>
               The most time-efficient strategy is{' '}
               <strong className="font-semibold text-zinc-950 dark:text-white">{best.name}</strong>, taking a minimum of{' '}
-              <strong className="font-semibold text-zinc-950 dark:text-white">{formatNumber(best.hunts)}</strong> hunts
+              <strong className="font-semibold text-zinc-950 dark:text-white">{formatNumber(best.hunts)}</strong>{' '}
+              {best.hunts === 1 ? 'hunt' : 'hunts'}
               {best.tier > 0 && (
                 <>
                   {' '}
@@ -174,8 +175,8 @@ export default function QuesoPumpCalculator() {
             </p>
             {best.essenceSavedHunts > 0 && (
               <p className="mt-1 text-sm/6 text-zinc-600 dark:text-zinc-400">
-                Magic Essence {useMagicEssence ? 'saves' : 'would save'} {formatNumber(best.essenceSavedHunts)} hunts (
-                {best.essenceSavedPercent.toFixed(2)}%).
+                Magic Essence {useMagicEssence ? 'saves' : 'would save'} {formatNumber(best.essenceSavedHunts)}{' '}
+                {best.essenceSavedHunts === 1 ? 'hunt' : 'hunts'} ({best.essenceSavedPercent.toFixed(2)}%).
               </p>
             )}
           </>

@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const names = region.locations.map((location) => location.name);
   return pageMetadata({
     title: `${region.name} Locations in MouseHunt`,
-    description: `The ${names.length} MouseHunt locations in ${region.name}: ${names.join(', ')}. Mice, cheese and loot for each.`,
+    description: `The ${names.length} MouseHunt locations in ${region.name}: ${names.join(', ')}. Mice, cheese, and loot for each.`,
     path: `/regions/${id}`,
   });
 }
@@ -58,7 +58,8 @@ export default async function RegionPage({ params }: { params: Promise<{ id: str
 
       <Heading>{region.name}</Heading>
       <p className="mt-2 text-sm text-zinc-600 tabular-nums dark:text-zinc-400">
-        {locations.length} {locations.length === 1 ? 'location' : 'locations'} · {totalMice.toLocaleString()} {totalMice === 1 ? 'mouse' : 'mice'}
+        {locations.length} {locations.length === 1 ? 'location' : 'locations'} · {totalMice.toLocaleString()}{' '}
+        {totalMice === 1 ? 'mouse' : 'mice'}
       </p>
 
       <ul className="mt-8 grid gap-3 sm:grid-cols-2">
