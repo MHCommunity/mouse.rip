@@ -16,7 +16,6 @@ export function Logo({ className, ...props }: LogoProps) {
       )}
     >
       <Image className="size-full max-h-6 max-w-6" src="/images/logo.png" alt="mouse.rip" width={24} height={24} />
-      <span className="sr-only">mouse.rip</span>
     </span>
   );
 }
