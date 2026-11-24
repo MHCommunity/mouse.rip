@@ -256,7 +256,7 @@ function StatsTable({ stats }: { stats: GameItemStats }) {
 
   return (
     <section className="mt-6">
-      <SectionHeading>Trap stats</SectionHeading>
+      <SectionHeading>Stats</SectionHeading>
       <div className="mt-2 divide-y divide-zinc-100 overflow-hidden rounded-lg border border-zinc-200 dark:divide-zinc-800 dark:border-zinc-800">
         {rows}
       </div>
@@ -282,7 +282,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
   const flags: { label: string; limit?: boolean }[] = [
     item.is_tradable ? { label: 'Tradable' } : null,
     item.is_givable ? { label: 'Givable' } : null,
-        item.is_limited_edition ? { label: 'Limited edition', limit: true } : null,
+    item.is_limited_edition ? { label: 'Limited edition', limit: true } : null,
     item.is_quantity_limited
       ? {
           label:

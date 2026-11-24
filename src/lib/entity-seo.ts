@@ -49,7 +49,7 @@ export function mouseSeo(mouse: Mouse, attraction: AttractionRow[]) {
   const minluck = bestMinluck(mouse);
 
   const where = best
-    ? `Best caught in ${best.location}${best.stage ? ` (${best.stage})` : ''} with ${best.cheese}${best.charm ? ` and ${best.charm}` : ''} — ${(best.rate / 100).toFixed(2)}% attraction rate.`
+    ? `Best caught in ${best.location}${best.stage ? ` (${best.stage})` : ''} with ${best.cheese}${best.charm ? ` and ${best.charm}` : ''}, at a ${(best.rate / 100).toFixed(2)}% attraction rate.`
     : null;
 
   const luck = minluck ? `Minluck ${formatNumber(minluck.value)} ${powerTypeLabel(minluck.type)}.` : null;
@@ -99,7 +99,10 @@ export function itemSeo(item: GameItem, { contents, drops }: { contents: Convert
       .map((row) => row.name)
       .join(' and ');
     const rest = contents.length - 2;
-    const yields = rest > 0 ? `Can contain ${top}, and ${formatNumber(rest)} other rewards.` : `Can contain ${top}.`;
+    const yields =
+      rest > 0
+        ? `Can contain ${top}, plus ${formatNumber(rest)} other ${rest === 1 ? 'reward' : 'rewards'}.`
+        : `Can contain ${top}.`;
 
     return {
       title: `${item.name} — What's Inside & Drop Odds`,

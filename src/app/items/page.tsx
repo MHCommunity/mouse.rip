@@ -12,7 +12,7 @@ import { ItemsBrowser } from './items-browser';
 export const metadata = pageMetadata({
   title: 'MouseHunt Items',
   description:
-    'Every item in MouseHunt — weapons, bases, charms, cheese, collectibles, and more. Filter by type or name for stats, descriptions, and drop info.',
+    'Every item in MouseHunt: weapons, bases, charms, cheese, collectibles, and more. Filter by type or name for stats, descriptions, and drop info.',
   path: '/items',
 });
 
@@ -36,7 +36,7 @@ export default function ItemsIndexPage() {
       <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Items' }]} />
       <PageHeader
         title="Items"
-        description="Every item in MouseHunt — weapons, bases, charms, cheese, chests, and collectibles — with stats, drop sources, and contents."
+        description="Every item in MouseHunt, with stats, drop sources, and contents."
         count={items.length}
         countLabel="items"
         icon={CheeseIcon}

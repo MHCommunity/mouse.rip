@@ -168,8 +168,7 @@ export function ConvertibleContents({ itemId, rows }: { itemId: number; rows: Co
           on average
           {ownPrice != null && (
             <>
-              {' '}
-              — it currently sells for <span className="tabular-nums">{formatGold(ownPrice)} gold</span> on the
+              , and it currently sells for <span className="tabular-nums">{formatGold(ownPrice)} gold</span> on the
               marketplace
             </>
           )}
