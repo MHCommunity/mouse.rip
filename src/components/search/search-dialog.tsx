@@ -233,13 +233,16 @@ export function SearchDialog({
                     dismiss();
                     return;
                   }
-                  // Enter with nothing highlighted opens an exact match ("zombie" → Zombie Mouse) straight away.
-                  if (event.key === 'Enter' && !event.currentTarget.getAttribute('aria-activedescendant')) {
+                  if (event.key !== 'Enter') return;
+                  // The options trail typing by a debounce. Until they catch up, the highlighted
+                  // option belongs to the previous query, so only an exact match for what's
+                  // typed now may open; otherwise wait for the list to update.
+                  const stale = query !== debouncedQuery;
+                  if (stale || !event.currentTarget.getAttribute('aria-activedescendant')) {
+                    // Enter with nothing highlighted opens an exact match ("zombie" → Zombie Mouse) straight away.
                     const match = exactMatch(searchRecords(records, query), query);
-                    if (match) {
-                      event.preventDefault();
-                      handleSelect(match);
-                    }
+                    if (match || stale) event.preventDefault();
+                    if (match) handleSelect(match);
                   }
                 }}
                 displayValue={() => query}
@@ -301,7 +304,12 @@ export function SearchDialog({
             )}
 
             {results.length > 0 && (
-              <ComboboxOptions static className="max-h-[60vh] overflow-y-auto overscroll-contain p-2">
+              <ComboboxOptions
+                static
+                // The dialog already traps focus; a modal list would also make Cancel inert.
+                modal={false}
+                className="max-h-[60vh] overflow-y-auto overscroll-contain p-2"
+              >
                 {answer?.mouse && (
                   <ComboboxOption
                     value={answer}
@@ -353,6 +361,7 @@ export function SearchDialog({
                               {formatRate(answer.mouse.best.rate)}
                             </span>{' '}
                             with {answer.mouse.best.cheese}
+                            {answer.mouse.best.charm && ` and ${answer.mouse.best.charm}`}
                             <span className="block text-zinc-600 dark:text-zinc-400">
                               {answer.mouse.best.location}
                               {answer.mouse.best.stage ? ` · ${answer.mouse.best.stage}` : ''}
@@ -436,7 +445,7 @@ export function SearchDialog({
             )}
 
             {trimmed.length === 0 && (
-              <ComboboxOptions static className="p-2">
+              <ComboboxOptions static modal={false} className="p-2">
                 <div className="px-2 pt-1.5 pb-1 text-xs text-zinc-600 dark:text-zinc-400">
                   Try &ldquo;zombie&rdquo; or &ldquo;beginner guide&rdquo;.
                 </div>
