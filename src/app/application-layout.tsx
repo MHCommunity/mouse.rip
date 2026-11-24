@@ -1,6 +1,6 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import React, { useState, type ReactNode } from 'react';
+import React, { useId, useState, type ReactNode } from 'react';
 
 import { Navbar, NavbarItem, NavbarSection, NavbarSpacer } from '@/components/navbar';
 import {
@@ -43,13 +43,19 @@ const locations = locationsData as LocationRegion[];
 
 /**
  * One region of locations, collapsed unless the current page is inside it, so the
- * sidebar isn't 70 links long.
+ * sidebar isn't 70 links long. The current region opens itself on arrival, but
+ * can still be collapsed.
  */
 function LocationRegionGroup({ region, pathname }: { region: LocationRegion; pathname: string }) {
   const containsCurrent = region.locations.some((location) => pathname === `/locations/${location.id}`);
-  const [open, setOpen] = useState(containsCurrent);
-  const expanded = open || containsCurrent;
-  const listId = `region-${region.id}`;
+  const [expanded, setExpanded] = useState(containsCurrent);
+  const [wasCurrent, setWasCurrent] = useState(containsCurrent);
+  if (containsCurrent !== wasCurrent) {
+    setWasCurrent(containsCurrent);
+    if (containsCurrent) setExpanded(true);
+  }
+  // The desktop sidebar and the mobile drawer each render this, so the ID must be per instance.
+  const listId = useId();
 
   return (
     <div>
@@ -57,7 +63,7 @@ function LocationRegionGroup({ region, pathname }: { region: LocationRegion; pat
         type="button"
         aria-expanded={expanded}
         aria-controls={listId}
-        onClick={() => setOpen(!expanded)}
+        onClick={() => setExpanded(!expanded)}
         className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left text-sm/5 font-medium text-zinc-700 hover:bg-zinc-950/5 hover:text-zinc-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 sm:py-1.5 dark:text-zinc-300 dark:hover:bg-white/5 dark:hover:text-white"
       >
         <ChevronRightIcon
