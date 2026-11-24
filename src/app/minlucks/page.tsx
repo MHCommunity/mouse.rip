@@ -34,6 +34,9 @@ function minlucksByValue(mouse: SlimMouse) {
   return [...byValue.entries()].sort(([a], [b]) => a - b).map(([value, types]) => ({ value, types }));
 }
 
+/** Rows rendered at first and per "Show more"; the full list is over 1,300 mice. */
+const PAGE_SIZE = 100;
+
 function useDebouncedValue<T>(value: T, delay: number) {
   const [debounced, setDebounced] = useState(value);
   useEffect(() => {
@@ -126,7 +129,11 @@ function MinLucks({
   const [loadFailed, setLoadFailed] = useState(false);
   const [filter, setFilter] = useState(initialQuery);
   const [power, setPower] = useState<string | null>(initialPower);
+  const [shown, setShown] = useState(PAGE_SIZE);
+  // Where to move focus after "Show more", so keyboard users land on the new rows.
+  const pendingFocus = useRef<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
 
   // Focus the filter for keyboard users on desktop only: on a phone it would
   // open the keyboard over the results.
@@ -154,6 +161,21 @@ function MinLucks({
   }, []);
 
   const debouncedFilter = useDebouncedValue(filter, 200);
+
+  // A new filter starts from the top of its results again.
+  const filterKey = `${debouncedFilter}|${power}`;
+  const [lastFilterKey, setLastFilterKey] = useState(filterKey);
+  if (filterKey !== lastFilterKey) {
+    setLastFilterKey(filterKey);
+    setShown(PAGE_SIZE);
+  }
+
+  useEffect(() => {
+    const index = pendingFocus.current;
+    if (index === null) return;
+    pendingFocus.current = null;
+    listRef.current?.children[index]?.querySelector<HTMLElement>('a')?.focus();
+  }, [shown]);
 
   // Keep the URL shareable without adding history entries per keystroke.
   useEffect(() => {
@@ -272,11 +294,30 @@ function MinLucks({
             </button>
           </p>
         ) : (
-          <ul>
-            {filteredMice.map((mouse) => (
-              <MouseRow key={mouse.id} mouse={mouse} power={power} />
-            ))}
-          </ul>
+          <>
+            <ul ref={listRef}>
+              {filteredMice.slice(0, shown).map((mouse) => (
+                <MouseRow key={mouse.id} mouse={mouse} power={power} />
+              ))}
+            </ul>
+            {filteredMice.length > shown && (
+              <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-zinc-600 tabular-nums dark:text-zinc-400">
+                <button
+                  type="button"
+                  onClick={() => {
+                    pendingFocus.current = shown;
+                    setShown(shown + PAGE_SIZE);
+                  }}
+                  className="min-h-9 rounded-md bg-zinc-100 px-3 font-medium text-zinc-800 hover:bg-zinc-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+                >
+                  Show {Math.min(PAGE_SIZE, filteredMice.length - shown)} more
+                </button>
+                <span>
+                  Showing {shown.toLocaleString()} of {filteredMice.length.toLocaleString()}
+                </span>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
