@@ -9,8 +9,7 @@ import { pageMetadata } from '@/seo';
 
 export const metadata = pageMetadata({
   title: 'MouseHunt Browser Extensions',
-  description:
-    'Browser extensions that improve MouseHunt — quality-of-life upgrades, helper tools, and data tracking for catch-rate calculators.',
+  description: 'Browser extensions that add in-game improvements to MouseHunt and log your hunts for community tools.',
   path: '/extensions',
 });
 
@@ -21,7 +20,7 @@ export default async function Extensions() {
     <>
       <PageHeader
         title="MouseHunt browser extensions"
-        description="Browser add-ons that layer quality-of-life features directly onto MouseHunt."
+        description="Browser add-ons for in-game improvements and hunt logging."
         count={items.length}
         countLabel="extensions"
         icon={BoltIcon}

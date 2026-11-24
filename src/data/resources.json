@@ -101,7 +101,7 @@
   },
   {
     "id": "location-specific-trap-effects",
-    "name": "Location Specific Trap Effects",
+    "name": "Location Trap Effects",
     "description": "Effects of traps and bases that are location-specific.",
     "url": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRg_s_It1mDCefWgwc-7Gexr5Hc7lKBztFue9kYZidI76iodSUan3BoGsagLCI1M26U_zG7uVMe9kgK/pubhtml?gid=0&single=true",
     "source": "Google Docs",
@@ -143,6 +143,36 @@
     "highlight": true,
     "locations": [
       "all"
+    ]
+  },
+  {
+    "id": "best-setup-tool",
+    "name": "Best Setup Tool",
+    "description": "Rank the trap setups you own by catch rate for a location and cheese.",
+    "url": "https://tsitu.github.io/MH-Tools/setup.html",
+    "source": "tsitu.github.io",
+    "category": "tool"
+  },
+  {
+    "id": "map-solver",
+    "name": "Map Solver",
+    "description": "Paste your treasure map's mice to find the locations that attract the most of them.",
+    "url": "https://tsitu.github.io/MH-Tools/map.html",
+    "source": "tsitu.github.io",
+    "category": "tool",
+    "tags": [
+      "maps"
+    ]
+  },
+  {
+    "id": "mhct-map-helper",
+    "name": "MHCT Map Helper",
+    "description": "Look up where and with which cheese to catch each mouse on your map, from MHCT data.",
+    "url": "https://mhct.win/maphelper.php",
+    "source": "mhct.win",
+    "category": "tool",
+    "tags": [
+      "maps"
     ]
   },
   {
@@ -256,8 +286,8 @@
   },
   {
     "id": "trap-special-effects",
-    "name": "Location Trap & Base Effects",
-    "description": "Traps, bases, and charms with special effects in specific locations — bonus loot, instacatches, attraction tweaks, and more.",
+    "name": "Trap and Base Special Effects",
+    "description": "Traps, bases, and charms with special effects in specific locations, such as bonus loot, instacatches, and attraction tweaks.",
     "url": "/trap-special-effects",
     "category": "tool",
     "tags": [
@@ -430,7 +460,7 @@
     "id": "ultimate-charm-farming-guide",
     "name": "Ultimate Charm Farming Guide",
     "description": "The ways to earn Ultimate Charms, side by side.",
-    "url": "https://github.com/khiemdajka/mousehunt/blob/main/guides/uc_far",
+    "url": "https://github.com/khiemdajka/mousehunt/blob/main/guides/uc_farming.md",
     "source": "GitHub",
     "category": "guide",
     "dateAdded": "2025-06-25T17:49:10.001Z"

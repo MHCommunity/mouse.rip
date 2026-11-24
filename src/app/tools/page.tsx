@@ -9,7 +9,7 @@ import React from 'react';
 export const metadata = pageMetadata({
   title: 'MouseHunt Tools',
   description:
-    'Calculators, simulators, and lookups for MouseHunt — plan your setups, crunch the numbers, and get more out of every hunt.',
+    'Calculators, simulators, and lookups for MouseHunt, from catch rates and minlucks to Marketplace prices.',
   path: '/tools',
 });
 
@@ -20,7 +20,7 @@ export default async function Tools() {
     <>
       <PageHeader
         title="MouseHunt tools"
-        description="Calculators, simulators, and lookups to plan setups and get more out of every hunt."
+        description="Calculators, simulators, and lookups, from catch rates and minlucks to Marketplace prices."
         count={items.length}
         countLabel="tools"
         icon={WrenchIcon}

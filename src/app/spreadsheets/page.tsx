@@ -9,7 +9,7 @@ import React from 'react';
 export const metadata = pageMetadata({
   title: 'MouseHunt Spreadsheets',
   description:
-    'Community-maintained MouseHunt spreadsheets for tracking collections, crowns, minlucks, wisdom, and planning your progression.',
+    'Community-maintained MouseHunt spreadsheets for minlucks, wisdom, crowns, item data, and location trap effects.',
   path: '/spreadsheets',
 });
 
@@ -20,7 +20,7 @@ export default async function Spreadsheets() {
     <>
       <PageHeader
         title="MouseHunt spreadsheets"
-        description="Community-maintained sheets for tracking collections, planning, and crunching the numbers."
+        description="Community-maintained sheets for minlucks, wisdom, crowns, and item data."
         count={items.length}
         countLabel="spreadsheets"
         icon={TableCellsIcon}
