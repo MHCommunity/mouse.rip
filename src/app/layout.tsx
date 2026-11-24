@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     url: 'https://mouse.rip',
     locale: 'en_US',
-    images: [{ url: '/og', width: 1200, height: 630, alt: 'mouse.rip — MouseHunt guides, tools, and resources' }],
+    images: [{ url: '/og', width: 1200, height: 630, alt: 'mouse.rip: MouseHunt guides, tools, and resources' }],
   },
   twitter: {
     card: 'summary_large_image',

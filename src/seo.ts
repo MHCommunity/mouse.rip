@@ -5,7 +5,7 @@ const OG_IMAGE = {
   url: '/og',
   width: 1200,
   height: 630,
-  alt: 'mouse.rip — MouseHunt guides, tools, and resources',
+  alt: 'mouse.rip: MouseHunt guides, tools, and resources',
 };
 
 type PageMetadataOptions = {

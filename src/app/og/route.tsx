@@ -40,7 +40,7 @@ export function GET() {
           mouse.rip
         </div>
         <div style={{ marginTop: '28px', fontSize: '46px', fontWeight: 600, color: '#18181b' }}>
-          Guides, tools, and resources to hunt smarter.
+          MouseHunt guides, tools, and game data.
         </div>
       </div>
 
