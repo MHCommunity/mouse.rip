@@ -135,12 +135,9 @@ function MinLucks({
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
 
-  // Focus the filter for keyboard users on desktop only: on a phone it would
-  // open the keyboard over the results.
+  // The page opens at the top (skip link first, screen readers at the heading),
+  // so the filter isn't focused on load; Escape still steps out of it.
   useEffect(() => {
-    if (window.matchMedia('(pointer: fine)').matches) {
-      inputRef.current?.focus();
-    }
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && document.activeElement === inputRef.current) {
         inputRef.current?.blur();
