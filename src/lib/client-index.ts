@@ -24,8 +24,8 @@ export interface IndexedItem {
 export type IndexedMouse = SlimMouse & {
   /** Non-zero power-type effectivenesses; feed to bestPowerTypes(). */
   eff?: Record<string, number>;
-  /** The best place to hunt it (no charm, trusted sample), for search's quick answer. */
-  best?: { location: string; stage?: string; cheese: string; rate: number; hunts?: number | null };
+  /** The best place to hunt it (no charm if possible, trusted sample), for search's quick answer. */
+  best?: { location: string; stage?: string; cheese: string; charm?: string; rate: number; hunts?: number | null };
 };
 
 /** JSON imports arrive as a module namespace under bundlers, or bare under others. */

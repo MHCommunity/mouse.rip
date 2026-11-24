@@ -349,9 +349,105 @@ export const GLOBAL_LOOT_SHARE = 0.4;
  * Year candles, Spring Egg Hunt eggs and charge charms, Winter Hunt gift boxes,
  * birthday cupcakes, the yearly charms). It reaches too few locations for the
  * share rule to catch, but says nothing about the place.
+ *
+ * Listed by ID, not matched by name: plenty of real location loot shares a word
+ * with event loot (Golden Goose Egg in Bountiful Beanstalk, Festive Spirit in
+ * Cinnamon Hill), and the Great Winter Hunt's own locations keep their loot.
+ * Each year's new charms need adding here.
  */
-export const EVENT_LOOT =
-  /\b(lunar lantern|pocket envelope|charge (charm|egg)|egg|gift box|festive|snowball|spooky|cupcake|party charm|\d{4} charm|winter hunt|gift wrapped|dreaded|plushie)\b/i;
+export const EVENT_LOOT_IDS = new Set([
+  151, // Red Pocket Envelope
+  437, // Red Winter Hunt Gift Box
+  547, // Antique Green Plaid Egg
+  549, // Antique Blue Argyle Egg
+  550, // Antique Stripy Red Egg
+  551, // Antique Wavy Purple Egg
+  552, // Antique Scalloped Pink Egg
+  553, // Gift Egg
+  554, // Antique Sharing Egg
+  555, // Antique Friendly Egg
+  556, // Antique Caring Egg
+  700, // Dreaded Charm
+  701, // Spooky Charm
+  823, // Party Charm
+  1029, // Purple Winter Hunt Gift Box
+  1164, // Eggscavator Charge Charm
+  1228, // Sugar Rush Plushie
+  1237, // Ultimate Spooky Charm
+  1288, // Festive Ultimate Luck Charm
+  1289, // Festive Ultimate Power Charm
+  1290, // Snowball Charm
+  1439, // High Charge Egg
+  1442, // Low Charge Egg
+  1443, // Lucky Egg
+  1448, // Medium Charge Egg
+  1451, // Gnawnia Rift Egg
+  1576, // Super Spooky Charm
+  1688, // Cupcake Charm
+  1699, // Enlarged Rift Egg
+  1714, // Eggstra Charge Charm
+  1715, // Egg Basket Box Trap Skin
+  1990, // Orange Winter Hunt Gift Box
+  2038, // Extra Sweet Cupcake Charm
+  2262, // 2017 Charm
+  2269, // Lunar Lantern Candle
+  2286, // Sprinkly Sweet Cupcake Charm
+  2307, // Enerchi Egg
+  2523, // Extreme Snowball Charm
+  2527, // Super Snowball Charm
+  2528, // Ultimate Snowball Charm
+  2539, // 2018 Charm
+  2547, // Red Lunar Lantern Candle
+  2598, // Rainy Egg
+  2603, // Windy Egg
+  2701, // Extreme Spooky Charm
+  2734, // 2019 Charm
+  2799, // Over 9,000 Egg
+  2801, // Queso Pump Egg
+  2803, // Wild Tonic Egg
+  2806, // Lightning Storm Egg
+  2812, // Dragonshard Egg
+  2957, // 2020 Charm
+  2958, // Rift 2020 Charm
+  2959, // Rift Extreme Snowball Charm
+  2960, // Rift Snowball Charm
+  2961, // Rift Super Snowball Charm
+  2962, // Rift Ultimate Snowball Charm
+  2990, // Extreme Party Charm
+  2991, // Super Party Charm
+  2992, // Ultimate Party Charm
+  2995, // 20K Golden Egg
+  3153, // 2021 Charm
+  3154, // Rift 2021 Charm
+  3366, // 2022 Charm
+  3367, // Rift 2022 Charm
+  3527, // 2023 Charm
+  3528, // Rift 2023 Charm
+  3630, // 2024 Charm
+  3631, // Rift 2024 Charm
+  3810, // Golden Winter Hunt Gift Box
+  3817, // 2025 Charm
+  3818, // Rift 2025 Charm
+  3957, // 2026 Charm
+  3958, // Rift 2026 Charm
+]);
+
+/**
+ * Event loot that is real loot in the event's own locations but a stray drop
+ * anywhere else. Keyed by item ID, with the locations (as keyed in
+ * location-loot) where it belongs.
+ */
+const WINTER_HUNT_LOCATIONS = ['event area', 'cinnamon hill', 'golem workshop', 'ice fortress'];
+export const EVENT_LOOT_HOMES = new Map([
+  [3521, WINTER_HUNT_LOCATIONS], // Festive Spirit
+]);
+
+/** Whether a drop at this location says something about the place rather than an event. */
+export const isLocationLoot = (itemId, location) => {
+  if (EVENT_LOOT_IDS.has(itemId)) return false;
+  const homes = EVENT_LOOT_HOMES.get(itemId);
+  return !homes || homes.includes(location);
+};
 
 export const withoutGlobalLoot = (lootByLocation) => {
   const locationCount = Object.keys(lootByLocation).length;
@@ -368,6 +464,8 @@ export const withoutGlobalLoot = (lootByLocation) => {
 /**
  * The most useful single place to hunt a mouse: the highest rate without a charm,
  * preferring rows with a real sample (MH-Tools rows have none and count as fine).
+ * When every row needs a charm, the charm is part of the answer, so it's kept.
+ * Keep in step with bestAttractionRow() in src/lib/attraction.ts.
  */
 export const bestSpot = (rows) => {
   const plain = rows.filter((row) => !row.charm);
@@ -379,6 +477,7 @@ export const bestSpot = (rows) => {
     location: pick.location,
     stage: pick.stage ?? undefined,
     cheese: pick.cheese,
+    charm: pick.charm ?? undefined,
     rate: pick.rate,
     // Null for MH-Tools rates, which publish no sample size.
     hunts: pick.total_hunts ?? null,
@@ -552,8 +651,8 @@ const updateRelationalData = async (items, mice) => {
       const location = (DROP_LOCATION_ALIASES[row.location] ?? row.location).toLowerCase();
       const native = nativeMice.get(location);
       if (native && !native.has(Number(mouseId))) continue;
+      if (!isLocationLoot(row.item_id, location)) continue;
       const item = itemsById.get(row.item_id);
-      if (EVENT_LOOT.test(item.name)) continue;
       const byItem = lootByLocation.get(location) ?? new Map();
       lootByLocation.set(location, byItem);
       const current = byItem.get(row.item_id);
@@ -615,21 +714,23 @@ const updateRelationalData = async (items, mice) => {
     Object.keys(attraction).length,
     Object.keys(readGenerated('mice-attraction', {})).length,
   );
-  stage(
-    'mice-attraction',
-    Object.fromEntries(Object.entries(attraction).map(([id, rows]) => [id, best(rows, 'rate', 50)])),
+  const storedAttraction = Object.fromEntries(
+    Object.entries(attraction).map(([id, rows]) => [id, best(rows, 'rate', 50)]),
   );
+  stage('mice-attraction', storedAttraction);
 
   // Fold each mouse's best place to hunt into the client search index, so search
   // can answer "where do I catch it" without shipping the full attraction table.
+  // Picked from the stored rows, so it matches what the mouse page shows.
   const searchIndex = pendingFiles.has('mice-search')
     ? JSON.parse(pendingFiles.get('mice-search'))
     : readGenerated('mice-search', []);
   stage(
     'mice-search',
     searchIndex.map((mouse) => {
-      const spot = bestSpot(attraction[mouse.id] ?? []);
-      return spot ? { ...mouse, best: spot } : mouse;
+      const { best: _previous, ...rest } = mouse;
+      const spot = bestSpot(storedAttraction[mouse.id] ?? []);
+      return spot ? { ...rest, best: spot } : rest;
     }),
   );
 
