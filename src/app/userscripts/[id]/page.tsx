@@ -76,6 +76,13 @@ export default async function UserscriptPage({ params }: { params: Promise<{ id:
         </div>
       )}
 
+      {item.mhImproved && (
+        <p className="mt-6 text-sm/6 text-zinc-600 dark:text-zinc-400">
+          <PageLink href="https://github.com/MHCommunity/mousehunt-improved">MouseHunt Improved</PageLink> has this
+          feature built in, so you don&apos;t need this script if you use it.
+        </p>
+      )}
+
       <div className="mt-6">
         {/* The install page is another site, so a plain outbound link (the shared Button's link mode breaks prerendering). */}
         <a
@@ -98,8 +105,8 @@ export default async function UserscriptPage({ params }: { params: Promise<{ id:
           How to use MouseHunt userscripts
         </h2>
         <p className="mt-3">
-          Userscripts are small pieces of code you install in your browser to change how a website behaves. They can add
-          features, fix bugs or restyle sites like MouseHunt. To use this one:
+          Userscripts are small pieces of code you install in your browser to change how a website behaves. To use this
+          one:
         </p>
         <ol className="mt-3 list-inside list-decimal space-y-2">
           <li>
@@ -111,9 +118,7 @@ export default async function UserscriptPage({ params }: { params: Promise<{ id:
               </li>
               <li>
                 Android:{' '}
-                <PageLink href="https://play.google.com/store/apps/details?id=org.mozilla.firefox">
-                  Firefox
-                </PageLink>{' '}
+                <PageLink href="https://play.google.com/store/apps/details?id=org.mozilla.firefox">Firefox</PageLink>{' '}
                 with Violentmonkey
               </li>
               <li>
