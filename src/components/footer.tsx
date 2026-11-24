@@ -35,9 +35,7 @@ export function Footer() {
 
         <div className="grid grid-cols-2 gap-8">
           <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-              Browse
-            </div>
+            <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Browse</div>
             <ul className="mt-3 space-y-2">
               {browse.map((item) => (
                 <li key={item.href}>
@@ -53,9 +51,7 @@ export function Footer() {
           </div>
 
           <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-              Community
-            </div>
+            <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Community</div>
             <ul className="mt-3 space-y-2">
               <li>
                 <a

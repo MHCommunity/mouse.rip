@@ -86,9 +86,7 @@ export function RelicHunterLive() {
             />
           )}
           <div className="min-w-0">
-            <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">
-              Currently hiding in
-            </div>
+            <div className="text-sm text-zinc-600 dark:text-zinc-400">Currently hiding in</div>
             <div className="mt-0.5 text-2xl font-semibold tracking-tight text-zinc-900 dark:text-white">
               {environment.name}
             </div>

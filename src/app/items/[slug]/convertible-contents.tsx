@@ -49,10 +49,11 @@ function loadMarketPrices(): Promise<Map<number, number>> {
 }
 
 /**
- * Current marketplace prices by item id, fetched once from Markethunt. Stays
- * null unless the fetch actually succeeds: with no market data, the only rewards
- * we could price are the intrinsic ones, and totalling those alone would state a
- * confident "worth ~X gold" that is off by orders of magnitude.
+ * Current marketplace prices by item id, fetched once from Markethunt.
+ *
+ * Stays null unless the fetch actually succeeds: with no market data, the only
+ * rewards we could price are the intrinsic ones, and totalling those alone would
+ * state a confident "worth ~X gold" that is off by orders of magnitude.
  */
 function useMarketPrices(): Map<number, number> | null {
   const [prices, setPrices] = useState<Map<number, number> | null>(null);
@@ -109,7 +110,7 @@ export function ConvertibleContents({ itemId, rows }: { itemId: number; rows: Co
 
       <div className="mt-4 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
         <table className="w-full text-sm">
-          <thead className="bg-zinc-50 text-left text-xs uppercase tracking-wider text-zinc-500 dark:bg-zinc-900/60 dark:text-zinc-400">
+          <thead className="bg-zinc-50 text-left text-xs text-zinc-600 dark:bg-zinc-900/60 dark:text-zinc-400">
             <tr>
               <th className="px-4 py-2 font-medium">Reward</th>
               <th className="px-4 py-2 text-right font-medium">Quantity</th>

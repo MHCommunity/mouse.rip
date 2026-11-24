@@ -76,7 +76,8 @@ export const Input = forwardRef(function Input(
           // Typography
           'text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white',
           // Border
-          'border border-zinc-950/10 data-hover:border-zinc-950/20 dark:border-white/10 dark:data-hover:border-white/20',
+          // Edge at 3:1 or better against the page, so the field reads as a field.
+          'border border-zinc-950/45 data-hover:border-zinc-950/60 dark:border-white/35 dark:data-hover:border-white/50',
           // Background color
           'bg-transparent dark:bg-white/5',
           // Hide default focus styles

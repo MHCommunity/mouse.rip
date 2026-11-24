@@ -19,8 +19,9 @@ function useShortcutLabel() {
 }
 
 /**
- * Search field for the home page. It's a real input, so a tap brings up the
- * keyboard straight away; the first keystroke hands the text to the palette.
+ * Search field for the home page.
+ *
+ * It's a real input, so a tap brings up the keyboard straight away; the first keystroke hands the text to the palette.
  * Closing the palette (Esc, Cancel) leaves the text here, so a typo isn't a retype.
  * It doesn't take keystrokes from elsewhere on the page: Cmd/Ctrl+K and "/" open search.
  */
@@ -39,7 +40,7 @@ export function SearchBar({ className }: { className?: string }) {
   return (
     <label
       className={clsx(
-        'group flex w-full cursor-text items-center gap-3 rounded-xl border border-zinc-200 bg-white px-5 py-4 shadow-sm transition duration-200 hover:border-pink-300 hover:shadow-md focus-within:border-pink-400 focus-within:ring-2 focus-within:ring-pink-500/30 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-pink-800 dark:focus-within:border-pink-700',
+        'group flex w-full cursor-text items-center gap-3 rounded-xl border border-zinc-950/45 bg-white px-5 py-4 shadow-sm transition-[border-color,box-shadow] duration-200 hover:border-pink-500 hover:shadow-md focus-within:border-pink-500 focus-within:ring-2 focus-within:ring-pink-500/30 dark:border-white/35 dark:bg-zinc-900 dark:hover:border-pink-400 dark:focus-within:border-pink-400',
         className,
       )}
     >

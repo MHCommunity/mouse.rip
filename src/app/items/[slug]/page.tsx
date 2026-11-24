@@ -319,7 +319,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
           <img
             src={image}
             alt=""
-            className="size-20 shrink-0 rounded-xl sm:size-40 bg-white object-contain p-2 ring-1 ring-zinc-950/5 dark:bg-zinc-900 dark:ring-white/10"
+            className="size-20 shrink-0 rounded-xl bg-white object-contain p-2 ring-1 ring-zinc-950/10 sm:size-40 dark:ring-white/15"
           />
         )}
         <div className="min-w-0">
