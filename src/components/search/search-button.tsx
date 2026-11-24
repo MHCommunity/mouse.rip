@@ -2,7 +2,7 @@
 
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import clsx from 'clsx';
-import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import React, { useState, useSyncExternalStore } from 'react';
 
 import { useSearch } from './search-context';
 
@@ -22,12 +22,12 @@ function useShortcutLabel() {
  * Search field for the home page. It's a real input, so a tap brings up the
  * keyboard straight away; the first keystroke hands the text to the palette.
  * Closing the palette (Esc, Cancel) leaves the text here, so a typo isn't a retype.
+ * It doesn't take keystrokes from elsewhere on the page: Cmd/Ctrl+K and "/" open search.
  */
 export function SearchBar({ className }: { className?: string }) {
   const { open, preload, isOpen, closedQuery } = useSearch();
   const shortcut = useShortcutLabel();
   const [value, setValue] = useState('');
-  const inputRef = useRef<HTMLInputElement>(null);
 
   // When the palette closes, take back whatever was typed in it.
   const [wasOpen, setWasOpen] = useState(isOpen);
@@ -35,28 +35,6 @@ export function SearchBar({ className }: { className?: string }) {
     setWasOpen(isOpen);
     if (!isOpen) setValue(closedQuery);
   }
-
-  // Typing anywhere on the page starts a search, so desktop visitors can type at once
-  // without the field grabbing focus on load (which would skip the skip link and
-  // start screen readers past the heading). Touch screens never see a keypress here.
-  useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) return;
-      if (event.key.length !== 1 || event.key === ' ' || event.key === '/') return;
-      const target = event.target as HTMLElement | null;
-      if (
-        target &&
-        (target.closest('input, textarea, select, [contenteditable="true"]') || target.closest('[role="dialog"]'))
-      )
-        return;
-      event.preventDefault();
-      inputRef.current?.focus({ preventScroll: true });
-      setValue(event.key);
-      open(event.key);
-    }
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [open]);
 
   return (
     <label
@@ -71,7 +49,6 @@ export function SearchBar({ className }: { className?: string }) {
       />
       <span className="sr-only">Search mice, items, locations, guides, and tools</span>
       <input
-        ref={inputRef}
         type="search"
         value={value}
         autoComplete="off"

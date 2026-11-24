@@ -60,7 +60,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      // Already handled (e.g. the home page's type-to-search passed this key on itself).
+      // Already handled by whatever has focus.
       if (event.defaultPrevented) return;
       // The first open downloads the palette, and its input isn't focused until that
       // lands. Hold what's typed meanwhile and hand it over, instead of losing it.
