@@ -11,7 +11,7 @@ import { MiceBrowser, type SlimGroup } from './mice-browser';
 export const metadata = pageMetadata({
   title: 'MouseHunt Mice & Groups',
   description:
-    'Every mouse in MouseHunt — browse by group, or search and filter by power-type weakness to find stats, minlucks, and attraction rates.',
+    'Every mouse in MouseHunt. Browse by group, or search and filter by power-type weakness to find stats, minlucks, and attraction rates.',
   path: '/mice',
 });
 

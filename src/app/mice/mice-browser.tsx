@@ -162,7 +162,7 @@ export function MiceBrowser({ groups }: { groups: SlimGroup[] }) {
             })}
             {results.length > 400 && (
               <li className="w-full pt-2 text-sm text-zinc-400 dark:text-zinc-500">
-                Showing the first 400 of {results.length} — keep typing to narrow it down.
+                Showing the first 400 of {results.length}. Keep typing to narrow it down.
               </li>
             )}
           </ul>

@@ -64,7 +64,9 @@ export default async function GroupPage({ params }: { params: Promise<{ slug: st
         </p>
       )}
 
-      <SectionHeading className="mt-10">{mice.length} {mice.length === 1 ? 'mouse' : 'mice'}</SectionHeading>
+      <SectionHeading className="mt-10">
+        {mice.length} {mice.length === 1 ? 'mouse' : 'mice'}
+      </SectionHeading>
       <div className="mt-4">
         <MouseGrid mice={mice} />
       </div>

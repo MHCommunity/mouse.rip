@@ -208,9 +208,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
                     {bestSpot.charm && <span className="text-zinc-600 dark:text-zinc-400"> · {bestSpot.charm}</span>}
                   </span>
                   <span className="mt-0.5 block text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
-                    {bestSpot.total_hunts
-                      ? `From ${formatNumber(bestSpot.total_hunts)} hunts`
-                      : 'From MH-Tools'}
+                    {bestSpot.total_hunts ? `From ${formatNumber(bestSpot.total_hunts)} hunts` : 'From MH-Tools'}
                   </span>
                 </dd>
               </div>
