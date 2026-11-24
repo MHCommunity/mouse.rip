@@ -6,8 +6,9 @@ export const MIN_SAMPLE = 100;
 /**
  * The most useful single place to hunt a mouse: the highest rate without a charm,
  * preferring rows with a real sample (MH-Tools rows have none and count as fine).
- * Keep in step with bestSpot() in scripts/update-data.js, which bakes the same
- * answer into the search index.
+ * Used by the mouse page, its metadata and structured data. Keep in step with
+ * bestSpot() in scripts/update-data.js, which bakes the same answer into the
+ * search index from the same stored rows.
  */
 export function bestAttractionRow(rows: AttractionRow[]): AttractionRow | undefined {
   const plain = rows.filter((row) => !row.charm);

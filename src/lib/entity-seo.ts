@@ -4,6 +4,7 @@ import type { AttractionRow, ConvertibleRow, GameItem, ItemDropper, Mouse } from
 import { POWER_TYPES, powerTypeLabel } from '@/lib/power-types';
 import { cleanDescription, formatNumber } from '@/utils';
 import { mouseImageUrl } from '@/lib/image-urls';
+import { bestAttractionRow } from '@/lib/attraction';
 
 /**
  * Titles and descriptions for the mouse and item pages.
@@ -45,7 +46,8 @@ function bestMinluck(mouse: Mouse): { type: string; value: number } | null {
 }
 
 export function mouseSeo(mouse: Mouse, attraction: AttractionRow[]) {
-  const best = attraction[0];
+  // The same pick as the page's "Best attraction rate" and search's quick answer.
+  const best = bestAttractionRow(attraction);
   const minluck = bestMinluck(mouse);
 
   const where = best
@@ -165,7 +167,7 @@ const SITE = 'https://mouse.rip';
 export function mouseJsonLd(mouse: Mouse, attraction: AttractionRow[], slug: string) {
   const { description } = mouseSeo(mouse, attraction);
   const minluck = bestMinluck(mouse);
-  const best = attraction[0];
+  const best = bestAttractionRow(attraction);
 
   const properties = [
     property('Points', mouse.points),
@@ -173,6 +175,7 @@ export function mouseJsonLd(mouse: Mouse, attraction: AttractionRow[], slug: str
     mouse.group ? property('Group', mouse.group) : null,
     minluck ? property(`Minluck (${powerTypeLabel(minluck.type)})`, minluck.value) : null,
     best ? property('Best cheese', best.cheese) : null,
+    best?.charm ? property('Best charm', best.charm) : null,
     best ? property('Best location', best.location) : null,
     best ? property('Attraction rate', `${(best.rate / 100).toFixed(2)}%`) : null,
   ].filter(Boolean);
