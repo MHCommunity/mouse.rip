@@ -49,7 +49,7 @@ function NoteText({ note }: { note: string }) {
       <span className="font-medium text-zinc-800 dark:text-zinc-200">
         {note.charAt(0).toUpperCase() + note.slice(1)}
       </span>
-      {' · '}
+      {', '}
     </>
   );
 }
@@ -101,6 +101,13 @@ export function TimersStrip({ className }: { className?: string }) {
                 const stages = stagesAt(timer, now);
                 if (!stages) return null;
                 const next = stages.next[0];
+                // The next stage's name, or for a tide that stays put, which way it turns.
+                const nextLabel =
+                  next && next.name !== stages.current.name
+                    ? next.name
+                    : next?.note
+                      ? next.note.charAt(0).toUpperCase() + next.note.slice(1)
+                      : null;
                 return (
                   <li key={timer.id}>
                     <Link
@@ -118,9 +125,8 @@ export function TimersStrip({ className }: { className?: string }) {
                         {/* Rising/falling rides in this line, so a long stage name doesn't push a label onto its own row. */}
                         {stages.current.note && <NoteText note={stages.current.note} />}
                         <EndsIn stage={stages.current} now={now} />
-                        {next && next.name !== stages.current.name && <> · next: {next.name}</>}
-                        {next && next.name === stages.current.name && next.note && <> · next: {next.note}</>}
                       </span>
+                      {nextLabel && <span className="text-xs text-zinc-600 dark:text-zinc-400">Next: {nextLabel}</span>}
                     </Link>
                   </li>
                 );

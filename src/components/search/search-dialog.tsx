@@ -101,7 +101,7 @@ function formatRate(rate: number): string {
 /** Where the best-attraction figure comes from: MHCT rows carry a sample, MH-Tools rows don't. */
 function rateSource(hunts?: number | null): string {
   if (!hunts) return 'From MH-Tools';
-  return `From MHCT · ${new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(hunts)} hunts`;
+  return `From ${new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(hunts)} MHCT hunts`;
 }
 
 function useDebouncedValue<T>(value: T, delay: number) {
@@ -328,7 +328,7 @@ export function SearchDialog({
                             {answer.title}
                           </span>
                           <span className="shrink-0 text-xs font-medium text-pink-700 dark:text-pink-300">
-                            Open page →
+                            Open page
                           </span>
                         </div>
                         {answer.subtitle && (
@@ -364,7 +364,7 @@ export function SearchDialog({
                             {answer.mouse.best.charm && ` and ${answer.mouse.best.charm}`}
                             <span className="block text-zinc-600 dark:text-zinc-400">
                               {answer.mouse.best.location}
-                              {answer.mouse.best.stage ? ` · ${answer.mouse.best.stage}` : ''}
+                              {answer.mouse.best.stage ? ` (${answer.mouse.best.stage})` : ''}
                             </span>
                             <span className="mt-0.5 block text-xs text-zinc-600 tabular-nums dark:text-zinc-400">
                               {rateSource(answer.mouse.best.hunts)}

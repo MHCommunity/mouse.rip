@@ -1,5 +1,6 @@
 'use client';
 
+import { ArrowUpRightIcon } from '@heroicons/react/20/solid';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { formatGold, formatSb } from '@/utils';
@@ -106,7 +107,7 @@ export function PriceChart({ points }: { points: PricePoint[] }) {
           </>
         ) : (
           <span>
-            {series[0].date} – {series[series.length - 1].date}
+            {series[0].date} to {series[series.length - 1].date}
           </span>
         )}
       </div>
@@ -299,8 +300,8 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
             <span
               className={
                 up
-                  ? 'font-medium text-emerald-600 dark:text-emerald-400'
-                  : 'font-medium text-rose-600 dark:text-rose-400'
+                  ? 'font-medium text-emerald-700 dark:text-emerald-400'
+                  : 'font-medium text-rose-700 dark:text-rose-400'
               }
             >
               <span aria-hidden="true">{up ? '▲' : '▼'}</span>
@@ -347,16 +348,18 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
       <div className="mt-4 flex flex-wrap items-end justify-between gap-x-4 gap-y-2 border-t border-zinc-100 pt-3 text-xs text-zinc-600 dark:border-zinc-800 dark:text-zinc-400">
         <span>
           <span className="block tabular-nums">
-            {latest.volume != null && `${formatGold(latest.volume)} traded · `}as of {latest.date}
+            {latest.volume != null && `${formatGold(latest.volume)} traded, `}as of {latest.date}
           </span>
         </span>
         <a
           href={`https://markethunt.win/?item_id=${itemId}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-medium text-pink-700 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200"
+          className="inline-flex items-center gap-1 font-medium text-pink-700 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200"
         >
-          View on Markethunt →
+          Price history on Markethunt
+          <span className="sr-only"> (opens in a new tab)</span>
+          <ArrowUpRightIcon className="size-3.5" aria-hidden="true" />
         </a>
       </div>
     </div>
