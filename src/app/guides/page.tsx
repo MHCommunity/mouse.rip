@@ -45,9 +45,7 @@ export default async function Guides() {
         iconClassName="bg-pink-100 text-pink-700 dark:bg-pink-950 dark:text-pink-300"
       />
       <section aria-labelledby="reference-heading" className="mt-10">
-        <SectionHeading>
-          <span id="reference-heading">Game reference</span>
-        </SectionHeading>
+        <SectionHeading id="reference-heading">Game reference</SectionHeading>
         <ul className="mt-3 grid gap-2 sm:grid-cols-2">
           {reference.map(({ href, name, description, icon: Icon }) => (
             <li key={href}>
@@ -71,10 +69,8 @@ export default async function Guides() {
       </section>
 
       <section aria-labelledby="guides-heading" className="mt-10">
-        <SectionHeading>
-          <span id="guides-heading">Guides</span>
-        </SectionHeading>
-        <ItemList items={items} showCategory={false} />
+        <SectionHeading id="guides-heading">Guides</SectionHeading>
+        <ItemList items={items} headingLevel={3} showCategory={false} compact />
       </section>
     </>
   );

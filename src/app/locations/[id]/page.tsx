@@ -162,7 +162,7 @@ export default async function Location({ params }: { params: Promise<{ id: strin
       {localResources.length > 0 && (
         <section className="mt-10">
           <SectionHeading>Guides and tools for {name}</SectionHeading>
-          <ItemList items={localResources} headingLevel={3} />
+          <ItemList items={localResources} headingLevel={3} compact />
         </section>
       )}
 
@@ -230,7 +230,7 @@ export default async function Location({ params }: { params: Promise<{ id: strin
       {generalResources.length > 0 && (
         <section className="mt-10">
           <SectionHeading>Tools for every location</SectionHeading>
-          <ItemList items={generalResources} headingLevel={3} />
+          <ItemList items={generalResources} headingLevel={3} compact />
         </section>
       )}
 
