@@ -127,7 +127,7 @@ function toMouseRecord(mouse: IndexedMouse): SearchRecord {
     href: `/mice/${mouse.type.replaceAll('_', '-')}`,
     image: mouseImageUrl(mouse.type),
     keywords:
-      `${mouse.name} ${mouse.abbreviated_name ?? ''} ${mouse.group} ${mouse.subgroup ?? ''} mouse`.toLowerCase(),
+      `${mouse.name} ${mouse.abbreviated_name ?? ''} ${mouse.group} ${mouse.subgroup ?? ''} mouse minluck`.toLowerCase(),
   };
 }
 
@@ -366,6 +366,15 @@ const PHRASES: [RegExp, string][] = [
   [/\bcoming back\b/g, 'returning'],
 ];
 
+/** Dictionary lookups that ignore inherited keys, so a query like "constructor" is just a word. */
+function kindsFor(word: string): SearchKind[] | undefined {
+  return Object.hasOwn(KIND_WORDS, word) ? KIND_WORDS[word] : undefined;
+}
+
+function synonymsFor(word: string): string[] {
+  return Object.hasOwn(SYNONYMS, word) ? SYNONYMS[word] : [];
+}
+
 const STOPWORDS = new Set(['a', 'an', 'the', 'for', 'to', 'of', 'in', 'on', 'and', 'how', 'what', 'where', 'is', 'my']);
 
 /** A query word, plus the alternatives that also satisfy it. */
@@ -439,16 +448,16 @@ export function searchRecords(records: SearchRecord[], query: string, limit = 40
 
   const words = q.split(' ').filter(Boolean);
   const contentWords = words.filter((word) => !STOPWORDS.has(word));
-  const kindWords = contentWords.filter((word) => KIND_WORDS[word]);
-  const nameWords = contentWords.filter((word) => !KIND_WORDS[word]);
+  const kindWords = contentWords.filter((word) => kindsFor(word));
+  const nameWords = contentWords.filter((word) => !kindsFor(word));
   // "spreadsheets" alone is a search for that page, not a filter with nothing to filter.
   const required = (nameWords.length > 0 ? nameWords : contentWords.length > 0 ? contentWords : words).map(
     (text): QueryToken => {
       const stemmed = stem(text);
-      return { text: stemmed, alternatives: [...(SYNONYMS[text] ?? []), ...(SYNONYMS[stemmed] ?? [])] };
+      return { text: stemmed, alternatives: [...synonymsFor(text), ...synonymsFor(stemmed)] };
     },
   );
-  const wantedKinds = new Set(nameWords.length > 0 ? kindWords.flatMap((word) => KIND_WORDS[word]) : []);
+  const wantedKinds = new Set(nameWords.length > 0 ? kindWords.flatMap((word) => kindsFor(word) ?? []) : []);
   const nameQuery = nameWords.length > 0 ? nameWords.join(' ') : q;
 
   const scored: { record: SearchRecord; score: number }[] = [];
