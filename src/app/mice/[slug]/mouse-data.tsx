@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React from 'react';
 
 import { CheeseCell, LocationCell } from '@/components/mhct-cells';
@@ -5,6 +6,7 @@ import type { AttractionRow, MouseMapRow } from '@/types';
 import { formatCompactNumber, formatNumber } from '@/utils';
 import { SectionHeading } from '@/components/section-heading';
 import { SourceLink } from '@/components/source-link';
+import { bestAttractionRow } from '@/lib/attraction';
 
 // Rows shown before "Show all", so the long tail doesn't bury the sections below.
 const ATTRACTION_PREVIEW = 10;
@@ -33,14 +35,28 @@ function ShowAll({ shown, total, children }: { shown: number; total: number; chi
   );
 }
 
-function AttractionTable({ rows }: { rows: AttractionRow[] }) {
+function AttractionTable({
+  rows,
+  showLocation,
+  showCheese,
+}: {
+  rows: AttractionRow[];
+  showLocation: boolean;
+  showCheese: boolean;
+}) {
+  // Most mice are only attracted in one place, often only with a charm; columns
+  // that would repeat on every row, or stay empty on every row, are left out.
+  const showCharm = rows.some((row) => row.charm);
   return (
     <div className="overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-800">
       <table className="w-full text-sm">
         <thead className="bg-zinc-50 text-left text-xs text-zinc-600 dark:bg-zinc-900/60 dark:text-zinc-400">
           <tr>
-            <th className="px-3 py-2 font-medium sm:px-4">Location</th>
-            <th className="px-3 py-2 font-medium sm:px-4">Cheese</th>
+            {showLocation && <th className="px-3 py-2 font-medium sm:px-4">Location</th>}
+            {showCheese && <th className="px-3 py-2 font-medium sm:px-4">Cheese</th>}
+            {showCharm && (
+              <th className={clsx('px-3 py-2 font-medium sm:px-4', showCheese && 'hidden sm:table-cell')}>Charm</th>
+            )}
             <th className="px-3 py-2 text-right font-medium sm:px-4">Rate</th>
             <th className="hidden px-3 py-2 text-right font-medium sm:table-cell sm:px-4">Sample</th>
           </tr>
@@ -48,22 +64,42 @@ function AttractionTable({ rows }: { rows: AttractionRow[] }) {
         <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
           {rows.map((row, index) => (
             <tr key={`${row.location}-${row.stage}-${row.cheese}-${row.charm}-${index}`}>
-              <td className="px-3 py-2 align-top sm:px-4">
-                <LocationCell location={row.location} stage={row.stage} />
-              </td>
-              <td className="px-3 py-2 align-top sm:px-4">
-                <CheeseCell cheese={row.cheese} />
-                {row.charm && <span className="text-zinc-600 dark:text-zinc-400"> · {row.charm}</span>}
-              </td>
+              {showLocation && (
+                <td className="px-3 py-2 align-top sm:px-4">
+                  <LocationCell location={row.location} stage={row.stage} />
+                </td>
+              )}
+              {showCheese && (
+                <td className="px-3 py-2 align-top sm:px-4">
+                  <CheeseCell cheese={row.cheese} />
+                  {!showLocation && row.stage && (
+                    <span className="text-zinc-600 dark:text-zinc-400"> ({row.stage})</span>
+                  )}
+                  {/* On phones the Charm column is hidden, so the charm rides under the cheese. */}
+                  {row.charm && (
+                    <span className="block text-xs text-zinc-600 sm:hidden dark:text-zinc-400">with {row.charm}</span>
+                  )}
+                </td>
+              )}
+              {showCharm && (
+                <td
+                  className={clsx(
+                    'px-3 py-2 align-top text-zinc-700 sm:px-4 dark:text-zinc-300',
+                    showCheese && 'hidden sm:table-cell',
+                  )}
+                >
+                  {row.charm ?? <span className="text-zinc-500 dark:text-zinc-400">None</span>}
+                </td>
+              )}
               <td className="px-3 py-2 text-right align-top font-medium tabular-nums text-zinc-900 sm:px-4 dark:text-white">
                 {formatRate(row.rate)}
                 {/* On phones the Sample column is hidden, so the sample rides under the rate. */}
                 <span className="block text-xs font-normal whitespace-nowrap text-zinc-600 sm:hidden dark:text-zinc-400">
-                  {row.total_hunts ? `${formatCompactNumber(row.total_hunts)} hunts` : '—'}
+                  {row.total_hunts ? `${formatCompactNumber(row.total_hunts)} hunts` : 'MH-Tools'}
                 </span>
               </td>
               <td className="hidden px-3 py-2 text-right align-top tabular-nums text-zinc-600 sm:table-cell sm:px-4 dark:text-zinc-400">
-                {row.total_hunts ? formatNumber(row.total_hunts) : '—'}
+                {row.total_hunts ? formatNumber(row.total_hunts) : 'MH-Tools'}
               </td>
             </tr>
           ))}
@@ -97,6 +133,17 @@ function MapChips({ rows }: { rows: MouseMapRow[] }) {
  */
 export function MouseData({ attraction, maps }: { attraction: AttractionRow[]; maps: MouseMapRow[] }) {
   const attractionRows = attraction.slice(0, ATTRACTION_LIMIT);
+  // The row the summary above calls best always makes the preview, in rate order,
+  // even when charm rows outrank it.
+  const best = bestAttractionRow(attractionRows);
+  const preview = attractionRows.slice(0, ATTRACTION_PREVIEW);
+  if (best && !preview.includes(best)) preview.splice(ATTRACTION_PREVIEW - 1, 1, best);
+  const rest = attractionRows.filter((row) => !preview.includes(row));
+  const locations = new Set(attractionRows.map((row) => row.location));
+  const onlyLocation = locations.size === 1 ? attractionRows[0].location : null;
+  // A stage rides beside the cheese, so the cheese column only folds away without one.
+  const cheeses = new Set(attractionRows.map((row) => row.cheese));
+  const onlyCheese = cheeses.size === 1 && attractionRows.every((row) => !row.stage) ? attractionRows[0].cheese : null;
   const mapRows = maps.slice(0, MAPS_LIMIT);
 
   return (
@@ -104,6 +151,23 @@ export function MouseData({ attraction, maps }: { attraction: AttractionRow[]; m
       <section>
         <SectionHeading>Where to find it</SectionHeading>
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+          {onlyLocation && (
+            <>
+              Only in <LocationCell location={onlyLocation} />
+              {onlyCheese && (
+                <>
+                  {' '}
+                  with <CheeseCell cheese={onlyCheese} />
+                </>
+              )}
+              .{' '}
+            </>
+          )}
+          {!onlyLocation && onlyCheese && (
+            <>
+              Only with <CheeseCell cheese={onlyCheese} />.{' '}
+            </>
+          )}
           From <SourceLink source="mhct" /> and <SourceLink source="mh-tools" />.
         </p>
 
@@ -114,11 +178,11 @@ export function MouseData({ attraction, maps }: { attraction: AttractionRow[]; m
         ) : (
           <>
             <div className="mt-4">
-              <AttractionTable rows={attractionRows.slice(0, ATTRACTION_PREVIEW)} />
+              <AttractionTable rows={preview} showLocation={!onlyLocation} showCheese={!onlyCheese} />
             </div>
-            {attractionRows.length > ATTRACTION_PREVIEW && (
+            {rest.length > 0 && (
               <ShowAll shown={attractionRows.length} total={attraction.length}>
-                <AttractionTable rows={attractionRows.slice(ATTRACTION_PREVIEW)} />
+                <AttractionTable rows={rest} showLocation={!onlyLocation} showCheese={!onlyCheese} />
               </ShowAll>
             )}
           </>

@@ -13,7 +13,7 @@ export function SourceLink({ source }: { source: keyof typeof sources }) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:hover:text-zinc-200"
+      className="whitespace-nowrap underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:hover:text-zinc-200"
     >
       {name}
     </a>

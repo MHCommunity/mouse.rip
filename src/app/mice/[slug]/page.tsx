@@ -131,11 +131,13 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
 
       <header className="flex items-start gap-4 sm:gap-6">
         {image && (
+          // The game's mouse art is drawn on white, so it sits on a white plate in
+          // both themes instead of turning into a bright square on dark.
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={image}
             alt=""
-            className={`shrink-0 object-cover ring-1 ring-zinc-950/5 dark:ring-white/10 ${
+            className={`shrink-0 rounded-xl bg-white object-contain p-1.5 ring-1 ring-zinc-950/10 dark:ring-white/15 ${
               mouse.images?.is_landscape ? 'h-20 w-32 sm:h-40 sm:w-72' : 'size-20 sm:size-40'
             }`}
           />
@@ -205,7 +207,12 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
                     <LocationCell location={bestSpot.location} stage={bestSpot.stage} />
                     <span className="text-zinc-600 dark:text-zinc-400"> with </span>
                     <CheeseCell cheese={bestSpot.cheese} />
-                    {bestSpot.charm && <span className="text-zinc-600 dark:text-zinc-400"> · {bestSpot.charm}</span>}
+                    {bestSpot.charm && (
+                      <>
+                        <span className="text-zinc-600 dark:text-zinc-400"> and </span>
+                        <span className="text-zinc-700 dark:text-zinc-300">{bestSpot.charm}</span>
+                      </>
+                    )}
                   </span>
                   <span className="mt-0.5 block text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
                     {bestSpot.total_hunts ? `From ${formatNumber(bestSpot.total_hunts)} hunts` : 'From MH-Tools'}
@@ -327,7 +334,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
                   href={`/groups/${group.id}`}
                   className="text-sm font-medium text-emerald-700 hover:text-emerald-800 dark:text-emerald-300 dark:hover:text-emerald-200"
                 >
-                  See all {group.mouse_ids.length} →
+                  See all {group.mouse_ids.length}
                 </Link>
               </li>
             )}
