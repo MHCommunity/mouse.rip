@@ -45,12 +45,16 @@ export default async function RegionPage({ params }: { params: Promise<{ id: str
   const region = getRegion(id);
   if (!region) notFound();
 
+  // Many mice live in several locations, so the region total counts each species once.
+  const regionMouseIds = new Set<number>();
   const locations = region.locations.map((entry) => {
     const location = getLocation(entry.id);
     const description = location?.description ? firstSentence(cleanDescription(location.description)) : undefined;
-    return { id: entry.id, name: entry.name, description, mice: getMiceForRegionName(entry.name).length };
+    const mice = getMiceForRegionName(entry.name);
+    for (const mouse of mice) regionMouseIds.add(mouse.id);
+    return { id: entry.id, name: entry.name, description, mice: mice.length };
   });
-  const totalMice = locations.reduce((sum, location) => sum + location.mice, 0);
+  const totalMice = regionMouseIds.size;
 
   return (
     <>
