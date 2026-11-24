@@ -18,7 +18,7 @@ import { GameImage } from '@/components/game-image';
 
 import { LocationMice, getLocationMiceByCheese } from './location-mice';
 import { LocationLoot } from './location-loot';
-import { LocationTimerPanel } from '@/components/timers';
+import { LocationTimerPanel, TimersProvider } from '@/components/timers';
 import { TIMER_LOCATION_NAMES } from '@/lib/timer-locations';
 
 export const dynamicParams = false;
@@ -76,6 +76,11 @@ function regionFor(locationId: string) {
   return getLocations().find((region) => region.locations.some((location) => location.id === locationId));
 }
 
+/** Shares one timer fetch between the timer panel and the mice list's live stage. */
+function WithTimers({ enabled, children }: { enabled: boolean; children: React.ReactNode }) {
+  return enabled ? <TimersProvider>{children}</TimersProvider> : <>{children}</>;
+}
+
 export default async function Location({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
   const location = getLocation(resolvedParams.id);
@@ -88,6 +93,8 @@ export default async function Location({ params }: { params: Promise<{ id: strin
   const regionEntry = regionFor(resolvedParams.id);
   const region = regionEntry?.name;
   const description = location.description ? cleanDescription(location.description) : undefined;
+  // Only rotating locations have a timer; the rest never fetch one.
+  const rotating = Boolean(location.name && TIMER_LOCATION_NAMES.includes(location.name));
 
   const { groups: cheeseGroups, total: miceTotal } = location.name
     ? getLocationMiceByCheese(location.name)
@@ -105,7 +112,7 @@ export default async function Location({ params }: { params: Promise<{ id: strin
   const generalResources = resources.filter((resource) => resource.locations?.includes('all'));
 
   return (
-    <>
+    <WithTimers enabled={rotating}>
       <Breadcrumbs
         items={[
           { name: 'Home', href: '/' },
@@ -150,9 +157,7 @@ export default async function Location({ params }: { params: Promise<{ id: strin
 
       {description && <ClampedText className="mt-4 max-w-prose">{description}</ClampedText>}
 
-      {location.name && TIMER_LOCATION_NAMES.includes(location.name) && (
-        <LocationTimerPanel locationName={location.name} />
-      )}
+      {rotating && location.name && <LocationTimerPanel locationName={location.name} />}
 
       {localResources.length > 0 && (
         <section className="mt-10">
@@ -230,6 +235,6 @@ export default async function Location({ params }: { params: Promise<{ id: strin
       )}
 
       {location.name && <ExternalRefs name={location.name} kind="locations" />}
-    </>
+    </WithTimers>
   );
 }

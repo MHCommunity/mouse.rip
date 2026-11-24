@@ -3,19 +3,22 @@
 import clsx from 'clsx';
 import React, { createContext, useContext } from 'react';
 
-import { attractionStageName, stagesAt, useTimers } from '@/lib/timers';
+import { useTimersContext } from '@/components/timers';
+import { attractionStageName, stagesAt } from '@/lib/timers';
 
 /** The attraction-data name of the stage running now at this location, or null until the timer loads. */
 const LiveStageContext = createContext<string | null>(null);
 
 /**
- * Reads the location's timer once for the whole mice list. Until it loads (or
- * if the location has no timer), rows render exactly as the server sent them.
+ * Reads the location's timer once for the whole mice list, from the page's
+ * TimersProvider. Until it loads (or outside a rotating location, where there's
+ * no provider), rows render exactly as the server sent them.
  */
 export function LiveStageProvider({ locationName, children }: { locationName: string; children: React.ReactNode }) {
-  const { state, now } = useTimers();
-  const timer = state.status === 'ready' ? state.data.locations.find((entry) => entry.name === locationName) : null;
-  const current = timer ? stagesAt(timer, now)?.current : undefined;
+  const timers = useTimersContext();
+  const state = timers?.state;
+  const timer = state?.status === 'ready' ? state.data.locations.find((entry) => entry.name === locationName) : null;
+  const current = timer && timers ? stagesAt(timer, timers.now)?.current : undefined;
   return (
     <LiveStageContext.Provider value={current ? attractionStageName(current.name) : null}>
       {children}

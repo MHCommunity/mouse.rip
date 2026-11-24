@@ -2,7 +2,7 @@
 
 import clsx from 'clsx';
 import { Link } from 'next-view-transitions';
-import React from 'react';
+import React, { createContext, useContext } from 'react';
 
 import { POWER_TYPE_CHIP, powerTypeLabel } from '@/lib/power-types';
 import {
@@ -14,6 +14,24 @@ import {
   useTimers,
   type TimerStage,
 } from '@/lib/timers';
+
+type Timers = ReturnType<typeof useTimers>;
+
+const TimersContext = createContext<Timers | null>(null);
+
+/**
+ * One timer fetch and clock for everything inside it. Location pages mount it
+ * only for rotating locations, so static ones never ask for timers.
+ */
+export function TimersProvider({ children }: { children: React.ReactNode }) {
+  const timers = useTimers();
+  return <TimersContext.Provider value={timers}>{children}</TimersContext.Provider>;
+}
+
+/** The shared timers, or null outside a TimersProvider. */
+export function useTimersContext(): Timers | null {
+  return useContext(TimersContext);
+}
 
 function PowerChip({ type }: { type?: string }) {
   if (!type) return null;
@@ -113,9 +131,11 @@ export function TimersStrip({ className }: { className?: string }) {
   );
 }
 
-/** The current stage of one rotating location and the next few, for its location page. */
+/** The current stage of one rotating location and the next few, for its location page. Needs a TimersProvider. */
 export function LocationTimerPanel({ locationName }: { locationName: string }) {
-  const { state, now } = useTimers();
+  const timers = useTimersContext();
+  if (!timers) return null;
+  const { state, now } = timers;
   const timer = state.status === 'ready' ? state.data.locations.find((entry) => entry.name === locationName) : null;
   const stages = timer ? stagesAt(timer, now) : null;
 
