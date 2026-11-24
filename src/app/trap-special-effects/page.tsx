@@ -19,7 +19,6 @@ export const metadata = pageMetadata({
 export default function TrapSpecialEffectsPage() {
   const trapEffects = getTrapEffects().filter((entry) => entry.effects.length > 0);
 
-  // Map location display names to our on-site location pages where they match.
   const locationIdByName = new Map<string, string>();
   for (const region of getLocations()) {
     for (const location of region.locations) {

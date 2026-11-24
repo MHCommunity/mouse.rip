@@ -42,7 +42,7 @@
   }
 }
 
-/* Safety net: one over-wide element shouldn't make the whole page scroll sideways on a phone. */
+/* A long unbroken string or a wide table would otherwise make the whole page scroll sideways on a phone. */
 html,
 body {
   overflow-x: clip;

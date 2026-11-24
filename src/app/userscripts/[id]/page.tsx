@@ -48,7 +48,6 @@ export default async function UserscriptPage({ params }: { params: Promise<{ id:
     notFound();
   }
 
-  // Fetch the item based on the ID from the params
   const item = getUserscript(resolvedParams.id);
 
   if (!item) {

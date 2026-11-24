@@ -207,7 +207,6 @@ export default function Home() {
 
   return (
     <div className="mx-auto max-w-5xl">
-      {/* ---------- Search first ---------- */}
       <section className="pt-2">
         <h1 className="text-3xl font-semibold tracking-tight text-balance text-zinc-950 sm:text-4xl dark:text-white">
           MouseHunt guides, tools, and resources
@@ -280,7 +279,7 @@ export default function Home() {
         <TimersStrip className="mt-7" />
       </section>
 
-      {/* ---------- Browse: the sidebar carries these from lg up, so only smaller screens get them here ---------- */}
+      {/* The sidebar carries these from lg up, so only smaller screens get them here. */}
       <nav aria-labelledby="browse-heading" className="mt-12 lg:hidden">
         <h2 id="browse-heading" className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
           Browse
@@ -372,7 +371,6 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* ---------- Community favorites ---------- */}
       {popular.length > 0 && (
         <section aria-labelledby="favorites-heading" className="mt-12">
           <h2 id="favorites-heading" className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
