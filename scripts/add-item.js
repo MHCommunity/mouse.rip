@@ -39,7 +39,9 @@ async function addItem() {
                 .replace(/^www\./, '')
                 .replace(/\..+$/, '')
                 .replace(/^\w/, (c) => c.toUpperCase());
-            } catch {}
+            } catch {
+              // Not a full URL yet, so there's no hostname to suggest a source from.
+            }
           }
 
           return text({
@@ -116,7 +118,6 @@ async function addItem() {
       }
     }
 
-    // add tags only for userscripts
     let tags = [];
     if ('userscript' === item.category) {
       const tagsInput = await text({

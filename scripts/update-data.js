@@ -336,19 +336,21 @@ export const validateItemReferences = (label, ids, itemIds) => {
 };
 
 /**
+ * Loot seen in at least this share of locations is left off as event or global loot.
+ *
  * Event and global drops (Party, Snowball and Wealth charms, SUPER|brie+, Ful'Mina's Gift…)
  * turn up at nearly every location, often at high rates, and would top every
  * location's loot list without saying anything about the place. Real location
  * loot is the opposite: almost every item drops in fewer than five locations.
- * Anything seen in at least this share of locations is left off.
  */
 export const GLOBAL_LOOT_SHARE = 0.4;
 
 /**
- * Seasonal event loot that any mouse can drop while the event runs (Lunar New
- * Year candles, Spring Egg Hunt eggs and charge charms, Winter Hunt gift boxes,
- * birthday cupcakes, the yearly charms). It reaches too few locations for the
- * share rule to catch, but says nothing about the place.
+ * Seasonal event loot that any mouse can drop while the event runs.
+ *
+ * Lunar New Year candles, Spring Egg Hunt eggs and charge charms, Winter Hunt
+ * gift boxes, birthday cupcakes, the yearly charms: it reaches too few locations
+ * for the share rule to catch, but says nothing about the place.
  *
  * Listed by ID, not matched by name: plenty of real location loot shares a word
  * with event loot (Golden Goose Egg in Bountiful Beanstalk, Festive Spirit in
@@ -462,10 +464,12 @@ export const withoutGlobalLoot = (lootByLocation) => {
 };
 
 /**
- * The most useful single place to hunt a mouse: the highest rate without a charm,
- * preferring rows with a real sample (MH-Tools rows have none and count as fine).
- * When every row needs a charm, the charm is part of the answer, so it's kept.
- * Keep in step with bestAttractionRow() in src/lib/attraction.ts.
+ * The most useful single place to hunt a mouse, for the search index.
+ *
+ * The highest rate without a charm, preferring rows with a real sample (MH-Tools
+ * rows have none and count as fine). When every row needs a charm, the charm is
+ * part of the answer, so it's kept. Keep in step with bestAttractionRow() in
+ * src/lib/attraction.ts.
  */
 export const bestSpot = (rows) => {
   const plain = rows.filter((row) => !row.charm);
