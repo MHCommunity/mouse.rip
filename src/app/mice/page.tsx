@@ -3,6 +3,7 @@ import React, { Suspense } from 'react';
 import { MouseIcon } from '@/components/game-icons';
 import { PageHeader } from '@/components/page-header';
 import { Breadcrumbs } from '@/components/breadcrumbs';
+import { Link } from '@/components/link';
 
 import { getAllMice, getAllMiceGroups } from '@/lib/game-data';
 import { pageMetadata } from '@/seo';
@@ -32,7 +33,19 @@ export default function MiceIndexPage() {
       <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Mice' }]} />
       <PageHeader
         title="Mice"
-        description="Every mouse in MouseHunt, with stats, minlucks, and the best cheese and location to catch each one."
+        description={
+          <>
+            Every mouse in MouseHunt, with stats, minlucks, and the best cheese and location to catch each one. You can
+            also{' '}
+            <Link
+              href="/mice/rankings"
+              className="font-medium text-pink-700 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200"
+            >
+              rank them by points, gold, or wisdom
+            </Link>
+            .
+          </>
+        }
         count={mice.length}
         countLabel="mice"
         icon={MouseIcon}

@@ -19,6 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/extensions',
     '/userscripts',
     '/mice',
+    '/mice/rankings',
     '/items',
     '/about',
     '/minlucks',

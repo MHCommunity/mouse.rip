@@ -65,6 +65,12 @@ const PAGE_RECORDS: SearchRecord[] = [
     'Browse mice by group or power type',
     'mice mouse bestiary stats minluck groups clan tribe',
   ],
+  [
+    '/mice/rankings',
+    'Mice ranked',
+    'By points, gold, or wisdom',
+    'mice rankings ranked most points gold wisdom best highest',
+  ],
   ['/items', 'Items', 'Browse every item', 'items weapons bases charms cheese collectibles'],
   ['/guides', 'Guides', 'Walkthroughs and strategy', 'guides walkthrough strategy how to'],
   ['/extensions', 'Extensions', 'Browser add-ons', 'extensions browser add-ons addons'],
