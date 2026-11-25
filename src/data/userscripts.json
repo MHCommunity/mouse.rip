@@ -101,7 +101,7 @@
   {
     "id": "marketplace-ui-tweaks",
     "name": "Marketplace UI Tweaks",
-    "description": "Tweaks and improves the Marketplace UI.",
+    "description": "Adds Sell All But One, undercut, and overbid buttons to the Marketplace, plus a Value column and pre-tariff gold amounts.",
     "url": "https://greasyfork.org/en/scripts/378990-mousehunt-marketplace-ui-tweaks",
     "category": "userscript",
     "tags": [
@@ -125,7 +125,7 @@
   {
     "id": "qol-utilities",
     "name": "QoL Utilities",
-    "description": "Miscellaneous quality-of-life utilities.",
+    "description": "Adds a travel button for the Relic Hunter hint, lock buttons for convertibles, and a hunter ID box on the Friends tab.",
     "url": "https://greasyfork.org/en/scripts/405334-mousehunt-qol-utilities",
     "category": "userscript",
     "tags": [
@@ -197,7 +197,7 @@
   {
     "id": "consolidated-map-colour-coder",
     "name": "Consolidated Map Colour Coder",
-    "description": "Colour code your maps.",
+    "description": "Colours the mice on a treasure map by group and counts the uncaught mice in each. Comes with groups for common maps, or make your own.",
     "url": "https://greasyfork.org/en/scripts/428959-mh-consolidated-map-colour-coder",
     "category": "userscript",
     "tags": [
@@ -234,7 +234,7 @@
   {
     "id": "floting-islands-priority-calculator",
     "name": "Floating Islands Priority Calculator",
-    "description": "Calculates the best island to go to.",
+    "description": "Scores each power type's islands on your Floating Islands board and highlights the best one.",
     "url": "https://greasyfork.org/en/scripts/411180-mousehunt-floting-islands-priority-calculator",
     "category": "userscript",
     "tags": [
