@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import { SparklesIcon } from '@heroicons/react/20/solid';
-import { Link } from '@/components/link';
 import { PageHeader } from '@/components/page-header';
 import { PageLink } from '@/components/page-link';
 
 import { getLocations, getTrapEffects } from '@/lib/site-data';
 import { pageMetadata } from '@/seo';
-import { SectionHeading } from '@/components/section-heading';
+import { EffectsBrowser, EffectsBrowserFromUrl, type EffectLocation, type SharedEffect } from './effects-browser';
 
 export const metadata = pageMetadata({
   title: 'Trap and Base Special Effects',
@@ -16,9 +15,17 @@ export const metadata = pageMetadata({
   path: '/trap-special-effects',
 });
 
-export default function TrapSpecialEffectsPage() {
-  const trapEffects = getTrapEffects().filter((entry) => entry.effects.length > 0);
+/** An effect listed under this many locations or more is shown once, in its own section. */
+const SHARED_MIN_LOCATIONS = 3;
 
+function slugify(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+export default function TrapSpecialEffectsPage() {
   const locationIdByName = new Map<string, string>();
   for (const region of getLocations()) {
     for (const location of region.locations) {
@@ -26,16 +33,33 @@ export default function TrapSpecialEffectsPage() {
     }
   }
 
-  // Group locations by region, preserving the spreadsheet's order.
-  const regions: { region: string; entries: typeof trapEffects }[] = [];
-  for (const entry of trapEffects) {
-    let group = regions.find((r) => r.region === entry.region);
-    if (!group) {
-      group = { region: entry.region, entries: [] };
-      regions.push(group);
+  const locations: EffectLocation[] = getTrapEffects()
+    .filter((entry) => entry.effects.length > 0)
+    .map((entry) => {
+      const id = locationIdByName.get(entry.location.toLowerCase());
+      return {
+        key: id ?? slugify(entry.location),
+        name: entry.location,
+        region: entry.region,
+        href: id ? `/locations/${id}` : undefined,
+        effects: entry.effects,
+      };
+    });
+
+  const byEffect = new Map<string, SharedEffect>();
+  for (const location of locations) {
+    for (const effect of location.effects) {
+      const key = `${effect.name}\n${effect.effect}`;
+      const shared = byEffect.get(key) ?? { ...effect, key, locations: [] };
+      shared.locations.push({ key: location.key, name: location.name, href: location.href });
+      byEffect.set(key, shared);
     }
-    group.entries.push(entry);
   }
+  const shared = [...byEffect.values()]
+    .filter((effect) => effect.locations.length >= SHARED_MIN_LOCATIONS)
+    .sort((a, b) => b.locations.length - a.locations.length);
+
+  const props = { locations, shared };
 
   return (
     <div>
@@ -55,48 +79,10 @@ export default function TrapSpecialEffectsPage() {
         iconClassName="bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300"
       />
 
-      <div className="space-y-12">
-        {regions.map(({ region, entries }) => (
-          <section key={region}>
-            <SectionHeading>{region}</SectionHeading>
-            <div className="mt-4 space-y-6">
-              {entries.map((entry) => {
-                const locationId = locationIdByName.get(entry.location.toLowerCase());
-                return (
-                  <div
-                    key={`${region}-${entry.location}`}
-                    className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
-                  >
-                    <h3 className="text-lg font-semibold tracking-tight text-zinc-900 dark:text-white">
-                      {locationId ? (
-                        <Link
-                          href={`/locations/${locationId}`}
-                          className="transition-colors hover:text-green-700 dark:hover:text-green-300"
-                        >
-                          {entry.location}
-                        </Link>
-                      ) : (
-                        entry.location
-                      )}
-                    </h3>
-                    <dl className="mt-3 divide-y divide-zinc-100 dark:divide-zinc-800">
-                      {entry.effects.map((effect) => (
-                        <div
-                          key={`${entry.location}-${effect.name}-${effect.effect}`}
-                          className="grid grid-cols-1 gap-x-4 gap-y-0.5 py-2.5 sm:grid-cols-[minmax(0,14rem)_1fr]"
-                        >
-                          <dt className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{effect.name}</dt>
-                          <dd className="text-sm text-zinc-600 dark:text-zinc-400">{effect.effect || '—'}</dd>
-                        </div>
-                      ))}
-                    </dl>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        ))}
-      </div>
+      {/* The browser reads ?location= with useSearchParams, which needs a Suspense boundary to prerender. */}
+      <Suspense fallback={<EffectsBrowser {...props} initialLocation="" syncUrl={false} />}>
+        <EffectsBrowserFromUrl {...props} />
+      </Suspense>
     </div>
   );
 }
