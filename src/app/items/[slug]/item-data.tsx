@@ -179,7 +179,7 @@ export function ItemData({
                   <summary className="inline-flex min-h-9 cursor-pointer items-center rounded-md px-1 text-sm font-medium text-pink-700 hover:text-pink-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:text-pink-300 dark:hover:text-pink-200">
                     <span className="group-open:hidden">
                       {foundIn.length > FOUND_IN_LIMIT
-                        ? `Show ${formatNumber(FOUND_IN_LIMIT)} of ${formatNumber(foundIn.length)}`
+                        ? `Show ${formatNumber(FOUND_IN_LIMIT - FOUND_IN_PREVIEW)} more`
                         : `Show all ${formatNumber(foundIn.length)}`}
                     </span>
                     <span className="hidden group-open:inline">Show fewer</span>

@@ -19,18 +19,37 @@ function formatRate(rate: number): string {
   return `${(rate / 100).toFixed(2)}%`;
 }
 
-function ShowAll({ shown, total, children }: { shown: number; total: number; children: React.ReactNode }) {
+/**
+ * Reveals the rows past the preview. "Show all" when that's everything; when the list is capped,
+ * "Show N more", with the cap spelled out once it's open.
+ */
+function ShowAll({
+  more,
+  shown,
+  total,
+  children,
+}: {
+  /** Rows the disclosure adds. */
+  more: number;
+  /** Rows on the page once it's open. */
+  shown: number;
+  total: number;
+  children: React.ReactNode;
+}) {
   return (
     <details className="group mt-2">
       <summary className="inline-flex min-h-9 cursor-pointer items-center rounded-md px-1 text-sm font-medium text-pink-700 hover:text-pink-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:text-pink-300 dark:hover:text-pink-200">
         <span className="group-open:hidden">
-          {shown === total
-            ? `Show all ${formatNumber(total)}`
-            : `Show ${formatNumber(shown)} of ${formatNumber(total)}`}
+          {shown === total ? `Show all ${formatNumber(total)}` : `Show ${formatNumber(more)} more`}
         </span>
         <span className="hidden group-open:inline">Show fewer</span>
       </summary>
       <div className="mt-2">{children}</div>
+      {shown < total && (
+        <p className="mt-2 px-1 text-sm text-zinc-600 dark:text-zinc-400">
+          Showing the top {formatNumber(shown)} of {formatNumber(total)}.
+        </p>
+      )}
     </details>
   );
 }
@@ -95,11 +114,16 @@ function AttractionTable({
                 {formatRate(row.rate)}
                 {/* On phones the Sample column is hidden, so the sample rides under the rate. */}
                 <span className="block text-xs font-normal whitespace-nowrap text-zinc-600 sm:hidden dark:text-zinc-400">
-                  {row.total_hunts ? `${formatCompactNumber(row.total_hunts)} hunts` : 'MH-Tools'}
+                  {row.total_hunts ? `${formatCompactNumber(row.total_hunts)} hunts` : 'Sample unknown'}
                 </span>
               </td>
               <td className="hidden px-3 py-2 text-right align-top tabular-nums text-zinc-600 sm:table-cell sm:px-4 dark:text-zinc-400">
-                {row.total_hunts ? formatNumber(row.total_hunts) : 'MH-Tools'}
+                {/* MH-Tools rows come without a hunt count. */}
+                {row.total_hunts ? (
+                  formatNumber(row.total_hunts)
+                ) : (
+                  <span className="text-zinc-500 dark:text-zinc-400">Unknown</span>
+                )}
               </td>
             </tr>
           ))}
@@ -181,7 +205,7 @@ export function MouseData({ attraction, maps }: { attraction: AttractionRow[]; m
               <AttractionTable rows={preview} showLocation={!onlyLocation} showCheese={!onlyCheese} />
             </div>
             {rest.length > 0 && (
-              <ShowAll shown={attractionRows.length} total={attraction.length}>
+              <ShowAll more={rest.length} shown={attractionRows.length} total={attraction.length}>
                 <AttractionTable rows={rest} showLocation={!onlyLocation} showCheese={!onlyCheese} />
               </ShowAll>
             )}
@@ -199,7 +223,7 @@ export function MouseData({ attraction, maps }: { attraction: AttractionRow[]; m
             <MapChips rows={mapRows.slice(0, MAPS_PREVIEW)} />
           </div>
           {mapRows.length > MAPS_PREVIEW && (
-            <ShowAll shown={mapRows.length} total={maps.length}>
+            <ShowAll more={mapRows.length - MAPS_PREVIEW} shown={mapRows.length} total={maps.length}>
               <MapChips rows={mapRows.slice(MAPS_PREVIEW)} />
             </ShowAll>
           )}
