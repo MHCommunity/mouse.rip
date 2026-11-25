@@ -11,7 +11,8 @@ import { pageMetadata } from '@/seo';
 
 export const metadata = pageMetadata({
   title: 'MouseHunt Guides',
-  description: 'MouseHunt strategy and how-to guides, from your first hunt to endgame optimization.',
+  description:
+    'MouseHunt strategy and how-to guides written by other hunters, covering traps, locations, and rank progression.',
   path: '/guides',
 });
 
@@ -38,7 +39,7 @@ export default async function Guides() {
     <>
       <PageHeader
         title="MouseHunt guides"
-        description="Strategy and how-tos, from your first hunt to endgame optimization."
+        description="Strategy and how-tos written by other hunters."
         count={items.length}
         countLabel="guides"
         icon={AcademicCapIcon}

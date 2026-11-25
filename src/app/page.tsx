@@ -150,7 +150,7 @@ function directory(): DirectoryGroup[] {
         {
           href: '/guides',
           name: 'Guides',
-          description: 'From your first hunt to endgame strategy',
+          description: 'Strategy and how-tos from other hunters',
           count: resourceCount('guide'),
           countLabel: 'guides',
           accent: 'pink',

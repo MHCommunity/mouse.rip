@@ -10,7 +10,7 @@ import React from 'react';
 export const metadata = pageMetadata({
   title: 'MouseHunt Userscripts',
   description:
-    'Hand-picked MouseHunt userscripts that add features to the game, from Marketplace price charts to event puzzle helpers and map tools.',
+    'Hand-picked MouseHunt userscripts that add features to the game, such as Marketplace price charts, event puzzle helpers, and map tools.',
   path: '/userscripts',
 });
 

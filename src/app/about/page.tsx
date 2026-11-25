@@ -13,13 +13,13 @@ export const metadata = pageMetadata({
 });
 
 const features: { href: string; name: string; description: string }[] = [
-  { href: '/guides', name: 'Guides', description: 'from your first hunt to endgame strategy.' },
+  { href: '/guides', name: 'Guides', description: 'strategy and how-tos from other hunters.' },
   {
     href: '/mice',
     name: 'Mice',
     description: 'every mouse, with stats, minlucks, attraction rates, and where to catch it.',
   },
-  { href: '/items', name: 'Items', description: 'every item, with drop sources and marketplace prices.' },
+  { href: '/items', name: 'Items', description: 'every item, with drop sources and Marketplace prices.' },
   { href: '/minlucks', name: 'Minlucks', description: 'the luck you need to guarantee a catch with each power type.' },
   {
     href: '/essence-calculator',

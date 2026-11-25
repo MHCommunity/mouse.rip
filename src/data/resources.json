@@ -2,7 +2,7 @@
   {
     "id": "mousehunt-improved",
     "name": "MouseHunt Improved",
-    "description": "Dozens of switchable in-game improvements, from a better journal, marketplace, and maps to minluck and catch rate estimates on the Camp page.",
+    "description": "Dozens of optional in-game improvements, including a better journal, Marketplace, and maps, and minluck and catch rate estimates on the Camp page.",
     "url": "https://github.com/MHCommunity/mousehunt-improved",
     "source": "GitHub",
     "category": "extension",
@@ -15,7 +15,7 @@
   {
     "id": "mousehunt-essentials-guide",
     "name": "MouseHunt Essentials Guide",
-    "description": "How MouseHunt works, from your first hunt through the early game.",
+    "description": "A beginner's guide to how MouseHunt works.",
     "url": "https://guide.mouse.rip/",
     "source": "guide.mouse.rip",
     "category": "guide",
@@ -277,7 +277,7 @@
   {
     "id": "titles",
     "name": "Titles & Ranks",
-    "description": "The full MouseHunt rank ladder from Novice to the top, with badges.",
+    "description": "Every MouseHunt rank in order, with its badge.",
     "url": "/titles",
     "category": "tool",
     "tags": [
