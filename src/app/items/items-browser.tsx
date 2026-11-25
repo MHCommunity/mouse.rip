@@ -160,6 +160,10 @@ export function ItemsBrowser({
     return out;
   }, [grouped, showAll]);
 
+  // Types with a description get a card; the rest are rare enough for a line of links.
+  const mainTypes = classificationOrder.filter((key) => CLASSIFICATION_DESCRIPTIONS[key]);
+  const otherTypes = classificationOrder.filter((key) => !CLASSIFICATION_DESCRIPTIONS[key]);
+
   return (
     <div>
       <div className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
@@ -177,34 +181,41 @@ export function ItemsBrowser({
         )}
       </div>
 
+      {/* Type chips narrow a search; with no filter on, the type cards below do that job instead. */}
       <div className="mt-4 flex flex-wrap items-center gap-2">
-        <button
-          type="button"
-          onClick={() => setActive(null)}
-          className={`${pillBase} ${
-            active === null
-              ? 'bg-blue-600 text-white'
-              : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
-          }`}
+        {filtering && (
+          <>
+            <button
+              type="button"
+              onClick={() => setActive(null)}
+              className={`${pillBase} ${
+                active === null
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
+              }`}
+            >
+              All
+            </button>
+            {classificationOrder.map((key) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setActive((current) => (current === key ? null : key))}
+                className={`${pillBase} ${
+                  active === key
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
+                }`}
+              >
+                {classificationName(key)}
+                <span className="ml-1.5 text-xs tabular-nums opacity-60">{formatNumber(counts[key] ?? 0)}</span>
+              </button>
+            ))}
+          </>
+        )}
+        <label
+          className={`${filtering ? 'ml-auto ' : ''}flex cursor-pointer items-center gap-2 text-sm text-zinc-600 dark:text-zinc-300`}
         >
-          All
-        </button>
-        {classificationOrder.map((key) => (
-          <button
-            key={key}
-            type="button"
-            onClick={() => setActive((current) => (current === key ? null : key))}
-            className={`${pillBase} ${
-              active === key
-                ? 'bg-blue-600 text-white'
-                : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
-            }`}
-          >
-            {classificationName(key)}
-            <span className="ml-1.5 text-xs tabular-nums opacity-60">{formatNumber(counts[key] ?? 0)}</span>
-          </button>
-        ))}
-        <label className="ml-auto flex cursor-pointer items-center gap-2 text-sm text-zinc-600 dark:text-zinc-300">
           <input
             type="checkbox"
             checked={tradableOnly}
@@ -233,7 +244,7 @@ export function ItemsBrowser({
         <div className="mt-8">
           <SectionHeading>Browse by type</SectionHeading>
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {classificationOrder.map((key) => (
+            {mainTypes.map((key) => (
               <Link
                 key={key}
                 href={`/items/type/${key}`}
@@ -247,14 +258,32 @@ export function ItemsBrowser({
                     {formatNumber(counts[key] ?? 0)}
                   </span>
                 </div>
-                {CLASSIFICATION_DESCRIPTIONS[key] && (
-                  <span className="mt-1 line-clamp-2 text-sm text-pretty text-zinc-500 dark:text-zinc-400">
-                    {CLASSIFICATION_DESCRIPTIONS[key]}
-                  </span>
-                )}
+                <span className="mt-1 line-clamp-2 text-sm text-pretty text-zinc-500 dark:text-zinc-400">
+                  {CLASSIFICATION_DESCRIPTIONS[key]}
+                </span>
               </Link>
             ))}
           </div>
+          {otherTypes.length > 0 && (
+            <div className="mt-6">
+              <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">Other types</h3>
+              <ul className="mt-2 flex flex-wrap gap-x-5 gap-y-1.5 text-sm">
+                {otherTypes.map((key) => (
+                  <li key={key}>
+                    <Link
+                      href={`/items/type/${key}`}
+                      className="text-zinc-700 hover:text-blue-700 hover:underline dark:text-zinc-300 dark:hover:text-blue-300"
+                    >
+                      {classificationName(key)}
+                    </Link>
+                    <span className="ml-1.5 text-xs tabular-nums text-zinc-500 dark:text-zinc-400">
+                      {formatNumber(counts[key] ?? 0)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       ) : loadFailed ? (
         <p className="mt-10 text-sm text-zinc-500 dark:text-zinc-400">
