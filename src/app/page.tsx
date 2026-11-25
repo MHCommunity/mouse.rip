@@ -23,7 +23,7 @@ export const metadata = pageMetadata({
 });
 
 /** Real mice whose answer cards show off what search does. */
-const searchExamples = ['Abominable Snow', 'Zombie', 'Relic Hunter'];
+const searchExamples = ['Glazy', 'Abominable Snow', 'Zombie', 'Relic Hunter'];
 
 /** The essentials guide new hunters should start with. */
 const BEGINNER_GUIDE = 'https://guide.mouse.rip/';
@@ -34,8 +34,8 @@ const quickLookups = [
     href: '/minlucks',
     name: 'Minlucks',
     description: 'Luck that guarantees a catch',
-    image: mouseImageUrl('dragon'),
-    mouse: true,
+    // The game's own luck stat icon, from the trap stats on the Camp page.
+    image: '/images/stats/luck.png',
   },
   {
     href: '/relic-hunter',
