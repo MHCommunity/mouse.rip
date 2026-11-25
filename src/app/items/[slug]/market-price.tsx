@@ -25,15 +25,28 @@ type State =
   | { status: 'error' };
 
 const RANGES = [
-  { key: '90d', label: '90d', days: 90 },
-  { key: '1y', label: '1y', days: 365 },
-  { key: 'all', label: 'All', days: Number.POSITIVE_INFINITY },
+  { key: '90d', label: '90d', days: 90, period: 'over 90 days' },
+  { key: '1y', label: '1y', days: 365, period: 'over the past year' },
+  { key: 'all', label: 'All', days: Number.POSITIVE_INFINITY, period: null },
 ] as const;
 
 type RangeKey = (typeof RANGES)[number]['key'];
 
 function formatCompact(value: number): string {
   return new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(value);
+}
+
+const dateFormat = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+
+/** Markethunt's YYYY-MM-DD as "Oct 14, 2026". Read as UTC so the day doesn't shift with the visitor's time zone. */
+function formatDate(date: string): string {
+  const parsed = new Date(`${date}T00:00:00Z`);
+  return Number.isNaN(parsed.getTime()) ? date : dateFormat.format(parsed);
 }
 
 // Chart geometry (SVG user units; the element itself is responsive).
@@ -91,41 +104,40 @@ export function PriceChart({ points }: { points: PricePoint[] }) {
   // Screen readers get the shape of the chart as a sentence, since the chart itself is visual only.
   const first = series[0];
   const last = series[series.length - 1];
-  const summary = `Price history from ${first.date} to ${last.date}: ${formatGold(first.price)} to ${formatGold(
+  const summary = `Price history from ${formatDate(first.date)} to ${formatDate(last.date)}: ${formatGold(first.price)} to ${formatGold(
     last.price,
   )} gold, ranging ${formatGold(geometry.min)} to ${formatGold(geometry.max)}.`;
 
   return (
     <div>
+      {/* Hover readout. Holds its height when empty so the chart doesn't jump. */}
       <div className="flex h-5 items-center justify-end gap-3 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
-        {hovered ? (
+        {hovered && (
           <>
-            <span>{hovered.date}</span>
+            <span>{formatDate(hovered.date)}</span>
             <span className="font-medium text-zinc-700 dark:text-zinc-200">{formatGold(hovered.price)} gold</span>
             <span>{formatSb(hovered.sb_price)} SB</span>
             <span>{hovered.volume != null ? `${formatCompact(hovered.volume)} traded` : ''}</span>
           </>
-        ) : (
-          <span>
-            {series[0].date} to {series[series.length - 1].date}
-          </span>
         )}
       </div>
-      <div className="relative mt-1">
-        {/* Text lives in HTML, not the SVG: the SVG stretches to fit, which would distort it. */}
-        {[geometry.max, (geometry.max + geometry.min) / 2, geometry.min].map((value, i) => (
-          <span
-            key={i}
-            aria-hidden="true"
-            className="pointer-events-none absolute left-1 -translate-y-full text-[11px] tabular-nums text-zinc-600 dark:text-zinc-400"
-            style={{ top: `${(geometry.yFor(value) / H) * 100}%` }}
-          >
-            {formatCompact(value)}
-          </span>
-        ))}
+      <div className="mt-1 flex">
+        {/* Y-axis labels sit in their own gutter so the line never runs over them. Text lives in HTML,
+            not the SVG: the SVG stretches to fit, which would distort it. */}
+        <div aria-hidden="true" className="relative w-11 shrink-0">
+          {[geometry.max, (geometry.max + geometry.min) / 2, geometry.min].map((value, i) => (
+            <span
+              key={i}
+              className="pointer-events-none absolute right-2 -translate-y-1/2 text-[11px] tabular-nums text-zinc-600 dark:text-zinc-400"
+              style={{ top: `${(geometry.yFor(value) / H) * 100}%` }}
+            >
+              {formatCompact(value)}
+            </span>
+          ))}
+        </div>
         <svg
           viewBox={`0 0 ${W} ${H}`}
-          className="w-full"
+          className="min-w-0 flex-1"
           preserveAspectRatio="none"
           role="img"
           aria-label={summary}
@@ -192,10 +204,10 @@ export function PriceChart({ points }: { points: PricePoint[] }) {
       </div>
       <div
         aria-hidden="true"
-        className="mt-1 flex justify-between text-[11px] tabular-nums text-zinc-600 dark:text-zinc-400"
+        className="mt-1 ml-11 flex justify-between text-[11px] tabular-nums text-zinc-600 dark:text-zinc-400"
       >
-        <span>{series[0].date}</span>
-        <span>{series[series.length - 1].date}</span>
+        <span>{formatDate(series[0].date)}</span>
+        <span>{formatDate(series[series.length - 1].date)}</span>
       </div>
     </div>
   );
@@ -272,6 +284,7 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
   const latest = series[series.length - 1];
   const latestTime = new Date(latest.date).getTime();
 
+  const selected = RANGES.find((option) => option.key === range)!;
   const window = useMemo(() => {
     const days = RANGES.find((option) => option.key === range)!.days;
     if (!Number.isFinite(days)) return series;
@@ -280,10 +293,11 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
     return sliced.length > 1 ? sliced : series.slice(-2);
   }, [series, range, latestTime]);
 
-  // Price ~30 days ago, by date, for the trend figure.
-  const monthAgo = series.find((point) => new Date(point.date).getTime() >= latestTime - 30 * 86400000) ?? series[0];
-  const change = monthAgo.price ? ((latest.price - monthAgo.price) / monthAgo.price) * 100 : 0;
+  // The trend figure covers the same span as the chart, so it changes with the range buttons.
+  const start = window[0];
+  const change = start.price ? ((latest.price - start.price) / start.price) * 100 : 0;
   const up = change >= 0;
+  const period = selected.period ?? `since ${formatDate(start.date)}`;
 
   const high = window.reduce((best, point) => (point.price > best.price ? point : best), window[0]);
   const low = window.reduce((best, point) => (point.price < best.price ? point : best), window[0]);
@@ -305,7 +319,7 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
               }
             >
               <span aria-hidden="true">{up ? '▲' : '▼'}</span>
-              <span className="sr-only">{up ? 'Up' : 'Down'}</span> {Math.abs(change).toFixed(1)}% over 30 days
+              <span className="sr-only">{up ? 'Up' : 'Down'}</span> {Math.abs(change).toFixed(1)}% {period}
             </span>
             {/* SUPER|brie+ priced in itself is always 1 SB; skip the noise. */}
             {Math.abs(latest.sb_price - 1) > 0.001 && (
@@ -335,8 +349,13 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
               </button>
             ))}
           </div>
-          <div className="text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
-            High {formatCompact(high.price)} ({high.date}) · Low {formatCompact(low.price)} ({low.date})
+          <div className="text-right text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
+            <div>
+              High {formatCompact(high.price)} on {formatDate(high.date)}
+            </div>
+            <div>
+              Low {formatCompact(low.price)} on {formatDate(low.date)}
+            </div>
           </div>
         </div>
       </div>
@@ -348,7 +367,7 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
       <div className="mt-4 flex flex-wrap items-end justify-between gap-x-4 gap-y-2 border-t border-zinc-100 pt-3 text-xs text-zinc-600 dark:border-zinc-800 dark:text-zinc-400">
         <span>
           <span className="block tabular-nums">
-            {latest.volume != null && `${formatGold(latest.volume)} traded, `}as of {latest.date}
+            {latest.volume != null && `${formatGold(latest.volume)} traded, `}as of {formatDate(latest.date)}
           </span>
         </span>
         <a
