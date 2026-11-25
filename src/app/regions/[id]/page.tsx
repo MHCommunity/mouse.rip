@@ -62,8 +62,8 @@ export default async function RegionPage({ params }: { params: Promise<{ id: str
 
       <Heading>{region.name}</Heading>
       <p className="mt-2 text-sm text-zinc-600 tabular-nums dark:text-zinc-400">
-        {locations.length} {locations.length === 1 ? 'location' : 'locations'} · {totalMice.toLocaleString()}{' '}
-        {totalMice === 1 ? 'mouse' : 'mice'}
+        {totalMice.toLocaleString()} {totalMice === 1 ? 'mouse' : 'mice'} across {locations.length}{' '}
+        {locations.length === 1 ? 'location' : 'locations'}
       </p>
 
       <ul className="mt-8 grid gap-3 sm:grid-cols-2">

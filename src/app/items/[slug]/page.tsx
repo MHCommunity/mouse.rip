@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         stats.has_cheese_effect && stats.cheese_effect ? stats.cheese_effect : null,
       ]
         .filter(Boolean)
-        .join(' · ')
+        .join(', ')
     : '';
   return pageMetadata({
     title,
@@ -135,7 +135,7 @@ function rankNote(item: GameItem, stats: GameItemStats): string | null {
     item.classification === 'weapon'
       ? `${stats.power_type ? `${powerTypeLabel(stats.power_type)} ` : ''}weapons`
       : 'bases';
-  return `${parts.join(' · ')} of ${peers.length} ${peerLabel}`;
+  return `${parts.join(' and ')} of ${peers.length} ${peerLabel}`;
 }
 
 /** Locations this item can be used in, linked to their pages when we have one. */

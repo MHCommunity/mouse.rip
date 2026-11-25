@@ -113,7 +113,8 @@ function mouseAnswer(mouse: IndexedMouse): MouseAnswer {
 }
 
 function toMouseRecord(mouse: IndexedMouse): SearchRecord {
-  const subtitle = [mouse.group, mouse.subgroup].filter(Boolean).join(' · ') || undefined;
+  const subtitle =
+    mouse.group && mouse.subgroup ? `${mouse.group} (${mouse.subgroup})` : mouse.group || mouse.subgroup || undefined;
   const answer = mouseAnswer(mouse);
   const lowest = answer.minlucks[0];
   return {
@@ -122,7 +123,7 @@ function toMouseRecord(mouse: IndexedMouse): SearchRecord {
     kind: 'mouse',
     title: mouse.name,
     subtitle,
-    badge: lowest ? `Minluck ${lowest.value} · ${lowest.label}` : undefined,
+    badge: lowest ? `Minluck ${lowest.value} (${lowest.label})` : undefined,
     mouse: answer,
     href: `/mice/${mouse.type.replaceAll('_', '-')}`,
     image: mouseImageUrl(mouse.type),
@@ -168,7 +169,7 @@ export function getStaticSearchRecords(): SearchRecord[] {
       group: 'Locations',
       kind: 'location',
       title: region.name,
-      subtitle: `Region · ${region.locations.length} locations`,
+      subtitle: `Region with ${region.locations.length} locations`,
       href: `/regions/${region.id}`,
       keywords: `${region.name} region ${region.locations.map((location) => location.name).join(' ')}`.toLowerCase(),
     });
