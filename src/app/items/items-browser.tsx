@@ -143,6 +143,20 @@ export function ItemsBrowser({
 
   const total = grouped.reduce((sum, [, list]) => sum + list.length, 0);
 
+  // What each type chip would show if picked: every filter except the type itself.
+  const chipCounts = useMemo(() => {
+    if (!items) return counts;
+    const q = debouncedQuery.trim().toLowerCase();
+    const out: Record<string, number> = {};
+    for (const { item, lowerName } of sortedItems) {
+      if (tradableOnly && !item.tradable) continue;
+      if (tag && !item.tags?.includes(tag)) continue;
+      if (q && !lowerName.includes(q)) continue;
+      out[item.classification] = (out[item.classification] ?? 0) + 1;
+    }
+    return out;
+  }, [items, counts, sortedItems, debouncedQuery, tradableOnly, tag]);
+
   // Broad filters (a whole type, tradable only) can match thousands of items, so
   // render the first ROW_LIMIT until asked. Changing the filters re-caps it.
   const filterKey = [debouncedQuery.trim(), active, tradableOnly, tag].join('|');
@@ -196,21 +210,23 @@ export function ItemsBrowser({
             >
               All
             </button>
-            {classificationOrder.map((key) => (
-              <button
-                key={key}
-                type="button"
-                onClick={() => setActive((current) => (current === key ? null : key))}
-                className={`${pillBase} ${
-                  active === key
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
-                }`}
-              >
-                {classificationName(key)}
-                <span className="ml-1.5 text-xs tabular-nums opacity-60">{formatNumber(counts[key] ?? 0)}</span>
-              </button>
-            ))}
+            {classificationOrder
+              .filter((key) => active === key || (chipCounts[key] ?? 0) > 0)
+              .map((key) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setActive((current) => (current === key ? null : key))}
+                  className={`${pillBase} ${
+                    active === key
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
+                  }`}
+                >
+                  {classificationName(key)}
+                  <span className="ml-1.5 text-xs tabular-nums opacity-60">{formatNumber(chipCounts[key] ?? 0)}</span>
+                </button>
+              ))}
           </>
         )}
         <label
