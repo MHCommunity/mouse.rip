@@ -8,6 +8,7 @@
  * instead of every page inlining its own copy into the HTML it ships.
  */
 
+import type { PlannerData } from '@/lib/map-plan';
 import type { SlimMouse } from '@/types';
 
 export interface IndexedItem {
@@ -60,6 +61,21 @@ export function loadMouseIndex(): Promise<IndexedMouse[]> {
       });
   }
   return micePromise;
+}
+
+let plannerPromise: Promise<PlannerData> | null = null;
+
+/** The map planner's attraction table; only the planner asks for it. */
+export function loadPlannerData(): Promise<PlannerData> {
+  if (!plannerPromise) {
+    plannerPromise = import('@/data/generated/map-planner.json')
+      .then((mod) => ((mod as { default?: PlannerData }).default ?? mod) as PlannerData)
+      .catch((error) => {
+        plannerPromise = null;
+        throw error;
+      });
+  }
+  return plannerPromise;
 }
 
 /** item id → item-page slug, for cross-linking rows that only carry an id. */

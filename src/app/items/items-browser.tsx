@@ -195,43 +195,44 @@ export function ItemsBrowser({
         )}
       </div>
 
-      {/* Type chips narrow a search; with no filter on, the type cards below do that job instead. */}
-      <div className="mt-4 flex flex-wrap items-center gap-2">
-        {filtering && (
-          <>
-            <button
-              type="button"
-              onClick={() => setActive(null)}
-              className={`${pillBase} ${
-                active === null
-                  ? 'bg-pink-600 text-white'
-                  : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
-              }`}
-            >
-              All
-            </button>
-            {classificationOrder
-              .filter((key) => active === key || (chipCounts[key] ?? 0) > 0)
-              .map((key) => (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => setActive((current) => (current === key ? null : key))}
-                  className={`${pillBase} ${
-                    active === key
-                      ? 'bg-pink-600 text-white'
-                      : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
-                  }`}
-                >
-                  {classificationName(key)}
-                  <span className="ml-1.5 text-xs tabular-nums opacity-60">{formatNumber(chipCounts[key] ?? 0)}</span>
-                </button>
-              ))}
-          </>
-        )}
-        <label
-          className={`${filtering ? 'ml-auto ' : ''}flex cursor-pointer items-center gap-2 text-sm text-zinc-600 dark:text-zinc-300`}
-        >
+      {/* Type chips narrow a search; with no filter on, the type cards below do that job instead.
+          The toggle keeps its own column so the chips coming and going never move it. */}
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
+        <div className="order-last flex min-w-0 flex-1 flex-wrap items-center gap-2 sm:order-first">
+          {filtering && (
+            <>
+              <button
+                type="button"
+                onClick={() => setActive(null)}
+                className={`${pillBase} ${
+                  active === null
+                    ? 'bg-pink-600 text-white'
+                    : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
+                }`}
+              >
+                All
+              </button>
+              {classificationOrder
+                .filter((key) => active === key || (chipCounts[key] ?? 0) > 0)
+                .map((key) => (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => setActive((current) => (current === key ? null : key))}
+                    className={`${pillBase} ${
+                      active === key
+                        ? 'bg-pink-600 text-white'
+                        : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
+                    }`}
+                  >
+                    {classificationName(key)}
+                    <span className="ml-1.5 text-xs tabular-nums opacity-60">{formatNumber(chipCounts[key] ?? 0)}</span>
+                  </button>
+                ))}
+            </>
+          )}
+        </div>
+        <label className="flex shrink-0 cursor-pointer items-center gap-2 self-end py-1 text-sm text-zinc-600 sm:self-auto dark:text-zinc-300">
           <input
             type="checkbox"
             checked={tradableOnly}

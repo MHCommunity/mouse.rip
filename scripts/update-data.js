@@ -722,6 +722,7 @@ const updateRelationalData = async (items, mice) => {
     Object.entries(attraction).map(([id, rows]) => [id, best(rows, 'rate', 50)]),
   );
   stage('mice-attraction', storedAttraction);
+  stage('map-planner', buildMapPlanner(attraction));
 
   // Fold each mouse's best place to hunt into the client search index, so search
   // can answer "where do I catch it" without shipping the full attraction table.
@@ -759,6 +760,57 @@ const updateRelationalData = async (items, mice) => {
   // data-updated (the refresh time for sitemap lastmod) is written by
   // flushPendingFiles, and only when some other file changed.
 };
+
+/** Below this, a setup can't help plan a map, so the planner never sees it. In hundredths of a percent. */
+const PLANNER_MIN_RATE = 100;
+
+/**
+ * The attraction rows the map planner needs, small enough to send to the browser.
+ *
+ * One row per mouse and setup (location, stage, cheese), without a charm where MHCT
+ * has that, since a charm is a choice the planner shouldn't make for you. Names are
+ * stored once in lookup tables and rows point into them by index.
+ */
+export function buildMapPlanner(attraction) {
+  const tables = { locations: [], stages: [''], cheeses: [], charms: [''] };
+  const indexes = Object.fromEntries(Object.keys(tables).map((key) => [key, new Map(tables[key].map((v, i) => [v, i]))]));
+  const indexOf = (key, value) => {
+    let index = indexes[key].get(value);
+    if (index === undefined) {
+      index = tables[key].push(value) - 1;
+      indexes[key].set(value, index);
+    }
+    return index;
+  };
+
+  const mice = {};
+  for (const [id, rows] of Object.entries(attraction)) {
+    const plain = rows.filter((row) => !row.charm);
+    const bySetup = new Map();
+    for (const row of plain.length > 0 ? plain : rows) {
+      if (row.rate < PLANNER_MIN_RATE || !row.location || !row.cheese) continue;
+      const key = `${row.location}|${row.stage ?? ''}|${row.cheese}`;
+      const current = bySetup.get(key);
+      if (!current || row.rate > current.rate) bySetup.set(key, row);
+    }
+    if (bySetup.size === 0) continue;
+    mice[id] = [...bySetup.values()]
+      .sort((a, b) => b.rate - a.rate)
+      .map((row) => {
+        const entry = [
+          indexOf('locations', row.location),
+          indexOf('stages', row.stage ?? ''),
+          indexOf('cheeses', row.cheese),
+          row.rate,
+          row.total_hunts ?? 0,
+        ];
+        if (row.charm) entry.push(indexOf('charms', row.charm));
+        return entry;
+      });
+  }
+
+  return { ...tables, mice };
+}
 
 if (import.meta.main) {
   updateDataFiles().catch((error) => {
