@@ -144,9 +144,14 @@ export default function QuesoPumpCalculator() {
         )}
       </p>
 
+      {/* Stays mounted while empty so screen readers announce the first result. */}
       <div
         aria-live="polite"
-        className="mt-6 rounded-lg border border-zinc-200 bg-white p-4 text-base/7 text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+        className={
+          best
+            ? 'mt-6 rounded-lg border border-zinc-200 bg-white p-4 text-base/7 text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300'
+            : undefined
+        }
       >
         {best ? (
           <>
@@ -180,9 +185,7 @@ export default function QuesoPumpCalculator() {
               </p>
             )}
           </>
-        ) : (
-          <p>Enter the amount of Nachore you need to see the most efficient cheese strategy.</p>
-        )}
+        ) : null}
       </div>
 
       {best && (
