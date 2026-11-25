@@ -160,71 +160,57 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                   className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
                 >
                   <AcademicCapIcon aria-hidden="true" />
-                  <SidebarLabel className="text-pink-800 hover:text-pink-900 dark:text-pink-200 dark:hover:text-pink-300">
-                    Guides
-                  </SidebarLabel>
+                  <SidebarLabel>Guides</SidebarLabel>
                 </SidebarItem>
                 <SidebarItem
                   href="/extensions"
                   current={pathname.startsWith('/extension')}
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
                 >
                   <BoltIcon aria-hidden="true" />
-                  <SidebarLabel className="text-cyan-800 hover:text-cyan-900 dark:text-cyan-200 dark:hover:text-cyan-300">
-                    Extensions
-                  </SidebarLabel>
+                  <SidebarLabel>Extensions</SidebarLabel>
                 </SidebarItem>
                 <SidebarItem
                   href="/tools"
                   current={pathname === '/tools' || pathname.startsWith('/tools/')}
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
                 >
                   <WrenchIcon aria-hidden="true" />
-                  <SidebarLabel className="text-green-800 hover:text-green-900 dark:text-green-200 dark:hover:text-green-300">
-                    Tools
-                  </SidebarLabel>
+                  <SidebarLabel>Tools</SidebarLabel>
                 </SidebarItem>
                 <SidebarItem
                   href="/spreadsheets"
                   current={pathname.startsWith('/spreadsheet')}
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
                 >
                   <TableCellsIcon aria-hidden="true" />
-                  <SidebarLabel className="text-blue-800 hover:text-blue-900 dark:text-blue-200 dark:hover:text-blue-300">
-                    Spreadsheets
-                  </SidebarLabel>
+                  <SidebarLabel>Spreadsheets</SidebarLabel>
                 </SidebarItem>
                 <SidebarItem
                   href="/userscripts"
                   current={pathname.startsWith('/userscript')}
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
                 >
                   <SwatchIcon aria-hidden="true" />
-                  <SidebarLabel className="text-purple-800 hover:text-purple-900 dark:text-purple-200 dark:hover:text-purple-300">
-                    Userscripts
-                  </SidebarLabel>
+                  <SidebarLabel>Userscripts</SidebarLabel>
                 </SidebarItem>
                 <SidebarItem
                   href="/mice"
                   current={
                     pathname.startsWith('/mice') || pathname.startsWith('/mouse') || pathname.startsWith('/groups')
                   }
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
                 >
                   <MouseIcon aria-hidden="true" />
-                  <SidebarLabel className="text-emerald-800 hover:text-emerald-900 dark:text-emerald-200 dark:hover:text-emerald-300">
-                    Mice
-                  </SidebarLabel>
+                  <SidebarLabel>Mice</SidebarLabel>
                 </SidebarItem>
                 <SidebarItem
                   href="/items"
                   current={pathname.startsWith('/item')}
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
                 >
                   <CheeseIcon aria-hidden="true" />
-                  <SidebarLabel className="text-amber-800 hover:text-amber-900 dark:text-amber-200 dark:hover:text-amber-300">
-                    Items
-                  </SidebarLabel>
+                  <SidebarLabel>Items</SidebarLabel>
                 </SidebarItem>
               </SidebarSection>
 
