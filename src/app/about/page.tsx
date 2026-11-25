@@ -32,6 +32,16 @@ const features: { href: string; name: string; description: string }[] = [
     description: 'the fastest cheese for farming Nachore.',
   },
   { href: '/valour-rift-floors', name: 'Valour Rift floors', description: 'which floor types come next.' },
+  {
+    href: '/map-planner',
+    name: 'Treasure map planner',
+    description: 'where to hunt for the most mice on your map.',
+  },
+  {
+    href: '/rank-up-calculator',
+    name: 'Rank-up calculator',
+    description: 'the wisdom you need for your next title.',
+  },
   { href: '/tools', name: 'Tools', description: 'community calculators, simulators, and planners.' },
   { href: '/extensions', name: 'Extensions', description: 'browser add-ons for the game.' },
   { href: '/userscripts', name: 'Userscripts', description: 'small scripts that tweak the game page.' },

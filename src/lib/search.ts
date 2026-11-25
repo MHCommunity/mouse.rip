@@ -81,7 +81,19 @@ const PAGE_RECORDS: SearchRecord[] = [
     'trap base special effects bonus location',
   ],
   ['/valour-rift-floors', 'Valour Rift floors', 'Floor-by-floor reference', 'valour rift floors tower eclipse'],
-  ['/essence-calculator', 'Essence calculator', 'Floating Islands essence', 'essence calculator floating islands'],
+  [
+    '/essence-calculator',
+    'Essence calculator',
+    'Living Garden essences',
+    'essence calculator living garden aleth ber cynd icuri',
+  ],
+  ['/map-planner', 'Treasure map planner', 'Where to hunt for your map', 'treasure map planner plan mice solver route'],
+  [
+    '/rank-up-calculator',
+    'Rank-up calculator',
+    'Wisdom to your next title',
+    'rank up title wisdom calculator next rank',
+  ],
   [
     '/queso-pump-calculator',
     'Queso pump calculator',

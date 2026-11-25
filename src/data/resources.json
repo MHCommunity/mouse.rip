@@ -275,6 +275,27 @@
     ]
   },
   {
+    "id": "map-planner",
+    "name": "Treasure map planner",
+    "description": "Paste your map's mice to see which locations and cheeses attract the most of them.",
+    "url": "/map-planner",
+    "category": "tool",
+    "tags": [
+      "maps",
+      "calculator"
+    ]
+  },
+  {
+    "id": "rank-up-calculator",
+    "name": "Rank-up calculator",
+    "description": "How much wisdom you need for your next title, and how many catches that takes.",
+    "url": "/rank-up-calculator",
+    "category": "tool",
+    "tags": [
+      "calculator"
+    ]
+  },
+  {
     "id": "titles",
     "name": "Titles and ranks",
     "description": "Every MouseHunt rank in order, with its badge.",

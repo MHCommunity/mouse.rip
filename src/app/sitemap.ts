@@ -25,6 +25,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/valour-rift-floors',
     '/essence-calculator',
     '/queso-pump-calculator',
+    '/map-planner',
+    '/rank-up-calculator',
     '/titles',
     '/trap-special-effects',
     '/relic-hunter',
