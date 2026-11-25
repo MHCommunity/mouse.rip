@@ -19,6 +19,7 @@
     "start": "next start",
     "update": "bun run update:data && bun run update:images",
     "update:data": "bun ./scripts/update-data.js",
+    "update:trap-effects": "bun ./scripts/update-trap-effects.js",
     "update:images": "bun ./scripts/update-images.js"
   },
   "dependencies": {

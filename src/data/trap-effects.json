@@ -49,8 +49,8 @@
         "effect": "Chance to instacatch a Dock Dweller or Pirate (33%)"
       },
       {
-        "name": "Black Widow",
-        "effect": "Black Widow drops bonus loot"
+        "name": "Black Widow Base",
+        "effect": "Bonus loot from the Black Widow Mouse"
       }
     ]
   },
@@ -71,8 +71,8 @@
         "effect": "Drops brain bits"
       },
       {
-        "name": "Black Widow",
-        "effect": "Black Widow drops bonus loot"
+        "name": "Black Widow Base",
+        "effect": "Bonus loot from the Black Widow Mouse"
       },
       {
         "name": "Prospector",
@@ -89,8 +89,8 @@
     "location": "King's Arms",
     "effects": [
       {
-        "name": "Black Widow",
-        "effect": "Black Widow drops bonus loot"
+        "name": "Black Widow Base",
+        "effect": "Bonus loot from the Black Widow Mouse"
       }
     ]
   },
@@ -105,7 +105,7 @@
     "effects": [
       {
         "name": "Ancient Gauntlet",
-        "effect": "Doubles tier 2 potions drops"
+        "effect": "Doubles tier 2 potion drops"
       },
       {
         "name": "Festive Gauntlet Crusher",
@@ -118,8 +118,8 @@
     "location": "Calm Clearing",
     "effects": [
       {
-        "name": "Black Widow",
-        "effect": "Black Widow drops bonus loot"
+        "name": "Black Widow Base",
+        "effect": "Bonus loot from the Black Widow Mouse"
       }
     ]
   },
@@ -128,8 +128,8 @@
     "location": "Great Gnarled Tree",
     "effects": [
       {
-        "name": "Black Widow",
-        "effect": "Black Widow drops bonus loot"
+        "name": "Black Widow Base",
+        "effect": "Bonus loot from the Black Widow Mouse"
       }
     ]
   },
@@ -138,8 +138,8 @@
     "location": "Lagoon",
     "effects": [
       {
-        "name": "Black Widow",
-        "effect": "Black Widow drops bonus loot"
+        "name": "Black Widow Base",
+        "effect": "Bonus loot from the Black Widow Mouse"
       }
     ]
   },
@@ -160,8 +160,8 @@
         "effect": "Drops brain bits"
       },
       {
-        "name": "Black Widow",
-        "effect": "Black Widow drops bonus loot"
+        "name": "Black Widow Base",
+        "effect": "Bonus loot from the Black Widow Mouse"
       },
       {
         "name": "Scientist",
@@ -212,8 +212,8 @@
         "effect": "Drops brain bits"
       },
       {
-        "name": "Black Widow",
-        "effect": "Black Widow drops bonus loot"
+        "name": "Black Widow Base",
+        "effect": "Bonus loot from the Black Widow Mouse"
       },
       {
         "name": "Mining",
@@ -232,6 +232,10 @@
       {
         "name": "(Maniacal) Brain Extractor",
         "effect": "Drops brain bits from zombie mice"
+      },
+      {
+        "name": "Creepy Coffin",
+        "effect": "Get an extra slat when one drops"
       },
       {
         "name": "Skello-Ton",
@@ -256,8 +260,8 @@
         "effect": "Drops brain bits"
       },
       {
-        "name": "Black Widow",
-        "effect": "Black Widow drops bonus loot"
+        "name": "Black Widow Base",
+        "effect": "Bonus loot from the Black Widow Mouse"
       },
       {
         "name": "(Super) Brain",
@@ -270,8 +274,8 @@
     "location": "Training Grounds",
     "effects": [
       {
-        "name": "Black Widow",
-        "effect": "Black Widow drops bonus loot"
+        "name": "Black Widow Base",
+        "effect": "Bonus loot from the Black Widow Mouse"
       }
     ]
   },
@@ -300,8 +304,8 @@
     "location": "Catacombs",
     "effects": [
       {
-        "name": "Black Widow",
-        "effect": "Black Widow drops bonus loot"
+        "name": "Black Widow Base",
+        "effect": "Bonus loot from the Black Widow Mouse"
       },
       {
         "name": "(Maniacal) Brain Extractor",
@@ -322,8 +326,8 @@
         "effect": "Drops extra runes"
       },
       {
-        "name": "Black Widow",
-        "effect": "Black Widow drops bonus loot"
+        "name": "Black Widow Base",
+        "effect": "Bonus loot from the Black Widow Mouse"
       },
       {
         "name": "(Maniacal) Brain Extractor",
@@ -340,8 +344,8 @@
     "location": "Acolyte Realm",
     "effects": [
       {
-        "name": "Black Widow",
-        "effect": "Black Widow drops bonus loot"
+        "name": "Black Widow Base",
+        "effect": "Bonus loot from the Black Widow Mouse"
       },
       {
         "name": "Festive Winter Timepiece",
@@ -368,6 +372,14 @@
       {
         "name": "Vegetation",
         "effect": "When a seed drops, get a matching pepper"
+      },
+      {
+        "name": "Chrome Tribal Vegetation Kaboom Base",
+        "effect": "Increases tribal loot drops, including seeds. When a seed drops, get a matching pepper."
+      },
+      {
+        "name": "Ultimate Chrome Base",
+        "effect": "Increases tribal loot drops, including seeds. When a seed drops, get a matching pepper."
       }
     ]
   },
@@ -376,8 +388,8 @@
     "location": "Derr Dunes",
     "effects": [
       {
-        "name": "Black Widow",
-        "effect": "Black Widow drops bonus loot"
+        "name": "Black Widow Base",
+        "effect": "Bonus loot from the Black Widow Mouse"
       },
       {
         "name": "Derr Power",
@@ -390,8 +402,8 @@
     "location": "Elub Shore",
     "effects": [
       {
-        "name": "Black Widow",
-        "effect": "Black Widow drops bonus loot"
+        "name": "Black Widow Base",
+        "effect": "Bonus loot from the Black Widow Mouse"
       },
       {
         "name": "Elub Power",
@@ -404,8 +416,8 @@
     "location": "Nerg Plains",
     "effects": [
       {
-        "name": "Black Widow",
-        "effect": "Black Widow drops bonus loot"
+        "name": "Black Widow Base",
+        "effect": "Bonus loot from the Black Widow Mouse"
       },
       {
         "name": "Nerg Power",
@@ -500,12 +512,20 @@
         "effect": "Instacatch Battering Ram"
       },
       {
-        "name": "Nightlight",
-        "effect": "The darker the night the more bonus"
-      },
-      {
         "name": "Electromagnetic Meteorite",
         "effect": "Makes meteorites in the night, sometimes"
+      },
+      {
+        "name": "Chrome Electromagnetic Meteorite",
+        "effect": "Makes meteorites in the night, sometimes"
+      },
+      {
+        "name": "Ultimate Chrome Base",
+        "effect": "Makes meteorites in the night, sometimes"
+      },
+      {
+        "name": "Nightlight",
+        "effect": "The darker the night the more bonus"
       }
     ]
   },
@@ -515,7 +535,15 @@
     "effects": [
       {
         "name": "Queso Cannonstorm",
-        "effect": "Turns 5 solidified amber queso into something else . Yes, including a rib - we know."
+        "effect": "Turns 5 solidified amber queso into something else. Yes, including a rib - we know."
+      },
+      {
+        "name": "Chrome Queso Cannonstorm",
+        "effect": "Turns 5 solidified amber queso into something else. Yes, including a rib - we know."
+      },
+      {
+        "name": "Ultimate Chrome Base",
+        "effect": "Turns 5 solidified amber queso into something else. Yes, including a rib - we know."
       },
       {
         "name": "Queso Factory",
@@ -732,6 +760,14 @@
         "effect": "Uses a flameshard, creates random loot from these areas"
       },
       {
+        "name": "Chrome Desert Heater Base",
+        "effect": "Uses a flameshard, creates random loot from these areas. Mice drop additional loot."
+      },
+      {
+        "name": "Ultimate Chrome Base",
+        "effect": "Uses a flameshard, creates random loot from these areas. Mice drop additional loot."
+      },
+      {
         "name": "Warden Slayer",
         "effect": "Large bonus during wave 4"
       },
@@ -771,6 +807,14 @@
         "effect": "Random essences added to inventory"
       },
       {
+        "name": "Chrome Essential Living Garden base",
+        "effect": "Random essences added to inventory and increases petals dropped"
+      },
+      {
+        "name": "Ultimate Chrome Base",
+        "effect": "Random essences added to inventory and increases petals dropped"
+      },
+      {
         "name": "Double Sponge",
         "effect": "Double the dewdrops dropped"
       }
@@ -782,6 +826,14 @@
     "effects": [
       {
         "name": "Curse Breaker",
+        "effect": "50% chance to break a curse"
+      },
+      {
+        "name": "Chrome Essential Living Garden base",
+        "effect": "50% chance to break a curse"
+      },
+      {
+        "name": "Ultimate Chrome Base",
         "effect": "50% chance to break a curse"
       },
       {
@@ -819,6 +871,14 @@
         "effect": "50% chance to break a curse"
       },
       {
+        "name": "Chrome Essential Living Garden base",
+        "effect": "50% chance to break a curse"
+      },
+      {
+        "name": "Ultimate Chrome Base",
+        "effect": "50% chance to break a curse"
+      },
+      {
         "name": "Safeguard",
         "effect": "Avoid cursing mice"
       }
@@ -830,6 +890,14 @@
     "effects": [
       {
         "name": "Smelly Sodium",
+        "effect": "Attract King Grub at 50 salt without a charm; adds a salt when salting"
+      },
+      {
+        "name": "Chrome Essential Living Garden base",
+        "effect": "Attract King Grub at 50 salt without a charm; adds a salt when salting"
+      },
+      {
+        "name": "Ultimate Chrome Base",
         "effect": "Attract King Grub at 50 salt without a charm; adds a salt when salting"
       },
       {
@@ -853,6 +921,10 @@
       {
         "name": "Gemology Base",
         "effect": "Changes ARs for better drop rates"
+      },
+      {
+        "name": "Nightshade Farming",
+        "effect": "Adds a nightshade when one is dropped"
       },
       {
         "name": "Gemstone Boost",
@@ -893,6 +965,10 @@
         "effect": "Repels Shadow Stalker"
       },
       {
+        "name": "Nightshade Farming",
+        "effect": "Adds a dropped nightshade if one was dropped"
+      },
+      {
         "name": "Compass Magnet Charm",
         "effect": "Blocks dead end clues (100%). Occasionally removes one (30%)."
       }
@@ -903,8 +979,16 @@
     "location": "Zokor",
     "effects": [
       {
-        "name": "Thief Base",
+        "name": "(Chrome) Thief Base",
         "effect": "Can toggle between 50% chance to not lose any stealth OR lose double stealth but get double district loot"
+      },
+      {
+        "name": "Ultimate Chrome Base",
+        "effect": "Can toggle between 50% chance to not lose any stealth OR lose double stealth but get double district loot"
+      },
+      {
+        "name": "Nightshade Farming",
+        "effect": "Adds a dropped nightshade if one was dropped"
       }
     ]
   },
@@ -923,6 +1007,14 @@
       {
         "name": "Storm Condenser Base",
         "effect": "Keeps storm levels from increasing (Dragoon, eg)"
+      },
+      {
+        "name": "Chrome Stormcaster Base",
+        "effect": "Keeps storm levels from increasing (Dragoon, eg) OR Doubles increase of storm levels"
+      },
+      {
+        "name": "Ultimate Chrome Base",
+        "effect": "Keeps storm levels from increasing (Dragoon, eg) OR Doubles increase of storm levels"
       }
     ]
   },
@@ -933,6 +1025,10 @@
       {
         "name": "S.S. Scoundrel Sleigher",
         "effect": "Chance to instacatch pirates (33%)"
+      },
+      {
+        "name": "C.L.A.W. Machine",
+        "effect": "Doubles Corsair Curd and Sky Pirate Seal drops"
       },
       {
         "name": "Polar Vortex",
@@ -957,6 +1053,16 @@
       {
         "name": "Rainbow Diamond Refractor Base",
         "effect": "Chance at +1 area-specific loot"
+      }
+    ]
+  },
+  {
+    "region": "Hollow Heights",
+    "location": "Cerulean Skyport",
+    "effects": [
+      {
+        "name": "C.L.A.W. Machine",
+        "effect": "Doubles Corsair Curd and Sky Pirate Seal drops"
       }
     ]
   },
@@ -1298,7 +1404,7 @@
       },
       {
         "name": "All Season Express Track Base",
-        "effect": "With snowball charms : 100% chance to upgrade With power charms : 10% chance to upgrade"
+        "effect": "With snowball charms: 100% chance to upgrade With power charms: 10% chance to upgrade"
       },
       {
         "name": "Rift Mist Diffuser Base",
@@ -1307,6 +1413,14 @@
       {
         "name": "Rainbow Diamond Refractor Base",
         "effect": "Chance roll up Ultimate Ancient and Rainbow Charms (25%)"
+      },
+      {
+        "name": "Chrome Base",
+        "effect": "Creates Chrome Skull every 300 hunts With chrome charms: 100% chance to upgrade"
+      },
+      {
+        "name": "Ultimate Chrome Base",
+        "effect": "Creates Chrome Skull every 300 hunts With chrome charms: 100% chance to upgrade"
       }
     ]
   },
