@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!group) return { title: 'Not Found' };
 
   return pageMetadata({
-    title: `${group.name} — MouseHunt Mice`,
+    title: `${group.name}: MouseHunt Mouse Group`,
     description:
       cleanDescription(group.description).slice(0, 160) || `Every mouse in the ${group.name} group in MouseHunt.`,
     path: `/groups/${slug}`,

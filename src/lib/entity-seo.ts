@@ -65,7 +65,7 @@ export function mouseSeo(mouse: Mouse, attraction: AttractionRow[]) {
   const fallback = cleanDescription(mouse.description ?? '');
 
   return {
-    title: `${mouse.name} — How to Catch, Minluck & Attraction Rates`,
+    title: `${mouse.name}: How to Catch, Minluck & Attraction Rates`,
     description:
       sentences(where, luck, worth) ||
       trim(fallback) ||
@@ -107,7 +107,7 @@ export function itemSeo(item: GameItem, { contents, drops }: { contents: Convert
         : `Can contain ${top}.`;
 
     return {
-      title: `${item.name} — What's Inside & Drop Odds`,
+      title: `${item.name}: What's Inside & Drop Odds`,
       description: sentences(yields, 'Full contents with the odds for each, plus where to get one.'),
     };
   }
@@ -123,7 +123,7 @@ export function itemSeo(item: GameItem, { contents, drops }: { contents: Convert
     ].filter(Boolean);
 
     return {
-      title: `${item.name} — Power, Luck & Stats`,
+      title: `${item.name}: Power, Luck & Stats`,
       description: sentences(
         `${item.name}: ${parts.join(', ')}.`,
         stats.has_cheese_effect && stats.cheese_effect ? `${stats.cheese_effect}.` : null,
@@ -136,7 +136,7 @@ export function itemSeo(item: GameItem, { contents, drops }: { contents: Convert
   const bestDrop = drops[0];
   if (bestDrop) {
     return {
-      title: `${item.name} — Where It Drops & Drop Rates`,
+      title: `${item.name}: Where It Drops & Drop Rates`,
       description: sentences(
         `${item.name} drops from ${bestDrop.mouse_name} in ${bestDrop.locations[0]}, at a ${bestDrop.drop_likelihood}% drop rate.`,
         drops.length > 1 ? `Dropped by ${formatNumber(drops.length)} mice.` : null,
@@ -145,7 +145,7 @@ export function itemSeo(item: GameItem, { contents, drops }: { contents: Convert
   }
 
   return {
-    title: `${item.name} — MouseHunt Item`,
+    title: `${item.name}: MouseHunt Item`,
     description: trim(fallback) || `Stats, drop rates, and where to find the ${item.name} in MouseHunt.`,
   };
 }

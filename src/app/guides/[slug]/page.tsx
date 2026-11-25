@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   return pageMetadata({
-    title: `${guide.name} — MouseHunt Guide`,
+    title: `${guide.name}: MouseHunt Guide`,
     description: guide.description,
     path: guide.url,
     type: 'article',
