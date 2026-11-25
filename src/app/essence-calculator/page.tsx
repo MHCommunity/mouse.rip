@@ -60,12 +60,9 @@ function Summary({ finalCounts, crafted }: { finalCounts: number[]; crafted: boo
     .filter((e, idx) => e.val > 0 && idx !== highestIdx)
     .reverse();
 
-  const formattedRemaining = remaining.map((e) => `${formatNumber(e.val)} ${e.name}`).join(', ');
-  const lastComma = formattedRemaining.lastIndexOf(', ');
-  const prettyRemaining =
-    lastComma !== -1
-      ? formattedRemaining.slice(0, lastComma) + ' and' + formattedRemaining.slice(lastComma + 1)
-      : formattedRemaining;
+  const prettyRemaining = new Intl.ListFormat('en', { type: 'conjunction' }).format(
+    remaining.map((e) => `${formatNumber(e.val)} ${e.name}`),
+  );
 
   return (
     <>
