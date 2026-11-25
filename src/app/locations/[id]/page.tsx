@@ -32,11 +32,13 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   }
 
   const where = location.article ? location.article : location.name;
+  // Most of the page is the mouse list, so the title leads with that.
+  const hasMice = Boolean(location.name && getLocationMiceByCheese(location.name).total > 0);
   return pageMetadata({
-    title: `MouseHunt Resources for ${where}`,
+    title: hasMice ? `${location.name}: Mice, Best Cheese & Minlucks` : `${location.name ?? where}: MouseHunt Location`,
     description: location.description
       ? cleanDescription(location.description)
-      : `Guides, tools, and community resources for ${where} in MouseHunt.`,
+      : `The mice found in ${where} in MouseHunt, the cheese that attracts each one, and their minlucks.`,
     path: `/locations/${resolvedParams.id}`,
     image: location.name
       ? ogCard({
@@ -67,6 +69,9 @@ export function generateStaticParams() {
 
   return paths.flat();
 }
+
+/** A resource tagged to more locations than this is general advice, not about this place. */
+const MAX_LOCAL_LOCATIONS = 10;
 
 const linkClass =
   'underline decoration-zinc-300 underline-offset-2 hover:text-zinc-900 dark:decoration-zinc-600 dark:hover:text-zinc-200';
@@ -105,11 +110,13 @@ export default async function Location({ params }: { params: Promise<{ id: strin
   const environmentKey = location.environmentId ?? location.id;
   const locationItems = getItemsForEnvironment(environmentKey);
 
-  // Guides and tools written for this location lead the page; the site-wide ones
-  // (useful everywhere, the same on every location) wait at the bottom.
+  // Guides and tools written for this location lead the page. Site-wide ones, and broad ones
+  // like the Essentials guide that's tagged to every early location, wait at the bottom.
   const resources = getResourcesForLocation(resolvedParams.id);
-  const localResources = resources.filter((resource) => !resource.locations?.includes('all'));
-  const generalResources = resources.filter((resource) => resource.locations?.includes('all'));
+  const isLocal = (resource: (typeof resources)[number]) =>
+    !resource.locations?.includes('all') && (resource.locations?.length ?? 0) <= MAX_LOCAL_LOCATIONS;
+  const localResources = resources.filter(isLocal);
+  const generalResources = resources.filter((resource) => !isLocal(resource));
 
   return (
     <WithTimers enabled={rotating}>
@@ -229,7 +236,7 @@ export default async function Location({ params }: { params: Promise<{ id: strin
 
       {generalResources.length > 0 && (
         <section className="mt-10">
-          <SectionHeading>Tools for every location</SectionHeading>
+          <SectionHeading>More guides and tools</SectionHeading>
           <ItemList items={generalResources} headingLevel={3} compact />
         </section>
       )}
