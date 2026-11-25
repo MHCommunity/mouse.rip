@@ -128,9 +128,14 @@ export function RankUpCalculator({ titles, mice }: { titles: RankTitle[]; mice: 
         </div>
       </form>
 
-      <section aria-live="polite" className="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+      <section
+        aria-live="polite"
+        className="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900"
+      >
         {!target ? (
-          <p className="text-sm text-zinc-700 dark:text-zinc-300">{current.name} is the top title, so there&rsquo;s nowhere left to climb.</p>
+          <p className="text-sm text-zinc-700 dark:text-zinc-300">
+            {current.name} is the top title, so there&rsquo;s nowhere left to climb.
+          </p>
         ) : needed === 0 ? (
           <p className="text-sm text-zinc-700 dark:text-zinc-300">
             With {formatNumber(Math.floor(wisdom))} wisdom you&rsquo;ve already reached{' '}
@@ -161,7 +166,9 @@ export function RankUpCalculator({ titles, mice }: { titles: RankTitle[]; mice: 
                 />
                 <datalist id="wisdom-mice">
                   {mice.map((m) => (
-                    <option key={m.slug} value={m.name} />
+                    <option key={m.slug} value={m.name}>
+                      {m.name}
+                    </option>
                   ))}
                 </datalist>
               </label>
@@ -171,7 +178,10 @@ export function RankUpCalculator({ titles, mice }: { titles: RankTitle[]; mice: 
                     {formatNumber(Math.ceil(needed / mouse.wisdom))}
                   </strong>{' '}
                   catches of{' '}
-                  <Link href={`/mice/${mouse.slug}`} className="font-medium text-pink-700 hover:text-pink-900 dark:text-pink-300">
+                  <Link
+                    href={`/mice/${mouse.slug}`}
+                    className="font-medium text-pink-700 hover:text-pink-900 dark:text-pink-300"
+                  >
                     {mouse.name}
                   </Link>
                   , at {formatNumber(mouse.wisdom)} wisdom each.

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { TrophyIcon } from '@heroicons/react/20/solid';
+import { Link } from '@/components/link';
 import { PageHeader } from '@/components/page-header';
 
 import { getTitles } from '@/lib/site-data';
@@ -123,7 +124,14 @@ export default function TitlesPage() {
             >
               wisdom
             </a>{' '}
-            from catching mice.
+            from catching mice. The{' '}
+            <Link
+              href="/rank-up-calculator"
+              className="font-medium text-amber-700 underline decoration-amber-300 underline-offset-2 transition-colors hover:text-amber-800 hover:decoration-amber-500 dark:text-amber-300 dark:decoration-amber-700 dark:hover:text-amber-200"
+            >
+              rank-up calculator
+            </Link>{' '}
+            works out how much more you need.
           </>
         }
         count={titles.length}

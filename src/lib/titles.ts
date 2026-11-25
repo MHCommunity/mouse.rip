@@ -23,4 +23,3 @@ export const WISDOM_BY_TITLE: Record<string, number> = {
   sage: 1_771_580_048,
   fabled: 3_897_476_106,
 };
-
