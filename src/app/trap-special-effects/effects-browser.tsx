@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { Link } from '@/components/link';
@@ -129,17 +130,20 @@ export function EffectsBrowser({
                         {effect.locations.length} locations:{' '}
                         {effect.locations.map((location, i) => (
                           <React.Fragment key={location.key}>
-                            {i > 0 && ', '}
-                            <button
-                              type="button"
-                              onClick={() => {
-                                choose(location.key);
-                                pickerRef.current?.scrollIntoView({ block: 'start' });
-                              }}
-                              className={`${linkClasses} focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500`}
-                            >
-                              {location.name}
-                            </button>
+                            {i > 0 && ' '}
+                            <span className="whitespace-nowrap">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  choose(location.key);
+                                  pickerRef.current?.scrollIntoView({ block: 'start' });
+                                }}
+                                className={`${linkClasses} focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500`}
+                              >
+                                {location.name}
+                              </button>
+                              {i < effect.locations.length - 1 && ','}
+                            </span>
                           </React.Fragment>
                         ))}
                       </p>
@@ -150,22 +154,44 @@ export function EffectsBrowser({
             </section>
           )}
 
-          {regions.map(({ region, locations: inRegion }) => {
-            const cards = inRegion
-              .map((location) => ({ location, effects: location.effects.filter((effect) => !isShared(effect)) }))
-              .filter(({ effects }) => effects.length > 0);
-            if (cards.length === 0) return null;
-            return (
-              <section key={region}>
-                <SectionHeading>{region}</SectionHeading>
-                <div className="mt-4 space-y-4">
-                  {cards.map(({ location, effects }) => (
-                    <LocationCard key={location.key} location={location} effects={effects} />
-                  ))}
-                </div>
-              </section>
-            );
-          })}
+          <section aria-labelledby="region-effects-heading">
+            <SectionHeading id="region-effects-heading">By region</SectionHeading>
+            {/* Folded, since every region open runs to thousands of pixels. Find in page still opens a match. */}
+            <div className="mt-4 space-y-3">
+              {regions.map(({ region, locations: inRegion }) => {
+                const cards = inRegion
+                  .map((location) => ({ location, effects: location.effects.filter((effect) => !isShared(effect)) }))
+                  .filter(({ effects }) => effects.length > 0);
+                if (cards.length === 0) return null;
+                const effectCount = cards.reduce((sum, { effects }) => sum + effects.length, 0);
+                return (
+                  <details
+                    key={region}
+                    className="group rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
+                  >
+                    <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 rounded-xl px-5 py-3 hover:bg-pink-50/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:hover:bg-pink-950/20 [&::-webkit-details-marker]:hidden">
+                      <span>
+                        <span className="block text-sm font-semibold text-zinc-900 dark:text-zinc-100">{region}</span>
+                        <span className="mt-0.5 block text-xs/5 text-zinc-600 dark:text-zinc-400">
+                          {cards.length} {cards.length === 1 ? 'location' : 'locations'}, {effectCount}{' '}
+                          {effectCount === 1 ? 'effect' : 'effects'}
+                        </span>
+                      </span>
+                      <ChevronDownIcon
+                        className="size-5 shrink-0 text-zinc-500 transition-transform group-open:rotate-180 motion-reduce:transition-none dark:text-zinc-400"
+                        aria-hidden="true"
+                      />
+                    </summary>
+                    <div className="divide-y divide-zinc-100 border-t border-zinc-200 dark:divide-zinc-800 dark:border-zinc-800">
+                      {cards.map(({ location, effects }) => (
+                        <LocationEffects key={location.key} location={location} effects={effects} />
+                      ))}
+                    </div>
+                  </details>
+                );
+              })}
+            </div>
+          </section>
         </div>
       )}
     </>
@@ -174,7 +200,15 @@ export function EffectsBrowser({
 
 function LocationCard({ location, effects }: { location: EffectLocation; effects: TrapEffect[] }) {
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white px-5 py-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+      <LocationEffects location={location} effects={effects} />
+    </div>
+  );
+}
+
+function LocationEffects({ location, effects }: { location: EffectLocation; effects: TrapEffect[] }) {
+  return (
+    <div className="px-5 py-4">
       <h3 className="text-base font-semibold tracking-tight text-zinc-900 dark:text-white">
         {location.href ? (
           <Link href={location.href} className={linkClasses}>
