@@ -94,7 +94,7 @@ export function MiceBrowser({ groups }: { groups: SlimGroup[] }) {
 
   return (
     <div>
-      <div className="flex items-center gap-2 rounded-xl border border-zinc-950/45 bg-white px-4 shadow-sm focus-within:border-emerald-600 focus-within:ring-2 focus-within:ring-emerald-500/30 dark:border-white/35 dark:bg-zinc-900 dark:focus-within:border-emerald-400">
+      <div className="flex items-center gap-2 rounded-xl border border-zinc-950/45 bg-white px-4 shadow-sm focus-within:border-pink-600 focus-within:ring-2 focus-within:ring-pink-500/30 dark:border-white/35 dark:bg-zinc-900 dark:focus-within:border-pink-400">
         <MagnifyingGlassIcon className="size-5 shrink-0 text-zinc-500 dark:text-zinc-400" aria-hidden="true" />
         <input
           type="text"
@@ -118,9 +118,9 @@ export function MiceBrowser({ groups }: { groups: SlimGroup[] }) {
               key={type}
               type="button"
               onClick={() => setActivePower((current) => (current === type ? null : type))}
-              className={`rounded-md px-2 py-1 text-xs font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
+              className={`rounded-md px-2 py-1 text-xs font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 ${
                 POWER_TYPE_CHIP[type]
-              } ${active ? 'ring-2 ring-emerald-500' : ''} ${activePower && !active ? 'opacity-50' : ''}`}
+              } ${active ? 'ring-2 ring-pink-500' : ''} ${activePower && !active ? 'opacity-50' : ''}`}
             >
               {powerTypeLabel(type)}
             </button>
@@ -140,7 +140,21 @@ export function MiceBrowser({ groups }: { groups: SlimGroup[] }) {
             ))}
           </div>
         ) : results.length === 0 ? (
-          <p className="mt-10 text-sm text-zinc-500 dark:text-zinc-400">No mice match your filters.</p>
+          <p className="mt-10 text-sm text-zinc-600 dark:text-zinc-400">
+            No mice match
+            {query.trim() && <> &ldquo;{query.trim()}&rdquo;</>}
+            {activePower && <> weak to {powerTypeLabel(activePower)}</>}.{' '}
+            <button
+              type="button"
+              className="font-medium text-pink-700 underline underline-offset-2 hover:text-pink-900 dark:text-pink-300"
+              onClick={() => {
+                setQuery('');
+                setActivePower(null);
+              }}
+            >
+              Clear filters
+            </button>
+          </p>
         ) : (
           <ul className="mt-8 flex flex-wrap gap-2">
             {results.slice(0, 400).map((mouse) => {
@@ -150,7 +164,7 @@ export function MiceBrowser({ groups }: { groups: SlimGroup[] }) {
                   <Link
                     href={`/mice/${slug}`}
                     prefetch={false}
-                    className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 shadow-sm transition hover:border-emerald-300 hover:text-emerald-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-emerald-800 dark:hover:text-emerald-300"
+                    className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 shadow-sm transition hover:border-pink-300 hover:text-pink-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-pink-800 dark:hover:text-pink-300"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={mouseImageUrl(slug)} alt="" loading="lazy" className="size-6 shrink-0" />
@@ -174,7 +188,7 @@ export function MiceBrowser({ groups }: { groups: SlimGroup[] }) {
               <Link
                 key={group.slug}
                 href={`/groups/${group.slug}`}
-                className="group flex flex-col overflow-hidden rounded-lg border border-zinc-200 bg-white transition-colors hover:border-emerald-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-emerald-800"
+                className="group flex flex-col overflow-hidden rounded-lg border border-zinc-200 bg-white transition-colors hover:border-pink-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-pink-800"
               >
                 {/* The game's banner for the group: its mice, painted together. */}
                 <GameImage
@@ -185,7 +199,7 @@ export function MiceBrowser({ groups }: { groups: SlimGroup[] }) {
                 />
                 <span className="flex flex-1 flex-col px-4 pt-3 pb-4">
                   <span className="flex items-baseline justify-between gap-2">
-                    <span className="font-semibold tracking-tight text-zinc-900 transition-colors group-hover:text-emerald-700 dark:text-white dark:group-hover:text-emerald-300">
+                    <span className="font-semibold tracking-tight text-zinc-900 transition-colors group-hover:text-pink-700 dark:text-white dark:group-hover:text-pink-300">
                       {group.name}
                     </span>
                     <span className="shrink-0 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">

@@ -25,7 +25,7 @@ function useDebouncedValue<T>(value: T, delay: number) {
 }
 
 const pillBase =
-  'shrink-0 rounded-full px-3 py-1 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500';
+  'shrink-0 rounded-full px-3 py-1 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500';
 
 function filtersFromUrl(params: URLSearchParams, classificationOrder: string[]) {
   const type = params.get('type');
@@ -204,7 +204,7 @@ export function ItemsBrowser({
               onClick={() => setActive(null)}
               className={`${pillBase} ${
                 active === null
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-pink-600 text-white'
                   : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
               }`}
             >
@@ -219,7 +219,7 @@ export function ItemsBrowser({
                   onClick={() => setActive((current) => (current === key ? null : key))}
                   className={`${pillBase} ${
                     active === key
-                      ? 'bg-blue-600 text-white'
+                      ? 'bg-pink-600 text-white'
                       : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
                   }`}
                 >
@@ -236,7 +236,7 @@ export function ItemsBrowser({
             type="checkbox"
             checked={tradableOnly}
             onChange={(event) => setTradableOnly(event.target.checked)}
-            className="size-4 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 dark:border-zinc-600"
+            className="size-4 rounded border-zinc-300 text-pink-600 focus:ring-pink-500 dark:border-zinc-600"
           />
           Tradable only
         </label>
@@ -247,7 +247,7 @@ export function ItemsBrowser({
           <button
             type="button"
             onClick={() => setTag(null)}
-            className="inline-flex items-center gap-1.5 rounded-md bg-blue-600 px-2 py-1 text-xs font-medium text-white transition hover:bg-blue-700"
+            className="inline-flex items-center gap-1.5 rounded-md bg-pink-600 px-2 py-1 text-xs font-medium text-white transition hover:bg-pink-700"
           >
             Tagged &ldquo;{tag.replaceAll('_', ' ')}&rdquo;
             <span aria-hidden="true">×</span>
@@ -264,10 +264,10 @@ export function ItemsBrowser({
               <Link
                 key={key}
                 href={`/items/type/${key}`}
-                className="group flex flex-col rounded-xl border border-zinc-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md motion-reduce:transform-none dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-blue-800"
+                className="group flex flex-col rounded-xl border border-zinc-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-pink-300 hover:shadow-md motion-reduce:transform-none dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-pink-800"
               >
                 <div className="flex w-full items-baseline justify-between gap-2">
-                  <span className="font-semibold tracking-tight text-zinc-900 transition-colors group-hover:text-blue-700 dark:text-white dark:group-hover:text-blue-300">
+                  <span className="font-semibold tracking-tight text-zinc-900 transition-colors group-hover:text-pink-700 dark:text-white dark:group-hover:text-pink-300">
                     {classificationName(key)}
                   </span>
                   <span className="shrink-0 text-xs tabular-nums text-zinc-400 dark:text-zinc-500">
@@ -288,7 +288,7 @@ export function ItemsBrowser({
                   <li key={key}>
                     <Link
                       href={`/items/type/${key}`}
-                      className="text-zinc-700 hover:text-blue-700 hover:underline dark:text-zinc-300 dark:hover:text-blue-300"
+                      className="text-zinc-700 hover:text-pink-700 hover:underline dark:text-zinc-300 dark:hover:text-pink-300"
                     >
                       {classificationName(key)}
                     </Link>
@@ -331,7 +331,7 @@ export function ItemsBrowser({
                       <Link
                         href={`/items/${slug}`}
                         prefetch={false}
-                        className="flex items-center gap-2 py-1 text-sm text-zinc-600 transition hover:text-blue-700 dark:text-zinc-400 dark:hover:text-blue-300"
+                        className="flex items-center gap-2 py-1 text-sm text-zinc-600 transition hover:text-pink-700 dark:text-zinc-400 dark:hover:text-pink-300"
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
@@ -357,7 +357,7 @@ export function ItemsBrowser({
               <button
                 type="button"
                 onClick={() => setExpandedFor(filterKey)}
-                className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                className="font-medium text-pink-700 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200"
               >
                 Show all
               </button>
