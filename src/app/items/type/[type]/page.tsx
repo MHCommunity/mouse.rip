@@ -6,7 +6,14 @@ import { JsonLd } from '@/components/json-ld';
 import { Link } from 'next-view-transitions';
 
 import { getAllGameItems, itemSlug } from '@/lib/game-data';
-import { CLASSIFICATION_DESCRIPTIONS, classificationLabel, orderClassifications } from '@/lib/item-classifications';
+import {
+  CLASSIFICATION_DESCRIPTIONS,
+  classificationLabel,
+  itemSubgroup,
+  orderClassifications,
+  subgroupLabel,
+  subgroupsPresent,
+} from '@/lib/item-classifications';
 import { pageMetadata, ogCard } from '@/seo';
 import { formatNumber } from '@/utils';
 import { itemImageUrl } from '@/lib/image-urls';
@@ -61,6 +68,15 @@ export default async function ItemTypePage({ params }: { params: Promise<{ type:
 
   const label = classificationLabel(type);
 
+  // The big types are split into the groups the game uses, each its own section.
+  const byGroup = new Map<string, typeof items>();
+  for (const item of items) {
+    const id = itemSubgroup(item);
+    if (id) byGroup.set(id, [...(byGroup.get(id) ?? []), item]);
+  }
+  const groups =
+    byGroup.size > 1 ? subgroupsPresent(type, byGroup.keys()).map((id) => ({ id, items: byGroup.get(id)! })) : null;
+
   return (
     <div>
       <JsonLd
@@ -88,23 +104,62 @@ export default async function ItemTypePage({ params }: { params: Promise<{ type:
         in total.
       </p>
 
-      <ul className="mt-8 columns-2 gap-x-6 sm:columns-3 lg:columns-4">
-        {items.map((item) => {
-          const slug = itemSlug(item.type);
-          return (
-            <li key={item.id} className="break-inside-avoid">
-              <Link
-                href={`/items/${slug}`}
-                className="flex items-center gap-2 py-1 text-sm text-zinc-600 transition hover:text-blue-700 dark:text-zinc-400 dark:hover:text-blue-300"
+      {groups ? (
+        <>
+          <nav aria-label={`${label} by group`} className="mt-6 flex flex-wrap gap-2">
+            {groups.map(({ id, items: inGroup }) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                className="rounded-full bg-zinc-100 px-3 py-1 text-sm font-medium text-zinc-700 transition hover:bg-pink-50 hover:text-pink-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-pink-950/40 dark:hover:text-pink-300"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={itemImageUrl(slug)} alt="" loading="lazy" className="size-5 shrink-0 rounded" />
-                <span className="truncate">{item.name}</span>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+                {subgroupLabel(type, id)}
+                <span className="ml-1.5 text-xs tabular-nums opacity-60">{formatNumber(inGroup.length)}</span>
+              </a>
+            ))}
+          </nav>
+          <div className="mt-10 space-y-10">
+            {groups.map(({ id, items: inGroup }) => (
+              <section key={id} id={id} aria-labelledby={`${id}-heading`} className="scroll-mt-20">
+                <h2
+                  id={`${id}-heading`}
+                  className="text-base font-semibold tracking-tight text-zinc-900 dark:text-white"
+                >
+                  {subgroupLabel(type, id)}
+                  <span className="ml-2 text-xs font-normal tabular-nums text-zinc-500 dark:text-zinc-400">
+                    {formatNumber(inGroup.length)}
+                  </span>
+                </h2>
+                <ItemColumns items={inGroup} />
+              </section>
+            ))}
+          </div>
+        </>
+      ) : (
+        <ItemColumns items={items} className="mt-8" />
+      )}
     </div>
+  );
+}
+
+function ItemColumns({ items, className }: { items: ReturnType<typeof itemsOfType>; className?: string }) {
+  return (
+    <ul className={`${className ?? 'mt-3'} columns-2 gap-x-6 sm:columns-3 lg:columns-4`}>
+      {items.map((item) => {
+        const slug = itemSlug(item.type);
+        return (
+          <li key={item.id} className="break-inside-avoid">
+            <Link
+              href={`/items/${slug}`}
+              className="flex items-center gap-2 py-1 text-sm text-zinc-600 transition hover:text-pink-700 dark:text-zinc-400 dark:hover:text-pink-300"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={itemImageUrl(slug)} alt="" loading="lazy" className="size-5 shrink-0 rounded" />
+              <span className="truncate">{item.name}</span>
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
   );
 }

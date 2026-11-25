@@ -7,7 +7,15 @@ import { useSearchParams } from 'next/navigation';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 
 import { loadItemIndex, type IndexedItem } from '@/lib/client-index';
-import { CLASSIFICATION_DESCRIPTIONS, classificationName } from '@/lib/item-classifications';
+import {
+  CLASSIFICATION_DESCRIPTIONS,
+  SUBGROUPS,
+  classificationLabel,
+  classificationName,
+  itemSubgroup,
+  subgroupLabel,
+  subgroupsPresent,
+} from '@/lib/item-classifications';
 import { itemImageUrl } from '@/lib/image-urls';
 import { formatNumber } from '@/utils';
 import { SectionHeading } from '@/components/section-heading';
@@ -34,6 +42,7 @@ function filtersFromUrl(params: URLSearchParams, classificationOrder: string[]) 
     query: params.get('q') ?? '',
     tradableOnly: params.get('tradable') === '1',
     tag: params.get('tag') ?? null,
+    sub: params.get('sub') ?? null,
   };
 }
 
@@ -61,6 +70,13 @@ export function ItemsBrowser({
   const [tradableOnly, setTradableOnly] = useState(initial.tradableOnly);
   // Set only by following a tag link from an item page; cleared from here.
   const [tag, setTag] = useState<string | null>(initial.tag);
+  // A sub-group of the chosen type, for the types the game splits up.
+  const [sub, setSub] = useState<string | null>(initial.sub);
+  const subgroups = active ? SUBGROUPS[active] : undefined;
+  const chooseType = (key: string | null) => {
+    setActive(key);
+    setSub(null);
+  };
 
   // Reflect the active filters back into the URL so the view stays shareable.
   // replaceState feeds back into useSearchParams, so remember what we wrote to
@@ -78,12 +94,14 @@ export function ItemsBrowser({
       else params.delete('tradable');
       if (tag) params.set('tag', tag);
       else params.delete('tag');
+      if (sub) params.set('sub', sub);
+      else params.delete('sub');
       const next = params.toString();
       written.current = next;
       window.history.replaceState(null, '', next ? `?${next}` : window.location.pathname);
     }, 200);
     return () => clearTimeout(timer);
-  }, [active, query, tradableOnly, tag]);
+  }, [active, query, tradableOnly, tag, sub]);
 
   // A soft navigation (the sidebar's Items link, a /items?type= card) changes the
   // URL out from under us; adopt it so the browser doesn't stay stuck on the
@@ -95,6 +113,7 @@ export function ItemsBrowser({
     setQuery(next.query);
     setTradableOnly(next.tradableOnly);
     setTag(next.tag);
+    setSub(next.sub);
   }, [search, classificationOrder]);
 
   // Filtering 4,000+ items on every keystroke is wasted work; wait for a pause.
@@ -126,20 +145,30 @@ export function ItemsBrowser({
     [items],
   );
 
-  const grouped = useMemo(() => {
+  // Sections are types, or a split type's sub-groups once that type is chosen.
+  const { grouped, subCounts } = useMemo(() => {
     const q = debouncedQuery.trim().toLowerCase();
     const map = new Map<string, IndexedItem[]>();
+    const perSub: Record<string, number> = {};
     for (const { item, lowerName } of sortedItems) {
       if (active && item.classification !== active) continue;
       if (tradableOnly && !item.tradable) continue;
       if (tag && !item.tags?.includes(tag)) continue;
       if (q && !lowerName.includes(q)) continue;
-      const list = map.get(item.classification) ?? [];
+      const group = subgroups ? (itemSubgroup(item) ?? '') : item.classification;
+      if (subgroups) perSub[group] = (perSub[group] ?? 0) + 1;
+      if (sub && group !== sub) continue;
+      const list = map.get(group) ?? [];
       list.push(item);
-      map.set(item.classification, list);
+      map.set(group, list);
     }
-    return classificationOrder.filter((key) => map.has(key)).map((key) => [key, map.get(key)!] as const);
-  }, [sortedItems, debouncedQuery, active, tradableOnly, tag, classificationOrder]);
+    const order = active && subgroups ? subgroupsPresent(active, map.keys()) : classificationOrder;
+    return {
+      grouped: order.filter((key) => map.has(key)).map((key) => [key, map.get(key)!] as const),
+      subCounts: perSub,
+    };
+  }, [sortedItems, debouncedQuery, active, subgroups, sub, tradableOnly, tag, classificationOrder]);
+  const sectionName = (key: string) => (active && subgroups ? subgroupLabel(active, key) : classificationName(key));
 
   const total = grouped.reduce((sum, [, list]) => sum + list.length, 0);
 
@@ -159,7 +188,7 @@ export function ItemsBrowser({
 
   // Broad filters (a whole type, tradable only) can match thousands of items, so
   // render the first ROW_LIMIT until asked. Changing the filters re-caps it.
-  const filterKey = [debouncedQuery.trim(), active, tradableOnly, tag].join('|');
+  const filterKey = [debouncedQuery.trim(), active, sub, tradableOnly, tag].join('|');
   const [expandedFor, setExpandedFor] = useState<string | null>(null);
   const showAll = expandedFor === filterKey;
   const visible = useMemo(() => {
@@ -203,7 +232,7 @@ export function ItemsBrowser({
             <>
               <button
                 type="button"
-                onClick={() => setActive(null)}
+                onClick={() => chooseType(null)}
                 className={`${pillBase} ${
                   active === null
                     ? 'bg-pink-600 text-white'
@@ -218,7 +247,7 @@ export function ItemsBrowser({
                   <button
                     key={key}
                     type="button"
-                    onClick={() => setActive((current) => (current === key ? null : key))}
+                    onClick={() => chooseType(active === key ? null : key)}
                     className={`${pillBase} ${
                       active === key
                         ? 'bg-pink-600 text-white'
@@ -242,6 +271,33 @@ export function ItemsBrowser({
           Tradable only
         </label>
       </div>
+
+      {filtering && active && subgroups && items && (
+        <div
+          className="mt-3 flex flex-wrap items-center gap-2 border-l-2 border-pink-200 pl-3 dark:border-pink-900"
+          aria-label={`${classificationName(active)} groups`}
+          role="group"
+        >
+          {[null, ...subgroupsPresent(active, Object.keys(subCounts))].map((key) => (
+            <button
+              key={key ?? 'all'}
+              type="button"
+              onClick={() => setSub(key)}
+              aria-pressed={sub === key}
+              className={`${pillBase} ${
+                sub === key
+                  ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900'
+                  : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
+              }`}
+            >
+              {key ? subgroupLabel(active, key) : `All ${classificationLabel(active).toLowerCase()}`}
+              <span className="ml-1.5 text-xs tabular-nums opacity-60">
+                {formatNumber(key ? (subCounts[key] ?? 0) : Object.values(subCounts).reduce((a, b) => a + b, 0))}
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
 
       {tag && (
         <div className="mt-3">
@@ -319,7 +375,7 @@ export function ItemsBrowser({
           {visible.map(([key, list, shown]) => (
             <section key={key}>
               <h2 className="text-sm font-semibold tracking-tight text-zinc-900 dark:text-white">
-                {classificationName(key)}
+                {sectionName(key)}
                 <span className="ml-2 text-xs font-normal tabular-nums text-zinc-400 dark:text-zinc-500">
                   {formatNumber(list.length)}
                 </span>
