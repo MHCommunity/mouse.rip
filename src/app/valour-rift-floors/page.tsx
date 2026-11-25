@@ -36,7 +36,7 @@ export default function ValourRiftFloorsPage() {
   return (
     <div className="max-w-2xl">
       <PageHeader
-        title="Valour Rift Floors"
+        title="Valour Rift floors"
         description="Floor types in the Valour Rift tower repeat in a cycle of eight. Enter your floor to see what's coming next."
       />
       {/* useSearchParams needs a Suspense boundary so the header can still be prerendered. */}

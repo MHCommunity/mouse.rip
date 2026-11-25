@@ -54,7 +54,7 @@ export default function QuesoPumpCalculator() {
   return (
     <div className="max-w-3xl">
       <PageHeader
-        title="Queso Pump Calculator"
+        title="Queso pump calculator"
         description={
           <>
             Nachore upgrades the volcano pump in <PageLink href="/locations/queso-river">Queso Canyon</PageLink>. Enter

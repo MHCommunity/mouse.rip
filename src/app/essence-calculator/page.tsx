@@ -117,7 +117,7 @@ export default function EssenceCalculator() {
   return (
     <div className="max-w-3xl">
       <PageHeader
-        title="Essence Calculator"
+        title="Essence calculator"
         description={
           <>
             Enter how many of each essence you have to see what they craft up into. You can also copy your amounts from

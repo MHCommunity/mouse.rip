@@ -215,7 +215,7 @@
   },
   {
     "id": "valour-rift-floors",
-    "name": "Valour Rift Floors",
+    "name": "Valour Rift floors",
     "description": "See which floors are coming up in your Valour Rift run.",
     "url": "/valour-rift-floors",
     "category": "tool",
@@ -244,8 +244,8 @@
   },
   {
     "id": "essence-calculator",
-    "name": "Essence Calculator",
-    "description": "Calculate the amount of essences you can craft.",
+    "name": "Essence calculator",
+    "description": "See what your essences craft into.",
     "url": "/essence-calculator",
     "category": "tool",
     "tags": [
@@ -259,7 +259,7 @@
   },
   {
     "id": "queso-pump-calculator",
-    "name": "Queso Pump Calculator",
+    "name": "Queso pump calculator",
     "description": "Find the most time-efficient Queso cheese to pump the volcano with.",
     "url": "/queso-pump-calculator",
     "category": "tool",
@@ -276,7 +276,7 @@
   },
   {
     "id": "titles",
-    "name": "Titles & Ranks",
+    "name": "Titles and ranks",
     "description": "Every MouseHunt rank in order, with its badge.",
     "url": "/titles",
     "category": "tool",
@@ -286,7 +286,7 @@
   },
   {
     "id": "trap-special-effects",
-    "name": "Trap and Base Special Effects",
+    "name": "Trap and base special effects",
     "description": "Traps, bases, and charms with special effects in specific locations, such as bonus loot, instacatches, and attraction tweaks.",
     "url": "/trap-special-effects",
     "category": "tool",
@@ -481,7 +481,7 @@
   },
   {
     "id": "minlucks",
-    "name": "Mouse Minluck Search",
+    "name": "Mouse minluck search",
     "description": "Minluck for every mouse against each power type.",
     "url": "/minlucks",
     "category": "tool",

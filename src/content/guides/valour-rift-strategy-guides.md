@@ -114,7 +114,7 @@ Where UC comes from, so you can plan your UC Prestige push efficiently.
   - CSOS / PB17 / Rainbow + LGS + ChromeSlayer + 20xx codex
   - CSOS / PB13 / ULC + LGS + ChromeSlayer + 20xx codex
 - TC AR: ~29%
-- Average chest essence: 1 Gur + 0.25 Fel = 0.12 Icuri → 0.035 Icuri/hunt. See the [essence farming calc](https://bit.ly/MH_Essence_calc) (or use the on-site [Essence Calculator](/essence-calculator)).
+- Average chest essence: 1 Gur + 0.25 Fel = 0.12 Icuri → 0.035 Icuri/hunt. See the [essence farming calc](https://bit.ly/MH_Essence_calc) (or use the on-site [essence calculator](/essence-calculator)).
 
 **Essence from GWH golems (pre-2022):** 0.01 Icuri/exceptional slot, 0.094 Icuri/hat → 30–80 Icuri per GWH.
 
