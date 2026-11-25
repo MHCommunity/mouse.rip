@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     image: ogCard({
       title: mouse.name,
       eyebrow: mouse.group,
-      subtitle: `${mouse.points_formatted ?? mouse.points.toLocaleString()} points · ${mouse.gold_formatted ?? mouse.gold.toLocaleString()} gold`,
+      subtitle: `${mouse.points_formatted ?? mouse.points.toLocaleString()} points, ${mouse.gold_formatted ?? mouse.gold.toLocaleString()} gold`,
       image: mouseImageUrl(slug),
       accent: 'emerald',
     }),
@@ -122,6 +122,9 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
 
   const attraction = getMouseAttraction(mouse.id);
   const bestSpot = bestAttractionRow(attraction);
+  // The summary prefers a spot that needs no charm. Say so when a charm row in the table beats it.
+  const charmRowBeatsBest =
+    bestSpot && !bestSpot.charm && attraction.some((row) => row.charm && row.rate > bestSpot.rate);
 
   return (
     <div>
@@ -155,7 +158,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
             ) : (
               mouse.group
             )}
-            {mouse.subgroup ? ` · ${mouse.subgroup}` : ''}
+            {mouse.subgroup ? ` (${mouse.subgroup})` : ''}
           </p>
           {best.length > 0 && (
             <div className="mt-3 flex flex-wrap items-center gap-1.5">
@@ -198,7 +201,9 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
             )}
             {bestSpot && (
               <div className="px-4 py-3">
-                <dt className="text-sm text-zinc-600 dark:text-zinc-400">Best attraction rate</dt>
+                <dt className="text-sm text-zinc-600 dark:text-zinc-400">
+                  {charmRowBeatsBest ? 'Best rate without a charm' : 'Best attraction rate'}
+                </dt>
                 <dd className="mt-1 text-sm">
                   <span className="text-lg font-semibold tabular-nums text-zinc-900 dark:text-white">
                     {formatRate(bestSpot.rate)}
