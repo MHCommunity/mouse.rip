@@ -29,7 +29,8 @@ import { JsonLd } from '@/components/json-ld';
 import { mouseJsonLd, mouseSeo } from '@/lib/entity-seo';
 import { ogCard, pageMetadata } from '@/seo';
 import { mouseImageUrl } from '@/lib/image-urls';
-import { bestAttractionRow } from '@/lib/attraction';
+import { MIN_SAMPLE, bestAttractionRow } from '@/lib/attraction';
+import type { AttractionRow } from '@/types';
 import { formatNumber } from '@/utils';
 
 import { MouseData } from './mouse-data';
@@ -63,21 +64,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   });
 }
 
-function StatChip({ label, value, sub }: { label: string; value: string | number; sub?: string }) {
-  return (
-    <div className="rounded-lg border border-zinc-200 bg-white px-3 py-2.5 sm:px-4 sm:py-3 dark:border-zinc-800 dark:bg-zinc-900">
-      <div className="text-xs font-medium text-zinc-600 dark:text-zinc-400">{label}</div>
-      <div className="mt-0.5 text-base font-semibold tabular-nums text-zinc-900 sm:text-lg dark:text-white">
-        {value}
-      </div>
-      {sub && <div className="mt-0.5 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">{sub}</div>}
-    </div>
-  );
+const accentLink = 'font-medium text-pink-700 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200';
+
+/** Same location, stage, and cheese. */
+function sameSetup(a: AttractionRow, b: AttractionRow): boolean {
+  return a.location === b.location && (a.stage ?? '') === (b.stage ?? '') && a.cheese === b.cheese;
 }
 
 /** MHCT reports rates in hundredths of a percent. */
 function formatRate(rate: number): string {
-  return `${(rate / 100).toFixed(2)}%`;
+  return `${(rate / 100).toFixed(1)}%`;
 }
 
 export default async function MousePage({ params }: { params: Promise<{ slug: string }> }) {
@@ -90,8 +86,6 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
   const groupSlug = groupSlugForName(mouse.group);
   const best = bestPowerTypes(mouse.effectivenesses as Record<string, number | undefined>);
   const ranks = getMouseRanks(mouse.id);
-  const rankOf = (rank?: number) =>
-    rank && ranks ? `#${rank.toLocaleString()} of ${ranks.total.toLocaleString()}` : undefined;
 
   // Other mice in the same group (same subgroup first, when it's big enough to fill the strip).
   const group = groupSlug ? getMiceGroupBySlug(groupSlug) : undefined;
@@ -117,14 +111,15 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
   const typeRows = [...typeRowMap.values()].sort((a, b) => b.effectiveness - a.effectiveness);
   const immuneTypes = POWER_TYPES.filter((type) => (eff[type] ?? 0) === 0);
 
-  // The answer most visitors came for: the lowest minlucks and the best place to hunt.
-  const catchRows = typeRows.filter((row) => row.minluck > 0).sort((a, b) => a.minluck - b.minluck);
-
   const attraction = getMouseAttraction(mouse.id);
   const bestSpot = bestAttractionRow(attraction);
-  // The summary prefers a spot that needs no charm. Say so when a charm row in the table beats it.
-  const charmRowBeatsBest =
-    bestSpot && !bestSpot.charm && attraction.some((row) => row.charm && row.rate > bestSpot.rate);
+  // The headline needs no charm. Mention a charm only when a well-sampled one actually does better.
+  const betterWithCharm =
+    bestSpot && !bestSpot.charm
+      ? attraction
+          .filter((row) => row.charm && row.rate > bestSpot.rate && (row.total_hunts ?? 0) >= MIN_SAMPLE)
+          .reduce<AttractionRow | undefined>((top, row) => (!top || row.rate > top.rate ? row : top), undefined)
+      : undefined;
 
   return (
     <div>
@@ -141,7 +136,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
             src={image}
             alt=""
             className={`shrink-0 rounded-xl bg-white object-contain p-1.5 ring-1 ring-zinc-950/10 dark:ring-white/15 ${
-              mouse.images?.is_landscape ? 'h-20 w-32 sm:h-40 sm:w-72' : 'size-20 sm:size-40'
+              mouse.images?.is_landscape ? 'h-20 w-32 sm:h-36 sm:w-64' : 'size-20 sm:size-36'
             }`}
           />
         )}
@@ -149,10 +144,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
           <Heading>{mouse.name}</Heading>
           <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
             {groupSlug ? (
-              <Link
-                href={`/groups/${groupSlug}`}
-                className="font-medium text-emerald-700 hover:text-emerald-800 dark:text-emerald-300 dark:hover:text-emerald-200"
-              >
+              <Link href={`/groups/${groupSlug}`} className={accentLink}>
                 {mouse.group}
               </Link>
             ) : (
@@ -168,136 +160,153 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
                   key={type}
                   href={`/mice?weakto=${type}`}
                   title={`All mice weak to ${powerTypeLabel(type)}`}
-                  className={`inline-flex rounded-md px-2 py-0.5 text-xs font-medium transition hover:ring-2 hover:ring-emerald-400 ${POWER_TYPE_CHIP[type] ?? ''}`}
+                  className={`inline-flex rounded-md px-2 py-0.5 text-xs font-medium transition hover:ring-2 hover:ring-pink-400 ${POWER_TYPE_CHIP[type] ?? ''}`}
                 >
                   {powerTypeLabel(type)}
                 </Link>
               ))}
             </div>
           )}
+          {/* Each number links to every mouse ranked by it, scrolled to this one. */}
+          <dl className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+            {(
+              [
+                ['points', 'Points', mouse.points_formatted ?? mouse.points.toLocaleString()],
+                ['gold', 'Gold', mouse.gold_formatted ?? mouse.gold.toLocaleString()],
+                ['wisdom', 'Wisdom', mouse.wisdom.toLocaleString()],
+              ] as const
+            ).map(([key, label, value]) => (
+              <div key={key} className="flex items-baseline gap-1.5">
+                <dt className="text-zinc-600 dark:text-zinc-400">{label}</dt>
+                <dd>
+                  <Link
+                    href={`/mice/rankings?by=${key}&mouse=${slug}`}
+                    title={
+                      ranks ? `#${ranks[key].toLocaleString()} of ${ranks.total.toLocaleString()} mice` : undefined
+                    }
+                    className="font-semibold tabular-nums text-zinc-900 underline decoration-zinc-300 underline-offset-2 hover:text-pink-700 hover:decoration-pink-400 dark:text-white dark:decoration-zinc-600 dark:hover:text-pink-300"
+                  >
+                    {value}
+                  </Link>
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </header>
 
-      {(catchRows.length > 0 || bestSpot) && (
+      {(typeRows.length > 0 || bestSpot) && (
         <section
-          aria-label="How to catch it"
-          className="mt-6 rounded-lg border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900/60"
+          aria-labelledby="how-to-catch-heading"
+          className="mt-8 rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
         >
-          <dl className="grid divide-y divide-zinc-200 sm:grid-cols-2 sm:divide-x sm:divide-y-0 dark:divide-zinc-800">
-            {catchRows.length > 0 && (
-              <div className="px-4 py-3">
-                <dt className="text-sm text-zinc-600 dark:text-zinc-400">Minluck</dt>
-                <dd className="mt-1.5 space-y-1">
-                  {catchRows.slice(0, 3).map((row) => (
-                    <div key={row.types.join('-')} className="flex items-center gap-2">
-                      <ColorScaleBadge value={row.minluck} />
-                      <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                        {powerTypeSetLabel(row.types)}
-                      </span>
-                    </div>
-                  ))}
-                </dd>
-              </div>
-            )}
-            {bestSpot && (
-              <div className="px-4 py-3">
-                <dt className="text-sm text-zinc-600 dark:text-zinc-400">
-                  {charmRowBeatsBest ? 'Best rate without a charm' : 'Best attraction rate'}
-                </dt>
-                <dd className="mt-1 text-sm">
-                  <span className="text-lg font-semibold tabular-nums text-zinc-900 dark:text-white">
-                    {formatRate(bestSpot.rate)}
-                  </span>
-                  <span className="mt-0.5 block">
+          <h2 id="how-to-catch-heading" className="sr-only">
+            How to catch it
+          </h2>
+
+          <div className="px-4 py-4 sm:px-5">
+            <p className="text-xs font-medium tracking-wide text-zinc-600 uppercase dark:text-zinc-400">
+              Where to hunt
+            </p>
+            {bestSpot ? (
+              <>
+                <div className="mt-1 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                  <p className="text-base text-zinc-900 dark:text-zinc-100">
                     <LocationCell location={bestSpot.location} stage={bestSpot.stage} />
                     <span className="text-zinc-600 dark:text-zinc-400"> with </span>
                     <CheeseCell cheese={bestSpot.cheese} />
                     {bestSpot.charm && (
                       <>
                         <span className="text-zinc-600 dark:text-zinc-400"> and </span>
-                        <span className="text-zinc-700 dark:text-zinc-300">{bestSpot.charm}</span>
+                        {bestSpot.charm}
                       </>
                     )}
-                  </span>
-                  <span className="mt-0.5 block text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
-                    {bestSpot.total_hunts ? `From ${formatNumber(bestSpot.total_hunts)} hunts` : 'From MH-Tools'}
-                  </span>
-                </dd>
-              </div>
+                  </p>
+                  <p className="text-2xl font-semibold tabular-nums text-zinc-950 dark:text-white">
+                    {formatRate(bestSpot.rate)}
+                  </p>
+                </div>
+                {betterWithCharm && (
+                  <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">
+                    {sameSetup(betterWithCharm, bestSpot) ? (
+                      <>
+                        {betterWithCharm.charm} raises it to{' '}
+                        <span className="font-semibold tabular-nums">{formatRate(betterWithCharm.rate)}</span>.
+                      </>
+                    ) : (
+                      <>
+                        Up to <span className="font-semibold tabular-nums">{formatRate(betterWithCharm.rate)}</span> at{' '}
+                        <LocationCell location={betterWithCharm.location} stage={betterWithCharm.stage} /> with{' '}
+                        <CheeseCell cheese={betterWithCharm.cheese} /> and {betterWithCharm.charm}.
+                      </>
+                    )}
+                  </p>
+                )}
+                <p className="mt-1 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
+                  {bestSpot.total_hunts
+                    ? `Attraction rate from ${formatNumber(bestSpot.total_hunts)} hunts on MHCT.`
+                    : 'Attraction rate from MH-Tools.'}
+                </p>
+              </>
+            ) : (
+              <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">No attraction data for this mouse yet.</p>
             )}
-          </dl>
-        </section>
-      )}
-
-      <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
-        <StatChip
-          label="Points"
-          value={mouse.points_formatted ?? mouse.points.toLocaleString()}
-          sub={rankOf(ranks?.points)}
-        />
-        <StatChip label="Gold" value={mouse.gold_formatted ?? mouse.gold.toLocaleString()} sub={rankOf(ranks?.gold)} />
-        <StatChip label="Wisdom" value={mouse.wisdom.toLocaleString()} sub={rankOf(ranks?.wisdom)} />
-      </div>
-
-      {typeRows.length > 0 && (
-        <section className="mt-10">
-          <SectionHeading>Power types</SectionHeading>
-          <div className="mt-4 overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-800">
-            <table className="w-full text-sm">
-              <thead className="bg-zinc-50 text-left text-xs text-zinc-600 dark:bg-zinc-900/60 dark:text-zinc-400">
-                <tr>
-                  <th className="px-3 py-2 sm:px-4 font-medium">Power type</th>
-                  <th className="px-3 py-2 sm:px-4 text-right font-medium">Effectiveness</th>
-                  <th className="px-3 py-2 sm:px-4 text-right font-medium">Minluck</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
-                {typeRows.map((row) => (
-                  <tr key={row.types.join('-')}>
-                    <td className="px-3 py-2 sm:px-4">
-                      {row.types.length > 3 ? (
-                        <span className="font-medium text-zinc-900 dark:text-zinc-100">
-                          {powerTypeSetLabel(row.types)}
-                        </span>
-                      ) : (
-                        <span className="flex flex-wrap gap-1">
-                          {row.types.map((type) => (
-                            <span
-                              key={type}
-                              className={`inline-flex rounded-md px-2 py-0.5 text-xs font-medium ${POWER_TYPE_CHIP[type] ?? ''}`}
-                            >
-                              {powerTypeLabel(type)}
-                            </span>
-                          ))}
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-3 py-2 sm:px-4 text-right tabular-nums text-zinc-700 dark:text-zinc-300">
-                      {row.effectiveness}%
-                    </td>
-                    <td className="px-3 py-2 sm:px-4 text-right font-medium tabular-nums text-zinc-900 dark:text-white">
-                      {row.minluck > 0 ? row.minluck : '—'}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
           </div>
-          {immuneTypes.length > 0 && (
-            <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
-              {immuneTypes.map((type) => powerTypeLabel(type)).join(', ')} traps can&rsquo;t catch this mouse.
-            </p>
+
+          {typeRows.length > 0 && (
+            <div className="border-t border-zinc-200 dark:border-zinc-800">
+              <table className="w-full text-sm">
+                <caption className="sr-only">Minluck and effectiveness by power type</caption>
+                <thead className="text-left text-xs text-zinc-600 dark:text-zinc-400">
+                  <tr>
+                    <th className="px-4 pt-3 pb-1.5 font-medium sm:px-5">Power type</th>
+                    <th className="px-4 pt-3 pb-1.5 text-right font-medium sm:px-5">Effectiveness</th>
+                    <th className="px-4 pt-3 pb-1.5 text-right font-medium sm:px-5">Minluck</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                  {typeRows.map((row) => (
+                    <tr key={row.types.join('-')}>
+                      <td className="px-4 py-2 sm:px-5">
+                        {row.types.length > 3 ? (
+                          <span className="font-medium text-zinc-900 dark:text-zinc-100">
+                            {powerTypeSetLabel(row.types)}
+                          </span>
+                        ) : (
+                          <span className="flex flex-wrap gap-1">
+                            {row.types.map((type) => (
+                              <span
+                                key={type}
+                                className={`inline-flex rounded-md px-2 py-0.5 text-xs font-medium ${POWER_TYPE_CHIP[type] ?? ''}`}
+                              >
+                                {powerTypeLabel(type)}
+                              </span>
+                            ))}
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-2 text-right tabular-nums text-zinc-700 sm:px-5 dark:text-zinc-300">
+                        {row.effectiveness}%
+                      </td>
+                      <td className="px-4 py-2 text-right sm:px-5">
+                        {row.minluck > 0 ? <ColorScaleBadge value={row.minluck} /> : '—'}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="border-t border-zinc-100 px-4 py-3 text-sm text-zinc-600 sm:px-5 dark:border-zinc-800 dark:text-zinc-400">
+                {immuneTypes.length > 0 && (
+                  <>{immuneTypes.map((type) => powerTypeLabel(type)).join(', ')} traps can&rsquo;t catch this mouse. </>
+                )}
+                Minluck is the luck that guarantees a catch, and the{' '}
+                <Link href="/minlucks" className={accentLink}>
+                  minluck table
+                </Link>{' '}
+                has it for every mouse.
+              </p>
+            </div>
           )}
-          <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
-            See the{' '}
-            <Link
-              href="/minlucks"
-              className="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-900 dark:hover:text-zinc-200"
-            >
-              full minluck table
-            </Link>{' '}
-            for every mouse.
-          </p>
         </section>
       )}
 
@@ -324,7 +333,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
                 <li key={other.id}>
                   <Link
                     href={`/mice/${otherSlug}`}
-                    className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:border-emerald-300 hover:text-emerald-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-emerald-800 dark:hover:text-emerald-300"
+                    className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:border-pink-300 hover:text-pink-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-pink-800 dark:hover:text-pink-300"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={mouseImageUrl(otherSlug)} alt="" loading="lazy" className="size-6 shrink-0" />
@@ -335,10 +344,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
             })}
             {group && groupMice.length > relatedMice.length && (
               <li className="flex items-center">
-                <Link
-                  href={`/groups/${group.id}`}
-                  className="text-sm font-medium text-emerald-700 hover:text-emerald-800 dark:text-emerald-300 dark:hover:text-emerald-200"
-                >
+                <Link href={`/groups/${group.id}`} className={`text-sm ${accentLink}`}>
                   See all {group.mouse_ids.length}
                 </Link>
               </li>
