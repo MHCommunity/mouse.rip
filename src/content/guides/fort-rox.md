@@ -32,7 +32,7 @@ The black rock is meteorite pieces, and the next two are **Howlite** and **Blood
 
 ![Fort Rox daytime HUD](/images/guides/fort-rox-1.png)
 
-> **Power play tip** — Meteorite Piece (MP) use will be contentious for a while. If you can use Moon Cheese by buying from the marketplace, crafting, or buying a Mouseoleum Champion Kit, then that's great. Meteorite pieces can be obtained from loot drops, or if you're desperate, in the King's Cart for one KC per piece. For now I suggest splitting your supply in half — use half for cheese crafting and half for rebuilding the wall after each run.
+> **Power play tip** — Meteorite Piece (MP) use will be contentious for a while. If you can use Moon Cheese by buying from the Marketplace, crafting, or buying a Mouseoleum Champion Kit, then that's great. Meteorite pieces can be obtained from loot drops, or if you're desperate, in the King's Cart for one KC per piece. For now I suggest splitting your supply in half — use half for cheese crafting and half for rebuilding the wall after each run.
 
 ## Upgrading the fort
 
@@ -246,13 +246,13 @@ There is also the **Meteor Prison Core Trap**, the best Law trap in the game. Th
 
 > **Game boost tip** — Once you have the traps, Dawn Dust has three uses, in my recommended order: save for future portal crafting (100 Dawn Dust each); craft Sunshine Cheese (25 Dawn Dust each); or buy Bolts/Birds in the store and sell them on the open market.
 
-> **MouseHunt fun fact** — This game can change quickly, and the people who watch it are the ones who get *rich*. When this guide was first written, the Animatronic Bird sold on the marketplace for 7 million a few days after opening; by 11/11/16 it was down to 2 million; and by 3/22/17 they sold for less than 200,000. True early birds made some nice money!
+> **MouseHunt fun fact** — This game can change quickly, and the people who watch it are the ones who get *rich*. When this guide was first written, the Animatronic Bird sold on the Marketplace for 7 million a few days after opening; by 11/11/16 it was down to 2 million; and by 3/22/17 they sold for less than 200,000. True early birds made some nice money!
 
 ## Treasure chests &amp; the Heart of the Meteor
 
 Treasure chests for Fort Rox were released on March 15, 2017. You'll need to collect two components from these chests — a **Portal Core** and a **Portal Console**. Take these plus 100 Dawn Dust to the Fort Rox General Store and buy the **Portal Projector**, your key to entering the Heart of the Meteor.
 
-With massive DHU, you might do three chests and end up with three Cores. You can also scour the marketplace for a Console. As of this writing there's roughly a 25% chance of a Console/portal from a rare chest, and a 12% chance from the regular chest.
+With massive DHU, you might do three chests and end up with three Cores. You can also scour the Marketplace for a Console. As of this writing there's roughly a 25% chance of a Console/portal from a rare chest, and a 12% chance from the regular chest.
 
 When you reach Dawn, you can activate the portal via the HUD. Note that the portal is destroyed when it opens — it's one-time use! Much like the Tower, once you go in there's no coming back without crafting another, so be sure to have your Sunshine Cheese (25 Dawn Dust each, Cheese Shop) ready to go.
 

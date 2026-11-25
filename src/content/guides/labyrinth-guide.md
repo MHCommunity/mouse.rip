@@ -1,6 +1,6 @@
 A guide to the Labyrinth and Zokor (shortened to **Labykor**) — a major portion of the Duke's adventure for the non-Rift portions. Adapted from Aard's original guide.
 
-> If the price of Glowing Gruyere Cheese in the marketplace ever rises to the same as SuperBrie+ or higher, go back to the old guides on farming Nightshade to craft Glowing Gruyere Cheese before attempting the steps here.
+> If the price of Glowing Gruyere Cheese in the Marketplace ever rises to the same as SuperBrie+ or higher, go back to the old guides on farming Nightshade to craft Glowing Gruyere Cheese before attempting the steps here.
 
 ## Traps & Bases overview
 
@@ -26,7 +26,7 @@ Extra setup (from past Relic Hunter seasons):
 
 ## Cheese
 
-- Glowing Gruyere Cheese (GGC) — daily cheese or from the marketplace
+- Glowing Gruyere Cheese (GGC) — daily cheese or from the Marketplace
 - Any other cheese if you love FTC and red boxes from Shadow Stalkers
 
 ## Labyrinth-specific tools
@@ -81,8 +81,8 @@ Purchase the **Event Horizon Trap (EHT)** — so you won't suffer in Floating Is
 
 ## Tertiary goals (far future)
 
-- **Temporal Turbine (TT)** — feeling rich? Get it for a boost to your Shadow-type traps after getting 2 Temporal Shadow Plates from the marketplace. The Chrome upgrade is recently outclassed by the new Shadow Trap in Folklore Forest, but an upgrade is still an upgrade. Temporal Shadow Plates drop from the Retired Minotaur (very rare).
-- **Minotaur Base** — Really Really Shiny Precious Gold (from the Minotaur) is cheap on the marketplace, but the base itself isn't. The district materials and cost don't justify it — you'll get the Archduke bases (AERB / Prestige Base) in due time, which outclass it greatly. Spend that gold elsewhere.
+- **Temporal Turbine (TT)** — feeling rich? Get it for a boost to your Shadow-type traps after getting 2 Temporal Shadow Plates from the Marketplace. The Chrome upgrade is recently outclassed by the new Shadow Trap in Folklore Forest, but an upgrade is still an upgrade. Temporal Shadow Plates drop from the Retired Minotaur (very rare).
+- **Minotaur Base** — Really Really Shiny Precious Gold (from the Minotaur) is cheap on the Marketplace, but the base itself isn't. The district materials and cost don't justify it — you'll get the Archduke bases (AERB / Prestige Base) in due time, which outclass it greatly. Spend that gold elsewhere.
 
 ## Tips
 

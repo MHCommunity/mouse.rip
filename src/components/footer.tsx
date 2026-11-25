@@ -105,7 +105,7 @@ export function Footer() {
         >
           MH-Tools
         </a>
-        , marketplace prices from{' '}
+        , Marketplace prices from{' '}
         <a
           href="https://markethunt.win"
           target="_blank"

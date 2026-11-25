@@ -170,7 +170,7 @@ export function ConvertibleContents({ itemId, rows }: { itemId: number; rows: Co
           {ownPrice != null && (
             <>
               , and it currently sells for <span className="tabular-nums">{formatGold(ownPrice)} gold</span> on the
-              marketplace
+              Marketplace
             </>
           )}
           .{' '}
