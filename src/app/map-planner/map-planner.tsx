@@ -71,6 +71,9 @@ export function MapPlanner({
   const [sort, setSort] = useState<SortKey>('best');
   const [showAll, setShowAll] = useState(false);
 
+  // A shared link's mice, kept from the first render so the load below fills them in once.
+  const linkedIds = useRef(initialIds);
+
   useEffect(() => {
     let alive = true;
     Promise.all([loadMouseIndex(), loadPlannerData()])
@@ -78,22 +81,15 @@ export function MapPlanner({
         if (!alive) return;
         setMice(loadedMice);
         setData(loadedData);
+        const byId = new Map(loadedMice.map((mouse) => [mouse.id, mouse]));
+        const names = linkedIds.current.map((id) => byId.get(id)?.name).filter(Boolean);
+        if (names.length > 0) setText((current) => current || names.join('\n'));
       })
       .catch(() => alive && setLoadFailed(true));
     return () => {
       alive = false;
     };
   }, []);
-
-  // A shared link fills the box once the names are known.
-  const filledFromUrl = useRef(false);
-  useEffect(() => {
-    if (!mice || filledFromUrl.current || initialIds.length === 0) return;
-    filledFromUrl.current = true;
-    const byId = new Map(mice.map((mouse) => [mouse.id, mouse]));
-    const names = initialIds.map((id) => byId.get(id)?.name).filter(Boolean);
-    if (names.length > 0) setText((current) => current || names.join('\n'));
-  }, [mice, initialIds]);
 
   const debouncedText = useDebouncedValue(text, 200);
   const { matched, unmatched } = useMemo(
@@ -110,7 +106,10 @@ export function MapPlanner({
     window.history.replaceState(null, '', next ? `?${next}` : window.location.pathname);
   }, [matched, mice, syncUrl]);
 
-  const plan = useMemo(() => (data && matched.length > 0 ? buildPlan(matched, data, places) : null), [matched, data, places]);
+  const plan = useMemo(
+    () => (data && matched.length > 0 ? buildPlan(matched, data, places) : null),
+    [matched, data, places],
+  );
   const ranked = useMemo(() => (plan ? rankSetups(plan.setups, sort) : []), [plan, sort]);
   const visible = showAll ? ranked : ranked.slice(0, INITIAL_SETUPS);
 
@@ -127,7 +126,11 @@ export function MapPlanner({
   return (
     <div className="space-y-10">
       <section aria-labelledby="map-mice-heading" className="max-w-3xl">
-        <label htmlFor="map-mice" id="map-mice-heading" className="block text-sm font-medium text-zinc-950 dark:text-white">
+        <label
+          htmlFor="map-mice"
+          id="map-mice-heading"
+          className="block text-sm font-medium text-zinc-950 dark:text-white"
+        >
           Mice on your map
         </label>
         <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">
@@ -192,7 +195,9 @@ export function MapPlanner({
           {plan.guaranteed.length > 0 && (
             <section aria-labelledby="guaranteed-heading">
               <SectionHeading id="guaranteed-heading">Guaranteed attractions</SectionHeading>
-              <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">Each of these is attracted every hunt with the right setup.</p>
+              <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+                Each of these is attracted every hunt with the right setup.
+              </p>
               <ul className="mt-3 divide-y divide-zinc-100 rounded-xl border border-zinc-200 bg-white dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-900">
                 {plan.guaranteed.map((entry) => (
                   <li key={entry.mouse.id} className="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-2.5 text-sm">
@@ -215,6 +220,15 @@ export function MapPlanner({
                     ? `${formatNumber(ranked.length)} ${ranked.length === 1 ? 'setup attracts' : 'setups attract'} at least one of your mice at ${RATE_FLOOR}% or more.`
                     : `No setup attracts any of these mice at ${RATE_FLOOR}% or more.`}
                 </p>
+                {ranked.length > 0 && (
+                  <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">
+                    <span className="rounded border border-pink-300 bg-pink-50 px-1 text-pink-900 dark:border-pink-800 dark:bg-pink-950/40 dark:text-pink-100">
+                      Pink
+                    </span>{' '}
+                    mice can only be planned at that location. Rates in italics have fewer than{' '}
+                    {formatNumber(MIN_HUNTS)} hunts behind them.
+                  </p>
+                )}
               </div>
               {ranked.length > 1 && (
                 <label className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
@@ -288,12 +302,21 @@ function MouseName({ mouse }: { mouse: { name: string; type: string } }) {
 }
 
 /** "Location (stage) with Cheese", the location linked when it has a page. */
-function PlaceName({ row, places }: { row: Pick<Row, 'location' | 'stage' | 'cheese' | 'charm'>; places: Record<string, Place> }) {
+function PlaceName({
+  row,
+  places,
+}: {
+  row: Pick<Row, 'location' | 'stage' | 'cheese' | 'charm'>;
+  places: Record<string, Place>;
+}) {
   const href = places[row.location]?.href;
   return (
     <>
       {href ? (
-        <Link href={href} className="font-medium text-zinc-800 hover:text-pink-700 hover:underline dark:text-zinc-200 dark:hover:text-pink-300">
+        <Link
+          href={href}
+          className="font-medium text-zinc-800 hover:text-pink-700 hover:underline dark:text-zinc-200 dark:hover:text-pink-300"
+        >
           {row.location}
         </Link>
       ) : (
@@ -315,7 +338,10 @@ function SetupCard({
   rowsByMouse: Map<number, Row[]>;
 }) {
   const place = places[setup.location];
-  const alternatives = setup.alternatives.map((alt) => [alt.stage, alt.cheese].filter(Boolean).join(' with '));
+  // Name the stage only when it differs from this setup's.
+  const alternatives = setup.alternatives.map((alt) =>
+    alt.stage && alt.stage !== setup.stage ? `${alt.stage} with ${alt.cheese}` : alt.cheese,
+  );
 
   return (
     <li className="rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
@@ -338,7 +364,10 @@ function SetupCard({
               {setup.stage && <span className="font-normal text-zinc-600 dark:text-zinc-400"> ({setup.stage})</span>}
             </h3>
             <p className="text-sm tabular-nums text-zinc-600 dark:text-zinc-400">
-              <span className="font-semibold text-zinc-950 dark:text-white" title="Chance one hunt attracts one of these mice">
+              <span
+                className="font-semibold text-zinc-950 dark:text-white"
+                title="Chance one hunt attracts one of these mice"
+              >
                 {formatRate(setup.raw)}
               </span>{' '}
               per hunt, {setup.mice.length} {setup.mice.length === 1 ? 'mouse' : 'mice'},{' '}
@@ -379,20 +408,27 @@ function SetupCard({
           >
             <GameImage src={mouseImageUrl(entry.mouse.type)} width={20} height={20} className="size-5 shrink-0" />
             {entry.mouse.name}
-            <span className={clsx('tabular-nums opacity-75', entry.hunts < MIN_HUNTS && 'italic')}>{formatRate(entry.rate)}</span>
+            <span className={clsx('tabular-nums opacity-75', entry.hunts < MIN_HUNTS && 'italic')}>
+              {formatRate(entry.rate)}
+            </span>
           </li>
         ))}
       </ul>
 
       <details className="group border-t border-zinc-100 dark:border-zinc-800">
         <summary className="flex cursor-pointer list-none items-center gap-1.5 px-4 py-2 text-xs font-medium text-zinc-600 hover:text-zinc-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:text-zinc-400 dark:hover:text-white [&::-webkit-details-marker]:hidden">
-          <ChevronDownIcon className="size-4 transition-transform group-open:rotate-180 motion-reduce:transition-none" aria-hidden="true" />
+          <ChevronDownIcon
+            className="size-4 transition-transform group-open:rotate-180 motion-reduce:transition-none"
+            aria-hidden="true"
+          />
           Other places for these mice
         </summary>
         <ul className="space-y-2 px-4 pb-4 text-sm">
           {setup.mice.map((entry) => {
             const others = (rowsByMouse.get(entry.mouse.id) ?? [])
-              .filter((row) => !(row.location === setup.location && row.stage === setup.stage && row.cheese === setup.cheese))
+              .filter(
+                (row) => !(row.location === setup.location && row.stage === setup.stage && row.cheese === setup.cheese),
+              )
               .slice(0, OTHER_SETUPS_PER_MOUSE);
             return (
               <li key={entry.mouse.id}>
@@ -403,7 +439,8 @@ function SetupCard({
                   <ul className="mt-0.5 space-y-0.5 text-zinc-600 dark:text-zinc-400">
                     {others.map((row) => (
                       <li key={`${row.location}|${row.stage}|${row.cheese}`}>
-                        <span className="tabular-nums">{formatRate(row.rate)}</span> at <PlaceName row={row} places={places} />
+                        <span className="tabular-nums">{formatRate(row.rate)}</span> at{' '}
+                        <PlaceName row={row} places={places} />
                       </li>
                     ))}
                   </ul>

@@ -75,7 +75,10 @@ export interface Plan {
 export type SortKey = 'best' | 'mice' | 'hunts';
 
 export const SORTS: Record<SortKey, { label: string; title: string }> = {
-  best: { label: 'Best overall', title: 'Total attraction, with each mouse capped so one easy mouse doesn’t dominate.' },
+  best: {
+    label: 'Best overall',
+    title: 'Total attraction, with each mouse capped so one easy mouse doesn’t dominate.',
+  },
   mice: { label: 'Most mice', title: 'Setups that attract the most of your mice first.' },
   hunts: { label: 'Quickest to clear', title: 'Fewest expected hunts to attract every mouse listed for the setup.' },
 };
@@ -170,7 +173,17 @@ export function buildPlan(mice: PlanMouse[], data: PlannerData, places: Record<s
       const key = `${row.location}|${row.stage}|${row.cheese}`;
       let setup = setups.get(key);
       if (!setup) {
-        setup = { key, location: row.location, stage: row.stage, cheese: row.cheese, mice: [], raw: 0, capped: 0, hunts: 0, alternatives: [] };
+        setup = {
+          key,
+          location: row.location,
+          stage: row.stage,
+          cheese: row.cheese,
+          mice: [],
+          raw: 0,
+          capped: 0,
+          hunts: 0,
+          alternatives: [],
+        };
         setups.set(key, setup);
       }
       setup.mice.push({ mouse, rate: row.rate, hunts: row.hunts, onlyHere: false });
@@ -262,7 +275,7 @@ export function parseMice<T extends PlanMouse & { abbreviated_name?: string }>(
 }
 
 export function formatRate(rate: number): string {
-  return `${rate >= 10 ? rate.toFixed(1) : rate.toFixed(2)}%`;
+  return `${rate.toFixed(1)}%`;
 }
 
 export function formatHunts(hunts: number): string {

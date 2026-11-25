@@ -773,7 +773,9 @@ const PLANNER_MIN_RATE = 100;
  */
 export function buildMapPlanner(attraction) {
   const tables = { locations: [], stages: [''], cheeses: [], charms: [''] };
-  const indexes = Object.fromEntries(Object.keys(tables).map((key) => [key, new Map(tables[key].map((v, i) => [v, i]))]));
+  const indexes = Object.fromEntries(
+    Object.keys(tables).map((key) => [key, new Map(tables[key].map((v, i) => [v, i]))]),
+  );
   const indexOf = (key, value) => {
     let index = indexes[key].get(value);
     if (index === undefined) {

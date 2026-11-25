@@ -69,7 +69,7 @@ let plannerPromise: Promise<PlannerData> | null = null;
 export function loadPlannerData(): Promise<PlannerData> {
   if (!plannerPromise) {
     plannerPromise = import('@/data/generated/map-planner.json')
-      .then((mod) => ((mod as { default?: PlannerData }).default ?? mod) as PlannerData)
+      .then((mod) => ((mod as unknown as { default?: PlannerData }).default ?? mod) as unknown as PlannerData)
       .catch((error) => {
         plannerPromise = null;
         throw error;
