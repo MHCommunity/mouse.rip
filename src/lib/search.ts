@@ -437,6 +437,9 @@ const KIND_PRIOR: Partial<Record<SearchKind, number>> = {
   item: 10,
 };
 
+/** Enough to lift a location over a mouse whose name starts the same way ("floating", "toxic"), and no more. */
+const LOCATION_NAME_BONUS = 15;
+
 /**
  * Every content word must match (literally, through a synonym, or within a typo
  * or two); words like "guide" or "mouse" steer towards that kind instead of
@@ -487,8 +490,10 @@ export function searchRecords(records: SearchRecord[], query: string, limit = 40
 
     const { title } = normalized;
     if (title === q || title === nameQuery) score += 1000;
-    else if (title.startsWith(q) || title.startsWith(nameQuery)) score += 600;
-    else if (title.includes(nameQuery)) score += 300;
+    else if (title.startsWith(q) || title.startsWith(nameQuery)) {
+      score += 600;
+      if (record.kind === 'location') score += LOCATION_NAME_BONUS;
+    } else if (title.includes(nameQuery)) score += 300;
 
     // Asking for a kind ("… guide") outranks a name that merely starts the same way.
     if (wantedKinds.has(record.kind)) score += 1500;
