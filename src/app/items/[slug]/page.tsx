@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { notFound } from 'next/navigation';
 import React from 'react';
 
@@ -192,8 +193,10 @@ function relatedItems(item: GameItem): GameItem[] {
 function StatRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex items-center justify-between gap-4 px-4 py-2.5">
-      <span className="text-sm text-zinc-600 dark:text-zinc-400">{label}</span>
-      <span className="text-sm font-medium tabular-nums text-zinc-900 dark:text-white">{value}</span>
+      <span className="shrink-0 text-sm text-zinc-600 dark:text-zinc-400">{label}</span>
+      <span className="min-w-0 text-right text-sm font-medium tabular-nums break-words text-zinc-900 dark:text-white">
+        {value}
+      </span>
     </div>
   );
 }
@@ -230,7 +233,7 @@ function StatsTable({ stats }: { stats: GameItemStats }) {
         label="Cheese effect"
         value={
           <span
-            className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
+            className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium whitespace-nowrap ${
               stats.cheese_effect.includes('Fresh')
                 ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
                 : stats.cheese_effect.includes('Stale')
@@ -265,7 +268,7 @@ function StatsTable({ stats }: { stats: GameItemStats }) {
   return (
     <section className="mt-6">
       <SectionHeading>Stats</SectionHeading>
-      <div className="mt-2 divide-y divide-zinc-100 overflow-hidden rounded-lg border border-zinc-200 dark:divide-zinc-800 dark:border-zinc-800">
+      <div className="mt-2 divide-y divide-zinc-100 overflow-hidden rounded-2xl bg-white/80 ring-1 ring-zinc-200/80 dark:divide-zinc-800 dark:bg-white/5 dark:ring-zinc-700/60">
         {rows}
       </div>
     </section>
@@ -321,53 +324,60 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
 
       <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Items', href: '/items' }, { name: item.name }]} />
 
-      <header className="flex items-start gap-4 rounded-3xl bg-linear-to-br from-pink-50 via-white to-amber-50 p-4 ring-1 ring-pink-100/80 sm:gap-6 sm:p-6 dark:from-pink-950/30 dark:via-zinc-900 dark:to-amber-950/20 dark:ring-zinc-800">
-        {image && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={image}
-            alt=""
-            className="size-20 shrink-0 rounded-2xl bg-white object-contain p-2 shadow-sm ring-1 ring-zinc-950/5 sm:size-40 dark:ring-white/10"
-          />
-        )}
-        <div className="min-w-0">
-          <Heading>{item.name}</Heading>
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            <Link
-              href={`/items/type/${item.classification}`}
-              title={`All ${classificationLabel(item.classification).toLowerCase()}`}
-              className="inline-flex rounded-full bg-white/80 px-2.5 py-0.5 text-xs font-medium text-zinc-700 ring-1 ring-zinc-200 transition hover:ring-2 hover:ring-pink-400 dark:bg-white/5 dark:text-zinc-300 dark:ring-zinc-700"
-            >
-              {classificationName(item.classification)}
-            </Link>
-            {flags.map((flag) => (
-              <span
-                key={flag.label}
-                className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                  flag.limit
-                    ? 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300'
-                    : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
-                }`}
-              >
-                {flag.label}
-              </span>
-            ))}
-          </div>
-          {skinFor && (
-            <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
-              A skin for the{' '}
-              <Link
-                href={`/items/${itemSlug(skinFor.type)}`}
-                className="font-medium text-pink-700 hover:text-pink-800 dark:text-pink-300 dark:hover:text-pink-200"
-              >
-                {skinFor.name}
-              </Link>
-              .
-            </p>
+      <header className="rounded-3xl bg-linear-to-br from-pink-50 via-white to-amber-50 p-4 ring-1 ring-pink-100/80 sm:gap-6 sm:p-6 dark:from-pink-950/30 dark:via-zinc-900 dark:to-amber-950/20 dark:ring-zinc-800">
+        <div className="flex items-start gap-4 sm:gap-6">
+          {image && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={image}
+              alt=""
+              className="size-20 shrink-0 rounded-2xl bg-white object-contain p-2 shadow-sm ring-1 ring-zinc-950/5 sm:size-40 dark:ring-white/10"
+            />
           )}
-          {stats && <StatsTable stats={stats} />}
-          {ranks && <p className="mt-2 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">{ranks}</p>}
+          <div className="min-w-0">
+            <Heading>{item.name}</Heading>
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <Link
+                href={`/items/type/${item.classification}`}
+                title={`All ${classificationLabel(item.classification).toLowerCase()}`}
+                className="inline-flex rounded-full bg-white/80 px-2.5 py-0.5 text-xs font-medium text-zinc-700 ring-1 ring-zinc-200 transition hover:ring-2 hover:ring-pink-400 dark:bg-white/5 dark:text-zinc-300 dark:ring-zinc-700"
+              >
+                {classificationName(item.classification)}
+              </Link>
+              {flags.map((flag) => (
+                <span
+                  key={flag.label}
+                  className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                    flag.limit
+                      ? 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300'
+                      : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
+                  }`}
+                >
+                  {flag.label}
+                </span>
+              ))}
+            </div>
+            {skinFor && (
+              <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
+                A skin for the{' '}
+                <Link
+                  href={`/items/${itemSlug(skinFor.type)}`}
+                  className="font-medium text-pink-700 hover:text-pink-800 dark:text-pink-300 dark:hover:text-pink-200"
+                >
+                  {skinFor.name}
+                </Link>
+                .
+              </p>
+            )}
+          </div>
         </div>
+        {/* Under the picture on a phone, where beside it would squeeze the table; under the title from sm up. */}
+        {(stats || ranks) && (
+          <div className={clsx('max-w-md', image && 'sm:ml-46')}>
+            {stats && <StatsTable stats={stats} />}
+            {ranks && <p className="mt-2 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">{ranks}</p>}
+          </div>
+        )}
       </header>
 
       {item.is_tradable && <MarketPrice itemId={item.id} />}

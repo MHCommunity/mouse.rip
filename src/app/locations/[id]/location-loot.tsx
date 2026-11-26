@@ -14,7 +14,7 @@ const LOOT_PREVIEW = 10;
 
 function quantity(row: LocationLootRow): string {
   if (!row.min && !row.max) return '';
-  return row.min === row.max ? `×${row.min}` : `×${row.min}–${row.max}`;
+  return row.min === row.max ? `×${formatNumber(row.min)}` : `×${formatNumber(row.min)}–${formatNumber(row.max)}`;
 }
 
 function LootRow({ row }: { row: LocationLootRow }) {
@@ -40,7 +40,9 @@ function LootRow({ row }: { row: LocationLootRow }) {
       </td>
       <td className="px-3 py-2 text-right align-top tabular-nums sm:px-4">
         <span className="font-medium text-zinc-900 dark:text-white">{row.rate}%</span>
-        {quantity(row) && <span className="ml-1 text-zinc-600 dark:text-zinc-400">{quantity(row)}</span>}
+        {quantity(row) && (
+          <span className="ml-1 whitespace-nowrap text-zinc-600 dark:text-zinc-400">{quantity(row)}</span>
+        )}
         <span className="block text-xs whitespace-nowrap text-zinc-600 dark:text-zinc-400">
           {formatNumber(row.catches)} {row.catches === 1 ? 'catch' : 'catches'}
         </span>

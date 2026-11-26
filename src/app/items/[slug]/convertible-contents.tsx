@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'next-view-transitions';
 
 import type { ConvertibleRow } from '@/types';
-import { formatGold } from '@/utils';
+import { formatGold, formatNumber } from '@/utils';
 import { itemImageUrl } from '@/lib/image-urls';
 import { SectionHeading } from '@/components/section-heading';
 import { SourceLink } from '@/components/source-link';
@@ -83,8 +83,8 @@ function rowValue(row: ConvertibleRow, prices: Map<number, number> | null): numb
 
 function formatQuantity(min: number, max: number): string {
   if (!min && !max) return '';
-  if (min === max) return `${min}`;
-  return `${min}–${max}`;
+  if (min === max) return formatNumber(min);
+  return `${formatNumber(min)}–${formatNumber(max)}`;
 }
 
 /**

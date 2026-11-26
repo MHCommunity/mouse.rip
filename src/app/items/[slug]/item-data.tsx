@@ -13,7 +13,6 @@ import { GameImage } from '@/components/game-image';
 
 // Common items (Gold, SB+) come from hundreds of openables; listing them all
 // makes the page several hundred KB.
-const FOUND_IN_LIMIT = 50;
 // Shown before the "Show all" disclosure, so the ranked drop table isn't pushed down.
 const FOUND_IN_PREVIEW = 8;
 // Drop rows shown before "Show all"; the long tail is mostly tiny samples.
@@ -152,61 +151,28 @@ export function ItemData({
           {foundIn.length > 0 && (
             <div className={drops.length > 0 ? 'mt-8' : 'mt-5'}>
               <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">
-                From openables{' '}
+                Found inside{' '}
                 <span className="font-normal text-zinc-600 dark:text-zinc-400">({formatNumber(foundIn.length)})</span>
               </h3>
               <ul className="mt-3 flex flex-wrap gap-2">
                 {foundIn.slice(0, FOUND_IN_PREVIEW).map((source) => (
                   <li key={source.id ?? source.name}>
-                    {source.slug ? (
-                      <Link
-                        href={`/items/${source.slug}`}
-                        className="inline-flex min-h-9 items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:border-pink-300 hover:text-pink-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-pink-800 dark:hover:text-pink-300"
-                      >
-                        <GameImage src={itemImageUrl(source.slug)} className="size-5 shrink-0 rounded" />
-                        {source.name}
-                      </Link>
-                    ) : (
-                      <span className="inline-flex min-h-9 items-center rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
-                        {source.name}
-                      </span>
-                    )}
+                    <SourceChip source={source} />
                   </li>
                 ))}
               </ul>
               {foundIn.length > FOUND_IN_PREVIEW && (
                 <details className="group mt-2">
                   <summary className="inline-flex min-h-9 cursor-pointer items-center rounded-md px-1 text-sm font-medium text-pink-700 hover:text-pink-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:text-pink-300 dark:hover:text-pink-200">
-                    <span className="group-open:hidden">
-                      {foundIn.length > FOUND_IN_LIMIT
-                        ? `Show ${formatNumber(FOUND_IN_LIMIT - FOUND_IN_PREVIEW)} more`
-                        : `Show all ${formatNumber(foundIn.length)}`}
-                    </span>
+                    <span className="group-open:hidden">Show all {formatNumber(foundIn.length)}</span>
                     <span className="hidden group-open:inline">Show fewer</span>
                   </summary>
                   <ul className="mt-2 flex flex-wrap gap-2">
-                    {foundIn.slice(FOUND_IN_PREVIEW, FOUND_IN_LIMIT).map((source) => (
+                    {foundIn.slice(FOUND_IN_PREVIEW).map((source) => (
                       <li key={source.id ?? source.name}>
-                        {source.slug ? (
-                          <Link
-                            href={`/items/${source.slug}`}
-                            className="inline-flex min-h-9 items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:border-pink-300 hover:text-pink-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-pink-800 dark:hover:text-pink-300"
-                          >
-                            <GameImage src={itemImageUrl(source.slug)} className="size-5 shrink-0 rounded" />
-                            {source.name}
-                          </Link>
-                        ) : (
-                          <span className="inline-flex min-h-9 items-center rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
-                            {source.name}
-                          </span>
-                        )}
+                        <SourceChip source={source} />
                       </li>
                     ))}
-                    {foundIn.length > FOUND_IN_LIMIT && (
-                      <li className="inline-flex items-center px-1 text-sm text-zinc-600 dark:text-zinc-400">
-                        and {formatNumber(foundIn.length - FOUND_IN_LIMIT)} more
-                      </li>
-                    )}
                   </ul>
                 </details>
               )}
@@ -300,5 +266,23 @@ function ItemChipLink({
     <Link href={`/items/${slug}`} className="transition hover:text-pink-700 dark:hover:text-pink-300">
       {name}
     </Link>
+  );
+}
+
+/** A chest or other openable this item comes out of, as a pill with its picture. */
+function SourceChip({ source }: { source: { name: string; slug?: string } }) {
+  const classes =
+    'inline-flex min-h-9 items-center gap-2 rounded-full bg-white px-3 py-1.5 text-sm ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800';
+  return source.slug ? (
+    <Link
+      href={`/items/${source.slug}`}
+      prefetch={false}
+      className={`${classes} text-zinc-700 transition hover:text-pink-700 hover:ring-pink-300 dark:text-zinc-300 dark:hover:text-pink-300 dark:hover:ring-pink-800`}
+    >
+      <GameImage src={itemImageUrl(source.slug)} className="size-5 shrink-0 rounded" />
+      {source.name}
+    </Link>
+  ) : (
+    <span className={`${classes} text-zinc-600 dark:text-zinc-400`}>{source.name}</span>
   );
 }
