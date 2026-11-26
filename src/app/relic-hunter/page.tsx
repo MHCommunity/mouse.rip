@@ -1,13 +1,12 @@
 import React from 'react';
 
 import { MapPinIcon } from '@heroicons/react/20/solid';
-import { Link } from '@/components/link';
 import { PageHeader } from '@/components/page-header';
 
 import { getEnvironments, getLocations, getRelicHunterHints } from '@/lib/site-data';
 import { RelicHunterLive } from './relic-hunter-live';
+import { RiddleFinder } from './riddle-finder';
 import { pageMetadata } from '@/seo';
-import { locationImageUrl } from '@/lib/image-urls';
 import { SectionHeading } from '@/components/section-heading';
 
 export const metadata = pageMetadata({
@@ -48,53 +47,17 @@ export default function RelicHunterPage() {
       <RelicHunterLive />
 
       <SectionHeading className="mt-12">Riddles by location</SectionHeading>
-      <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {entries.map(([envId, list]) => {
-          const name = nameById.get(envId) ?? envId;
+      <RiddleFinder
+        locations={entries.map(([envId, list]) => {
           const locationId = envId.replace(/_/g, '-');
-          const hasPage = locationIds.has(locationId);
-
-          return (
-            <div
-              key={envId}
-              className="group flex flex-col rounded-2xl ring-1 ring-zinc-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-md dark:ring-zinc-800 dark:bg-zinc-900"
-            >
-              <div className="flex items-center gap-3">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={locationImageUrl(envId)}
-                  alt=""
-                  className="size-10 shrink-0 rounded-lg object-cover ring-1 ring-zinc-950/5 dark:ring-white/10"
-                />
-                <div className="min-w-0 flex-1">
-                  <h3 className="truncate text-base font-semibold tracking-tight text-zinc-900 dark:text-white">
-                    {hasPage ? (
-                      <Link
-                        href={`/locations/${locationId}`}
-                        className="transition-colors hover:text-rose-700 dark:hover:text-rose-300"
-                      >
-                        {name}
-                      </Link>
-                    ) : (
-                      name
-                    )}
-                  </h3>
-                </div>
-              </div>
-              <ul className="mt-4 space-y-2">
-                {list.map((hint) => (
-                  <li
-                    key={hint}
-                    className="rounded-lg bg-zinc-50 px-3 py-2 text-sm text-pretty text-zinc-600 italic ring-1 ring-zinc-950/5 dark:bg-zinc-800/50 dark:text-zinc-300 dark:ring-white/5"
-                  >
-                    “{hint}”
-                  </li>
-                ))}
-              </ul>
-            </div>
-          );
+          return {
+            envId,
+            name: nameById.get(envId) ?? envId,
+            href: locationIds.has(locationId) ? `/locations/${locationId}` : null,
+            hints: list,
+          };
         })}
-      </div>
+      />
     </div>
   );
 }
