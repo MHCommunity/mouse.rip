@@ -247,7 +247,7 @@ function BestSetupForm({
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)]">
-      <form className="space-y-4" aria-label="What to search" onSubmit={(event) => event.preventDefault()}>
+      <form className="min-w-0 space-y-4" aria-label="What to search" onSubmit={(event) => event.preventDefault()}>
         <WhereFields catalog={catalog} setup={setup} onChange={(next) => setSetup(next)} />
 
         <fieldset className={clsx(cardClasses, 'space-y-4')}>

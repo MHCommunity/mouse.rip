@@ -110,7 +110,7 @@ function EstimatorForm({
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)]">
-      <form className="space-y-4" aria-label="Your setup" onSubmit={(event) => event.preventDefault()}>
+      <form className="min-w-0 space-y-4" aria-label="Your setup" onSubmit={(event) => event.preventDefault()}>
         <WhereFields catalog={catalog} setup={setup} onChange={onChange} />
 
         <fieldset className={clsx(cardClasses, 'space-y-4')}>
@@ -182,7 +182,7 @@ function BonusCard({ catalog, setup, onChange }: { catalog: Catalog; setup: Setu
         </p>
         <div className="grid grid-cols-2 gap-3">
           <NumberField
-            label="Power bonus"
+            label="Extra power bonus"
             hint="%"
             value={setup.bonusPower || undefined}
             min={-100}
@@ -190,7 +190,7 @@ function BonusCard({ catalog, setup, onChange }: { catalog: Catalog; setup: Setu
             onChange={(v) => onChange({ ...setup, bonusPower: v ?? 0 })}
           />
           <NumberField
-            label="Luck"
+            label="Extra luck"
             value={setup.bonusLuck || undefined}
             min={-100}
             max={1000}
@@ -234,7 +234,9 @@ function BonusCard({ catalog, setup, onChange }: { catalog: Catalog; setup: Setu
           >
             {matched
               ? `Use +${matched.bonusPower}% power and +${matched.bonusLuck} luck`
-              : 'Pick a weapon and base first'}
+              : !setup.weapon || !setup.base
+                ? 'Pick a weapon and base first'
+                : 'Type the power and luck your camp shows'}
           </button>
         </div>
       </div>

@@ -15,7 +15,8 @@ import { itemImageUrl } from '@/lib/image-urls';
 import { powerTypeLabel } from '@/lib/power-types';
 
 export const cardClasses =
-  'rounded-2xl bg-white p-4 shadow-xs ring-1 ring-zinc-200 sm:p-5 dark:bg-zinc-900 dark:ring-zinc-800';
+  // min-w-0: a fieldset otherwise never shrinks below its widest line, and pushes off a phone's screen.
+  'min-w-0 rounded-2xl bg-white p-4 shadow-xs ring-1 ring-zinc-200 sm:p-5 dark:bg-zinc-900 dark:ring-zinc-800';
 export const labelClasses = 'flex flex-col gap-1.5 text-sm font-medium text-zinc-950 dark:text-white';
 export const hintClasses = 'text-xs font-normal text-zinc-600 dark:text-zinc-400';
 export const fieldClasses =
