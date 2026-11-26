@@ -223,6 +223,13 @@ describe('special cases against particular mice', () => {
     expect(against('library_boss').catchRate).toBe(0);
   });
 
+  test('a sure catch beats the power type, but not a mouse that can’t be caught at all', () => {
+    // Dragons are immune to Law, but the Ultimate Charm catches them anyway.
+    expect(against('dragon').catchRate).toBe(0);
+    expect(against('dragon', { charm: 'ultimate_trinket' }).catchRate).toBe(1);
+    expect(against('library_boss', { charm: 'ultimate_trinket' }).catchRate).toBe(0);
+  });
+
   test('the Anniversary traps add a 10% chance to catch', () => {
     const plain = against('big_bad_burroughs', { weapon: 'acronym_weapon' });
     const anniversary = against('big_bad_burroughs', { weapon: 'anniversary_acronym_weapon' });

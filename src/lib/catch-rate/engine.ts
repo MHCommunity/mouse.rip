@@ -447,6 +447,8 @@ export function mouseCatch(
   let effectiveness = (mouse.effectiveness[against.powerType as keyof typeof mouse.effectiveness] ?? 0) / 100;
   let power = mouse.power;
   let guaranteed = false;
+  // Mechanics that make a catch impossible whatever the trap, even with a sure-catch charm.
+  let blocked = false;
 
   // What the area does to the mouse itself (MouseHunt Improved's applyMouseEffects).
   if (location === 'ancient_city') {
@@ -472,10 +474,10 @@ export function mouseCatch(
       ((mouseType === 'desert_boss' && stage === 'Wave 4') ||
         (mouseType === 'desert_artillery_commander' && stage === 'Portal'))
     ) {
-      effectiveness = 0;
+      blocked = true;
     }
   } else if (location === 'rift_bristle_woods') {
-    if (mouseType === 'rift_acolyte' && extras.acolyteSand) effectiveness = 0;
+    if (mouseType === 'rift_acolyte' && extras.acolyteSand) blocked = true;
   } else if (location === 'sand_crypts') {
     if (group(catalog, 'sand_dunes').has(mouseType) && (extras.salt ?? 0) > 0) {
       power = saltedPower(mouseType, power, extras.salt ?? 0);
@@ -488,10 +490,12 @@ export function mouseCatch(
   if (setup.charm === 'ultimate_trinket') guaranteed = true;
   if (location === 'sunken_city' && setup.charm === 'ultimate_anchoring_trinket' && stage !== 'Docked')
     guaranteed = true;
-  if (mouseType === 'library_boss' && setup.weapon !== 'zurreals_folly_weapon') effectiveness = 0;
+  if (mouseType === 'library_boss' && setup.weapon !== 'zurreals_folly_weapon') blocked = true;
 
-  if (effectiveness <= 0) return { catchRate: 0, minluck: undefined };
+  if (blocked) return { catchRate: 0, minluck: undefined };
+  // A sure catch beats the power type: the Ultimate Charm catches even a mouse the trap's type can't touch.
   if (guaranteed) return { catchRate: 1, minluck: 0 };
+  if (effectiveness <= 0) return { catchRate: 0, minluck: undefined };
 
   let rate = catchRate(effectiveness, against.power, against.luck, power);
 
