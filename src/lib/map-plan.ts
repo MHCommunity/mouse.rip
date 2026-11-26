@@ -296,3 +296,19 @@ export function formatHunts(hunts: number): string {
   if (hunts < 10) return `~${Math.max(1, Math.round(hunts))} hunts`;
   return `~${(Math.round(hunts / 5) * 5).toLocaleString('en-US')} hunts`;
 }
+
+/**
+ * The setups to show before "Show all": the best `limit`, plus the best setup for any mouse they leave out, so
+ * every mouse on the map appears somewhere without opening the full list. Keeps the ranked order.
+ */
+export function initialSetups(ranked: Setup[], limit: number): Setup[] {
+  const shown = new Set(ranked.slice(0, limit));
+  const covered = new Set([...shown].flatMap((setup) => setup.mice.map((entry) => entry.mouse.id)));
+  for (const setup of ranked) {
+    const adds = setup.mice.some((entry) => !covered.has(entry.mouse.id));
+    if (!adds) continue;
+    shown.add(setup);
+    for (const entry of setup.mice) covered.add(entry.mouse.id);
+  }
+  return ranked.filter((setup) => shown.has(setup));
+}

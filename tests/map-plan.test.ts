@@ -10,6 +10,7 @@ import {
   expectedHuntsToClear,
   formatHunts,
   formatRate,
+  initialSetups,
   normalizeMouseName,
   parseMice,
   plannerPlaces,
@@ -347,5 +348,26 @@ describe('the real planner data', () => {
       expect(setup.mice.every((m) => m.rate >= RATE_FLOOR)).toBe(true);
       expect(Number.isFinite(setup.hunts)).toBe(true);
     }
+  });
+});
+
+describe('initialSetups', () => {
+  test('shows the top setups plus the best one for any mouse they leave out', () => {
+    const { matched } = parseMice(
+      ['Glazy', 'Abominable Snow', 'Zombie', 'Burglar', 'Bionic', 'Granite', 'Diamond'].join('\n'),
+      allMice,
+    );
+    const ranked = rankSetups(buildPlan(matched, planner, places).setups, 'best');
+    const shown = initialSetups(ranked, 3);
+    const covered = new Set(shown.flatMap((setup) => setup.mice.map((entry) => entry.mouse.id)));
+    const planned = new Set(ranked.flatMap((setup) => setup.mice.map((entry) => entry.mouse.id)));
+    expect([...planned].filter((id) => !covered.has(id))).toEqual([]);
+    // The top three come first, in order, and nothing is added that covers no new mouse.
+    expect(shown.slice(0, 3)).toEqual(ranked.slice(0, 3));
+    expect(shown.length).toBeLessThan(ranked.length);
+  });
+
+  test('a short list is shown whole', () => {
+    expect(initialSetups([], 20)).toEqual([]);
   });
 });

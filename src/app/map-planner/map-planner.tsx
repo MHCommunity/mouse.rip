@@ -17,6 +17,7 @@ import {
   buildPlan,
   formatHunts,
   formatRate,
+  initialSetups,
   normalizeMouseName,
   parseMice,
   rankSetups,
@@ -111,7 +112,9 @@ export function MapPlanner({
     [matched, data, places],
   );
   const ranked = useMemo(() => (plan ? rankSetups(plan.setups, sort) : []), [plan, sort]);
-  const visible = showAll ? ranked : ranked.slice(0, INITIAL_SETUPS);
+  // Every mouse appears in the first view, even when its only setups rank low.
+  const initial = useMemo(() => initialSetups(ranked, INITIAL_SETUPS), [ranked]);
+  const visible = showAll ? ranked : initial;
 
   const removeMouse = (mouse: IndexedMouse) => {
     const names = new Set([normalizeMouseName(mouse.name), normalizeMouseName(mouse.abbreviated_name ?? '')]);
@@ -255,7 +258,7 @@ export function MapPlanner({
               ))}
             </ol>
 
-            {!showAll && ranked.length > INITIAL_SETUPS && (
+            {!showAll && ranked.length > initial.length && (
               <button type="button" onClick={() => setShowAll(true)} className={clsx(linkClasses, 'mt-4 text-sm')}>
                 Show all {formatNumber(ranked.length)} setups
               </button>
