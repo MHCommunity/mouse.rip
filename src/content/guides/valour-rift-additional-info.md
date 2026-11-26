@@ -6,8 +6,8 @@ Ignore the target TEs, but the general order is still correct: [upgrade order ch
 
 ## Simulators available
 
-- [Re's sim](https://waa.ai/re-vrift-copyable)
-- [Aaron's sim](https://tinyurl.com/VRift)
+- [Re's sim](https://docs.google.com/spreadsheets/d/1CxF0BZyUSsfQPNjwgBRNUziWBQUo9PQzTQr1WjlbIKw/edit?usp=sharing)
+- [Aaron's sim](https://docs.google.com/spreadsheets/d/1ntN6GWsSR6Hq5EUDqHzrT-QBGCDo7_BCKzSdS_R8duA/edit#gid=61828636)
 
 > These simulators are **exclusive to Google Sheets and DO NOT WORK IN EXCEL.** (You'll know it's wrong if you see Shade 5 on the first run.)
 

@@ -228,7 +228,57 @@ Some special notes on the new mice:
 
 Here are my experiences in each area (a small sample size — two full run-throughs from day to dawn):
 
-![Loot distribution data](/images/guides/fort-rox-8.png)
+**Share of mice attracted in the daytime:**
+
+| Mouse | Trap | Day |
+| ----- | ---- | --: |
+| Meteorite Mover Mouse | Law | 0.95% |
+| Mining Materials Manager Mouse | Law | 9.52% |
+| Hardworking Hauler Mouse | Law | 23.81% |
+| Mischievous Meteorite Miner Mouse | Law | 20.00% |
+| Meteorite Miner Mouse | Law | 34.29% |
+| Meteorite Snacker Mouse | Law | 11.43% |
+
+**Share of mice attracted in each phase of the night** (blank = not in that phase). Moon Cheese was being used to avoid the Battering Ram, which is why it shows 0% throughout:
+
+| Mouse | Trap | Twilight | Midnight | Pitch | Utter | First Light | Dawn |
+| ----- | ---- | -------: | -------: | ----: | ----: | ----------: | ---: |
+| Nightmancer Mouse | Shadow | 0.00% | 5.88% | 9.09% |  |  |  |
+| Reveling Lycanthrope Mouse | Shadow | 15.15% | 7.84% | 0.00% |  |  |  |
+| Battering Ram Mouse | Both | 0.00% | 0.00% | 0.00% | 0.00% | 0.00% | 0.00% |
+| Night Shift Materials Manager Mouse | Shadow | 7.58% | 11.76% | 15.15% | 2.27% |  |  |
+| Mischievous Wereminer Mouse | Shadow | 16.67% | 13.73% | 6.06% | 0.00% |  |  |
+| Alpha Weremouse | Shadow | 21.21% | 15.69% | 0.00% | 4.55% |  |  |
+| Werehauler Mouse | Shadow | 16.67% | 11.76% | 0.00% | 0.00% |  |  |
+| Wereminer Mouse | Shadow | 22.73% | 5.88% | 12.12% | 6.82% |  |  |
+| Night Watcher Mouse | Arcane |  | 3.92% | 6.06% | 13.64% | 7.55% |  |
+| Wealthy Werewarrior Mouse | Shadow |  | 13.73% | 15.15% | 2.27% | 0.00% |  |
+| Hypnotized Gunslinger Mouse | Arcane |  | 1.96% | 12.12% | 15.91% | 18.87% |  |
+| Arcane Summoner Mouse | Arcane |  | 3.92% | 3.03% | 4.55% | 3.77% |  |
+| Meteorite Golem Mouse | Arcane |  | 3.92% | 6.06% | 22.73% | 20.75% |  |
+| Cursed Taskmaster Mouse | Arcane |  |  | 3.03% | 11.36% | 26.42% |  |
+| Meteorite Mystic Mouse | Arcane |  |  | 6.06% | 9.09% | 5.66% |  |
+| Nightfire Mouse | Arcane |  |  | 6.06% | 6.82% | 16.98% |  |
+| Dawn Guardian Mouse | Arcane |  |  |  |  |  | 45.00% |
+| Monster of the Meteor | Arcane |  |  |  |  |  | 55.00% |
+
+**Average per hunt:**
+
+| | Day | Twilight | Midnight | Pitch | Utter | First Light | Dawn |
+| --- | --: | -------: | -------: | ----: | ----: | ----------: | ---: |
+| Meteorite Pieces | 3.24 | 0.66 | 1.00 | 1.03 | 0.63 | 0.25 | 0.9 |
+| Howlite | 0.00 | 0.46 | 0.72 | 0.67 | 0.46 | 0.31 | 0.3 |
+| Bloodstone | 0.00 | 0.00 | 0.12 | 0.27 | 0.31 | 0.38 | 0.4 |
+| Mana (daytime requires SB+) | 0.30 | 0.03 | 0.20 | 0.30 | 0.30 | 0.00 | 0 |
+| Dawn Dust |  |  |  |  |  |  | 2.2 |
+| Ancient Relic |  |  |  |  |  |  | 0.06 |
+| Silver Bolt |  |  |  |  |  |  | 0.05 |
+| Gold | 1,393 | 2,322.86 | 2,860 | 3,552 | 4,400 | 5,031 | 13,200 |
+| Points | 16,972 | 24,685.71 | 26,840 | 27,394 | 32,062.5 | 30,906 | 46,000 |
+| Caught by the Ballista | n/a | 45.71% | 32.00% | 15.38% | 12.00% | 0.00% | n/a |
+| Caught by the Cannon | n/a | n/a | n/a | 19.23% | 36.00% | 37.14% | n/a |
+
+All of it was recorded with Crescent or Moon Cheese and the Temporal Turbine or Grand Arcanum Trap, with no mana spent on changing drops.
 
 Cheese does seem to make a difference! Here are two HornTracker screens side by side — bird drops and Dawn Dust both tripled when using Moon Cheese:
 
