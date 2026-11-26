@@ -30,6 +30,9 @@ jobs:
     name: Browser tests
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      # Any value: the build signs its social card links with it, and the server the tests run against checks them.
+      OG_CARD_SECRET: for-the-browser-tests-only
 
     steps:
       - name: Checkout code

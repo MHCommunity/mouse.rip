@@ -1,9 +1,12 @@
 import { ImageResponse } from 'next/og';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 
+import { OG_CARD_FIELDS, verifyOgCard } from '@/lib/og-signature';
+
 // Dynamic 1200×630 social card driven by query params, shared by mouse, item,
 // and group pages (see `ogCard` in src/seo.ts). Rendered on demand — typically
-// only when a crawler unfurls a link — so it adds no prebuilt assets.
+// only when a crawler unfurls a link — so it adds no prebuilt assets. Only links
+// the site signed are rendered; any other request is sent to the site-wide card.
 export const dynamic = 'force-dynamic';
 
 const ACCENTS: Record<string, { strong: string; bg: string }> = {
@@ -46,6 +49,14 @@ function edgeCache(): Cache | undefined {
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const { searchParams } = url;
+
+  // Checked against the params exactly as they arrived, before any defaults or trimming.
+  const asSent = Object.fromEntries(OG_CARD_FIELDS.map((field) => [field, searchParams.get(field)]));
+  if (!verifyOgCard(asSent, searchParams.get('sig'))) {
+    // A link shared before cards were signed still gets a picture, just not one with its own words on it.
+    return new Response(null, { status: 302, headers: { Location: '/og' } });
+  }
+
   const title = (searchParams.get('title') || 'mouse.rip').slice(0, 90);
   const subtitle = (searchParams.get('subtitle') || '').slice(0, 120);
   const eyebrow = (searchParams.get('eyebrow') || 'mouse.rip').slice(0, 60);

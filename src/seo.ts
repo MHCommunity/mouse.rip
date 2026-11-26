@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 
+import { signOgCard } from '@/lib/og-signature';
+
 const SITE_NAME = 'mouse.rip';
 const OG_IMAGE = {
   url: '/og',
@@ -20,7 +22,12 @@ type PageMetadataOptions = {
   image?: string;
 };
 
-/** Build a dynamic social-card URL for the shared `/og/card` route. */
+let warnedUnsigned = false;
+
+/**
+ * Build a signed social-card URL for the shared `/og/card` route, which only renders cards the site signed.
+ * Without OG_CARD_SECRET there's nothing to sign with, so the page gets the site-wide card instead.
+ */
 export function ogCard(params: {
   title: string;
   subtitle?: string;
@@ -31,6 +38,14 @@ export function ogCard(params: {
   banner?: string;
   accent?: string;
 }): string {
+  const signature = signOgCard(params);
+  if (!signature) {
+    if (!warnedUnsigned) {
+      warnedUnsigned = true;
+      console.warn('OG_CARD_SECRET is not set: mouse, item, and group pages will use the site-wide social card.');
+    }
+    return OG_IMAGE.url;
+  }
   const search = new URLSearchParams();
   search.set('title', params.title);
   if (params.subtitle) search.set('subtitle', params.subtitle);
@@ -38,6 +53,7 @@ export function ogCard(params: {
   if (params.image) search.set('image', params.image);
   if (params.banner) search.set('banner', params.banner);
   if (params.accent) search.set('accent', params.accent);
+  search.set('sig', signature);
   return `/og/card?${search.toString()}`;
 }
 
