@@ -116,7 +116,7 @@ export function PriceChart({ points }: { points: PricePoint[] }) {
           <>
             <span>{formatDate(hovered.date)}</span>
             <span className="font-medium text-zinc-700 dark:text-zinc-200">{formatGold(hovered.price)} gold</span>
-            <span>{formatSb(hovered.sb_price)} SB</span>
+            <span>{formatSb(hovered.sb_price)} SUPER|brie+</span>
             <span>{hovered.volume != null ? `${formatCompact(hovered.volume)} traded` : ''}</span>
           </>
         )}
@@ -323,7 +323,7 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
             </span>
             {/* SUPER|brie+ priced in itself is always 1 SB; skip the noise. */}
             {Math.abs(latest.sb_price - 1) > 0.001 && (
-              <span className="text-zinc-600 dark:text-zinc-400">{formatSb(latest.sb_price)} SB</span>
+              <span className="text-zinc-600 dark:text-zinc-400">{formatSb(latest.sb_price)} SUPER|brie+</span>
             )}
           </div>
         </div>

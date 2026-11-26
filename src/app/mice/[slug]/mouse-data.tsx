@@ -19,6 +19,18 @@ function formatRate(rate: number): string {
   return `${(rate / 100).toFixed(2)}%`;
 }
 
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/** "Elite Map (-09.2022)" is the version retired in September 2022: say so in words. */
+export function mapName(name: string): string {
+  return name
+    .replace(
+      /\(-(\d{2})\.(\d{4})\)$/,
+      (_, month: string, year: string) => `(until ${MONTHS[Number(month) - 1] ?? month} ${year})`,
+    )
+    .replace(/\(-(\d{4})\)$/, '(until $1)');
+}
+
 /**
  * Reveals the rows past the preview. "Show all" when that's everything; when the list is capped,
  * "Show N more", with the cap spelled out once it's open.
@@ -142,7 +154,7 @@ function MapChips({ rows }: { rows: MouseMapRow[] }) {
           className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-sm text-zinc-700 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:text-zinc-300 dark:ring-zinc-800"
           title={`On ${formatNumber(row.seen_maps)} of ${formatNumber(row.total_maps)} maps`}
         >
-          {row.map}
+          {mapName(row.map)}
           <span className="text-xs tabular-nums text-zinc-600 dark:text-zinc-400">{formatRate(row.rate)}</span>
         </li>
       ))}

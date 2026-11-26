@@ -37,6 +37,22 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   });
 }
 
+/** Where a guide first appeared, by name rather than as a long raw link. */
+function sourceName(url: string): string {
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, '');
+    const names: Record<string, string> = {
+      'docs.google.com': 'Google Docs',
+      'reddit.com': 'Reddit',
+      'old.reddit.com': 'Reddit',
+      'mhwiki.hitgrab.com': 'MHWiki',
+    };
+    return names[host] ?? host;
+  } catch {
+    return url;
+  }
+}
+
 export default async function Guide({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const guide = getGuide(slug);
@@ -81,7 +97,7 @@ export default async function Guide({ params }: { params: Promise<{ slug: string
 
       {guide.sourceUrl && (
         <footer className="mt-12 border-t border-zinc-200 pt-4 text-sm text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
-          Originally published at <PageLink href={guide.sourceUrl}>{guide.sourceUrl}</PageLink>.
+          First published on <PageLink href={guide.sourceUrl}>{sourceName(guide.sourceUrl)}</PageLink>.
         </footer>
       )}
     </div>
