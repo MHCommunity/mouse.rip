@@ -100,3 +100,21 @@ table,
     animation: none;
   }
 }
+
+/*
+ * Warmer greys, on trial on a few pages before the rest of the site. Tailwind's stone scale has the same
+ * lightness as zinc, so contrast is unchanged; only the hue moves from cool to warm.
+ */
+.warm {
+  --color-zinc-50: oklch(98.5% 0.002 75);
+  --color-zinc-100: oklch(97% 0.003 75);
+  --color-zinc-200: oklch(92.3% 0.005 60);
+  --color-zinc-300: oklch(86.9% 0.007 60);
+  --color-zinc-400: oklch(70.9% 0.012 58);
+  --color-zinc-500: oklch(55.3% 0.014 58);
+  --color-zinc-600: oklch(44.4% 0.012 65);
+  --color-zinc-700: oklch(37.4% 0.011 65);
+  --color-zinc-800: oklch(26.8% 0.008 50);
+  --color-zinc-900: oklch(21.6% 0.007 55);
+  --color-zinc-950: oklch(14.7% 0.005 50);
+}

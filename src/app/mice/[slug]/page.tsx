@@ -76,6 +76,14 @@ function formatRate(rate: number): string {
   return `${(rate / 100).toFixed(1)}%`;
 }
 
+/** The same rate as a hunter would say it: "about 1 in 19 hunts". */
+function huntsPer(rate: number): string {
+  const chance = rate / 10_000;
+  if (chance >= 0.95) return 'almost every hunt';
+  if (chance >= 0.45) return 'about every other hunt';
+  return `about 1 in ${formatNumber(Math.round(1 / chance))} hunts`;
+}
+
 export default async function MousePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const mouse = getMouseBySlug(slug);
@@ -122,191 +130,196 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
       : undefined;
 
   return (
-    <div>
+    <div className="warm">
       <JsonLd data={mouseJsonLd(mouse, attraction, slug)} />
 
       <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Mice', href: '/mice' }, { name: mouse.name }]} />
 
-      <header className="flex items-start gap-4 sm:gap-6">
-        {image && (
-          // The game's mouse art is drawn on white, so it sits on a white plate in
-          // both themes instead of turning into a bright square on dark.
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={image}
-            alt=""
-            className={`shrink-0 rounded-xl bg-white object-contain p-1.5 ring-1 ring-zinc-950/10 dark:ring-white/15 ${
-              mouse.images?.is_landscape ? 'h-20 w-32 sm:h-36 sm:w-64' : 'size-20 sm:size-36'
-            }`}
-          />
-        )}
-        <div className="min-w-0">
-          <Heading>{mouse.name}</Heading>
-          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-            {groupSlug ? (
-              <Link href={`/groups/${groupSlug}`} className={accentLink}>
-                {mouse.group}
-              </Link>
-            ) : (
-              mouse.group
-            )}
-            {mouse.subgroup ? ` (${mouse.subgroup})` : ''}
-          </p>
-          {best.length > 0 && (
-            <div className="mt-3 flex flex-wrap items-center gap-1.5">
-              <span className="text-xs text-zinc-600 dark:text-zinc-400">Weak to</span>
-              {best.map((type) => (
-                <Link
-                  key={type}
-                  href={`/mice?weakto=${type}`}
-                  title={`All mice weak to ${powerTypeLabel(type)}`}
-                  className={`inline-flex rounded-md px-2 py-0.5 text-xs font-medium transition hover:ring-2 hover:ring-pink-400 ${POWER_TYPE_CHIP[type] ?? ''}`}
-                >
-                  {powerTypeLabel(type)}
-                </Link>
-              ))}
-            </div>
+      <header className="rounded-3xl bg-linear-to-br from-pink-50 via-white to-amber-50 p-4 ring-1 ring-pink-100/80 sm:p-6 dark:from-pink-950/30 dark:via-zinc-900 dark:to-amber-950/20 dark:ring-zinc-800">
+        <div className="flex items-start gap-4 sm:gap-6">
+          {image && (
+            // The game's mouse art is drawn on white, so it sits on a white plate in
+            // both themes instead of turning into a bright square on dark.
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={image}
+              alt=""
+              className={`shrink-0 rounded-2xl bg-white object-contain p-2 shadow-sm ring-1 ring-zinc-950/5 dark:ring-white/10 ${
+                mouse.images?.is_landscape ? 'h-20 w-32 sm:h-36 sm:w-64' : 'size-20 sm:size-36'
+              }`}
+            />
           )}
-          {/* Each number links to every mouse ranked by it, scrolled to this one. */}
-          <dl className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm">
-            {(
-              [
-                ['points', 'Points', mouse.points_formatted ?? mouse.points.toLocaleString()],
-                ['gold', 'Gold', mouse.gold_formatted ?? mouse.gold.toLocaleString()],
-                ['wisdom', 'Wisdom', mouse.wisdom.toLocaleString()],
-              ] as const
-            ).map(([key, label, value]) => (
-              <div key={key} className="flex items-baseline gap-1.5">
-                <dt className="text-zinc-600 dark:text-zinc-400">{label}</dt>
-                <dd>
+          <div className="min-w-0 flex-1">
+            <Heading>{mouse.name}</Heading>
+            <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+              {groupSlug ? (
+                <Link href={`/groups/${groupSlug}`} className={accentLink}>
+                  {mouse.group}
+                </Link>
+              ) : (
+                mouse.group
+              )}
+              {mouse.subgroup ? ` (${mouse.subgroup})` : ''}
+            </p>
+            {best.length > 0 && (
+              <div className="mt-3 flex flex-wrap items-center gap-1.5">
+                <span className="text-xs text-zinc-600 dark:text-zinc-400">Weak to</span>
+                {best.map((type) => (
                   <Link
-                    href={`/mice/rankings?by=${key}&mouse=${slug}`}
-                    title={
-                      ranks ? `#${ranks[key].toLocaleString()} of ${ranks.total.toLocaleString()} mice` : undefined
-                    }
-                    className="font-semibold tabular-nums text-zinc-900 underline decoration-zinc-300 underline-offset-2 hover:text-pink-700 hover:decoration-pink-400 dark:text-white dark:decoration-zinc-600 dark:hover:text-pink-300"
+                    key={type}
+                    href={`/mice?weakto=${type}`}
+                    title={`All mice weak to ${powerTypeLabel(type)}`}
+                    className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium transition hover:ring-2 hover:ring-pink-400 ${POWER_TYPE_CHIP[type] ?? ''}`}
                   >
-                    {value}
+                    {powerTypeLabel(type)}
                   </Link>
-                </dd>
+                ))}
               </div>
-            ))}
-          </dl>
+            )}
+          </div>
         </div>
+        {/* Each number links to every mouse ranked by it, scrolled to this one. */}
+        <dl className="mt-4 grid max-w-lg grid-cols-3 gap-2 sm:mt-5">
+          {(
+            [
+              ['points', 'Points', mouse.points_formatted ?? mouse.points.toLocaleString()],
+              ['gold', 'Gold', mouse.gold_formatted ?? mouse.gold.toLocaleString()],
+              ['wisdom', 'Wisdom', mouse.wisdom.toLocaleString()],
+            ] as const
+          ).map(([key, label, value]) => (
+            <div
+              key={key}
+              className="rounded-2xl bg-white/80 px-3 py-2 ring-1 ring-zinc-200/80 dark:bg-white/5 dark:ring-zinc-700/60"
+            >
+              <dt className="text-xs text-zinc-600 dark:text-zinc-400">{label}</dt>
+              <dd className="mt-0.5">
+                <Link
+                  href={`/mice/rankings?by=${key}&mouse=${slug}`}
+                  title={ranks ? `#${ranks[key].toLocaleString()} of ${ranks.total.toLocaleString()} mice` : undefined}
+                  className="text-base font-semibold tabular-nums text-zinc-900 underline decoration-zinc-300 underline-offset-2 hover:text-pink-700 hover:decoration-pink-400 sm:text-lg dark:text-white dark:decoration-zinc-600 dark:hover:text-pink-300"
+                >
+                  {value}
+                </Link>
+              </dd>
+            </div>
+          ))}
+        </dl>
       </header>
 
       {(typeRows.length > 0 || bestSpot) && (
-        <section
-          aria-labelledby="how-to-catch-heading"
-          className="mt-8 rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
-        >
-          <h2 id="how-to-catch-heading" className="sr-only">
+        <section aria-labelledby="how-to-catch-heading" className="mt-10">
+          <SectionHeading id="how-to-catch-heading" className="text-lg/7">
             How to catch it
-          </h2>
-
-          <div className="px-4 py-4 sm:px-5">
-            <p className="text-xs font-medium tracking-wide text-zinc-600 uppercase dark:text-zinc-400">
-              Where to hunt
-            </p>
-            {bestSpot ? (
-              <>
-                <div className="mt-1 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                  <p className="text-base text-zinc-900 dark:text-zinc-100">
-                    <LocationCell location={bestSpot.location} stage={bestSpot.stage} />
-                    <span className="text-zinc-600 dark:text-zinc-400"> with </span>
-                    <CheeseCell cheese={bestSpot.cheese} />
-                    {bestSpot.charm && (
-                      <>
-                        <span className="text-zinc-600 dark:text-zinc-400"> and </span>
-                        {bestSpot.charm}
-                      </>
-                    )}
-                  </p>
-                  <p className="text-2xl font-semibold tabular-nums text-zinc-950 dark:text-white">
-                    {formatRate(bestSpot.rate)}
-                  </p>
-                </div>
-                {betterWithCharm && (
+          </SectionHeading>
+          <div className="mt-3 overflow-hidden rounded-2xl bg-white shadow-xs ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
+            <div className="px-4 py-4 sm:px-5">
+              <p className="text-sm font-medium text-zinc-600 dark:text-zinc-400">Best place to hunt</p>
+              {bestSpot ? (
+                <>
+                  <div className="mt-1 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+                    <p className="text-base text-zinc-900 dark:text-zinc-100">
+                      <LocationCell location={bestSpot.location} stage={bestSpot.stage} />
+                      <span className="text-zinc-600 dark:text-zinc-400"> with </span>
+                      <CheeseCell cheese={bestSpot.cheese} />
+                      {bestSpot.charm && (
+                        <>
+                          <span className="text-zinc-600 dark:text-zinc-400"> and </span>
+                          {bestSpot.charm}
+                        </>
+                      )}
+                    </p>
+                    <p className="rounded-full bg-pink-50 px-3 py-1 text-lg font-semibold tabular-nums text-pink-800 ring-1 ring-pink-100 dark:bg-pink-950/50 dark:text-pink-200 dark:ring-pink-900/60">
+                      {formatRate(bestSpot.rate)}
+                    </p>
+                  </div>
                   <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">
-                    {sameSetup(betterWithCharm, bestSpot) ? (
-                      <>
-                        {betterWithCharm.charm} raises it to{' '}
-                        <span className="font-semibold tabular-nums">{formatRate(betterWithCharm.rate)}</span>.
-                      </>
-                    ) : (
-                      <>
-                        Up to <span className="font-semibold tabular-nums">{formatRate(betterWithCharm.rate)}</span> at{' '}
-                        <LocationCell location={betterWithCharm.location} stage={betterWithCharm.stage} /> with{' '}
-                        <CheeseCell cheese={betterWithCharm.cheese} /> and {betterWithCharm.charm}.
-                      </>
-                    )}
+                    It turns up on {huntsPer(bestSpot.rate)} there.
                   </p>
-                )}
-                <p className="mt-1 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
-                  {bestSpot.total_hunts
-                    ? `Attraction rate from ${formatNumber(bestSpot.total_hunts)} hunts on MHCT.`
-                    : 'Attraction rate from MH-Tools.'}
+                  {betterWithCharm && (
+                    <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">
+                      {sameSetup(betterWithCharm, bestSpot) ? (
+                        <>
+                          {betterWithCharm.charm} raises it to{' '}
+                          <span className="font-semibold tabular-nums">{formatRate(betterWithCharm.rate)}</span>.
+                        </>
+                      ) : (
+                        <>
+                          Up to <span className="font-semibold tabular-nums">{formatRate(betterWithCharm.rate)}</span>{' '}
+                          at <LocationCell location={betterWithCharm.location} stage={betterWithCharm.stage} /> with{' '}
+                          <CheeseCell cheese={betterWithCharm.cheese} /> and {betterWithCharm.charm}.
+                        </>
+                      )}
+                    </p>
+                  )}
+                  <p className="mt-1 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
+                    {bestSpot.total_hunts
+                      ? `Attraction rate from ${formatNumber(bestSpot.total_hunts)} hunts on MHCT.`
+                      : 'Attraction rate from MH-Tools.'}
+                  </p>
+                </>
+              ) : (
+                <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">No attraction data for this mouse yet.</p>
+              )}
+            </div>
+
+            {typeRows.length > 0 && (
+              <div className="border-t border-zinc-200 dark:border-zinc-800">
+                <table className="w-full text-sm">
+                  <caption className="sr-only">Minluck and effectiveness by power type</caption>
+                  <thead className="text-left text-xs text-zinc-600 dark:text-zinc-400">
+                    <tr>
+                      <th className="px-4 pt-3 pb-1.5 font-medium sm:px-5">Power type</th>
+                      <th className="px-4 pt-3 pb-1.5 text-right font-medium sm:px-5">Effectiveness</th>
+                      <th className="px-4 pt-3 pb-1.5 text-right font-medium sm:px-5">Minluck</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                    {typeRows.map((row) => (
+                      <tr key={row.types.join('-')}>
+                        <td className="px-4 py-2 sm:px-5">
+                          {row.types.length > 3 ? (
+                            <span className="font-medium text-zinc-900 dark:text-zinc-100">
+                              {powerTypeSetLabel(row.types)}
+                            </span>
+                          ) : (
+                            <span className="flex flex-wrap gap-1">
+                              {row.types.map((type) => (
+                                <span
+                                  key={type}
+                                  className={`inline-flex rounded-md px-2 py-0.5 text-xs font-medium ${POWER_TYPE_CHIP[type] ?? ''}`}
+                                >
+                                  {powerTypeLabel(type)}
+                                </span>
+                              ))}
+                            </span>
+                          )}
+                        </td>
+                        <td className="px-4 py-2 text-right tabular-nums text-zinc-700 sm:px-5 dark:text-zinc-300">
+                          {row.effectiveness}%
+                        </td>
+                        <td className="px-4 py-2 text-right sm:px-5">
+                          {row.minluck > 0 ? <ColorScaleBadge value={row.minluck} /> : '—'}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <p className="border-t border-zinc-100 px-4 py-3 text-sm text-zinc-600 sm:px-5 dark:border-zinc-800 dark:text-zinc-400">
+                  {immuneTypes.length > 0 && (
+                    <>
+                      {immuneTypes.map((type) => powerTypeLabel(type)).join(', ')} traps can&rsquo;t catch this
+                      mouse.{' '}
+                    </>
+                  )}
+                  Minluck is the luck that guarantees a catch, and the{' '}
+                  <Link href="/minlucks" className={accentLink}>
+                    minluck table
+                  </Link>{' '}
+                  has it for every mouse.
                 </p>
-              </>
-            ) : (
-              <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">No attraction data for this mouse yet.</p>
+              </div>
             )}
           </div>
-
-          {typeRows.length > 0 && (
-            <div className="border-t border-zinc-200 dark:border-zinc-800">
-              <table className="w-full text-sm">
-                <caption className="sr-only">Minluck and effectiveness by power type</caption>
-                <thead className="text-left text-xs text-zinc-600 dark:text-zinc-400">
-                  <tr>
-                    <th className="px-4 pt-3 pb-1.5 font-medium sm:px-5">Power type</th>
-                    <th className="px-4 pt-3 pb-1.5 text-right font-medium sm:px-5">Effectiveness</th>
-                    <th className="px-4 pt-3 pb-1.5 text-right font-medium sm:px-5">Minluck</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
-                  {typeRows.map((row) => (
-                    <tr key={row.types.join('-')}>
-                      <td className="px-4 py-2 sm:px-5">
-                        {row.types.length > 3 ? (
-                          <span className="font-medium text-zinc-900 dark:text-zinc-100">
-                            {powerTypeSetLabel(row.types)}
-                          </span>
-                        ) : (
-                          <span className="flex flex-wrap gap-1">
-                            {row.types.map((type) => (
-                              <span
-                                key={type}
-                                className={`inline-flex rounded-md px-2 py-0.5 text-xs font-medium ${POWER_TYPE_CHIP[type] ?? ''}`}
-                              >
-                                {powerTypeLabel(type)}
-                              </span>
-                            ))}
-                          </span>
-                        )}
-                      </td>
-                      <td className="px-4 py-2 text-right tabular-nums text-zinc-700 sm:px-5 dark:text-zinc-300">
-                        {row.effectiveness}%
-                      </td>
-                      <td className="px-4 py-2 text-right sm:px-5">
-                        {row.minluck > 0 ? <ColorScaleBadge value={row.minluck} /> : '—'}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <p className="border-t border-zinc-100 px-4 py-3 text-sm text-zinc-600 sm:px-5 dark:border-zinc-800 dark:text-zinc-400">
-                {immuneTypes.length > 0 && (
-                  <>{immuneTypes.map((type) => powerTypeLabel(type)).join(', ')} traps can&rsquo;t catch this mouse. </>
-                )}
-                Minluck is the luck that guarantees a catch, and the{' '}
-                <Link href="/minlucks" className={accentLink}>
-                  minluck table
-                </Link>{' '}
-                has it for every mouse.
-              </p>
-            </div>
-          )}
         </section>
       )}
 
@@ -326,30 +339,37 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
       {relatedMice.length > 0 && (
         <section className="mt-10">
           <SectionHeading>More from {mouse.group}</SectionHeading>
-          <ul className="mt-4 flex flex-wrap gap-2">
+          <ul className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {relatedMice.map((other) => {
               const otherSlug = mouseSlug(other.type);
               return (
                 <li key={other.id}>
                   <Link
                     href={`/mice/${otherSlug}`}
-                    className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:border-pink-300 hover:text-pink-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-pink-800 dark:hover:text-pink-300"
+                    className="group flex h-full flex-col items-center gap-2 rounded-2xl bg-white p-3 text-center shadow-xs ring-1 ring-zinc-200 transition hover:-translate-y-0.5 hover:shadow-md hover:ring-pink-200 motion-reduce:transition-none motion-reduce:hover:translate-y-0 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:ring-pink-900"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={mouseImageUrl(otherSlug)} alt="" loading="lazy" className="size-6 shrink-0" />
-                    {other.name}
+                    <img
+                      src={mouseImageUrl(otherSlug)}
+                      alt=""
+                      loading="lazy"
+                      className="size-14 shrink-0 rounded-xl bg-white object-contain p-1"
+                    />
+                    <span className="text-sm/5 font-medium text-zinc-800 group-hover:text-pink-700 dark:text-zinc-200 dark:group-hover:text-pink-300">
+                      {other.name}
+                    </span>
                   </Link>
                 </li>
               );
             })}
-            {group && groupMice.length > relatedMice.length && (
-              <li className="flex items-center">
-                <Link href={`/groups/${group.id}`} className={`text-sm ${accentLink}`}>
-                  See all {group.mouse_ids.length}
-                </Link>
-              </li>
-            )}
           </ul>
+          {group && groupMice.length > relatedMice.length && (
+            <p className="mt-3 text-sm">
+              <Link href={`/groups/${group.id}`} className={accentLink}>
+                See all {group.mouse_ids.length} {mouse.group}
+              </Link>
+            </p>
+          )}
         </section>
       )}
 

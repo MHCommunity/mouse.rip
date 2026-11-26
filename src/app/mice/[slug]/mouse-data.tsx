@@ -67,7 +67,7 @@ function AttractionTable({
   // that would repeat on every row, or stay empty on every row, are left out.
   const showCharm = rows.some((row) => row.charm);
   return (
-    <div className="overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-800">
+    <div className="overflow-x-auto rounded-2xl bg-white shadow-xs ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
       <table className="w-full text-sm">
         <thead className="bg-zinc-50 text-left text-xs text-zinc-600 dark:bg-zinc-900/60 dark:text-zinc-400">
           <tr>
@@ -139,7 +139,7 @@ function MapChips({ rows }: { rows: MouseMapRow[] }) {
       {rows.map((row) => (
         <li
           key={row.map}
-          className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+          className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-sm text-zinc-700 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:text-zinc-300 dark:ring-zinc-800"
           title={`On ${formatNumber(row.seen_maps)} of ${formatNumber(row.total_maps)} maps`}
         >
           {row.map}
