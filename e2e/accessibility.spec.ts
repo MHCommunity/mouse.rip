@@ -25,7 +25,7 @@ const FILLED: { name: string; path: string; fill?: (page: Page) => Promise<void>
     name: 'catch rate estimator with results',
     path: '/catch-rate-estimator?location=meadow&cheese=cheddar_cheese&weapon=floating_law_upgraded_weapon&base=rainbow_diamond_refractor_base&charm=ultimate_ancient_trinket',
     fill: async (page) => {
-      await expect(page.getByText('Every 100 hunts, you can expect to catch about')).toBeVisible();
+      await expect(page.getByText('Overall catch rate')).toBeVisible();
       await page.getByText('Auras and other bonuses').click();
     },
   },

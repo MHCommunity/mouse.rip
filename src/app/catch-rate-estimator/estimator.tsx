@@ -31,22 +31,6 @@ import {
 const STORAGE_KEY = 'mouse.rip:catch-rate-estimator';
 const ON_SERVER = 'server';
 
-const FRESHNESS_NAMES = [
-  'Uber Stale',
-  'Ultimately Stale',
-  'Insanely Stale',
-  'Extremely Stale',
-  'Very Stale',
-  'Stale',
-  'No effect',
-  'Fresh',
-  'Very Fresh',
-  'Extremely Fresh',
-  'Insanely Fresh',
-  'Ultimately Fresh',
-  'Uber Fresh',
-];
-
 function readStorage(): string {
   try {
     return window.localStorage.getItem(STORAGE_KEY) ?? '';
@@ -57,8 +41,9 @@ function readStorage(): string {
 }
 const noSubscribe = () => () => {};
 
+/** "86.4%", but a whole 100% without the ".0". */
 function percent(value: number, digits = 1): string {
-  return `${value.toFixed(digits)}%`;
+  return value >= 100 - 0.5 * 10 ** -digits ? '100%' : `${value.toFixed(digits)}%`;
 }
 
 /** A shared link wins; without one, pick up the setup this device used last. */
@@ -165,7 +150,7 @@ function EstimatorForm({
         <h2 id="results-heading" className="sr-only">
           Catch rates
         </h2>
-        <Results catalog={catalog} setup={resolved} result={result} />
+        <Results setup={resolved} result={result} />
       </section>
     </div>
   );
@@ -257,7 +242,7 @@ function BonusCard({ catalog, setup, onChange }: { catalog: Catalog; setup: Setu
   );
 }
 
-function Results({ catalog, setup, result }: { catalog: Catalog; setup: Setup; result: ReturnType<typeof estimate> }) {
+function Results({ setup, result }: { setup: Setup; result: ReturnType<typeof estimate> }) {
   if (!setup.location || !setup.weapon || !setup.base) {
     return (
       <div className="rounded-2xl border border-dashed border-zinc-300 p-8 text-center dark:border-zinc-700">
@@ -277,31 +262,32 @@ function Results({ catalog, setup, result }: { catalog: Catalog; setup: Setup; r
     );
   }
 
-  const { trap, overall, population } = result;
+  const { trap, overall } = result;
   const stats: [string, string][] = [
     ['Power', formatNumber(trap.power)],
     ['Luck', formatNumber(trap.luck)],
     ['Attraction bonus', percent(trap.attraction, 0)],
-    ['Cheese effect', FRESHNESS_NAMES[trap.freshness + 6]],
     ['Power type', powerTypeLabel(trap.powerType)],
   ];
 
   return (
     <div className="space-y-4">
-      <div className="rounded-3xl bg-linear-to-br from-pink-50 via-white to-amber-50 p-5 ring-1 ring-pink-100/80 sm:p-6 dark:from-pink-950/30 dark:via-zinc-900 dark:to-amber-950/20 dark:ring-zinc-800">
-        <p className="text-sm text-zinc-700 dark:text-zinc-300">Every 100 hunts, you can expect to catch about</p>
-        <p className="mt-1 text-4xl font-semibold tracking-tight tabular-nums text-zinc-950 dark:text-white">
-          {overall.catches.toFixed(1)}{' '}
-          <span className="text-lg font-medium text-zinc-600 dark:text-zinc-400">mice</span>
-        </p>
-        <p className="mt-2 text-sm text-zinc-700 dark:text-zinc-300">
-          Something is attracted on {percent(overall.attraction)} of hunts, and you catch{' '}
-          {percent(overall.catchRate * 100)} of those.
-          {overall.minluck !== undefined && overall.minluck > 0 && (
-            <> {formatNumber(overall.minluck)} luck would catch every mouse here.</>
-          )}
-        </p>
-        <dl className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-5">
+      <div className="rounded-3xl bg-linear-to-br from-pink-50 via-white to-amber-50 p-4 ring-1 ring-pink-100/80 sm:p-5 dark:from-pink-950/30 dark:via-zinc-900 dark:to-amber-950/20 dark:ring-zinc-800">
+        <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
+          <p>
+            <span className="block text-sm text-zinc-700 dark:text-zinc-300">Overall catch rate</span>
+            <span className="block text-4xl font-semibold tracking-tight tabular-nums text-zinc-950 dark:text-white">
+              {percent(overall.catchRate * 100)}
+            </span>
+          </p>
+          <p className="text-sm text-zinc-700 sm:text-right dark:text-zinc-300">
+            {percent(overall.attraction)} of hunts attract a mouse.
+            {overall.minluck !== undefined && overall.minluck > 0 && (
+              <span className="block">{formatNumber(overall.minluck)} luck catches every mouse here.</span>
+            )}
+          </p>
+        </div>
+        <dl className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
           {stats.map(([label, value]) => (
             <div
               key={label}
@@ -379,15 +365,6 @@ function Results({ catalog, setup, result }: { catalog: Catalog; setup: Setup; r
           </tbody>
         </table>
       </div>
-      <p className="text-xs text-zinc-600 dark:text-zinc-400">
-        Attraction rates for {catalog.locationName.get(setup.location)}
-        {setup.stage !== '-' ? ` (${setup.stage})` : ''} with {catalog.cheeseName.get(setup.cheese)}
-        {population.charm !== '-' ? ` and ${catalog.charms.get(population.charm)?.name ?? population.charm}` : ''} from{' '}
-        {population.source === 'mhct'
-          ? `MHCT${population.sample ? `, ${formatNumber(population.sample)} hunts` : ''}`
-          : 'MH-Tools'}
-        . Catch rates use the community’s formula with MH-Tools’ and MouseHunt Improved’s special cases.
-      </p>
     </div>
   );
 }

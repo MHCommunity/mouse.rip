@@ -11,7 +11,7 @@ const stat = (page: import('@playwright/test').Page, label: string) =>
 
 test('a shared link opens with its setup and results', async ({ page }) => {
   await page.goto(STINGER);
-  await expect(page.getByText('Every 100 hunts, you can expect to catch about')).toBeVisible();
+  await expect(page.getByText('Overall catch rate')).toBeVisible();
   await expect(stat(page, 'Power')).toHaveText('16,027');
   await expect(stat(page, 'Luck')).toHaveText('77');
   await expect(stat(page, 'Attraction bonus')).toHaveText('73%');
@@ -26,7 +26,7 @@ test('picking a setup by hand fills in the results and the link', async ({ page 
   await page.getByRole('option', { name: /S\.T\.I\.N\.G\.E\.R\. Trap/ }).click();
   await page.getByRole('combobox', { name: 'Base' }).fill('Rainbow Diamond');
   await page.getByRole('option', { name: /Rainbow Diamond Refractor Base/ }).click();
-  await expect(page.getByText('Every 100 hunts, you can expect to catch about')).toBeVisible();
+  await expect(page.getByText('Overall catch rate')).toBeVisible();
   await expect(page).toHaveURL(/weapon=floating_law_upgraded_weapon/);
   await expect(page).toHaveURL(/base=rainbow_diamond_refractor_base/);
 });

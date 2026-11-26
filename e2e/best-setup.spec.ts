@@ -10,7 +10,7 @@ test('ranks every weapon and base for a location', async ({ page }) => {
   // Each result opens in the estimator with its setup filled in.
   await first.getByRole('link', { name: 'See each mouse' }).click();
   await expect(page).toHaveURL(/\/catch-rate-estimator\?.*weapon=/);
-  await expect(page.getByText('Every 100 hunts, you can expect to catch about')).toBeVisible();
+  await expect(page.getByText('Overall catch rate')).toBeVisible();
 });
 
 test('aims for one mouse', async ({ page }) => {
