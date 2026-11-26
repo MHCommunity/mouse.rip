@@ -23,12 +23,47 @@ const ACCENTS: Record<string, { strong: string; bg: string }> = {
 const IMAGE_HOST = 'i.mouse.rip';
 const IMAGE_PATH = '/images/';
 
-// The game's 760×127 location header has a MouseHunt logo on its left and a wooden frame along its bottom and
-// right, the same on every location. This is the widest strip of it that's all scenery, scaled to the card's width.
-const HEADER = { width: 760, height: 127 };
-const SCENERY = { left: 230, width: 470, height: 70 };
-const BANNER_SCALE = 1200 / SCENERY.width;
-const BANNER_HEIGHT = Math.floor(SCENERY.height * BANNER_SCALE);
+// The game's wide art that can run across the top of a card, by where it lives on the image host. `crop` is the
+// part of the picture to show, scaled to the card's width; both come out 178px tall.
+const BANNERS = [
+  {
+    // A location's 760×127 header has a MouseHunt logo on its left and a wooden frame along its bottom and right,
+    // the same on every location. This is the widest strip of it that's all scenery.
+    path: '/images/locations/headers/',
+    source: { width: 760, height: 127 },
+    crop: { left: 230, top: 0, width: 470, height: 70 },
+  },
+  {
+    // A mouse group's 600×124 banner is all art, so it's only trimmed top and bottom, around the mice's faces.
+    path: '/images/mice/groups/',
+    source: { width: 600, height: 124 },
+    crop: { left: 0, top: 12, width: 600, height: 89 },
+  },
+];
+
+/** Where to put a banner's picture so its crop fills a strip across the card, or undefined if it isn't one we know. */
+function bannerLayout(banner: string) {
+  const kind = banner ? BANNERS.find(({ path }) => new URL(banner).pathname.startsWith(path)) : undefined;
+  if (!kind) return undefined;
+  const scale = 1200 / kind.crop.width;
+  return {
+    stripHeight: Math.floor(kind.crop.height * scale),
+    left: -Math.round(kind.crop.left * scale),
+    top: -Math.round(kind.crop.top * scale),
+    width: Math.round(kind.source.width * scale),
+    height: Math.round(kind.source.height * scale),
+  };
+}
+
+/**
+ * The title's size. A card with a strip across the top has less height, and one with a picture beside
+ * the text has less width, so a long name steps down sooner on those.
+ */
+function titleSize(title: string, { strip, beside }: { strip: boolean; beside: boolean }): number {
+  if (strip) return title.length > 22 ? 64 : 84;
+  if (beside) return title.length > 16 ? 76 : 104;
+  return title.length > 28 ? 76 : 104;
+}
 
 function safeImage(value: string | null): string {
   if (!value) return '';
@@ -101,6 +136,9 @@ function renderCard({
   banner: string;
   accent: (typeof ACCENTS)[string];
 }) {
+  const strip = bannerLayout(banner);
+  const fontSize = titleSize(title, { strip: Boolean(strip), beside: Boolean(image) });
+
   return new ImageResponse(
     <div
       style={{
@@ -112,28 +150,28 @@ function renderCard({
         fontFamily: 'sans-serif',
       }}
     >
-      {banner && (
+      {strip && (
         <div
           style={{
             display: 'flex',
             position: 'relative',
             width: '1200px',
-            height: `${BANNER_HEIGHT}px`,
+            height: `${strip.stripHeight}px`,
             overflow: 'hidden',
           }}
         >
-          {/* The whole header, scaled and slid left so only the scenery is inside the strip. */}
+          {/* The whole picture, scaled and slid so only its crop is inside the strip. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={banner}
-            width={HEADER.width}
-            height={HEADER.height}
+            width={strip.width}
+            height={strip.height}
             style={{
               position: 'absolute',
-              top: 0,
-              left: `${-Math.round(SCENERY.left * BANNER_SCALE)}px`,
-              width: `${Math.round(HEADER.width * BANNER_SCALE)}px`,
-              height: `${Math.round(HEADER.height * BANNER_SCALE)}px`,
+              top: `${strip.top}px`,
+              left: `${strip.left}px`,
+              width: `${strip.width}px`,
+              height: `${strip.height}px`,
             }}
             alt=""
           />
@@ -146,7 +184,7 @@ function renderCard({
           alignItems: 'center',
           gap: '64px',
           flex: 1,
-          padding: banner ? '48px 96px 64px' : '88px 96px',
+          padding: strip ? '44px 96px 52px' : '88px 96px',
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
@@ -164,8 +202,8 @@ function renderCard({
 
           <div
             style={{
-              marginTop: '28px',
-              fontSize: title.length > 28 ? '76px' : '104px',
+              marginTop: strip ? '20px' : '28px',
+              fontSize: `${fontSize}px`,
               fontWeight: 800,
               letterSpacing: '-0.03em',
               lineHeight: 1.02,
@@ -176,7 +214,9 @@ function renderCard({
           </div>
 
           {subtitle && (
-            <div style={{ marginTop: '24px', fontSize: '40px', fontWeight: 500, color: '#3f3f46' }}>{subtitle}</div>
+            <div style={{ marginTop: strip ? '16px' : '24px', fontSize: '40px', fontWeight: 500, color: '#3f3f46' }}>
+              {subtitle}
+            </div>
           )}
 
           {/* The star and the wordmark, as in the site's sidebar and on the site-wide card. */}
@@ -186,7 +226,7 @@ function renderCard({
               alignItems: 'center',
               gap: '12px',
               marginTop: 'auto',
-              paddingTop: '40px',
+              paddingTop: strip ? '28px' : '40px',
               fontSize: '30px',
               fontWeight: 700,
               color: '#a1a1aa',

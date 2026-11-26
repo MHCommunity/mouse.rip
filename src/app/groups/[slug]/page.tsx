@@ -31,6 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: group.name,
       eyebrow: 'Mouse group',
       subtitle: `${group.mouse_ids.length} mice`,
+      banner: mouseGroupImageUrl(group.id),
       accent: 'emerald',
     }),
   });

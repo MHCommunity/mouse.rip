@@ -34,7 +34,7 @@ export function ogCard(params: {
   eyebrow?: string;
   /** Square art, shown to the right of the text. */
   image?: string;
-  /** A location's header art from the game, shown across the top with its frame cropped off. */
+  /** A location's header art or a mouse group's banner from the game, shown across the top. */
   banner?: string;
   accent?: string;
 }): string {
