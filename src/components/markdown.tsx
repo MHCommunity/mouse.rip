@@ -98,17 +98,29 @@ const components: Components = {
   hr: ({ className, ...props }) => (
     <hr {...props} className={clsx(className, 'my-8 border-zinc-200 dark:border-zinc-800')} />
   ),
-  img: ({ className, alt, ...props }) => (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      {...props}
-      alt={alt ?? ''}
-      className={clsx(
-        className,
-        'my-6 h-auto max-w-full rounded-lg border border-zinc-200 shadow-sm dark:border-zinc-800',
-      )}
-    />
-  ),
+  img: ({ className, alt, ...props }) =>
+    // class="icon" is a small picture beside text, such as an item in a table; anything else is a screenshot.
+    className?.split(' ').includes('icon') ? (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        {...props}
+        alt={alt ?? ''}
+        width={24}
+        height={24}
+        loading="lazy"
+        className="mr-1.5 inline-block size-6 object-contain align-middle"
+      />
+    ) : (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        {...props}
+        alt={alt ?? ''}
+        className={clsx(
+          className,
+          'my-6 h-auto max-w-full rounded-lg border border-zinc-200 shadow-sm dark:border-zinc-800',
+        )}
+      />
+    ),
   table: ({ className, ...props }) => (
     <div className="my-6 overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-800">
       <table
