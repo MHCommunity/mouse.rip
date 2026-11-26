@@ -3,6 +3,8 @@ import { getCloudflareContext } from '@opennextjs/cloudflare';
 
 import { OG_CARD_FIELDS, verifyOgCard } from '@/lib/og-signature';
 
+import { STAR } from '../star';
+
 // Dynamic 1200×630 social card driven by query params, shared by mouse, item,
 // and group pages (see `ogCard` in src/seo.ts). Rendered on demand — typically
 // only when a crawler unfurls a link — so it adds no prebuilt assets. Only links
@@ -177,7 +179,21 @@ function renderCard({
             <div style={{ marginTop: '24px', fontSize: '40px', fontWeight: 500, color: '#3f3f46' }}>{subtitle}</div>
           )}
 
-          <div style={{ marginTop: 'auto', paddingTop: '40px', fontSize: '30px', fontWeight: 700, color: '#a1a1aa' }}>
+          {/* The star and the wordmark, as in the site's sidebar and on the site-wide card. */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              marginTop: 'auto',
+              paddingTop: '40px',
+              fontSize: '30px',
+              fontWeight: 700,
+              color: '#a1a1aa',
+            }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={STAR} width={40} height={40} alt="" />
             mouse.rip
           </div>
         </div>
