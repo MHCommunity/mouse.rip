@@ -64,6 +64,12 @@ function EndsIn({ stage, now, prefix = 'ends in' }: { stage: TimerStage; now: nu
   );
 }
 
+// One piece of a line whose pieces are parted by dots. Each piece carries its dot in a fixed-width box in front,
+// and the line is pulled left by that width inside a clipping parent, so a piece that starts a line (the first,
+// or one that wrapped) loses its dot.
+const DOTTED_LINE = '-ml-3 flex flex-wrap';
+const DOTTED_PIECE = "whitespace-nowrap before:inline-block before:w-3 before:text-center before:content-['·']";
+
 /**
  * The rotating locations at a glance: what's on now, how long it lasts, and
  * what comes next. For the home page.
@@ -80,12 +86,11 @@ export function TimersStrip({ className }: { className?: string }) {
         {state.status === 'ready' && (
           <p className="text-sm text-zinc-600 sm:text-xs dark:text-zinc-400">
             Daily reset in{' '}
-            <time
-              dateTime={state.data.daily_reset.at}
-              title={formatLocalTime(state.data.daily_reset.at)}
-              className="font-medium text-zinc-800 tabular-nums dark:text-zinc-200"
-            >
-              {formatCountdown(Date.parse(state.data.daily_reset.at) - now)}
+            <time dateTime={state.data.daily_reset.at} className="tabular-nums">
+              <span className="font-medium text-zinc-800 dark:text-zinc-200">
+                {formatCountdown(Date.parse(state.data.daily_reset.at) - now)}
+              </span>{' '}
+              · {formatLocalTime(state.data.daily_reset.at)}
             </time>
           </p>
         )}
@@ -97,7 +102,12 @@ export function TimersStrip({ className }: { className?: string }) {
         <ul className="mt-3 grid grid-cols-2 gap-2 lg:grid-cols-4" aria-busy={state.status === 'loading'}>
           {state.status === 'loading'
             ? [0, 1, 2, 3].map((index) => (
-                <li key={index} className="h-[92px] animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800" />
+                // As tall as the cards that replace them: five lines where a card is narrow enough to put the
+                // clock time on its own line, four where it isn't.
+                <li
+                  key={index}
+                  className="h-[118px] animate-pulse rounded-lg bg-zinc-100 sm:h-[102px] lg:h-[118px] 2xl:h-[102px] dark:bg-zinc-800"
+                />
               ))
             : state.data.locations.map((timer) => {
                 const stages = stagesAt(timer, now);
@@ -131,10 +141,18 @@ export function TimersStrip({ className }: { className?: string }) {
                         </span>
                         <PowerChip type={stages.current.power_type} />
                       </span>
-                      <span className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">
-                        {/* Rising/falling rides in this line, so a long stage name doesn't push a label onto its own row. */}
-                        {stages.current.note && <NoteText note={stages.current.note} />}
-                        <EndsIn stage={stages.current} now={now} />
+                      <span className="mt-1 overflow-hidden text-xs text-zinc-600 dark:text-zinc-400">
+                        <span className={DOTTED_LINE}>
+                          <span className={clsx(DOTTED_PIECE, 'tabular-nums')}>
+                            {/* Rising/falling rides in this line, so a long stage name doesn't push a label onto its own row. */}
+                            {stages.current.note && <NoteText note={stages.current.note} />}
+                            ends in {formatCountdown(Date.parse(stages.current.ends_at) - now)}
+                          </span>
+                          {/* The clock time is written out: as a tooltip it was out of reach on a phone or a keyboard. */}
+                          <time dateTime={stages.current.ends_at} className={clsx(DOTTED_PIECE, 'tabular-nums')}>
+                            {formatLocalTime(stages.current.ends_at)}
+                          </time>
+                        </span>
                       </span>
                       {nextLabel && <span className="text-xs text-zinc-600 dark:text-zinc-400">Next: {nextLabel}</span>}
                     </Link>
