@@ -1,10 +1,11 @@
 'use client';
 
 import clsx from 'clsx';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { GameImage } from '@/components/game-image';
+import { Input } from '@/components/input';
 import { Link } from '@/components/link';
 import { mouseImageUrl } from '@/lib/image-urls';
 import { formatNumber } from '@/utils';
@@ -25,6 +26,9 @@ const COLUMNS: { key: RankBy; label: string }[] = [
   { key: 'gold', label: 'Gold' },
   { key: 'wisdom', label: 'Wisdom' },
 ];
+
+/** Rows rendered at a time. All 1,300 at once is a heavy page on a phone, and slow to re-sort. */
+const PAGE_SIZE = 100;
 
 const selectClasses =
   'rounded-lg border border-zinc-950/10 bg-white px-3 py-1.5 text-sm/6 text-zinc-950 shadow-sm hover:border-zinc-950/20 focus:border-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500/30 dark:border-white/10 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/20';
@@ -66,23 +70,49 @@ export function RankingsTable({
   const pathname = usePathname();
   const [by, setBy] = useState<RankBy>(initialBy);
   const [group, setGroup] = useState(initialGroup);
+  const [query, setQuery] = useState('');
+  const [limit, setLimit] = useState(PAGE_SIZE);
+  const moreRef = useRef<HTMLButtonElement>(null);
 
   const groups = useMemo(() => [...new Set(mice.map((mouse) => mouse.group))].sort(), [mice]);
 
   // Ranks are over every mouse, so filtering by group keeps each mouse's overall rank.
-  const rows = useMemo(() => {
+  const ranked = useMemo(() => {
     const sorted = [...mice].sort((a, b) => b[by] - a[by] || a.name.localeCompare(b.name));
-    let rank = 0;
-    let previous: number | null = null;
-    const ranked = sorted.map((mouse, index) => {
-      if (mouse[by] !== previous) {
-        rank = index + 1;
-        previous = mouse[by];
-      }
-      return { mouse, rank };
+    // Mice with the same value share the rank of the first of them.
+    const rankOf = new Map<number, number>();
+    sorted.forEach((mouse, index) => {
+      if (!rankOf.has(mouse[by])) rankOf.set(mouse[by], index + 1);
     });
-    return group ? ranked.filter(({ mouse }) => mouse.group === group) : ranked;
-  }, [mice, by, group]);
+    return sorted.map((mouse) => ({ mouse, rank: rankOf.get(mouse[by]) ?? 0 }));
+  }, [mice, by]);
+
+  const rows = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    return ranked.filter(
+      ({ mouse }) => (!group || mouse.group === group) && (!needle || mouse.name.toLowerCase().includes(needle)),
+    );
+  }, [ranked, group, query]);
+
+  // Render far enough down to reach the mouse a mouse page linked here for, with some rows below it to centre it.
+  const focusIndex = focus ? rows.findIndex(({ mouse }) => mouse.slug === focus) : -1;
+  const shown = rows.slice(0, Math.max(limit, focusIndex + 1 + PAGE_SIZE / 4));
+  const remaining = rows.length - shown.length;
+
+  // Load the next page as the end of the list comes near. The observer is made again after each page, so a
+  // tall screen that can still see the end keeps loading until it can't.
+  useEffect(() => {
+    const button = moreRef.current;
+    if (!button || remaining === 0) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) setLimit(shown.length + PAGE_SIZE);
+      },
+      { rootMargin: '800px 0px' },
+    );
+    observer.observe(button);
+    return () => observer.disconnect();
+  }, [shown.length, remaining]);
 
   // A mouse page links here with ?mouse=. Highlight that row, and bring it into view once the order is
   // right and the router has finished its own scrolling for the navigation.
@@ -99,6 +129,7 @@ export function RankingsTable({
   const update = (nextBy: RankBy, nextGroup: string) => {
     setBy(nextBy);
     setGroup(nextGroup);
+    setLimit(PAGE_SIZE);
     if (!syncUrl) return;
     const params = new URLSearchParams(window.location.search);
     params.set('by', nextBy);
@@ -128,17 +159,32 @@ export function RankingsTable({
             </button>
           ))}
         </div>
-        <label className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
-          Group
-          <select className={selectClasses} value={group} onChange={(event) => update(by, event.target.value)}>
-            <option value="">All groups</option>
-            {groups.map((name) => (
-              <option key={name} value={name}>
-                {name}
-              </option>
-            ))}
-          </select>
-        </label>
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="w-full sm:w-56">
+            <Input
+              type="search"
+              aria-label="Find a mouse"
+              placeholder="Find a mouse"
+              autoComplete="off"
+              value={query}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setQuery(event.target.value);
+                setLimit(PAGE_SIZE);
+              }}
+            />
+          </div>
+          <label className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+            Group
+            <select className={selectClasses} value={group} onChange={(event) => update(by, event.target.value)}>
+              <option value="">All groups</option>
+              {groups.map((name) => (
+                <option key={name} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
       </div>
 
       <div className="mt-4 overflow-x-auto rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
@@ -162,7 +208,7 @@ export function RankingsTable({
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
-            {rows.map(({ mouse, rank }) => (
+            {shown.map(({ mouse, rank }) => (
               <tr
                 key={mouse.slug}
                 id={mouse.slug}
@@ -199,7 +245,22 @@ export function RankingsTable({
             ))}
           </tbody>
         </table>
+        {rows.length === 0 && (
+          <p className="px-3 py-6 text-center text-sm text-zinc-600 dark:text-zinc-400">
+            No mice match “{query.trim()}”{group ? ` in ${group}` : ''}.
+          </p>
+        )}
       </div>
+      {remaining > 0 && (
+        <button
+          ref={moreRef}
+          type="button"
+          onClick={() => setLimit(shown.length + PAGE_SIZE)}
+          className="mt-3 w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm font-medium text-zinc-700 hover:border-zinc-300 hover:text-zinc-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:text-white"
+        >
+          Show {formatNumber(Math.min(PAGE_SIZE, remaining))} more of {formatNumber(remaining)}
+        </button>
+      )}
     </div>
   );
 }
