@@ -232,9 +232,11 @@ function BestSetupForm({
       charms: tryCharms ? (owned ? known(owned.charms, catalog.charms) : [...catalog.charms.keys()]) : [],
     };
   }, [catalog, owned, tryCharms]);
-  const candidateSets = useMemo(
-    () => ({ weapons: new Set(candidates.weapons), bases: new Set(candidates.bases) }),
-    [candidates],
+  // Item details (an Isle Idol skin, a Golem charge…) only ask about items the hunter has ticked as their own.
+  // Searching every item, those use their defaults rather than filling the form with questions.
+  const ownItems = useMemo(
+    () => ({ weapons: new Set(owned?.weapons ?? []), bases: new Set(owned?.bases ?? []) }),
+    [owned],
   );
 
   const population = setup.location && setup.cheese ? findPopulation(setup, catalog) : undefined;
@@ -348,7 +350,7 @@ function BestSetupForm({
           <p className={hintClasses}>For auras and anything else your camp adds that isn’t on the items.</p>
         </fieldset>
 
-        <ExtrasCard catalog={catalog} setup={setup} onExtra={setExtra} items={candidateSets} />
+        <ExtrasCard catalog={catalog} setup={setup} onExtra={setExtra} items={ownItems} />
 
         <OwnedItemsCard catalog={catalog} owned={owned} onOwned={onOwned} imported={imported} />
       </form>
