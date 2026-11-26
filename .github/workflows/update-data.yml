@@ -35,11 +35,17 @@ jobs:
       - name: Update data
         run: bun run update:data
 
+      # The trap effects come from a community spreadsheet, not the API. If the sheet is down or reads
+      # wrong, the script exits without writing, and the rest of the update still goes out.
+      - name: Update trap effects
+        run: bun run update:trap-effects
+        continue-on-error: true
+
       - name: Commit changes
         run: |
           git config --local user.name "Mousebot"
           git config --local user.email "mousebot@mouse.rip"
-          git add src/data/generated
+          git add src/data/generated src/data/trap-effects.json
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
