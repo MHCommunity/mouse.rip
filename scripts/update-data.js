@@ -1,6 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+import { buildCatchRateData } from './catch-rate-data.js';
+
 const DATA_DIR = path.join(__dirname, '../src/data/generated');
 // Override to update from a local `wrangler dev` of the API.
 const API_URL = process.env.API_URL ?? 'https://api.mouse.rip';
@@ -725,6 +727,11 @@ const updateRelationalData = async (items, mice) => {
   );
   stage('mice-attraction', storedAttraction);
   stage('map-planner', buildMapPlanner(attraction));
+
+  // The catch rate estimator and Best Setup: every population, with mouse and item stats to work catch rates out.
+  console.log('Updating catch-rate...');
+  const creGroups = requireRecord(await fetchJson('cre-mice-groups'), 'cre-mice-groups');
+  stage('catch-rate', buildCatchRateData({ attraction: populations, mice, items, groups: creGroups }));
 
   // Fold each mouse's best place to hunt into the client search index, so search
   // can answer "where do I catch it" without shipping the full attraction table.
