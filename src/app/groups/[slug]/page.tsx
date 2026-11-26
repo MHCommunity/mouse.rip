@@ -42,6 +42,14 @@ export default async function GroupPage({ params }: { params: Promise<{ slug: st
   if (!group) notFound();
 
   const mice = getMiceForGroup(group);
+  // Groups like the Gauntlet or the seasons split into subgroups; show each under its own heading, in game order.
+  const sections: { name: string; mice: typeof mice }[] = [];
+  for (const mouse of mice) {
+    const name = mouse.subgroup || group.name;
+    const section = sections.find((entry) => entry.name === name);
+    if (section) section.mice.push(mouse);
+    else sections.push({ name, mice: [mouse] });
+  }
 
   return (
     <div>
@@ -67,9 +75,22 @@ export default async function GroupPage({ params }: { params: Promise<{ slug: st
       <SectionHeading className="mt-10">
         {mice.length} {mice.length === 1 ? 'mouse' : 'mice'}
       </SectionHeading>
-      <div className="mt-4">
-        <MouseGrid mice={mice} />
-      </div>
+      {sections.length > 1 ? (
+        sections.map((section) => (
+          <section key={section.name} className="mt-6">
+            <h3 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+              {section.name} <span className="font-normal text-zinc-500 dark:text-zinc-400">{section.mice.length}</span>
+            </h3>
+            <div className="mt-3">
+              <MouseGrid mice={section.mice} showSubgroup={false} />
+            </div>
+          </section>
+        ))
+      ) : (
+        <div className="mt-4">
+          <MouseGrid mice={mice} />
+        </div>
+      )}
     </div>
   );
 }

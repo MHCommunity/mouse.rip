@@ -7,7 +7,14 @@ import { mouseImageUrl } from '@/lib/image-urls';
 import type { Mouse } from '@/types';
 
 /** A responsive grid of mouse cards that link to each mouse's page. */
-export function MouseGrid({ mice }: { mice: Mouse[] }) {
+export function MouseGrid({
+  mice,
+  showSubgroup = true,
+}: {
+  mice: Mouse[];
+  /** Off under a heading that already names the subgroup. */
+  showSubgroup?: boolean;
+}) {
   return (
     <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
       {mice.map((mouse) => (
@@ -27,7 +34,7 @@ export function MouseGrid({ mice }: { mice: Mouse[] }) {
               <div className="truncate text-sm font-medium text-zinc-900 transition-colors group-hover:text-pink-700 dark:text-zinc-100 dark:group-hover:text-pink-300">
                 {mouse.name}
               </div>
-              {mouse.subgroup && (
+              {showSubgroup && mouse.subgroup && (
                 <div className="truncate text-xs text-zinc-500 dark:text-zinc-400">{mouse.subgroup}</div>
               )}
             </div>
