@@ -32,6 +32,9 @@ function useDebouncedValue<T>(value: T, delay: number) {
   return debounced;
 }
 
+const emptyActionClasses =
+  'rounded-full bg-white px-3 py-1 text-sm font-medium text-pink-700 ring-1 ring-zinc-200 hover:ring-pink-300 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:bg-zinc-900 dark:text-pink-300 dark:ring-zinc-700';
+
 const pillBase =
   'shrink-0 rounded-full px-3 py-1 text-sm font-medium transition focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500';
 
@@ -371,7 +374,33 @@ export function ItemsBrowser({
           ))}
         </div>
       ) : total === 0 ? (
-        <p className="mt-10 text-sm text-zinc-500 dark:text-zinc-400">No items match your filters.</p>
+        <div className="mt-10 text-sm text-zinc-600 dark:text-zinc-400">
+          <p>
+            No items match
+            {debouncedQuery.trim() ? ` “${debouncedQuery.trim()}”` : ' these filters'}
+            {active ? ` among ${classificationLabel(active).toLowerCase()}` : ''}.
+          </p>
+          <p className="mt-3 flex flex-wrap gap-2">
+            {/* The search may match items of another type; offer the way there first. */}
+            {active && Object.entries(chipCounts).some(([key, count]) => key !== active && count > 0) && (
+              <button type="button" onClick={() => chooseType(null)} className={emptyActionClasses}>
+                Search every type
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => {
+                chooseType(null);
+                setQuery('');
+                setTradableOnly(false);
+                setTag(null);
+              }}
+              className={emptyActionClasses}
+            >
+              Clear filters
+            </button>
+          </p>
+        </div>
       ) : (
         <div className="mt-8 space-y-10">
           {visible.map(([key, list, shown]) => (
