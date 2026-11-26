@@ -49,6 +49,21 @@ function filtersFromUrl(params: URLSearchParams, classificationOrder: string[]) 
   };
 }
 
+/** A familiar item to picture each type. */
+const TYPE_ART: Record<string, string> = {
+  weapon: 'acronym_weapon',
+  base: 'valour_rift_prestige_base',
+  bait: 'super_brie_cheese',
+  trinket: 'super_power_trinket',
+  potion: 'greater_radioactive_blue_cheese_potion',
+  crafting_item: 'curds_and_whey_craft_item',
+  convertible: 'treasure_map_scroll_case_convertible',
+  collectible: 'christmas_coal_collectible',
+  stat: 'gold_stat_item',
+  map_piece: 'gnawnia_map_piece',
+  skin: 'jet_black_acronym_skin',
+};
+
 export function ItemsBrowser({
   counts,
   classificationOrder,
@@ -328,16 +343,29 @@ export function ItemsBrowser({
                 href={`/items/type/${key}`}
                 className="group flex flex-col rounded-2xl ring-1 ring-zinc-200 bg-white p-4 text-left shadow-xs transition hover:-translate-y-0.5 hover:ring-pink-300 hover:shadow-md motion-reduce:transform-none dark:ring-zinc-800 dark:bg-zinc-900 dark:hover:ring-pink-800"
               >
-                <div className="flex w-full items-baseline justify-between gap-2">
-                  <span className="font-semibold tracking-tight text-zinc-900 transition-colors group-hover:text-pink-700 dark:text-white dark:group-hover:text-pink-300">
-                    {classificationName(key)}
+                <span className="flex items-start gap-3">
+                  {TYPE_ART[key] && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={itemImageUrl(TYPE_ART[key])}
+                      alt=""
+                      loading="lazy"
+                      className="size-11 shrink-0 rounded-xl bg-zinc-50 object-contain p-1 ring-1 ring-zinc-100 dark:bg-zinc-800 dark:ring-zinc-700"
+                    />
+                  )}
+                  <span className="min-w-0 flex-1">
+                    <span className="flex w-full items-baseline justify-between gap-2">
+                      <span className="font-semibold tracking-tight text-zinc-900 transition-colors group-hover:text-pink-700 dark:text-white dark:group-hover:text-pink-300">
+                        {classificationName(key)}
+                      </span>
+                      <span className="shrink-0 text-xs tabular-nums text-zinc-500 dark:text-zinc-400">
+                        {formatNumber(counts[key] ?? 0)}
+                      </span>
+                    </span>
+                    <span className="mt-1 line-clamp-2 block text-sm text-pretty text-zinc-500 dark:text-zinc-400">
+                      {CLASSIFICATION_DESCRIPTIONS[key]}
+                    </span>
                   </span>
-                  <span className="shrink-0 text-xs tabular-nums text-zinc-500 dark:text-zinc-400">
-                    {formatNumber(counts[key] ?? 0)}
-                  </span>
-                </div>
-                <span className="mt-1 line-clamp-2 text-sm text-pretty text-zinc-500 dark:text-zinc-400">
-                  {CLASSIFICATION_DESCRIPTIONS[key]}
                 </span>
               </Link>
             ))}
