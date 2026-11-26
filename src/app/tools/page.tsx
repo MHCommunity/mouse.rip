@@ -16,40 +16,19 @@ export const metadata = pageMetadata({
   path: '/tools',
 });
 
-/** The site's own tools, sorted by what a hunter is trying to do, each with a piece of the game's art. */
-const GROUPS: { id: string; title: string; blurb: string; tools: { id: string; image: string; tint: Tint }[] }[] = [
-  {
-    id: 'plan',
-    title: 'Plan a hunt',
-    blurb: 'Where to go next, and what to bring.',
-    tools: [
-      { id: 'catch-rates', image: itemImageUrl('acronym_weapon'), tint: 'pink' },
-      { id: 'best-setup', image: itemImageUrl('infinite_dark_magic_mirror_weapon'), tint: 'violet' },
-      { id: 'map-planner', image: itemImageUrl('treasure_map_scroll_case_convertible'), tint: 'amber' },
-    ],
-  },
-  {
-    id: 'numbers',
-    title: 'Work it out',
-    blurb: 'Quick sums so you don’t need a spreadsheet.',
-    tools: [
-      { id: 'rank-up-calculator', image: titleImageUrl('baron_baroness'), tint: 'pink' },
-      { id: 'essence-calculator', image: '/images/essence/icuri.png', tint: 'violet' },
-      { id: 'queso-pump-calculator', image: itemImageUrl('queso_pump_egg_convertible'), tint: 'amber' },
-    ],
-  },
-  {
-    id: 'lookup',
-    title: 'Look it up',
-    blurb: 'The numbers and places hunters ask about most.',
-    tools: [
-      { id: 'minlucks', image: '/images/stats/luck.png', tint: 'green' },
-      { id: 'trap-special-effects', image: itemImageUrl('chrome_acronym_weapon'), tint: 'sky' },
-      { id: 'relic-hunter', image: mouseImageUrl('relic_hunter'), tint: 'violet' },
-      { id: 'valour-rift-floors', image: locationImageUrl('valour-rift'), tint: 'sky' },
-      { id: 'titles', image: titleImageUrl('fabled'), tint: 'pink' },
-    ],
-  },
+/** The site's own tools, in this order, each with a piece of the game's art. */
+const ART: { id: string; image: string; tint: Tint }[] = [
+  { id: 'catch-rates', image: itemImageUrl('acronym_weapon'), tint: 'pink' },
+  { id: 'best-setup', image: itemImageUrl('infinite_dark_magic_mirror_weapon'), tint: 'violet' },
+  { id: 'map-planner', image: itemImageUrl('treasure_map_scroll_case_convertible'), tint: 'amber' },
+  { id: 'minlucks', image: '/images/stats/luck.png', tint: 'green' },
+  { id: 'rank-up-calculator', image: titleImageUrl('baron_baroness'), tint: 'pink' },
+  { id: 'relic-hunter', image: mouseImageUrl('relic_hunter'), tint: 'violet' },
+  { id: 'valour-rift-floors', image: locationImageUrl('valour-rift'), tint: 'sky' },
+  { id: 'trap-special-effects', image: itemImageUrl('chrome_acronym_weapon'), tint: 'sky' },
+  { id: 'essence-calculator', image: '/images/essence/icuri.png', tint: 'violet' },
+  { id: 'queso-pump-calculator', image: itemImageUrl('queso_pump_egg_convertible'), tint: 'amber' },
+  { id: 'titles', image: titleImageUrl('fabled'), tint: 'pink' },
 ];
 
 function hostnameOf(url: string): string {
@@ -62,67 +41,50 @@ function hostnameOf(url: string): string {
 
 export default function Tools() {
   const items = getResourcesByCategory('tool');
-  // On-site tools only, so a grouped tool that moves to another site shows once, under the off-site list.
-  const byId = new Map(items.filter((item) => isInternalPath(item.url)).map((item) => [String(item.id), item]));
-  const grouped = new Set(GROUPS.flatMap((group) => group.tools.map((tool) => tool.id)));
-  // A tool on the site that hasn't been given a group yet still shows, rather than going missing.
-  const ungrouped = items.filter((item) => isInternalPath(item.url) && !grouped.has(String(item.id)));
+  const art = new Map(ART.map((entry, index) => [entry.id, { ...entry, index }]));
+  // Ours in the order above, then any newer ones that haven't been given art yet.
+  const onSite = items
+    .filter((item) => isInternalPath(item.url))
+    .sort((a, b) => (art.get(String(a.id))?.index ?? ART.length) - (art.get(String(b.id))?.index ?? ART.length));
   const elsewhere = items.filter((item) => !isInternalPath(item.url));
 
   return (
     <div>
       <PageHeader
         title="MouseHunt tools"
-        description="Calculators and lookups for planning your next hunt. The ones here run right on mouse.rip, and below them are the community’s favourites on other sites."
+        description="Calculators and lookups for planning your next hunt: our own first, then the community’s favourites on other sites."
         count={items.length}
         countLabel="tools"
         icon={WrenchIcon}
         iconClassName="bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"
       />
 
-      {GROUPS.map((group) => (
-        <section key={group.id} aria-labelledby={`tools-${group.id}`} className="mt-10 first-of-type:mt-0">
-          <SectionHeading id={`tools-${group.id}`}>{group.title}</SectionHeading>
-          <p className="mt-1 text-sm/6 text-zinc-600 dark:text-zinc-400">{group.blurb}</p>
-          <ul className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-            {group.tools.flatMap((tool) => {
-              const item = byId.get(tool.id);
-              if (!item) return [];
-              return (
-                <li key={tool.id}>
-                  <ToolCard
-                    href={item.url}
-                    title={item.name}
-                    description={item.description}
-                    image={tool.image}
-                    tint={tool.tint}
-                  />
-                </li>
-              );
-            })}
-          </ul>
-        </section>
-      ))}
-
-      {ungrouped.length > 0 && (
-        <section aria-labelledby="tools-more" className="mt-10">
-          <SectionHeading id="tools-more">More on mouse.rip</SectionHeading>
-          <ul className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-            {ungrouped.map((item) => (
+      <section aria-labelledby="tools-here">
+        <SectionHeading id="tools-here">On mouse.rip</SectionHeading>
+        <ul className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          {onSite.map((item) => {
+            const entry = art.get(String(item.id));
+            return (
               <li key={item.id}>
-                <ToolCard href={item.url} title={item.name} description={item.description} />
+                <ToolCard
+                  href={item.url}
+                  title={item.name}
+                  description={item.description}
+                  image={entry?.image}
+                  tint={entry?.tint}
+                />
               </li>
-            ))}
-          </ul>
-        </section>
-      )}
+            );
+          })}
+        </ul>
+      </section>
 
       {elsewhere.length > 0 && (
         <section
           aria-labelledby="tools-elsewhere"
           className="mt-12 rounded-3xl bg-zinc-50 p-5 ring-1 ring-zinc-200/70 sm:p-6 dark:bg-white/[0.03] dark:ring-zinc-800"
         >
-          <SectionHeading id="tools-elsewhere">Community favourites on other sites</SectionHeading>
+          <SectionHeading id="tools-elsewhere">On other sites</SectionHeading>
           <p className="mt-1 text-sm/6 text-zinc-600 dark:text-zinc-400">
             Built and run by other hunters. These open in a new tab.
           </p>
