@@ -22,6 +22,7 @@ export const PAGES = [
   '/userscripts/tags/stats',
   '/minlucks',
   '/titles',
+  '/catch-rate-estimator',
   '/map-planner',
   '/rank-up-calculator',
   '/trap-special-effects',

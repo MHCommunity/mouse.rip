@@ -33,6 +33,11 @@ const features: { href: string; name: string; description: string }[] = [
   },
   { href: '/valour-rift-floors', name: 'Valour Rift floors', description: 'which floor types come next.' },
   {
+    href: '/catch-rate-estimator',
+    name: 'Catch rate estimator',
+    description: 'your catch rate for every mouse with your setup.',
+  },
+  {
     href: '/map-planner',
     name: 'Treasure map planner',
     description: 'where to hunt for the most mice on your map.',

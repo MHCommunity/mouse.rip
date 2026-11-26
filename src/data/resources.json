@@ -275,6 +275,17 @@
     ]
   },
   {
+    "id": "catch-rates",
+    "name": "Catch rate estimator",
+    "description": "Pick a location and trap to see the attraction rate, catch rate and minluck for every mouse there.",
+    "url": "/catch-rate-estimator",
+    "category": "tool",
+    "tags": [
+      "calculator",
+      "catch rate"
+    ]
+  },
+  {
     "id": "map-planner",
     "name": "Treasure map planner",
     "description": "Paste your map's mice to see which locations and cheeses attract the most of them.",

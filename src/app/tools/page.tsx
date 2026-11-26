@@ -23,9 +23,8 @@ const GROUPS: { id: string; title: string; blurb: string; tools: { id: string; i
     title: 'Plan a hunt',
     blurb: 'Where to go next, and what to bring.',
     tools: [
+      { id: 'catch-rates', image: itemImageUrl('acronym_weapon'), tint: 'pink' },
       { id: 'map-planner', image: itemImageUrl('treasure_map_scroll_case_convertible'), tint: 'amber' },
-      { id: 'relic-hunter', image: mouseImageUrl('relic_hunter'), tint: 'violet' },
-      { id: 'valour-rift-floors', image: locationImageUrl('valour-rift'), tint: 'sky' },
     ],
   },
   {
@@ -41,10 +40,12 @@ const GROUPS: { id: string; title: string; blurb: string; tools: { id: string; i
   {
     id: 'lookup',
     title: 'Look it up',
-    blurb: 'The numbers hunters ask about most.',
+    blurb: 'The numbers and places hunters ask about most.',
     tools: [
       { id: 'minlucks', image: '/images/stats/luck.png', tint: 'green' },
       { id: 'trap-special-effects', image: itemImageUrl('chrome_acronym_weapon'), tint: 'sky' },
+      { id: 'relic-hunter', image: mouseImageUrl('relic_hunter'), tint: 'violet' },
+      { id: 'valour-rift-floors', image: locationImageUrl('valour-rift'), tint: 'sky' },
       { id: 'titles', image: titleImageUrl('fabled'), tint: 'pink' },
     ],
   },

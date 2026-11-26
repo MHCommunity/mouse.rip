@@ -8,6 +8,7 @@
  * instead of every page inlining its own copy into the HTML it ships.
  */
 
+import type { RawCatchRateData } from '@/lib/catch-rate/data';
 import type { PlannerData } from '@/lib/map-plan';
 import type { SlimMouse } from '@/types';
 
@@ -78,6 +79,21 @@ export function loadPlannerData(): Promise<PlannerData> {
       });
   }
   return plannerPromise;
+}
+
+let catchRatePromise: Promise<RawCatchRateData> | null = null;
+
+/** The catch rate estimator's populations and stats; only the estimator and Best Setup ask for it. */
+export function loadCatchRateData(): Promise<RawCatchRateData> {
+  if (!catchRatePromise) {
+    catchRatePromise = import('@/data/generated/catch-rate.json')
+      .then((mod) => ((mod as unknown as { default?: RawCatchRateData }).default ?? mod) as unknown as RawCatchRateData)
+      .catch((error) => {
+        catchRatePromise = null;
+        throw error;
+      });
+  }
+  return catchRatePromise;
 }
 
 /** item id → item-page slug, for cross-linking rows that only carry an id. */

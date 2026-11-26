@@ -582,3 +582,27 @@ export function estimate(setup: Setup, catalog: Catalog): Estimate | undefined {
     },
   };
 }
+
+/**
+ * The extra power bonus and luck that make the setup's totals match what the game shows: auras, events and
+ * anything else the estimator doesn't model. Undefined until the setup has a trap.
+ */
+export function matchShownTotals(
+  setup: Setup,
+  catalog: Catalog,
+  shown: { power: number; luck: number },
+): { bonusPower: number; bonusLuck: number } | undefined {
+  const plain = trapStats({ ...setup, bonusPower: 0, bonusLuck: 0 }, catalog);
+  if (!plain) return undefined;
+  const bonusLuck = Math.round(shown.luck - plain.luck);
+
+  // Power is rounded up after the bonus, so take the estimate and step to the smallest tenth that hits it.
+  const perBonus = plain.power / (1 + plain.powerBonus / 100);
+  const estimate = Math.round(((shown.power / perBonus - 1) * 100 - plain.powerBonus) * 10) / 10;
+  const powerWith = (bonusPower: number) => trapStats({ ...setup, bonusPower, bonusLuck: 0 }, catalog)?.power;
+  for (let step = -10; step <= 10; step++) {
+    const candidate = Math.round((estimate + step / 10) * 10) / 10;
+    if (powerWith(candidate) === shown.power) return { bonusPower: candidate, bonusLuck };
+  }
+  return { bonusPower: estimate, bonusLuck };
+}

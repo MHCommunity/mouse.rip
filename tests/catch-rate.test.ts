@@ -7,6 +7,7 @@ import {
   catchRate,
   estimate,
   findPopulation,
+  matchShownTotals,
   minluck,
   mouseCatch,
   saltedPower,
@@ -14,6 +15,14 @@ import {
   type Setup,
 } from '@/lib/catch-rate/engine';
 import miceJson from '@/data/generated/mice.json';
+import {
+  EMPTY_SETUP,
+  cheesesFor,
+  resolveStage,
+  setupFromParams,
+  setupToParams,
+  stagesFor,
+} from '@/lib/catch-rate/options';
 
 const catalog = buildCatalog(raw as unknown as RawCatchRateData);
 
@@ -300,5 +309,74 @@ describe('populations and attraction', () => {
 
   test('no estimate without a population', () => {
     expect(estimate(setup({ cheese: 'no_such_cheese' }), catalog)).toBeUndefined();
+  });
+});
+
+describe('matching the camp', () => {
+  test('works out the aura bonuses from the power and luck the game shows', () => {
+    const camp = setup({ charm: 'ultimate_ancient_trinket', goldenShield: true });
+    expect(matchShownTotals(camp, catalog, { power: 20_741, luck: 83 })).toEqual({ bonusPower: 45, bonusLuck: 6 });
+  });
+
+  test('a setup that already matches needs nothing extra', () => {
+    const camp = setup({ charm: 'ultimate_ancient_trinket' });
+    const stats = trap({ charm: 'ultimate_ancient_trinket' });
+    expect(matchShownTotals(camp, catalog, { power: stats.power, luck: stats.luck })).toEqual({
+      bonusPower: 0,
+      bonusLuck: 0,
+    });
+  });
+
+  test('nothing to match without a trap', () => {
+    expect(matchShownTotals(setup({ weapon: '' }), catalog, { power: 1000, luck: 10 })).toBeUndefined();
+  });
+});
+
+describe('estimator options and links', () => {
+  test('a setup survives the trip through a link', () => {
+    const full = setup({
+      location: 'fort_rox',
+      stage: 'Midnight',
+      cheese: 'crescent_cheese',
+      charm: 'nightlight_trinket',
+      goldenShield: false,
+      empowered: false,
+      riftstalker: true,
+      bonusPower: 12.5,
+      bonusLuck: 3,
+      extras: { ballista: 2, cannon: 1, dragonsMight: true, golemType: 'hydro' },
+    });
+    expect(setupFromParams(setupToParams(full))).toEqual(full);
+  });
+
+  test('links leave out defaults, and an empty link is the empty setup', () => {
+    expect(setupToParams(EMPTY_SETUP).toString()).toBe('');
+    expect(setupFromParams(new URLSearchParams())).toEqual(EMPTY_SETUP);
+  });
+
+  test('junk in a link falls back to defaults', () => {
+    const parsed = setupFromParams(new URLSearchParams('bonus_power=abc&ballista=&gs=maybe&amp=12x'));
+    expect(parsed.bonusPower).toBe(0);
+    expect(parsed.extras.ballista).toBeUndefined();
+    expect(parsed.extras.amplifier).toBeUndefined();
+    expect(parsed.goldenShield).toBe(true);
+  });
+
+  test('Iceberg shows each stage once, and the base picks the version', () => {
+    const stages = stagesFor(catalog, 'iceberg');
+    expect(stages).toContain('Bombing Run');
+    expect(stages.some((stage) => stage.includes('(Magnet)'))).toBe(false);
+    expect(resolveStage(catalog, 'iceberg', 'Bombing Run', 'magnet_base')).toBe('Bombing Run (Magnet)');
+    expect(resolveStage(catalog, 'iceberg', 'Bombing Run', 'rift_base')).toBe('Bombing Run');
+    // A base with no version of this stage keeps the plain one.
+    expect(resolveStage(catalog, 'iceberg', 'Brutal Bulwark', 'magnet_base')).toBe('Brutal Bulwark');
+  });
+
+  test('every location has cheeses for each of its stages', () => {
+    for (const location of catalog.locations) {
+      for (const stage of stagesFor(catalog, location.id)) {
+        expect(cheesesFor(catalog, location.id, stage).length, `${location.id} ${stage}`).toBeGreaterThan(0);
+      }
+    }
   });
 });
