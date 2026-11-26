@@ -38,7 +38,8 @@ test('items sent in a link are searched, saved, and taken out of the address', a
 test('ticking items narrows the search', async ({ page }) => {
   await page.goto(FORT_ROX);
   await page.getByRole('radio', { name: 'Only mine' }).click();
-  await expect(page.getByText('No weapons or bases to try')).toBeVisible();
+  // Exact, so the screen-reader status line that says the same thing with a full stop isn't matched too.
+  await expect(page.getByText('No weapons or bases to try', { exact: true })).toBeVisible();
   await page.getByLabel('Find weapons').fill('Dark Magic');
   await page.getByRole('button', { name: 'Tick all shown', exact: true }).click();
   await page.getByRole('button', { name: /^Bases/ }).click();
