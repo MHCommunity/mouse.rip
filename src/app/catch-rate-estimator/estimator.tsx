@@ -86,7 +86,9 @@ export function CatchRateEstimator({ initial = EMPTY_SETUP, syncUrl }: { initial
   };
 
   if (!catalog) return <CatalogStatus failed={failed} />;
-  return <EstimatorForm catalog={catalog} setup={setup} onChange={update} />;
+  // A link may name only a location (a location page, or another tool); fill in a valid stage and cheese.
+  const complete = setup.location ? applyChanges(catalog, setup, {}) : setup;
+  return <EstimatorForm catalog={catalog} setup={complete} onChange={update} />;
 }
 
 function EstimatorForm({

@@ -20,6 +20,8 @@ import { LocationMice, getLocationMiceByCheese } from './location-mice';
 import { LocationLoot } from './location-loot';
 import { LocationTimerPanel, TimersProvider } from '@/components/timers';
 import { TIMER_LOCATION_NAMES } from '@/lib/timer-locations';
+import { ToolCard } from '@/components/tool-card';
+import catchRateData from '@/data/generated/catch-rate.json';
 
 export const dynamicParams = false;
 
@@ -108,6 +110,8 @@ export default async function Location({ params }: { params: Promise<{ id: strin
     ? (getTrapEffects().find((entry) => entry.location === location.name)?.effects ?? [])
     : [];
   const environmentKey = location.environmentId ?? location.id;
+  // The catch rate tools know locations by the game's id; match this page to one by name.
+  const catchRateLocation = catchRateData.locations.find((entry) => entry.name === location.name)?.id;
   const locationItems = getItemsForEnvironment(environmentKey);
 
   // Guides and tools written for this location lead the page. Site-wide ones, and broad ones
@@ -175,6 +179,32 @@ export default async function Location({ params }: { params: Promise<{ id: strin
 
       {miceTotal > 0 && location.name && (
         <LocationMice locationName={location.name} groups={cheeseGroups} total={miceTotal} />
+      )}
+
+      {catchRateLocation && (
+        <section className="mt-10" aria-labelledby="plan-heading">
+          <SectionHeading id="plan-heading">Plan your hunt here</SectionHeading>
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+            <li>
+              <ToolCard
+                href={`/catch-rate-estimator?location=${catchRateLocation}`}
+                title="Catch rates here"
+                description={`Your catch rate against every mouse in ${name} with your trap.`}
+                image={itemImageUrl('acronym_weapon')}
+                tint="pink"
+              />
+            </li>
+            <li>
+              <ToolCard
+                href={`/best-setup?location=${catchRateLocation}`}
+                title="Best setup here"
+                description={`The weapon and base that catch the most in ${name}.`}
+                image={itemImageUrl('infinite_dark_magic_mirror_weapon')}
+                tint="violet"
+              />
+            </li>
+          </ul>
+        </section>
       )}
 
       {location.name && <LocationLoot rows={getLocationLoot(location.name)} />}

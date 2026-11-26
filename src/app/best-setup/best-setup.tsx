@@ -189,7 +189,8 @@ export function BestSetup({
   return (
     <BestSetupForm
       catalog={catalog}
-      settings={settings}
+      // A link may name only a location; fill in a valid stage and cheese.
+      settings={settings.setup.location ? { ...settings, setup: applyChanges(catalog, settings.setup, {}) } : settings}
       onChange={update}
       owned={owned}
       onOwned={setOwned}

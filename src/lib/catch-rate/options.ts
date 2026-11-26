@@ -67,8 +67,10 @@ export function specialCharmsFor(catalog: Catalog, location: string, stage: stri
 /** A setup with some fields changed, keeping the stage and cheese valid for the location. */
 export function applyChanges(catalog: Catalog, setup: Setup, changes: Partial<Setup>): Setup {
   const next = { ...setup, ...changes };
-  if (changes.location !== undefined && changes.location !== setup.location) {
-    next.stage = stagesFor(catalog, next.location)[0] ?? '-';
+  const stages = stagesFor(catalog, next.location);
+  // A new location starts at its first stage; a link that names no stage, or one the location lacks, does too.
+  if ((changes.location !== undefined && changes.location !== setup.location) || !stages.includes(next.stage)) {
+    next.stage = stages[0] ?? '-';
   }
   const available = cheesesFor(catalog, next.location, next.stage);
   if (!available.some((cheese) => cheese.type === next.cheese)) next.cheese = available[0]?.type ?? '';
