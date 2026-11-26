@@ -88,12 +88,41 @@ function bannerLayout(banner: string) {
 }
 
 /**
- * The title's size. A card with a strip across the top has less height, and one with a picture or an icon beside
- * the text has less width, so a long name steps down sooner on those.
+ * Roughly how wide a title is, in ems of its own font size: enough to tell whether it fits on one line. This is
+ * the width before the title's tighter letter spacing, because that is what the renderer wraps on. Checked
+ * against rendered cards, the real figure came out a little under this one for every title tried.
+ */
+function widthInEms(text: string): number {
+  let ems = 0;
+  for (const char of text) {
+    if (/[\silI1.,'|!:;]/.test(char)) ems += 0.27;
+    else if (/[rtfj]/.test(char)) ems += 0.38;
+    else if (/[mwMW]/.test(char)) ems += 0.85;
+    else if (/[A-Z0-9+&]/.test(char)) ems += 0.68;
+    else ems += 0.55;
+  }
+  return ems;
+}
+
+/** The side of the square picture or icon tile beside the text, and the gap between the two. */
+const ART = 320;
+const ART_GAP = 48;
+
+/** The room for text beside the art: the card less its padding, the art and the gap. */
+const WIDTH_BESIDE_ART = 1200 - 96 * 2 - ART - ART_GAP;
+
+/**
+ * The title's size. A card with a strip across the top has less height, so a long name steps down sooner there.
+ * One with a picture or an icon beside the text has less width, so a short name ("Relic Hunter") shrinks just
+ * enough to stay on one line, and a name too long for that wraps instead.
  */
 function titleSize(title: string, { strip, beside }: { strip: boolean; beside: boolean }): number {
   if (strip) return title.length > 22 ? 64 : 84;
-  if (beside) return title.length > 16 ? 76 : 104;
+  if (beside) {
+    // A little under the full width, since the estimate is rough. A name that won't fit even at 64px wraps.
+    const room = WIDTH_BESIDE_ART * 0.98;
+    return [104, 100, 96, 92, 88, 84, 80, 76, 72, 68, 64].find((size) => widthInEms(title) * size <= room) ?? 76;
+  }
   return title.length > 28 ? 76 : 104;
 }
 
@@ -219,7 +248,7 @@ function renderCard({
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '64px',
+          gap: `${ART_GAP}px`,
           flex: 1,
           padding: strip ? '44px 96px 52px' : '88px 96px',
         }}
@@ -279,11 +308,11 @@ function renderCard({
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={image}
-            width={360}
-            height={360}
+            width={ART}
+            height={ART}
             style={{
-              width: '360px',
-              height: '360px',
+              width: `${ART}px`,
+              height: `${ART}px`,
               objectFit: 'contain',
               borderRadius: '32px',
             }}
@@ -299,13 +328,13 @@ function renderCard({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: '360px',
-                height: '360px',
+                width: `${ART}px`,
+                height: `${ART}px`,
                 borderRadius: '32px',
                 background: accent.tile,
               }}
             >
-              <Icon width={208} height={208} fill={accent.strong} color={accent.strong} />
+              <Icon width={184} height={184} fill={accent.strong} color={accent.strong} />
             </div>
           )}
       </div>
