@@ -4,6 +4,24 @@ import ReactMarkdown, { type Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 
+/** The plain text of a heading's children. */
+function textOf(node: React.ReactNode): string {
+  if (typeof node === 'string' || typeof node === 'number') return String(node);
+  if (Array.isArray(node)) return node.map(textOf).join('');
+  if (React.isValidElement<{ children?: React.ReactNode }>(node)) return textOf(node.props.children);
+  return '';
+}
+
+/** "Treasure chests & the Heart of the Meteor" → "treasure-chests-the-heart-of-the-meteor", for #links within a guide. */
+export function headingId(children: React.ReactNode): string | undefined {
+  const id = textOf(children)
+    .toLowerCase()
+    .replace(/&amp;/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+  return id || undefined;
+}
+
 const components: Components = {
   h1: ({ className, ...props }) => (
     <h1
@@ -14,20 +32,30 @@ const components: Components = {
       )}
     />
   ),
-  h2: ({ className, ...props }) => (
+  // Headings get ids from their text, so a guide's contents can link to its sections.
+  h2: ({ className, children, ...props }) => (
     <h2
       {...props}
+      id={props.id ?? headingId(children)}
       className={clsx(
         className,
-        'mt-10 mb-3 border-b border-zinc-200 pb-2 text-2xl font-semibold tracking-tight text-zinc-950 first:mt-0 dark:border-zinc-800 dark:text-white',
+        'mt-10 mb-3 scroll-mt-20 border-b border-zinc-200 pb-2 text-2xl font-semibold tracking-tight text-zinc-950 first:mt-0 dark:border-zinc-800 dark:text-white',
       )}
-    />
+    >
+      {children}
+    </h2>
   ),
-  h3: ({ className, ...props }) => (
+  h3: ({ className, children, ...props }) => (
     <h3
       {...props}
-      className={clsx(className, 'mt-8 mb-2 text-xl font-semibold tracking-tight text-zinc-950 dark:text-white')}
-    />
+      id={props.id ?? headingId(children)}
+      className={clsx(
+        className,
+        'mt-8 mb-2 scroll-mt-20 text-xl font-semibold tracking-tight text-zinc-950 dark:text-white',
+      )}
+    >
+      {children}
+    </h3>
   ),
   h4: ({ className, ...props }) => (
     <h4 {...props} className={clsx(className, 'mt-6 mb-2 text-lg font-semibold text-zinc-900 dark:text-zinc-100')} />

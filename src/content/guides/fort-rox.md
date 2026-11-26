@@ -2,17 +2,17 @@
 
 **Contents**
 
-- Getting in
-- The fort mechanics
-- Upgrading the fort
-- Night time
-- Hunting at night
-- Dawn
-- New mice
-- Loot distribution
-- New traps
-- Treasure chests &amp; the Heart of the Meteor
-- TL;DR for the hopelessly lost
+- [Getting in](#getting-in)
+- [The fort mechanics](#the-fort-mechanics)
+- [Upgrading the fort](#upgrading-the-fort)
+- [Night time](#night-time)
+- [Hunting at night](#hunting-at-night)
+- [Dawn](#dawn)
+- [New mice](#new-mice)
+- [Loot distribution](#loot-distribution)
+- [New traps](#new-traps)
+- [Treasure chests &amp; the Heart of the Meteor](#treasure-chests-the-heart-of-the-meteor)
+- [TL;DR for the hopelessly lost](#tl-dr-for-the-hopelessly-lost)
 
 ## Getting in
 
