@@ -2,7 +2,7 @@ import { Link } from '@/components/site-link';
 
 import React from 'react';
 
-import { ArrowUpRightIcon, ChevronDownIcon } from '@heroicons/react/20/solid';
+import { ArrowUpRightIcon, ChevronDownIcon, ScaleIcon } from '@heroicons/react/20/solid';
 import clsx from 'clsx';
 
 import { ItemList } from '@/components/item-list';
@@ -35,7 +35,8 @@ const quickLookups = [
     href: '/catch-rate-estimator',
     name: 'Catch rate estimator',
     description: 'Your odds against every mouse',
-    image: itemImageUrl('acronym_weapon'),
+    // The same scales as the estimator's own page header.
+    icon: ScaleIcon,
     tint: 'pink',
   },
   {
@@ -74,7 +75,14 @@ const quickLookups = [
     image: '/images/essence/small/icuri.png',
     tint: 'pink',
   },
-] satisfies { href: string; name: string; description: string; image: string; tint: Tint }[];
+] satisfies {
+  href: string;
+  name: string;
+  description: string;
+  image?: string;
+  icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  tint: Tint;
+}[];
 
 type DirectoryEntry = {
   href: string;
@@ -235,14 +243,12 @@ export default function Home() {
         </p>
 
         <div className="mt-5">
-          <div className="max-w-2xl">
-            <SearchBar />
-          </div>
-          {/* Wider than the search bar, so the pill-shaped examples fit on one line on a desktop. */}
+          {/* As wide as the cards below, so every box on the page shares one right edge. */}
+          <SearchBar />
           <SearchExamples
             examples={searchExamples}
             label="Try a mouse for its minluck and best cheese:"
-            className="mt-3 max-w-3xl"
+            className="mt-3"
           />
         </div>
 
@@ -265,7 +271,7 @@ export default function Home() {
             Handy tools
           </h2>
           <ul className="mt-3 grid grid-cols-2 gap-2 lg:grid-cols-3">
-            {quickLookups.map(({ href, name, description, image, tint }) => (
+            {quickLookups.map(({ href, name, description, tint, image, icon: Icon }) => (
               <li key={href}>
                 <Link
                   href={href}
@@ -277,17 +283,21 @@ export default function Home() {
                       TINTS[tint],
                     )}
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={image}
-                      alt=""
-                      width={32}
-                      height={32}
-                      loading="lazy"
-                      decoding="async"
-                      // Soft corners on every picture here, the Relic Hunter's too, so the cards match.
-                      className="size-8 shrink-0 rounded-md object-contain"
-                    />
+                    {Icon ? (
+                      <Icon className="size-6 shrink-0 text-pink-700 dark:text-pink-300" aria-hidden="true" />
+                    ) : (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={image}
+                        alt=""
+                        width={32}
+                        height={32}
+                        loading="lazy"
+                        decoding="async"
+                        // Soft corners on every picture here, the Relic Hunter's too, so the cards match.
+                        className="size-8 shrink-0 rounded-md object-contain"
+                      />
+                    )}
                   </span>
                   <span className="min-w-0">
                     <span className="block text-sm/5 font-semibold text-zinc-900 group-hover:text-pink-700 dark:text-zinc-100 dark:group-hover:text-pink-300">

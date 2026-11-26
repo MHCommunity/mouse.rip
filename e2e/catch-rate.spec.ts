@@ -123,10 +123,8 @@ test('a setup picked up from the last visit goes into the address, and Start ove
   await expect(page.getByText('Pick a location, weapon and base')).toBeVisible();
 });
 
-test('a location opens on the cheese most hunted there, with where the rates come from', async ({ page }) => {
+test('a location opens on the cheese most hunted there', async ({ page }) => {
   await page.goto('/catch-rate-estimator?location=mountain&weapon=floating_law_upgraded_weapon&base=rift_base');
   await expect(page.getByLabel('Cheese')).not.toHaveValue('abominable_asiago_cheese');
-  await expect(
-    page.getByText(/Attraction rates from [\d,]+ hunts on MHCT\.|Attraction rates from MH-Tools\./),
-  ).toBeVisible();
+  await expect(page.getByText('Overall catch rate')).toBeVisible();
 });

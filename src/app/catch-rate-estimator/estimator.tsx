@@ -360,11 +360,11 @@ function Results({
             {overall.minluck !== undefined && overall.minluck > 0 && (
               <span className="block">{formatNumber(overall.minluck)} luck catches every mouse here.</span>
             )}
-            <span className="block text-xs text-zinc-600 dark:text-zinc-400">
-              {result.population.source === 'mhct' && result.population.sample > 0
-                ? `Attraction rates from ${formatNumber(result.population.sample)} hunts on MHCT.`
-                : 'Attraction rates from MH-Tools.'}
-            </span>
+            {result.population.source === 'mhct' && result.population.sample > 0 && (
+              <span className="block text-xs text-zinc-600 dark:text-zinc-400">
+                Attraction rates from {formatNumber(result.population.sample)} hunts on MHCT.
+              </span>
+            )}
           </p>
         </div>
         <dl className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
