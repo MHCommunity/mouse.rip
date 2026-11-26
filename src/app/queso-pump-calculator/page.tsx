@@ -1,7 +1,9 @@
 'use client';
 
 import clsx from 'clsx';
-import React, { useState, type ChangeEvent } from 'react';
+import React, { type ChangeEvent } from 'react';
+
+import { useStoredState } from '@/lib/use-stored-state';
 
 import { Input } from '@/components/input';
 import { PageHeader } from '@/components/page-header';
@@ -31,12 +33,42 @@ const checkboxClasses =
 const thClasses = 'px-3 py-3 text-right text-sm font-semibold text-zinc-950 dark:text-white';
 const tdClasses = 'whitespace-nowrap px-3 py-3 text-right text-sm tabular-nums text-zinc-600 dark:text-zinc-400';
 
+interface Entries {
+  nachore: string;
+  pumpLevel: number;
+  useMagicEssence: boolean;
+  useOesb: boolean;
+  useQpc: boolean;
+}
+
+const EMPTY: Entries = { nachore: '', pumpLevel: 1, useMagicEssence: false, useOesb: false, useQpc: false };
+
+/** Entries saved on an earlier visit, if they still make sense. */
+function parseEntries(saved: unknown): Entries | undefined {
+  if (!saved || typeof saved !== 'object') return undefined;
+  const entries = { ...EMPTY, ...saved } as Entries;
+  const valid =
+    typeof entries.nachore === 'string' &&
+    /^\d*$/.test(entries.nachore) &&
+    Number.isInteger(entries.pumpLevel) &&
+    entries.pumpLevel >= 1 &&
+    entries.pumpLevel <= PUMP_LEVELS.length &&
+    [entries.useMagicEssence, entries.useOesb, entries.useQpc].every((value) => typeof value === 'boolean');
+  return valid ? entries : undefined;
+}
+
 export default function QuesoPumpCalculator() {
-  const [nachore, setNachore] = useState<string>('');
-  const [pumpLevel, setPumpLevel] = useState<number>(1);
-  const [useMagicEssence, setUseMagicEssence] = useState<boolean>(false);
-  const [useOesb, setUseOesb] = useState<boolean>(false);
-  const [useQpc, setUseQpc] = useState<boolean>(false);
+  const [entries, setEntries] = useStoredState('mouse.rip:queso-pump-calculator', EMPTY, parseEntries);
+  const { nachore, pumpLevel, useMagicEssence, useOesb, useQpc } = entries;
+  const set =
+    <K extends keyof Entries>(key: K) =>
+    (value: Entries[K]) =>
+      setEntries((current) => ({ ...current, [key]: value }));
+  const setNachore = set('nachore');
+  const setPumpLevel = set('pumpLevel');
+  const setUseMagicEssence = set('useMagicEssence');
+  const setUseOesb = set('useOesb');
+  const setUseQpc = set('useQpc');
 
   const options: PumpOptions = {
     nachore: parseInt(nachore || '0', 10),

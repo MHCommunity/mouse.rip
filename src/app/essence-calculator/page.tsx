@@ -1,7 +1,9 @@
 'use client';
 import Image from 'next/image';
 
-import React, { useEffect, useState, type ChangeEvent } from 'react';
+import React, { useEffect, type ChangeEvent } from 'react';
+
+import { useStoredState } from '@/lib/use-stored-state';
 
 import { Button } from '@/components/button';
 import { Input } from '@/components/input';
@@ -77,8 +79,18 @@ function Summary({ finalCounts, crafted }: { finalCounts: number[]; crafted: boo
   );
 }
 
+/** Saved amounts from an earlier visit: one string of digits per essence. */
+function parseAmounts(saved: unknown): string[] | undefined {
+  if (!Array.isArray(saved) || saved.length !== ESSENCES.length) return undefined;
+  return saved.every((amount) => typeof amount === 'string' && /^\d*$/.test(amount)) ? saved : undefined;
+}
+
 export default function EssenceCalculator() {
-  const [amounts, setAmounts] = useState<string[]>(Array(ESSENCES.length).fill(''));
+  const [amounts, setAmounts] = useStoredState<string[]>(
+    'mouse.rip:essence-calculator',
+    Array(ESSENCES.length).fill(''),
+    parseAmounts,
+  );
 
   const handleChange = (idx: number, value: string) => {
     const newAmounts = [...amounts];
@@ -106,7 +118,7 @@ export default function EssenceCalculator() {
 
     window.addEventListener('paste', handlePaste);
     return () => window.removeEventListener('paste', handlePaste);
-  }, []);
+  }, [setAmounts]);
 
   const base = amounts.map((a) => parseInt(a || '0', 10));
   const hasInput = amounts.some((a) => a !== '');
