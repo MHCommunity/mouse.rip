@@ -299,9 +299,11 @@ function normalizedRecord(record: SearchRecord) {
   let normalized = normalizedRecords.get(record);
   if (!normalized) {
     const title = normalizeSearchText(record.title);
+    // "fulmina" should find Ful'Mina, so the name also goes in with its apostrophes dropped.
+    const joined = /['‘’]/.test(record.title) ? ` ${normalizeSearchText(record.title.replace(/['‘’]/g, ''))}` : '';
     normalized = {
       // Leading space so word-start checks can look for " token".
-      keywords: ` ${normalizeSearchText(`${record.title} ${record.keywords}`)}`,
+      keywords: ` ${normalizeSearchText(`${record.title} ${record.keywords}`)}${joined}`,
       title,
       titleWords: title.split(' '),
     };
@@ -367,7 +369,8 @@ const SYNONYMS: Record<string, string[]> = {
   bwr: ['bristle woods rift'],
   frox: ['fort rox'],
   zt: ['zugzwang'],
-  tse: ['trap special effects'],
+  // The page is "Trap and base special effects".
+  tse: ['trap special effects', 'special effects'],
   rh: ['relic hunter'],
   uu: ['ultimate umbra'],
   uc: ['ultimate charm'],
@@ -381,6 +384,8 @@ const PHRASES: [RegExp, string][] = [
   // Someone saying they're new wants a guide, not the "Beginner's Luck" item.
   [/\b(new|newer|first time|fresh) (player|hunter)s?\b/g, 'beginner guide'],
   [/\b(getting|get|just) started\b/g, 'beginner guide'],
+  // "i'm new" normalises to "i m new".
+  [/\b(i m|im|i am) new\b/g, 'beginner guide'],
   [/\b(how|where) (to|do i) start\b/g, 'beginner guide'],
   [/\bcoming back\b/g, 'returning'],
 ];
@@ -394,11 +399,35 @@ function synonymsFor(word: string): string[] {
   return Object.hasOwn(SYNONYMS, word) ? SYNONYMS[word] : [];
 }
 
-const STOPWORDS = new Set(['a', 'an', 'the', 'for', 'to', 'of', 'in', 'on', 'and', 'how', 'what', 'where', 'is', 'my']);
+// "i'm" normalises to "i m".
+const STOPWORDS = new Set([
+  'a',
+  'an',
+  'the',
+  'for',
+  'to',
+  'of',
+  'in',
+  'on',
+  'and',
+  'how',
+  'what',
+  'where',
+  'is',
+  'my',
+  'i',
+  'im',
+  'm',
+  'am',
+  'me',
+]);
 
 /** A query word, plus the alternatives that also satisfy it. */
 interface QueryToken {
+  /** The word stemmed, so "guides" finds "guide". */
   text: string;
+  /** The word as typed, for plurals stemming spells differently: "curiosities" isn't in "curiosity". */
+  typed: string;
   alternatives: string[];
 }
 
@@ -430,7 +459,9 @@ type Match = 'literal' | 'synonym' | 'fuzzy';
 
 function matchToken(token: QueryToken, record: ReturnType<typeof normalizedRecord>): Match | null {
   // Short words ("sb", "vr") only count at the start of a word, or "sb" would match "crossbow".
-  if (record.keywords.includes(token.text.length <= 3 ? ` ${token.text}` : token.text)) return 'literal';
+  for (const text of token.typed === token.text ? [token.text] : [token.text, token.typed]) {
+    if (record.keywords.includes(text.length <= 3 ? ` ${text}` : text)) return 'literal';
+  }
   for (const alternative of token.alternatives) {
     if (record.keywords.includes(` ${alternative}`)) return 'synonym';
   }
@@ -476,7 +507,7 @@ export function searchRecords(records: SearchRecord[], query: string, limit = 40
   const required = (nameWords.length > 0 ? nameWords : contentWords.length > 0 ? contentWords : words).map(
     (text): QueryToken => {
       const stemmed = stem(text);
-      return { text: stemmed, alternatives: [...synonymsFor(text), ...synonymsFor(stemmed)] };
+      return { text: stemmed, typed: text, alternatives: [...synonymsFor(text), ...synonymsFor(stemmed)] };
     },
   );
   const wantedKinds = new Set(nameWords.length > 0 ? kindWords.flatMap((word) => kindsFor(word) ?? []) : []);
@@ -494,22 +525,28 @@ export function searchRecords(records: SearchRecord[], query: string, limit = 40
         matchesAll = false;
         break;
       }
+      // "beginner" finding the Essentials guide by its name beats finding a passing mention.
+      const synonymInTitle = () =>
+        token.alternatives.some((alternative) => ` ${normalized.title}`.includes(` ${alternative}`));
       if (match === 'literal') {
         if (normalized.title.startsWith(token.text)) score += 40;
         else if (normalized.titleWords.some((word) => word.startsWith(token.text))) score += 30;
         else if (normalized.title.includes(token.text)) score += 20;
+        // The word itself in the description still beats a synonym there.
+        else score += synonymInTitle() ? 60 : 15;
       } else if (match === 'synonym') {
-        // "beginner" finding the Essentials guide by its name beats finding a passing mention.
-        const inTitle = token.alternatives.some((alternative) => ` ${normalized.title}`.includes(` ${alternative}`));
-        score += inTitle ? 60 : 10;
+        score += synonymInTitle() ? 60 : 10;
       }
     }
     if (!matchesAll) continue;
 
     const { title } = normalized;
-    if (title === q || title === nameQuery) score += 1000;
+    // The whole query beats the query without its kind words: "rank up" is the Rank-up calculator before
+    // it's anything starting with "up".
+    if (title === q) score += 1000;
+    else if (title === nameQuery) score += 950;
     else if (title.startsWith(q) || title.startsWith(nameQuery)) {
-      score += 600;
+      score += title.startsWith(q) ? 600 : 550;
       if (record.kind === 'location') score += LOCATION_NAME_BONUS;
     } else if (title.includes(nameQuery)) score += 300;
 
