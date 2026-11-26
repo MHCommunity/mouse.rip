@@ -100,6 +100,7 @@ export function ItemData({
   itemId,
   obtainHint,
   contents,
+  isConvertible = false,
   drops,
   foundIn,
   mapRelations,
@@ -108,6 +109,8 @@ export function ItemData({
   itemId: number;
   obtainHint?: string;
   contents: ConvertibleRow[];
+  /** A convertible with no contents on record still says so, rather than leaving out the section. */
+  isConvertible?: boolean;
   drops: ItemDropper[];
   foundIn: FoundInConvertible[];
   mapRelations: MapRelation[];
@@ -182,6 +185,14 @@ export function ItemData({
       )}
 
       {contents.length > 0 && <ConvertibleContents itemId={itemId} rows={contents} />}
+      {isConvertible && contents.length === 0 && (
+        <section>
+          <SectionHeading>What&rsquo;s inside</SectionHeading>
+          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+            <SourceLink source="mhct" /> has no record of what this one holds yet.
+          </p>
+        </section>
+      )}
 
       {mapRelations.length > 0 && <MapRelations itemId={itemId} relations={mapRelations} itemSlugs={itemSlugs} />}
     </div>

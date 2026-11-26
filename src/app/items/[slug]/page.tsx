@@ -173,19 +173,43 @@ function skinTarget(item: GameItem): GameItem | undefined {
   return skinTargets.get(item.type);
 }
 
-/** Items of the same classification that share the most tags with this one. */
-function relatedItems(item: GameItem): GameItem[] {
-  const tags = new Set((item.tags ?? []).filter((tag) => tag !== item.classification));
-  if (tags.size === 0) return [];
+/** How many items of each classification carry each tag, for weighing a shared tag by how rare it is. */
+const tagCounts = new Map<string, Map<string, number>>();
+function tagCountsFor(classification: string): Map<string, number> {
+  let counts = tagCounts.get(classification);
+  if (!counts) {
+    counts = new Map();
+    for (const peer of itemsWithClassification(classification)) {
+      for (const tag of new Set(peer.tags ?? [])) counts.set(tag, (counts.get(tag) ?? 0) + 1);
+    }
+    tagCounts.set(classification, counts);
+  }
+  return counts;
+}
 
-  return itemsWithClassification(item.classification)
+/**
+ * Items of the same classification that share the most telling tags with this one. A tag on more than a quarter of
+ * them ("convertibles", "treasure_chests") says nothing; rarer shared tags count for more.
+ */
+function relatedItems(item: GameItem): GameItem[] {
+  const peers = itemsWithClassification(item.classification);
+  const counts = tagCountsFor(item.classification);
+  const weights = new Map<string, number>();
+  for (const tag of new Set(item.tags ?? [])) {
+    const count = counts.get(tag) ?? 0;
+    if (tag === item.classification || count < 2 || count > peers.length / 4) continue;
+    weights.set(tag, Math.log(peers.length / count));
+  }
+  if (weights.size === 0) return [];
+
+  return peers
     .filter((peer) => peer.id !== item.id)
     .map((peer) => ({
       peer,
-      shared: (peer.tags ?? []).filter((tag) => tags.has(tag)).length,
+      score: [...new Set(peer.tags ?? [])].reduce((sum, tag) => sum + (weights.get(tag) ?? 0), 0),
     }))
-    .filter(({ shared }) => shared > 0)
-    .sort((a, b) => b.shared - a.shared || a.peer.name.localeCompare(b.peer.name))
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score || a.peer.name.localeCompare(b.peer.name))
     .slice(0, 8)
     .map(({ peer }) => peer);
 }
@@ -386,6 +410,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
         itemId={item.id}
         obtainHint={item.obtain_hint}
         contents={contents}
+        isConvertible={isConvertible}
         drops={drops}
         foundIn={getConvertiblesContaining(item.id)}
         mapRelations={mapRelations}
