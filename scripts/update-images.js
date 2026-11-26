@@ -1,8 +1,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+import { fileImageType, imageType } from './image-signature.js';
+
 // Downloads the images the site serves into static-mouse-rip/images, from the
-// data `update:data` already saved. Images that are already there are skipped.
+// data `update:data` already saved. Images that are already there are skipped, unless they aren't
+// really images, in which case they're downloaded again.
 
 const root = path.join(import.meta.dir, '..');
 const output = path.join(root, 'static-mouse-rip', 'images');
@@ -16,7 +19,10 @@ const FETCH_TIMEOUT_MS = 30_000;
 /** Save the first of `urls` that downloads. Returns whether the image is there. */
 async function fetchImage(urls, destination) {
   if (!destination) return false;
-  if (fs.existsSync(destination)) return true;
+  if (fs.existsSync(destination)) {
+    if (fileImageType(destination)) return true;
+    console.warn(`Downloading ${path.relative(root, destination)} again: it isn't a valid image.`);
+  }
 
   for (const url of [urls].flat().filter(Boolean)) {
     let data;
@@ -31,7 +37,10 @@ async function fetchImage(urls, destination) {
       console.error(`Failed to fetch ${url}: ${error.message}`);
       continue;
     }
-    if (data.length === 0) continue;
+    if (!imageType(data)) {
+      console.error(`Skipping ${url}: the response isn't an image.`);
+      continue;
+    }
 
     await fs.promises.mkdir(path.dirname(destination), { recursive: true });
     await fs.promises.writeFile(destination, data);
@@ -51,7 +60,8 @@ function slug(value) {
  */
 function imagePath(id, ...segments) {
   const name = slug(id);
-  if (!/^[a-z0-9-]+$/.test(name)) {
+  // Some ids have capitals (bristle_woods_rift_theme_scrap_III_crafting_item), and the site asks for them as-is.
+  if (!/^[A-Za-z0-9-]+$/.test(name)) {
     console.warn(`Skipping image with unexpected id: ${id}`);
     return null;
   }
