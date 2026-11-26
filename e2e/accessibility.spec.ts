@@ -29,6 +29,13 @@ const FILLED: { name: string; path: string; fill?: (page: Page) => Promise<void>
       await page.getByText('Auras and other bonuses').click();
     },
   },
+  {
+    name: 'best setup with results and my items',
+    path: '/best-setup?location=fort_rox&stage=Midnight&cheese=crescent_cheese&own_weapons=dark_magic_mirror_weapon,acronym_weapon&own_bases=rift_base',
+    fill: async (page) => {
+      await expect(page.getByText('The setups that catch the most mice per 100 hunts.')).toBeVisible();
+    },
+  },
   { name: 'rankings, focused on a mouse', path: '/mice/rankings?by=gold&mouse=glazed' },
   { name: 'items, filtered', path: '/items?type=stat&sub=currency&tradable=1' },
   { name: 'mice, filtered to nothing', path: '/mice?q=zzzz' },

@@ -8,7 +8,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import type { PickerOption } from '@/components/item-picker';
 import { loadCatchRateData } from '@/lib/client-index';
 import { buildCatalog, group, type Catalog } from '@/lib/catch-rate/data';
-import { estimate, type Extras, type Setup } from '@/lib/catch-rate/engine';
+import { findPopulation, type Extras, type Setup } from '@/lib/catch-rate/engine';
 import { applyChanges, cheesesFor, specialCharmsFor, stagesFor } from '@/lib/catch-rate/options';
 import { EMPOWERABLE_CHEESES, GOLEM_GUARDIAN, ISLE_IDOL, PRESTIGE_BASES } from '@/lib/catch-rate/special';
 import { itemImageUrl } from '@/lib/image-urls';
@@ -252,14 +252,19 @@ export function ExtrasCard({
   catalog,
   setup,
   onExtra,
+  items,
 }: {
   catalog: Catalog;
   setup: Setup;
   onExtra: <K extends keyof Extras>(key: K, value: Extras[K]) => void;
+  /** For Best Setup: the weapons and bases being tried, in place of the setup's own. */
+  items?: { weapons: Set<string>; bases: Set<string> };
 }) {
   const { location, stage, extras } = setup;
   const dragons = group(catalog, 'dragon');
-  const population = estimate(setup, catalog)?.population;
+  const population = findPopulation(setup, catalog);
+  const hasWeapon = (type: string) => (items ? items.weapons.has(type) : setup.weapon === type);
+  const hasBase = (type: string) => (items ? items.bases.has(type) : setup.base === type);
   const fields: React.ReactNode[] = [];
 
   if (location === 'rift_furoma') {
@@ -354,7 +359,7 @@ export function ExtrasCard({
       </Toggle>,
     );
   }
-  if (PRESTIGE_BASES.has(setup.base)) {
+  if ([...PRESTIGE_BASES].some(hasBase)) {
     fields.push(
       <NumberField
         key="umbra"
@@ -366,7 +371,7 @@ export function ExtrasCard({
       />,
     );
   }
-  if (setup.weapon === GOLEM_GUARDIAN) {
+  if (hasWeapon(GOLEM_GUARDIAN)) {
     fields.push(
       <div key="golem" className="grid grid-cols-2 gap-3">
         <label className={labelClasses}>
@@ -394,7 +399,7 @@ export function ExtrasCard({
       </div>,
     );
   }
-  if (setup.weapon === ISLE_IDOL) {
+  if (hasWeapon(ISLE_IDOL)) {
     fields.push(
       <label key="idol" className={labelClasses}>
         Isle Idol skin
@@ -410,14 +415,14 @@ export function ExtrasCard({
       </label>,
     );
   }
-  if (setup.base === 'denture_base' || setup.base === 'upgraded_denture_base') {
+  if (hasBase('denture_base') || hasBase('upgraded_denture_base')) {
     fields.push(
       <Toggle key="teeth" checked={Boolean(extras.dentureToothless)} onChange={(v) => onExtra('dentureToothless', v)}>
         Toothless <span className={hintClasses}>(out of charge)</span>
       </Toggle>,
     );
   }
-  if (setup.weapon === 'chrono_gwh_weapon') {
+  if (hasWeapon('chrono_gwh_weapon')) {
     fields.push(
       <NumberField
         key="acolytes"

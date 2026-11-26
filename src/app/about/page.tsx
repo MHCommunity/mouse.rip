@@ -38,6 +38,11 @@ const features: { href: string; name: string; description: string }[] = [
     description: 'your catch rate for every mouse with your setup.',
   },
   {
+    href: '/best-setup',
+    name: 'Best setup',
+    description: 'the trap that catches the most where you hunt.',
+  },
+  {
     href: '/map-planner',
     name: 'Treasure map planner',
     description: 'where to hunt for the most mice on your map.',

@@ -286,6 +286,17 @@
     ]
   },
   {
+    "id": "best-setup",
+    "name": "Best setup",
+    "description": "Rank every weapon and base you own by how many mice they'd catch at a location, or aim for one mouse.",
+    "url": "/best-setup",
+    "category": "tool",
+    "tags": [
+      "calculator",
+      "catch rate"
+    ]
+  },
+  {
     "id": "map-planner",
     "name": "Treasure map planner",
     "description": "Paste your map's mice to see which locations and cheeses attract the most of them.",

@@ -24,6 +24,7 @@ const GROUPS: { id: string; title: string; blurb: string; tools: { id: string; i
     blurb: 'Where to go next, and what to bring.',
     tools: [
       { id: 'catch-rates', image: itemImageUrl('acronym_weapon'), tint: 'pink' },
+      { id: 'best-setup', image: itemImageUrl('infinite_dark_magic_mirror_weapon'), tint: 'violet' },
       { id: 'map-planner', image: itemImageUrl('treasure_map_scroll_case_convertible'), tint: 'amber' },
     ],
   },

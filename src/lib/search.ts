@@ -99,6 +99,12 @@ const PAGE_RECORDS: SearchRecord[] = [
     'Your catch rate for every mouse',
     'catch rate estimator cre chance setup trap power luck minluck',
   ],
+  [
+    '/best-setup',
+    'Best setup',
+    'The best trap for where you hunt',
+    'best setup trap weapon base charm optimal which trap',
+  ],
   ['/map-planner', 'Treasure map planner', 'Where to hunt for your map', 'treasure map planner plan mice solver route'],
   [
     '/rank-up-calculator',

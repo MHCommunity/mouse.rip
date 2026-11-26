@@ -104,6 +104,7 @@ describe('searchRecords', () => {
     ['minluck', 'Minlucks'],
     ['map planner', 'Treasure map planner'],
     ['catch rate estimator', 'Catch rate estimator'],
+    ['best setup', 'Best setup'],
     ['rank up', 'Rank-up calculator'],
     ['rankings', 'Mice ranked'],
     ['spreadsheets', 'Spreadsheets'],

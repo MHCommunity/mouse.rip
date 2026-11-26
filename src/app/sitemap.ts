@@ -27,6 +27,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/essence-calculator',
     '/queso-pump-calculator',
     '/catch-rate-estimator',
+    '/best-setup',
     '/map-planner',
     '/rank-up-calculator',
     '/titles',

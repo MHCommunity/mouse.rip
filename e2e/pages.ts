@@ -23,6 +23,7 @@ export const PAGES = [
   '/minlucks',
   '/titles',
   '/catch-rate-estimator',
+  '/best-setup',
   '/map-planner',
   '/rank-up-calculator',
   '/trap-special-effects',
