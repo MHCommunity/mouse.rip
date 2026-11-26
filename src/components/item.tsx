@@ -6,6 +6,7 @@ import { Badge } from '@/components/badge';
 import { isOurUrl, isInternalPath } from '@/utils';
 
 import { Resource } from '@/types';
+import { userscriptTagName } from '@/lib/userscript-tags';
 
 interface ItemProps {
   item: Resource;
@@ -64,7 +65,7 @@ export function Item({ item, showtags = false, headingLevel = 2, showCategory = 
           <div className="mt-2 flex flex-wrap gap-1.5">
             {[...new Set(item.tags)].map((tag) => (
               <Badge key={tag} color="tag">
-                {tag}
+                {userscriptTagName(tag)}
               </Badge>
             ))}
           </div>

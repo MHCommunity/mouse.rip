@@ -6,6 +6,7 @@ import { SwatchIcon } from '@heroicons/react/20/solid';
 import { pageMetadata } from '@/seo';
 
 import React from 'react';
+import { UserscriptTagBar } from '@/components/userscript-tag-bar';
 
 export const metadata = pageMetadata({
   title: 'MouseHunt Userscripts',
@@ -33,6 +34,7 @@ export default async function Userscripts() {
         icon={SwatchIcon}
         iconClassName="bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300"
       />
+      <UserscriptTagBar scripts={items} />
       <ItemList items={items} showCategory={false} showtags />
     </>
   );

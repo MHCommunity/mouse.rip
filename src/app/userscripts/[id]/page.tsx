@@ -10,6 +10,7 @@ import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PageHeader } from '@/components/page-header';
 import { PageLink } from '@/components/page-link';
 import { pageMetadata } from '@/seo';
+import { userscriptTagName } from '@/lib/userscript-tags';
 
 /** Only userscripts get a page here; other resources share the same id space. */
 function getUserscript(id: string) {
@@ -69,7 +70,7 @@ export default async function UserscriptPage({ params }: { params: Promise<{ id:
         <div className="flex flex-wrap gap-2">
           {[...new Set(item.tags)].map((tag) => (
             <BadgeButton key={tag} href={`/userscripts/tags/${encodeURIComponent(tag)}`} color="zinc">
-              {tag}
+              {userscriptTagName(tag)}
             </BadgeButton>
           ))}
         </div>

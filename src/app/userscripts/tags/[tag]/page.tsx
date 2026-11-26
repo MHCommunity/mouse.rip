@@ -10,6 +10,8 @@ import { pageMetadata } from '@/seo';
 
 import { getResourcesByCategory } from '@/lib/site-data';
 import { Resource } from '@/types';
+import { UserscriptTagBar } from '@/components/userscript-tag-bar';
+import { userscriptTagName } from '@/lib/userscript-tags';
 
 function getUserscriptsByTag(tag: string): Resource[] {
   return getResourcesByCategory('userscript').filter((item) => item.tags?.includes(tag));
@@ -29,8 +31,8 @@ export async function generateMetadata({ params }: { params: Promise<{ tag: stri
   const decoded = decodeURIComponent(tag);
 
   return pageMetadata({
-    title: `MouseHunt userscripts tagged “${decoded}”`,
-    description: `A collection of MouseHunt userscripts tagged “${decoded}”.`,
+    title: `MouseHunt ${userscriptTagName(decoded)} userscripts`,
+    description: `MouseHunt userscripts for ${userscriptTagName(decoded).toLowerCase()}.`,
     path: `/userscripts/tags/${tag}`,
   });
 }
@@ -50,18 +52,19 @@ export default async function UserscriptTagPage({ params }: { params: Promise<{ 
         items={[
           { name: 'Home', href: '/' },
           { name: 'Userscripts', href: '/userscripts' },
-          { name: `Tagged “${decoded}”` },
+          { name: userscriptTagName(decoded) },
         ]}
       />
 
       <PageHeader
-        title={`Tagged “${decoded}”`}
+        title={`${userscriptTagName(decoded)} userscripts`}
         count={items.length}
         countLabel={items.length === 1 ? 'userscript' : 'userscripts'}
         icon={SwatchIcon}
         iconClassName="bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300"
       />
 
+      <UserscriptTagBar scripts={getResourcesByCategory('userscript')} current={decoded} />
       <ItemList items={items} showCategory={false} showtags />
     </>
   );
