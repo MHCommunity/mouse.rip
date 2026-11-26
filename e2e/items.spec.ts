@@ -64,3 +64,21 @@ test('the price chart can be read as a table', async ({ page }) => {
   const table = page.getByRole('table', { name: 'Price and amount traded for each day in the chart' });
   await expect(table.getByRole('row')).toHaveCount(31);
 });
+
+test('Show all is still on after a visit to an item and Back, at the same place in the list', async ({ page }) => {
+  const results = 'main ul a[href^="/items/"]';
+  await page.goto('/items?tradable=1');
+  await expect(page.locator(results)).toHaveCount(400);
+  await page.getByRole('button', { name: 'Show all' }).click();
+  await expect(page.locator(results)).not.toHaveCount(400);
+
+  const link = page.locator(results).nth(700);
+  await link.scrollIntoViewIfNeeded();
+  const before = await page.evaluate(() => window.scrollY);
+  await link.click();
+  await expect(page).toHaveURL(/\/items\/[a-z0-9-]+$/);
+  await page.goBack();
+  await expect(page).toHaveURL(/\/items\?tradable=1$/);
+  await expect.poll(() => page.locator(results).count()).toBeGreaterThan(700);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(before - 400);
+});

@@ -17,6 +17,7 @@ import {
   subgroupsPresent,
 } from '@/lib/item-classifications';
 import { itemImageUrl } from '@/lib/image-urls';
+import { useRememberedCount } from '@/lib/use-remembered-count';
 import { formatNumber } from '@/utils';
 import { SectionHeading } from '@/components/section-heading';
 
@@ -224,12 +225,21 @@ export function ItemsBrowser({
   }, [items, counts, sortedItems, debouncedQuery, tradableOnly, tag]);
 
   // Broad filters (a whole type, tradable only) can match thousands of items, so
-  // render the first ROW_LIMIT until asked. Changing the filters re-caps it.
+  // render the first ROW_LIMIT until asked. Changing the filters re-caps it. The count is kept across a visit to
+  // an item's page and Back, so "Show all" doesn't have to be pressed again to return to the same item.
   const filterKey = [debouncedQuery.trim(), active, sub, tradableOnly, tag].join('|');
-  const [expandedFor, setExpandedFor] = useState<string | null>(null);
-  const showAll = expandedFor === filterKey;
+  const [limit, setLimit] = useRememberedCount(
+    syncUrl ? `items|${filterKey}` : null,
+    ROW_LIMIT,
+    !filtering || items !== null || loadFailed,
+  );
+  const [lastFilterKey, setLastFilterKey] = useState(filterKey);
+  if (filterKey !== lastFilterKey) {
+    setLastFilterKey(filterKey);
+    setLimit(ROW_LIMIT);
+  }
   const visible = useMemo(() => {
-    let budget = showAll ? Number.POSITIVE_INFINITY : ROW_LIMIT;
+    let budget = limit;
     const out = [];
     for (const [key, list] of grouped) {
       if (budget <= 0) break;
@@ -238,7 +248,7 @@ export function ItemsBrowser({
       out.push([key, list, shown] as const);
     }
     return out;
-  }, [grouped, showAll]);
+  }, [grouped, limit]);
 
   // Types with a description get a card; the rest are rare enough for a line of links.
   const mainTypes = classificationOrder.filter((key) => CLASSIFICATION_DESCRIPTIONS[key]);
@@ -504,12 +514,12 @@ export function ItemsBrowser({
               </ul>
             </section>
           ))}
-          {total > ROW_LIMIT && !showAll && (
+          {total > limit && (
             <p className="text-sm text-zinc-500 dark:text-zinc-400">
-              Showing the first {formatNumber(ROW_LIMIT)} of {formatNumber(total)}.{' '}
+              Showing the first {formatNumber(limit)} of {formatNumber(total)}.{' '}
               <button
                 type="button"
-                onClick={() => setExpandedFor(filterKey)}
+                onClick={() => setLimit(total)}
                 className="font-medium text-pink-700 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200"
               >
                 Show all
