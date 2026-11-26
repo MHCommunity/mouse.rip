@@ -128,3 +128,21 @@ table,
     animation: none;
   }
 }
+
+/*
+ * A soft shadow on whichever side of a wide table has more to scroll to. The local layers cover the shadows at each
+ * end and scroll with the content, so a shadow only shows while there's something hidden behind it.
+ */
+@utility scroll-shadows {
+  --scroll-cover: var(--color-white);
+  --scroll-shade: rgb(0 0 0 / 0.12);
+  background:
+    linear-gradient(to right, var(--scroll-cover) 30%, transparent) left / 2.5rem 100% no-repeat local,
+    linear-gradient(to left, var(--scroll-cover) 30%, transparent) right / 2.5rem 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, var(--scroll-shade), transparent) left / 0.75rem 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, var(--scroll-shade), transparent) right / 0.75rem 100% no-repeat scroll;
+  @media (prefers-color-scheme: dark) {
+    --scroll-cover: var(--color-zinc-900);
+    --scroll-shade: rgb(0 0 0 / 0.5);
+  }
+}
