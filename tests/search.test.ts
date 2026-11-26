@@ -89,6 +89,8 @@ describe('searchRecords', () => {
     ['sb', 'SUPER|brie+'],
     ['frox', 'Fort Rox'],
     ['tse', 'Trap and base special effects'],
+    ['ml', 'Minlucks'],
+    ['rh', 'Relic Hunter'],
     // Typos, on longer words.
     ['labyrnth', 'Labyrinth'],
     ['chedar', 'Cheddar Cheese'],
@@ -101,6 +103,7 @@ describe('searchRecords', () => {
     // The site's own pages.
     ['minluck', 'Minlucks'],
     ['map planner', 'Treasure map planner'],
+    ['catch rate estimator', 'Catch rate estimator'],
     ['rank up', 'Rank-up calculator'],
     ['rankings', 'Mice ranked'],
     ['spreadsheets', 'Spreadsheets'],
@@ -118,6 +121,10 @@ describe('searchRecords', () => {
   ])('%p finds %p first', (query, expected) => {
     // Titles are compared with plain apostrophes, as the data has both kinds.
     expect(titles(query, 1)[0]?.replace(/[‘’]/g, "'")).toBe(expected.replace(/[‘’]/g, "'"));
+  });
+
+  test('"cre" finds the catch rate estimator near the top', () => {
+    expect(titles('cre', 2)).toContain('Catch rate estimator');
   });
 
   test('a short word only matches at the start of a word', () => {

@@ -93,6 +93,12 @@ const PAGE_RECORDS: SearchRecord[] = [
     'Living Garden essences',
     'essence calculator living garden aleth ber cynd icuri',
   ],
+  [
+    '/catch-rate-estimator',
+    'Catch rate estimator',
+    'Your catch rate for every mouse',
+    'catch rate estimator cre chance setup trap power luck minluck',
+  ],
   ['/map-planner', 'Treasure map planner', 'Where to hunt for your map', 'treasure map planner plan mice solver route'],
   [
     '/rank-up-calculator',
@@ -374,7 +380,7 @@ const SYNONYMS: Record<string, string[]> = {
   rh: ['relic hunter'],
   uu: ['ultimate umbra'],
   uc: ['ultimate charm'],
-  ml: ['minluck'],
+  ml: ['minluck', 'minlucks'],
   cre: ['catch rate estimator'],
   mhct: ['mousehunt community tools'],
 };
@@ -558,7 +564,9 @@ export function searchRecords(records: SearchRecord[], query: string, limit = 40
     const { title } = normalized;
     // The whole query beats the query without its kind words: "rank up" is the Rank-up calculator before
     // it's anything starting with "up".
-    if (title === q) score += 1000;
+    // Shorthand that spells out a name exactly ("cre", "rh") is as good as typing the name.
+    const shorthandForTitle = required.some((token) => token.alternatives.includes(title));
+    if (title === q || shorthandForTitle) score += 1000;
     else if (title === nameQuery) score += 950;
     else if (title.startsWith(q) || title.startsWith(nameQuery)) {
       score += title.startsWith(q) ? 600 : 550;
