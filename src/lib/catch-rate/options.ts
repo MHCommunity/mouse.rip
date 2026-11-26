@@ -64,6 +64,17 @@ export function specialCharmsFor(catalog: Catalog, location: string, stage: stri
   );
 }
 
+/** A setup with some fields changed, keeping the stage and cheese valid for the location. */
+export function applyChanges(catalog: Catalog, setup: Setup, changes: Partial<Setup>): Setup {
+  const next = { ...setup, ...changes };
+  if (changes.location !== undefined && changes.location !== setup.location) {
+    next.stage = stagesFor(catalog, next.location)[0] ?? '-';
+  }
+  const available = cheesesFor(catalog, next.location, next.stage);
+  if (!available.some((cheese) => cheese.type === next.cheese)) next.cheese = available[0]?.type ?? '';
+  return next;
+}
+
 /** URL parameter for each extra, with how to read it back. */
 const EXTRA_PARAMS: { key: keyof Extras; param: string; kind: 'number' | 'flag' | 'text' }[] = [
   { key: 'battery', param: 'battery', kind: 'number' },

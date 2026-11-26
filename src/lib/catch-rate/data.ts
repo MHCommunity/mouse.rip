@@ -132,11 +132,23 @@ export function buildCatalog(raw: RawCatchRateData): Catalog {
   };
 }
 
-/** A mouse group from cre-mice-groups, flat or nested ("fort_rox.weremice"). */
+const groupCache = new WeakMap<Catalog, Map<string, Set<string>>>();
+
+/** A mouse group from cre-mice-groups, flat or nested ("fort_rox.weremice"). Built once per catalog. */
 export function group(catalog: Catalog, path: string): Set<string> {
-  const [key, sub] = path.split('.');
-  const value = catalog.groups[key];
-  if (!value) return new Set();
-  if (Array.isArray(value)) return new Set(value);
-  return new Set(sub ? (value[sub] ?? []) : Object.values(value).flat());
+  let cache = groupCache.get(catalog);
+  if (!cache) {
+    cache = new Map();
+    groupCache.set(catalog, cache);
+  }
+  let members = cache.get(path);
+  if (!members) {
+    const [key, sub] = path.split('.');
+    const value = catalog.groups[key];
+    members = new Set(
+      !value ? [] : Array.isArray(value) ? value : sub ? (value[sub] ?? []) : Object.values(value).flat(),
+    );
+    cache.set(path, members);
+  }
+  return members;
 }
