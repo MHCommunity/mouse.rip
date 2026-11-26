@@ -429,6 +429,8 @@ interface QueryToken {
   /** The word as typed, for plurals stemming spells differently: "curiosities" isn't in "curiosity". */
   typed: string;
   alternatives: string[];
+  /** Whether a near miss counts: long words always, four-letter ones only when nothing matches as typed. */
+  fuzzy: boolean;
 }
 
 function stem(token: string): string {
@@ -437,9 +439,10 @@ function stem(token: string): string {
   return token;
 }
 
-/** Levenshtein distance, giving up once it exceeds `max`. */
+/** Edit distance, counting two swapped letters ("brei" for "brie") as one edit; gives up once past `max`. */
 function editDistance(a: string, b: string, max: number): number {
   if (Math.abs(a.length - b.length) > max) return max + 1;
+  let before: number[] = [];
   let previous = Array.from({ length: b.length + 1 }, (_, i) => i);
   for (let i = 1; i <= a.length; i++) {
     const current = [i];
@@ -447,15 +450,22 @@ function editDistance(a: string, b: string, max: number): number {
     for (let j = 1; j <= b.length; j++) {
       const cost = a[i - 1] === b[j - 1] ? 0 : 1;
       current[j] = Math.min(previous[j] + 1, current[j - 1] + 1, previous[j - 1] + cost);
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
+        current[j] = Math.min(current[j], before[j - 2] + 1);
+      }
       rowMin = Math.min(rowMin, current[j]);
     }
     if (rowMin > max) return max + 1;
+    before = previous;
     previous = current;
   }
   return previous[b.length];
 }
 
 type Match = 'literal' | 'synonym' | 'fuzzy';
+
+/** At this length a one-letter typo is close to too many other words ("tide" and "time"), so it's a fallback. */
+const SHORT_TYPO_LENGTH = 4;
 
 function matchToken(token: QueryToken, record: ReturnType<typeof normalizedRecord>): Match | null {
   // Short words ("sb", "vr") only count at the start of a word, or "sb" would match "crossbow".
@@ -465,8 +475,8 @@ function matchToken(token: QueryToken, record: ReturnType<typeof normalizedRecor
   for (const alternative of token.alternatives) {
     if (record.keywords.includes(` ${alternative}`)) return 'synonym';
   }
-  // Typos: only on longer words, and only against the name, to keep noise down.
-  if (token.text.length >= 5) {
+  // Typos: only against the name, to keep noise down.
+  if (token.fuzzy) {
     const max = token.text.length >= 8 ? 2 : 1;
     for (const word of record.titleWords) {
       if (word.length >= 4 && editDistance(token.text, word.slice(0, token.text.length + max), max) <= max) {
@@ -507,7 +517,12 @@ export function searchRecords(records: SearchRecord[], query: string, limit = 40
   const required = (nameWords.length > 0 ? nameWords : contentWords.length > 0 ? contentWords : words).map(
     (text): QueryToken => {
       const stemmed = stem(text);
-      return { text: stemmed, typed: text, alternatives: [...synonymsFor(text), ...synonymsFor(stemmed)] };
+      const token = { text: stemmed, typed: text, alternatives: [...synonymsFor(text), ...synonymsFor(stemmed)] };
+      if (stemmed.length > SHORT_TYPO_LENGTH) return { ...token, fuzzy: true };
+      if (stemmed.length < SHORT_TYPO_LENGTH) return { ...token, fuzzy: false };
+      // "relc" matches nothing, so it gets a near miss ("relic"); "tide" matches plenty, so it doesn't get "time".
+      const plain = { ...token, fuzzy: false };
+      return { ...token, fuzzy: !records.some((record) => matchToken(plain, normalizedRecord(record))) };
     },
   );
   const wantedKinds = new Set(nameWords.length > 0 ? kindWords.flatMap((word) => kindsFor(word) ?? []) : []);

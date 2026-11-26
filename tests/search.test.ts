@@ -92,6 +92,12 @@ describe('searchRecords', () => {
     // Typos, on longer words.
     ['labyrnth', 'Labyrinth'],
     ['chedar', 'Cheddar Cheese'],
+    ['abominabel', 'Abominable Snow Mouse'],
+    // A four-letter word gets a near miss only when it matches nothing as typed.
+    ['relc hunter', 'Relic Hunter Mouse'],
+    ['glzy', 'Glazy Mouse'],
+    // Two letters swapped count as one typo.
+    ['brei', 'Brie Cheese'],
     // The site's own pages.
     ['minluck', 'Minlucks'],
     ['map planner', 'Treasure map planner'],
@@ -117,6 +123,14 @@ describe('searchRecords', () => {
   test('a short word only matches at the start of a word', () => {
     // "sb" is SUPER|brie+, not every name with "sb" inside it.
     expect(searchRecords(records, 'sb').some((record) => /crossbow/i.test(record.title))).toBe(false);
+  });
+
+  test('a four-letter word that matches as typed does not also pull in near misses', () => {
+    // "tide" is one letter from "time" and "ride", and "zomb" from "tomb".
+    expect(
+      searchRecords(records, 'tide').filter((record) => !/tide/i.test(`${record.title} ${record.keywords}`)),
+    ).toEqual([]);
+    expect(searchRecords(records, 'zomb').some((record) => /\btomb/i.test(record.title))).toBe(false);
   });
 
   test('every word has to match', () => {
