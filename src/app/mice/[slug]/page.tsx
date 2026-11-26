@@ -60,7 +60,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: mouse.name,
       eyebrow: mouse.group,
       subtitle: `${mouse.points_formatted ?? mouse.points.toLocaleString()} points, ${mouse.gold_formatted ?? mouse.gold.toLocaleString()} gold`,
-      image: mouseImageUrl(slug),
+      // The square portrait: the thumbnail is a 50px GIF, which the card can't draw.
+      image: mouseImageUrl(slug, 'square'),
       accent: 'emerald',
     }),
   });
