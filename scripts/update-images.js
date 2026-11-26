@@ -16,6 +16,18 @@ async function readJson(file) {
 
 const FETCH_TIMEOUT_MS = 30_000;
 
+/** Where the game's art lives. The URLs come out of fetched data, so anything else in them isn't followed. */
+const IMAGE_HOSTS = new Set(['www.mousehuntgame.com', 'i.mouse.rip']);
+
+function isImageUrl(url) {
+  try {
+    const { protocol, hostname } = new URL(url);
+    return protocol === 'https:' && IMAGE_HOSTS.has(hostname);
+  } catch {
+    return false;
+  }
+}
+
 /** Save the first of `urls` that downloads. Returns whether the image is there. */
 async function fetchImage(urls, destination) {
   if (!destination) return false;
@@ -25,6 +37,10 @@ async function fetchImage(urls, destination) {
   }
 
   for (const url of [urls].flat().filter(Boolean)) {
+    if (!isImageUrl(url)) {
+      console.error(`Skipping ${url}: not an https URL on a host the game's art comes from.`);
+      continue;
+    }
     let data;
     try {
       const response = await fetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });

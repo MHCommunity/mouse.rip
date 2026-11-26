@@ -1,6 +1,8 @@
 version: 2
 updates:
-  - package-ecosystem: 'npm'
+  # The lockfile is bun.lock, which the npm ecosystem can't update: its PRs changed package.json alone and
+  # failed `bun install --frozen-lockfile`.
+  - package-ecosystem: 'bun'
     directory: '/'
     schedule:
       interval: 'weekly'
@@ -10,5 +12,16 @@ updates:
     groups:
       dev-dependencies:
         applies-to: version-updates
+        patterns:
+          - '*'
+  # The workflows pin actions to commit SHAs, so something has to move those forward.
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    assignees:
+      - 'bradp'
+    groups:
+      actions:
         patterns:
           - '*'
