@@ -210,7 +210,10 @@ export function RankingsTable({
                     <GameImage src={mouseImageUrl(mouse.slug)} width={24} height={24} className="size-6 shrink-0" />
                     {mouse.name}
                   </Link>
-                  <span className="block pl-8 text-xs text-zinc-600 dark:text-zinc-400">{mouse.group}</span>
+                  <span className="block pl-8 text-xs text-zinc-600 dark:text-zinc-400">
+                    {/* Filtered to a group, its name on every row says nothing; the subgroup does. */}
+                    {group ? mouse.subgroup || mouse.group : mouse.group}
+                  </span>
                 </td>
                 {COLUMNS.map(({ key }) => (
                   <td

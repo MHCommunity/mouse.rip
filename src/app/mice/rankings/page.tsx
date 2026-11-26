@@ -18,6 +18,7 @@ export default function MouseRankingsPage() {
     slug: mouseSlug(mouse.type),
     name: mouse.name,
     group: mouse.group,
+    subgroup: mouse.subgroup ?? '',
     points: mouse.points,
     gold: mouse.gold,
     wisdom: mouse.wisdom,

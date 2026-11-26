@@ -4,6 +4,8 @@ export interface RankedMouse {
   slug: string;
   name: string;
   group: string;
+  /** Within the group, e.g. "Great Winter Hunt" in Event Mice; '' when there isn't one. */
+  subgroup: string;
   points: number;
   gold: number;
   wisdom: number;
