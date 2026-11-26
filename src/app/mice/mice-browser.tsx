@@ -11,6 +11,7 @@ import { POWER_TYPES, POWER_TYPE_CHIP, bestPowerTypes, powerTypeLabel } from '@/
 import { mouseGroupImageUrl, mouseImageUrl } from '@/lib/image-urls';
 import { GameImage } from '@/components/game-image';
 import { SectionHeading } from '@/components/section-heading';
+import { formatNumber } from '@/utils';
 
 export interface SlimGroup {
   slug: string;
@@ -105,7 +106,9 @@ export function MiceBrowser({ groups }: { groups: SlimGroup[] }) {
           className="w-full border-0 bg-transparent py-3 text-base text-zinc-900 placeholder:text-zinc-500 focus:outline-hidden dark:text-white dark:placeholder:text-zinc-400"
         />
         {filtering && mice && (
-          <span className="shrink-0 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">{results.length}</span>
+          <span className="shrink-0 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
+            {formatNumber(results.length)} {results.length === 1 ? 'mouse' : 'mice'}
+          </span>
         )}
       </div>
 

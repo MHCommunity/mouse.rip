@@ -1,8 +1,8 @@
 [
   {
     "id": "minluck-and-cre-tool",
-    "name": "Minluck & CRE tool",
-    "description": "Shows hunt statistics on the Camp page.",
+    "name": "Minluck and catch rate tool",
+    "description": "Shows the minluck and your catch rate for each mouse at your location, on the Camp page.",
     "url": "https://greasyfork.org/en/scripts/447193-mh-minluck-cre-tool-v2-0-new",
     "category": "userscript",
     "tags": [

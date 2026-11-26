@@ -238,7 +238,9 @@ export function ItemsBrowser({
           className="w-full border-0 bg-transparent py-3 text-base text-zinc-900 placeholder:text-zinc-400 focus:outline-hidden dark:text-white"
         />
         {filtering && items && (
-          <span className="shrink-0 text-xs tabular-nums text-zinc-500 dark:text-zinc-400">{total}</span>
+          <span className="shrink-0 text-xs tabular-nums text-zinc-500 dark:text-zinc-400">
+            {formatNumber(total)} {total === 1 ? 'item' : 'items'}
+          </span>
         )}
       </div>
 
