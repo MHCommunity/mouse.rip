@@ -50,7 +50,8 @@ function write(saved: Saved) {
  * hundred rows.
  *
  * The scroll position is put back here too. The browser restores it by itself on Back, but it does so while the
- * page being left is still on screen, and when that page is shorter the position is cut off at its end.
+ * page being left is still on screen, and when that page is shorter the position is cut off at its end. A list
+ * that loads its rows after mounting passes `ready` once they're on screen, so there's a page to scroll down.
  *
  * `scope` names the list and what it's filtered to, so a different filter starts short again; null keeps
  * nothing (the prerendered copy of a list). Only the latest list is kept.
@@ -58,7 +59,11 @@ function write(saved: Saved) {
  * Only for components the browser renders itself, such as those behind a useSearchParams boundary: the first
  * render reads storage, which a component hydrated from server HTML must not do.
  */
-export function useRememberedCount(scope: string | null, initial: number): [number, (count: number) => void] {
+export function useRememberedCount(
+  scope: string | null,
+  initial: number,
+  ready = true,
+): [number, (count: number) => void] {
   const [count, setCount] = useState(() => (scope ? read(scope)?.count : undefined) ?? initial);
 
   // The latest values, for the save made as the list is left.
@@ -67,13 +72,20 @@ export function useRememberedCount(scope: string | null, initial: number): [numb
     latest.current = { scope, count };
   }, [scope, count]);
 
+  const restored = useRef(false);
   useLayoutEffect(() => {
-    if (!scope) return;
+    if (!scope || !ready || restored.current) return;
+    restored.current = true;
     const saved = read(scope);
     if (saved && saved.scrollY > 0 && Date.now() - returnedAt < RETURN_WINDOW_MS) {
       window.scrollTo({ top: saved.scrollY, behavior: 'instant' });
     }
+    // Once, when the rows are first on screen, for the list the page arrived with.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready]);
 
+  useLayoutEffect(() => {
+    if (!scope) return;
     let scrollY = window.scrollY;
     const onScroll = () => {
       scrollY = window.scrollY;

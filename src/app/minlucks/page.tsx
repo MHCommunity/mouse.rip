@@ -142,6 +142,7 @@ function MinLucks({
   const [shown, setShown] = useRememberedCount(
     syncUrl ? `minlucks|${filter.trim().toLowerCase()}|${power ?? ''}` : null,
     PAGE_SIZE,
+    mice !== null || loadFailed,
   );
   // Where to move focus after "Show more", so keyboard users land on the new rows.
   const pendingFocus = useRef<number | null>(null);
