@@ -6,10 +6,10 @@ import { getCloudflareContext } from '@opennextjs/cloudflare';
 // only when a crawler unfurls a link — so it adds no prebuilt assets.
 export const dynamic = 'force-dynamic';
 
-const ACCENTS: Record<string, { strong: string; soft: string; bg: string }> = {
-  emerald: { strong: '#047857', soft: '#10b981', bg: '#ecfdf5' },
-  blue: { strong: '#1d4ed8', soft: '#3b82f6', bg: '#eff6ff' },
-  pink: { strong: '#9d174d', soft: '#db2777', bg: '#fdf2f8' },
+const ACCENTS: Record<string, { strong: string; bg: string }> = {
+  emerald: { strong: '#047857', bg: '#ecfdf5' },
+  blue: { strong: '#1d4ed8', bg: '#eff6ff' },
+  pink: { strong: '#9d174d', bg: '#fdf2f8' },
 };
 
 // ImageResponse fetches `image` server-side from the worker, so an unrestricted
@@ -92,19 +92,16 @@ function renderCard({
       }}
     >
       <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{ width: '18px', height: '18px', borderRadius: '9999px', background: accent.soft }} />
-          <div
-            style={{
-              fontSize: '26px',
-              fontWeight: 600,
-              letterSpacing: '0.22em',
-              textTransform: 'uppercase',
-              color: '#71717a',
-            }}
-          >
-            {eyebrow}
-          </div>
+        <div
+          style={{
+            fontSize: '26px',
+            fontWeight: 600,
+            letterSpacing: '0.22em',
+            textTransform: 'uppercase',
+            color: '#71717a',
+          }}
+        >
+          {eyebrow}
         </div>
 
         <div

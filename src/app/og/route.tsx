@@ -19,19 +19,16 @@ export function GET() {
       }}
     >
       {/* Eyebrow */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <div style={{ width: '18px', height: '18px', borderRadius: '9999px', background: '#db2777' }} />
-        <div
-          style={{
-            fontSize: '26px',
-            fontWeight: 600,
-            letterSpacing: '0.22em',
-            textTransform: 'uppercase',
-            color: '#71717a',
-          }}
-        >
-          MouseHunt Resources
-        </div>
+      <div
+        style={{
+          fontSize: '26px',
+          fontWeight: 600,
+          letterSpacing: '0.22em',
+          textTransform: 'uppercase',
+          color: '#71717a',
+        }}
+      >
+        MouseHunt Resources
       </div>
 
       {/* Wordmark + tagline */}
@@ -45,7 +42,7 @@ export function GET() {
       </div>
 
       {/* Footer categories */}
-      <div style={{ display: 'flex', gap: '18px', fontSize: '28px', fontWeight: 500, color: '#a1a1aa' }}>
+      <div style={{ display: 'flex', gap: '20px', fontSize: '36px', fontWeight: 500, color: '#a1a1aa' }}>
         <span style={{ color: '#be185d' }}>Guides</span>
         <span>·</span>
         <span style={{ color: '#0e7490' }}>Extensions</span>
