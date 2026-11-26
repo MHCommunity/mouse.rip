@@ -29,8 +29,7 @@ import { JsonLd } from '@/components/json-ld';
 import { mouseJsonLd, mouseSeo } from '@/lib/entity-seo';
 import { ogCard, pageMetadata } from '@/seo';
 import { mouseImageUrl } from '@/lib/image-urls';
-import { MIN_SAMPLE, bestAttractionRow } from '@/lib/attraction';
-import type { AttractionRow } from '@/types';
+import { bestAttractionRow } from '@/lib/attraction';
 import { formatNumber } from '@/utils';
 
 import { MouseData } from './mouse-data';
@@ -66,22 +65,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 const accentLink = 'font-medium text-pink-700 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200';
 
-/** Same location, stage, and cheese. */
-function sameSetup(a: AttractionRow, b: AttractionRow): boolean {
-  return a.location === b.location && (a.stage ?? '') === (b.stage ?? '') && a.cheese === b.cheese;
-}
-
 /** MHCT reports rates in hundredths of a percent. */
 function formatRate(rate: number): string {
   return `${(rate / 100).toFixed(1)}%`;
-}
-
-/** The same rate as a hunter would say it: "about 1 in 19 hunts". */
-function huntsPer(rate: number): string {
-  const chance = rate / 10_000;
-  if (chance >= 0.95) return 'almost every hunt';
-  if (chance >= 0.45) return 'about every other hunt';
-  return `about 1 in ${formatNumber(Math.round(1 / chance))} hunts`;
 }
 
 export default async function MousePage({ params }: { params: Promise<{ slug: string }> }) {
@@ -121,13 +107,6 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
 
   const attraction = getMouseAttraction(mouse.id);
   const bestSpot = bestAttractionRow(attraction);
-  // The headline needs no charm. Mention a charm only when a well-sampled one actually does better.
-  const betterWithCharm =
-    bestSpot && !bestSpot.charm
-      ? attraction
-          .filter((row) => row.charm && row.rate > bestSpot.rate && (row.total_hunts ?? 0) >= MIN_SAMPLE)
-          .reduce<AttractionRow | undefined>((top, row) => (!top || row.rate > top.rate ? row : top), undefined)
-      : undefined;
 
   return (
     <div>
@@ -231,25 +210,6 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
                       {formatRate(bestSpot.rate)}
                     </p>
                   </div>
-                  <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">
-                    It turns up on {huntsPer(bestSpot.rate)} there.
-                  </p>
-                  {betterWithCharm && (
-                    <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">
-                      {sameSetup(betterWithCharm, bestSpot) ? (
-                        <>
-                          {betterWithCharm.charm} raises it to{' '}
-                          <span className="font-semibold tabular-nums">{formatRate(betterWithCharm.rate)}</span>.
-                        </>
-                      ) : (
-                        <>
-                          Up to <span className="font-semibold tabular-nums">{formatRate(betterWithCharm.rate)}</span>{' '}
-                          at <LocationCell location={betterWithCharm.location} stage={betterWithCharm.stage} /> with{' '}
-                          <CheeseCell cheese={betterWithCharm.cheese} /> and {betterWithCharm.charm}.
-                        </>
-                      )}
-                    </p>
-                  )}
                   <p className="mt-1 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
                     {bestSpot.total_hunts
                       ? `Attraction rate from ${formatNumber(bestSpot.total_hunts)} hunts on MHCT.`
@@ -306,19 +266,11 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
                     ))}
                   </tbody>
                 </table>
-                <p className="border-t border-zinc-100 px-4 py-3 text-sm text-zinc-600 sm:px-5 dark:border-zinc-800 dark:text-zinc-400">
-                  {immuneTypes.length > 0 && (
-                    <>
-                      {immuneTypes.map((type) => powerTypeLabel(type)).join(', ')} traps can&rsquo;t catch this
-                      mouse.{' '}
-                    </>
-                  )}
-                  Minluck is the luck that guarantees a catch, and the{' '}
-                  <Link href="/minlucks" className={accentLink}>
-                    minluck table
-                  </Link>{' '}
-                  has it for every mouse.
-                </p>
+                {immuneTypes.length > 0 && (
+                  <p className="border-t border-zinc-100 px-4 py-3 text-sm text-zinc-600 sm:px-5 dark:border-zinc-800 dark:text-zinc-400">
+                    {immuneTypes.map((type) => powerTypeLabel(type)).join(', ')} traps can&rsquo;t catch this mouse.
+                  </p>
+                )}
               </div>
             )}
           </div>
