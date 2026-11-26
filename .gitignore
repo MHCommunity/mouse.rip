@@ -40,3 +40,7 @@ static-mouse-rip/
 .open-next/
 .wrangler/
 scripts/tableau-out/
+
+# Playwright
+/test-results/
+/playwright-report/
