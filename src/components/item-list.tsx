@@ -44,7 +44,7 @@ export function ItemList({
     <ul
       className={clsx(
         compact ? 'mt-4' : 'mt-6',
-        'divide-y divide-zinc-200 overflow-hidden rounded-lg border border-zinc-200 bg-white dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-900',
+        'divide-y divide-zinc-200 overflow-hidden rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white dark:divide-zinc-800 dark:ring-zinc-800 dark:bg-zinc-900',
       )}
     >
       {items.map((item) => (

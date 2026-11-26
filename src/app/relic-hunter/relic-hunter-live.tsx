@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Environment } from '@/types';
 import { locationImageUrl } from '@/lib/image-urls';
+import { HEADLINE_PANEL } from '@/components/panel';
 
 type State =
   | { status: 'loading' }
@@ -13,13 +14,9 @@ type State =
 
 function Card({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      className="relative overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
-      role="status"
-      aria-live="polite"
-    >
+    <div className={`relative overflow-hidden ${HEADLINE_PANEL}`} role="status" aria-live="polite">
       <div className="flex items-stretch">
-        <div className="relative w-24 shrink-0 self-stretch overflow-hidden border-r border-zinc-200 bg-gradient-to-b from-zinc-50 to-white dark:border-zinc-800 dark:from-zinc-100 dark:to-zinc-200 sm:w-32">
+        <div className="relative w-24 shrink-0 self-stretch overflow-hidden border-r border-pink-100 bg-white/60 dark:border-zinc-800 dark:from-zinc-100 dark:to-zinc-200 sm:w-32">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/relic-hunter.jpg"

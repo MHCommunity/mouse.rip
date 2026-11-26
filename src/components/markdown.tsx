@@ -150,7 +150,7 @@ const components: Components = {
       />
     ),
   table: ({ className, ...props }) => (
-    <div className="my-6 overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-800">
+    <div className="my-6 overflow-x-auto rounded-2xl ring-1 ring-zinc-200 dark:ring-zinc-800">
       <table
         {...props}
         className={clsx(className, 'min-w-full divide-y divide-zinc-200 text-sm dark:divide-zinc-700')}

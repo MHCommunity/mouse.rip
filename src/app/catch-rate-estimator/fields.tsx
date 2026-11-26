@@ -20,7 +20,7 @@ export const cardClasses =
 export const labelClasses = 'flex flex-col gap-1.5 text-sm font-medium text-zinc-950 dark:text-white';
 export const hintClasses = 'text-xs font-normal text-zinc-600 dark:text-zinc-400';
 export const fieldClasses =
-  'w-full rounded-xl border border-zinc-950/10 bg-white px-3 py-2.5 text-base/6 text-zinc-950 shadow-xs hover:border-zinc-950/20 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 sm:py-2 sm:text-sm/6 dark:border-white/10 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/20';
+  'w-full rounded-xl border border-zinc-950/45 bg-white px-3 py-2.5 text-base/6 text-zinc-950 shadow-xs hover:border-zinc-950/60 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 sm:py-2 sm:text-sm/6 dark:border-white/35 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/45';
 
 /** The catch rate data, loaded once the page is in the browser. */
 export function useCatchRateCatalog(): { catalog: Catalog | null; failed: boolean } {

@@ -313,7 +313,7 @@ export function SearchDialog({
                 {answer?.mouse && (
                   <ComboboxOption
                     value={answer}
-                    className="group mb-2 block cursor-pointer rounded-xl border border-zinc-200 p-3 data-focus:border-pink-300 data-focus:bg-pink-50/60 dark:border-zinc-800 dark:data-focus:border-pink-800 dark:data-focus:bg-pink-950/30"
+                    className="group mb-2 block cursor-pointer rounded-2xl ring-1 ring-zinc-200 p-3 data-focus:ring-pink-300 data-focus:bg-pink-50/60 dark:ring-zinc-800 dark:data-focus:ring-pink-800 dark:data-focus:bg-pink-950/30"
                   >
                     <div className="flex items-start gap-3">
                       {answer.image && (
@@ -384,7 +384,7 @@ export function SearchDialog({
                           answer.mouse.weakTo.map((type) => (
                             <span
                               key={type}
-                              className={`inline-flex rounded-md px-1.5 py-0.5 text-xs font-medium ${POWER_TYPE_CHIP[type] ?? ''}`}
+                              className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${POWER_TYPE_CHIP[type] ?? ''}`}
                             >
                               {powerTypeLabel(type)}
                             </span>

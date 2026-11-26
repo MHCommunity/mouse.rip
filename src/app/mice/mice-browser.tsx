@@ -118,9 +118,9 @@ export function MiceBrowser({ groups }: { groups: SlimGroup[] }) {
               key={type}
               type="button"
               onClick={() => setActivePower((current) => (current === type ? null : type))}
-              className={`rounded-md px-2 py-1 text-xs font-medium transition focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 ${
+              className={`rounded-full px-2.5 py-1 text-xs font-medium transition focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 ${
                 POWER_TYPE_CHIP[type]
-              } ${active ? 'ring-2 ring-pink-500' : ''} ${activePower && !active ? 'opacity-50' : ''}`}
+              } ${active ? 'ring-2 ring-pink-500' : ''} ${activePower && !active ? 'opacity-70 hover:opacity-100' : ''}`}
             >
               {powerTypeLabel(type)}
             </button>
@@ -164,7 +164,7 @@ export function MiceBrowser({ groups }: { groups: SlimGroup[] }) {
                   <Link
                     href={`/mice/${slug}`}
                     prefetch={false}
-                    className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 shadow-sm transition hover:border-pink-300 hover:text-pink-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-pink-800 dark:hover:text-pink-300"
+                    className="inline-flex items-center gap-2 rounded-full ring-1 ring-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 shadow-xs transition hover:ring-pink-300 hover:text-pink-700 dark:ring-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:ring-pink-800 dark:hover:text-pink-300"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={mouseImageUrl(slug)} alt="" loading="lazy" className="size-6 shrink-0" />
@@ -188,7 +188,7 @@ export function MiceBrowser({ groups }: { groups: SlimGroup[] }) {
               <Link
                 key={group.slug}
                 href={`/groups/${group.slug}`}
-                className="group flex flex-col overflow-hidden rounded-lg border border-zinc-200 bg-white transition-colors hover:border-pink-300 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-pink-800"
+                className="group flex flex-col overflow-hidden rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white transition-colors hover:ring-pink-300 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:ring-zinc-800 dark:bg-zinc-900 dark:hover:ring-pink-800"
               >
                 {/* The game's banner for the group: its mice, painted together. */}
                 <GameImage

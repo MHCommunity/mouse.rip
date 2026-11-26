@@ -53,7 +53,7 @@ export function ExternalRefs({
             href={ref.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm font-medium text-zinc-600 shadow-sm transition hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:text-white"
+            className="inline-flex items-center gap-1.5 rounded-full ring-1 ring-zinc-200 bg-white px-3 py-1.5 text-sm font-medium text-zinc-600 shadow-xs transition hover:ring-zinc-300 hover:text-zinc-900 dark:ring-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:text-white"
           >
             {ref.label}
             <ArrowUpRightIcon className="size-3.5 text-zinc-400" aria-hidden="true" />

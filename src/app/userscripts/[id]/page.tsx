@@ -98,7 +98,7 @@ export default async function UserscriptPage({ params }: { params: Promise<{ id:
 
       <section
         aria-labelledby="how-to-heading"
-        className="mt-10 rounded-lg border border-zinc-200 bg-white p-5 text-sm/6 text-zinc-700 sm:p-6 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+        className="mt-10 rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white p-5 text-sm/6 text-zinc-700 sm:p-6 dark:ring-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
       >
         <h2 id="how-to-heading" className="text-lg font-semibold text-zinc-950 dark:text-white">
           How to use MouseHunt userscripts

@@ -108,7 +108,7 @@ export function ConvertibleContents({ itemId, rows }: { itemId: number; rows: Co
         From <SourceLink source="mhct" />.
       </p>
 
-      <div className="mt-4 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
+      <div className="mt-4 overflow-hidden rounded-2xl ring-1 ring-zinc-200 dark:ring-zinc-800">
         <table className="w-full text-sm">
           <thead className="bg-zinc-50 text-left text-xs text-zinc-600 dark:bg-zinc-900/60 dark:text-zinc-400">
             <tr>

@@ -27,7 +27,7 @@ export function ColorScaleBadge({ value = 0, className = '' }: { value?: number;
   return (
     <span
       className={clsx(
-        'inline-block min-w-9 rounded-md px-1.5 py-1 text-center text-sm font-medium tabular-nums',
+        'inline-block min-w-9 rounded-full px-2 py-1 text-center text-sm font-medium tabular-nums',
         bandFor(rounded).className,
         className,
       )}

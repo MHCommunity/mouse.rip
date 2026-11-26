@@ -401,14 +401,14 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
                 <Link
                   key={environment.name}
                   href={`/locations/${environment.id}`}
-                  className="inline-flex rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:border-pink-300 hover:text-pink-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-pink-800 dark:hover:text-pink-300"
+                  className="inline-flex rounded-full ring-1 ring-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:ring-pink-300 hover:text-pink-700 dark:ring-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:ring-pink-800 dark:hover:text-pink-300"
                 >
                   {environment.name}
                 </Link>
               ) : (
                 <span
                   key={environment.name}
-                  className="inline-flex rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400"
+                  className="inline-flex rounded-full ring-1 ring-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-500 dark:ring-zinc-800 dark:bg-zinc-900 dark:text-zinc-400"
                 >
                   {environment.name}
                 </span>
@@ -426,7 +426,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
               <Link
                 key={skin.id}
                 href={`/items/${itemSlug(skin.type)}`}
-                className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:border-pink-300 hover:text-pink-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-pink-800 dark:hover:text-pink-300"
+                className="inline-flex items-center gap-2 rounded-full ring-1 ring-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:ring-pink-300 hover:text-pink-700 dark:ring-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:ring-pink-800 dark:hover:text-pink-300"
               >
                 {skin.images?.thumbnail && (
                   <GameImage src={itemImageUrl(skin.type)} className="size-6 shrink-0 rounded" />
@@ -457,7 +457,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
               <li key={peer.id}>
                 <Link
                   href={`/items/${itemSlug(peer.type)}`}
-                  className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:border-pink-300 hover:text-pink-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-pink-800 dark:hover:text-pink-300"
+                  className="inline-flex items-center gap-2 rounded-full ring-1 ring-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:ring-pink-300 hover:text-pink-700 dark:ring-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:ring-pink-800 dark:hover:text-pink-300"
                 >
                   {peer.images?.thumbnail && (
                     <GameImage src={itemImageUrl(peer.type)} className="size-6 shrink-0 rounded" />

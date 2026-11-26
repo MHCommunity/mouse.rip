@@ -96,31 +96,31 @@ type Accent = 'emerald' | 'amber' | 'pink' | 'green' | 'cyan' | 'purple' | 'blue
 const ACCENTS: Record<Accent, { name: string; tile: string }> = {
   emerald: {
     name: 'text-emerald-800 dark:text-emerald-200',
-    tile: 'hover:border-emerald-300 hover:bg-emerald-50/60 focus-visible:ring-emerald-500 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/30',
+    tile: 'hover:ring-emerald-300 hover:bg-emerald-50/60 focus-visible:ring-emerald-500 dark:hover:ring-emerald-800 dark:hover:bg-emerald-950/30',
   },
   amber: {
     name: 'text-amber-800 dark:text-amber-200',
-    tile: 'hover:border-amber-300 hover:bg-amber-50/60 focus-visible:ring-amber-500 dark:hover:border-amber-800 dark:hover:bg-amber-950/30',
+    tile: 'hover:ring-amber-300 hover:bg-amber-50/60 focus-visible:ring-amber-500 dark:hover:ring-amber-800 dark:hover:bg-amber-950/30',
   },
   pink: {
     name: 'text-pink-800 dark:text-pink-200',
-    tile: 'hover:border-pink-300 hover:bg-pink-50/60 focus-visible:ring-pink-500 dark:hover:border-pink-800 dark:hover:bg-pink-950/30',
+    tile: 'hover:ring-pink-300 hover:bg-pink-50/60 focus-visible:ring-pink-500 dark:hover:ring-pink-800 dark:hover:bg-pink-950/30',
   },
   green: {
     name: 'text-green-800 dark:text-green-200',
-    tile: 'hover:border-green-300 hover:bg-green-50/60 focus-visible:ring-green-500 dark:hover:border-green-800 dark:hover:bg-green-950/30',
+    tile: 'hover:ring-green-300 hover:bg-green-50/60 focus-visible:ring-green-500 dark:hover:ring-green-800 dark:hover:bg-green-950/30',
   },
   cyan: {
     name: 'text-cyan-800 dark:text-cyan-200',
-    tile: 'hover:border-cyan-300 hover:bg-cyan-50/60 focus-visible:ring-cyan-500 dark:hover:border-cyan-800 dark:hover:bg-cyan-950/30',
+    tile: 'hover:ring-cyan-300 hover:bg-cyan-50/60 focus-visible:ring-cyan-500 dark:hover:ring-cyan-800 dark:hover:bg-cyan-950/30',
   },
   purple: {
     name: 'text-purple-800 dark:text-purple-200',
-    tile: 'hover:border-purple-300 hover:bg-purple-50/60 focus-visible:ring-purple-500 dark:hover:border-purple-800 dark:hover:bg-purple-950/30',
+    tile: 'hover:ring-purple-300 hover:bg-purple-50/60 focus-visible:ring-purple-500 dark:hover:ring-purple-800 dark:hover:bg-purple-950/30',
   },
   blue: {
     name: 'text-blue-800 dark:text-blue-200',
-    tile: 'hover:border-blue-300 hover:bg-blue-50/60 focus-visible:ring-blue-500 dark:hover:border-blue-800 dark:hover:bg-blue-950/30',
+    tile: 'hover:ring-blue-300 hover:bg-blue-50/60 focus-visible:ring-blue-500 dark:hover:ring-blue-800 dark:hover:bg-blue-950/30',
   },
 };
 
@@ -324,7 +324,7 @@ export default function Home() {
                     <Link
                       href={href}
                       className={clsx(
-                        'group flex h-full items-center gap-3 rounded-lg border border-zinc-200 bg-white px-3.5 py-3 transition-colors focus:outline-hidden focus-visible:ring-2 dark:border-zinc-800 dark:bg-zinc-900',
+                        'group flex h-full items-center gap-3 rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white px-3.5 py-3 transition-colors focus:outline-hidden focus-visible:ring-2 dark:ring-zinc-800 dark:bg-zinc-900',
                         ACCENTS[accent].tile,
                       )}
                     >
@@ -367,7 +367,7 @@ export default function Home() {
           ))}
 
           {/* Phones have no sidebar, so this is their way into the location pages. Folded, since it's 14 regions long. */}
-          <details className="group rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
+          <details className="group rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white dark:ring-zinc-800 dark:bg-zinc-900">
             <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 rounded-lg px-3.5 py-3 hover:bg-pink-50/50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:hover:bg-pink-950/20 [&::-webkit-details-marker]:hidden">
               <span>
                 <span className="block text-sm font-semibold text-zinc-900 dark:text-zinc-100">Locations</span>
@@ -385,7 +385,7 @@ export default function Home() {
                 <li key={region.id}>
                   <Link
                     href={`/regions/${region.id}`}
-                    className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 text-sm font-medium text-zinc-800 transition-colors hover:border-pink-300 hover:bg-pink-50/50 hover:text-pink-700 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 sm:min-h-9 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-pink-800 dark:hover:bg-pink-950/20 dark:hover:text-pink-300"
+                    className="inline-flex min-h-11 items-center gap-2 rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white px-3 text-sm font-medium text-zinc-800 transition-colors hover:ring-pink-300 hover:bg-pink-50/50 hover:text-pink-700 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 sm:min-h-9 dark:ring-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:ring-pink-800 dark:hover:bg-pink-950/20 dark:hover:text-pink-300"
                   >
                     {region.name}
                     <span className="text-xs font-normal tabular-nums text-zinc-600 dark:text-zinc-400">

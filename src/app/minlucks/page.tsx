@@ -227,7 +227,7 @@ function MinLucks({
               aria-pressed={power === null}
               onClick={() => setPower(null)}
               className={clsx(
-                'min-h-9 rounded-md px-3 text-sm font-medium focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500',
+                'min-h-9 rounded-full px-3.5 text-sm font-medium focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500',
                 power === null
                   ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900'
                   : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700',
@@ -242,7 +242,7 @@ function MinLucks({
                 aria-pressed={power === type}
                 onClick={() => setPower(power === type ? null : type)}
                 className={clsx(
-                  'min-h-9 rounded-md px-3 text-sm font-medium focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500',
+                  'min-h-9 rounded-full px-3.5 text-sm font-medium focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500',
                   POWER_TYPE_CHIP[type],
                   power === type ? 'ring-2 ring-zinc-900 dark:ring-white' : 'hover:brightness-95',
                 )}

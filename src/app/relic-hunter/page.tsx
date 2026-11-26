@@ -57,7 +57,7 @@ export default function RelicHunterPage() {
           return (
             <div
               key={envId}
-              className="group flex flex-col rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900"
+              className="group flex flex-col rounded-2xl ring-1 ring-zinc-200 bg-white p-5 shadow-xs transition-shadow hover:shadow-md dark:ring-zinc-800 dark:bg-zinc-900"
             >
               <div className="flex items-center gap-3">
                 {/* eslint-disable-next-line @next/next/no-img-element */}

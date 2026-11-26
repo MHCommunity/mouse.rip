@@ -71,7 +71,7 @@ export default async function RegionPage({ params }: { params: Promise<{ id: str
           <li key={location.id}>
             <Link
               href={`/locations/${location.id}`}
-              className="group flex h-full items-start gap-3 rounded-lg border border-zinc-200 bg-white p-4 transition-colors hover:border-pink-300 hover:bg-pink-50/50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-pink-800 dark:hover:bg-pink-950/20"
+              className="group flex h-full items-start gap-3 rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white p-4 transition-colors hover:ring-pink-300 hover:bg-pink-50/50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:ring-zinc-800 dark:bg-zinc-900 dark:hover:ring-pink-800 dark:hover:bg-pink-950/20"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img

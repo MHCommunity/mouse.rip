@@ -73,7 +73,7 @@ export function ItemPicker({
           )}
           <Headless.ComboboxInput
             className={clsx(
-              'w-full rounded-xl border border-zinc-950/10 bg-white py-2.5 pr-16 text-base/6 text-zinc-950 shadow-xs placeholder:text-zinc-500 hover:border-zinc-950/20 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 sm:py-2 sm:text-sm/6 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-zinc-400 dark:hover:border-white/20',
+              'w-full rounded-xl border border-zinc-950/45 bg-white py-2.5 pr-16 text-base/6 text-zinc-950 shadow-xs placeholder:text-zinc-500 hover:border-zinc-950/60 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 sm:py-2 sm:text-sm/6 dark:border-white/35 dark:bg-white/5 dark:text-white dark:placeholder:text-zinc-400 dark:hover:border-white/45',
               selected?.image ? 'pl-10' : 'pl-3',
             )}
             displayValue={(option: PickerOption | null) => option?.name ?? ''}

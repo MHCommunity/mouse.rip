@@ -120,14 +120,14 @@ export default function TitlesPage() {
               href={WISDOM_ITEM_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-amber-700 underline decoration-amber-300 underline-offset-2 transition-colors hover:text-amber-800 hover:decoration-amber-500 dark:text-amber-300 dark:decoration-amber-700 dark:hover:text-amber-200"
+              className="font-medium text-pink-700 underline decoration-pink-300 underline-offset-2 transition-colors hover:text-pink-800 hover:decoration-pink-500 dark:text-pink-300 dark:decoration-pink-700 dark:hover:text-pink-200"
             >
               wisdom
             </a>{' '}
             from catching mice. The{' '}
             <Link
               href="/rank-up-calculator"
-              className="font-medium text-amber-700 underline decoration-amber-300 underline-offset-2 transition-colors hover:text-amber-800 hover:decoration-amber-500 dark:text-amber-300 dark:decoration-amber-700 dark:hover:text-amber-200"
+              className="font-medium text-pink-700 underline decoration-pink-300 underline-offset-2 transition-colors hover:text-pink-800 hover:decoration-pink-500 dark:text-pink-300 dark:decoration-pink-700 dark:hover:text-pink-200"
             >
               rank-up calculator
             </Link>{' '}
@@ -148,7 +148,7 @@ export default function TitlesPage() {
           return (
             <li
               key={title.id}
-              className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
+              className="rounded-2xl ring-1 ring-zinc-200 bg-white p-5 shadow-xs dark:ring-zinc-800 dark:bg-zinc-900"
             >
               <div className="flex items-center gap-3">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -171,7 +171,7 @@ export default function TitlesPage() {
               </div>
 
               {perks.length > 0 && (
-                <ul className="mt-4 space-y-2 border-l-2 border-amber-200 pl-4 text-sm text-zinc-600 dark:border-amber-900/60 dark:text-zinc-300">
+                <ul className="mt-4 space-y-2 border-l-2 border-pink-200 pl-4 text-sm text-zinc-600 dark:border-pink-900/60 dark:text-zinc-300">
                   {perks.map((perk) => (
                     <li key={perk}>{perk}</li>
                   ))}

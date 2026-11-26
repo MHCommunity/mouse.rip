@@ -23,7 +23,7 @@ const COLUMNS: { key: RankBy; label: string }[] = [
 const PAGE_SIZE = 100;
 
 const selectClasses =
-  'rounded-lg border border-zinc-950/10 bg-white px-3 py-1.5 text-sm/6 text-zinc-950 shadow-sm hover:border-zinc-950/20 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 dark:border-white/10 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/20';
+  'rounded-lg border border-zinc-950/45 bg-white px-3 py-1.5 text-sm/6 text-zinc-950 shadow-sm hover:border-zinc-950/60 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 dark:border-white/35 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/45';
 
 function isRankBy(value: string | null): value is RankBy {
   return value === 'points' || value === 'gold' || value === 'wisdom';
@@ -171,7 +171,7 @@ export function RankingsTable({
         </div>
       </div>
 
-      <div className="mt-4 overflow-x-auto rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="mt-4 overflow-x-auto rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white dark:ring-zinc-800 dark:bg-zinc-900">
         <table className="w-full text-sm">
           <thead className="text-left text-xs text-zinc-600 dark:text-zinc-400">
             <tr className="border-b border-zinc-200 dark:border-zinc-800">
@@ -240,7 +240,7 @@ export function RankingsTable({
           ref={moreRef}
           type="button"
           onClick={() => setLimit(shown.length + PAGE_SIZE)}
-          className="mt-3 w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm font-medium text-zinc-700 hover:border-zinc-300 hover:text-zinc-950 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:text-white"
+          className="mt-3 w-full rounded-2xl ring-1 ring-zinc-200 px-3 py-2 text-sm font-medium text-zinc-700 hover:ring-zinc-300 hover:text-zinc-950 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:ring-zinc-800 dark:text-zinc-300 dark:hover:ring-zinc-700 dark:hover:text-white"
         >
           Show {formatNumber(Math.min(PAGE_SIZE, remaining))} more of {formatNumber(remaining)}
         </button>

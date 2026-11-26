@@ -212,7 +212,7 @@ export function ItemsBrowser({
 
   return (
     <div>
-      <div className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="flex items-center gap-2 rounded-2xl ring-1 ring-zinc-200 bg-white px-4 shadow-xs dark:ring-zinc-800 dark:bg-zinc-900">
         <MagnifyingGlassIcon className="size-5 shrink-0 text-zinc-400" aria-hidden="true" />
         <input
           type="text"
@@ -326,7 +326,7 @@ export function ItemsBrowser({
               <Link
                 key={key}
                 href={`/items/type/${key}`}
-                className="group flex flex-col rounded-xl border border-zinc-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-pink-300 hover:shadow-md motion-reduce:transform-none dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-pink-800"
+                className="group flex flex-col rounded-2xl ring-1 ring-zinc-200 bg-white p-4 text-left shadow-xs transition hover:-translate-y-0.5 hover:ring-pink-300 hover:shadow-md motion-reduce:transform-none dark:ring-zinc-800 dark:bg-zinc-900 dark:hover:ring-pink-800"
               >
                 <div className="flex w-full items-baseline justify-between gap-2">
                   <span className="font-semibold tracking-tight text-zinc-900 transition-colors group-hover:text-pink-700 dark:text-white dark:group-hover:text-pink-300">

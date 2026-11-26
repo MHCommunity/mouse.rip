@@ -259,7 +259,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
                               {row.types.map((type) => (
                                 <span
                                   key={type}
-                                  className={`inline-flex rounded-md px-2 py-0.5 text-xs font-medium ${POWER_TYPE_CHIP[type] ?? ''}`}
+                                  className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${POWER_TYPE_CHIP[type] ?? ''}`}
                                 >
                                   {powerTypeLabel(type)}
                                 </span>

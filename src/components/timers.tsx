@@ -5,6 +5,8 @@ import { Link } from 'next-view-transitions';
 import React, { createContext, useContext } from 'react';
 
 import { POWER_TYPE_CHIP, powerTypeLabel } from '@/lib/power-types';
+import { locationImageUrl } from '@/lib/image-urls';
+import { GameImage } from '@/components/game-image';
 import {
   formatCountdown,
   formatLocalTime,
@@ -36,7 +38,7 @@ export function useTimersContext(): Timers | null {
 function PowerChip({ type }: { type?: string }) {
   if (!type) return null;
   return (
-    <span className={clsx('inline-flex rounded-md px-1.5 py-0.5 text-xs font-medium', POWER_TYPE_CHIP[type])}>
+    <span className={clsx('inline-flex rounded-full px-2 py-0.5 text-xs font-medium', POWER_TYPE_CHIP[type])}>
       {powerTypeLabel(type)}
     </span>
   );
@@ -112,9 +114,17 @@ export function TimersStrip({ className }: { className?: string }) {
                   <li key={timer.id}>
                     <Link
                       href={timerLocationHref(timer)}
-                      className="group flex h-full flex-col rounded-lg border border-zinc-200 bg-white px-3.5 py-3 transition-colors hover:border-pink-300 hover:bg-pink-50/50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-pink-800 dark:hover:bg-pink-950/20"
+                      className="group flex h-full flex-col rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white px-3.5 py-3 transition-colors hover:ring-pink-300 hover:bg-pink-50/50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:ring-zinc-800 dark:bg-zinc-900 dark:hover:ring-pink-800 dark:hover:bg-pink-950/20"
                     >
-                      <span className="text-xs text-zinc-600 dark:text-zinc-400">{timer.name}</span>
+                      <span className="flex items-center gap-1.5 text-xs text-zinc-600 dark:text-zinc-400">
+                        <GameImage
+                          src={locationImageUrl(timerLocationHref(timer).replace('/locations/', ''))}
+                          width={20}
+                          height={20}
+                          className="size-5 shrink-0 rounded-md object-cover"
+                        />
+                        {timer.name}
+                      </span>
                       <span className="mt-0.5 flex flex-wrap items-center gap-1.5">
                         <span className="text-sm font-semibold text-zinc-900 group-hover:text-pink-700 dark:text-zinc-100 dark:group-hover:text-pink-300">
                           {stages.current.name}
@@ -148,7 +158,7 @@ export function LocationTimerPanel({ locationName }: { locationName: string }) {
   return (
     <section
       aria-labelledby="timer-heading"
-      className="mt-6 rounded-lg border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900/60"
+      className="mt-6 rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-zinc-50 dark:ring-zinc-800 dark:bg-zinc-900/60"
     >
       <h2 id="timer-heading" className="sr-only">
         {locationName} timer

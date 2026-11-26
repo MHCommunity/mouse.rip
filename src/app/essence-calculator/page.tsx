@@ -9,6 +9,8 @@ import { PageHeader } from '@/components/page-header';
 import { PageLink } from '@/components/page-link';
 
 import { formatNumber } from '@/utils';
+import { HEADLINE_PANEL } from '@/components/panel';
+import { BeakerIcon } from '@heroicons/react/20/solid';
 
 const ESSENCES: string[] = ['Aleth', 'Ber', 'Cynd', 'Dol', 'Est', 'Fel', 'Gur', 'Hix', 'Icuri'];
 
@@ -114,6 +116,8 @@ export default function EssenceCalculator() {
   return (
     <div className="max-w-3xl">
       <PageHeader
+        icon={BeakerIcon}
+        iconClassName="bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300"
         title="Essence calculator"
         description={
           <>
@@ -128,7 +132,7 @@ export default function EssenceCalculator() {
       />
 
       <form onSubmit={(e) => e.preventDefault()} aria-label="Essence amounts">
-        <div className="overflow-hidden rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="overflow-hidden rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white dark:ring-zinc-800 dark:bg-zinc-900">
           <table className="min-w-full divide-y divide-zinc-200 dark:divide-zinc-800">
             <thead className="bg-zinc-50 dark:bg-zinc-800/50">
               <tr>
@@ -191,9 +195,7 @@ export default function EssenceCalculator() {
       {/* The live region stays mounted so the first summary is announced; the box only appears with input. */}
       <div
         className={
-          hasInput
-            ? 'mt-6 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900'
-            : undefined
+          hasInput ? `mt-6 flex flex-wrap items-center justify-between gap-4 p-5 ${HEADLINE_PANEL}` : undefined
         }
       >
         <p aria-live="polite" className="text-base/7 text-zinc-700 dark:text-zinc-300">

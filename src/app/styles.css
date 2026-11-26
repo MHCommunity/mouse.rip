@@ -84,6 +84,12 @@ body {
 
 /* Fallback focus style; component utilities can supply their own indicator. */
 @layer base {
+  /* Native checkboxes and radios in the site's pink rather than the browser's blue. */
+  input[type='checkbox'],
+  input[type='radio'] {
+    accent-color: var(--color-pink-600);
+  }
+
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;

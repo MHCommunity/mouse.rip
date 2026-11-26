@@ -33,7 +33,7 @@ const INITIAL_SETUPS = 20;
 const OTHER_SETUPS_PER_MOUSE = 3;
 
 const selectClasses =
-  'rounded-lg border border-zinc-950/10 bg-white px-3 py-1.5 text-sm/6 text-zinc-950 shadow-sm hover:border-zinc-950/20 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 dark:border-white/10 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/20';
+  'rounded-lg border border-zinc-950/45 bg-white px-3 py-1.5 text-sm/6 text-zinc-950 shadow-sm hover:border-zinc-950/60 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 dark:border-white/35 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/45';
 const linkClasses = 'font-medium text-pink-700 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200';
 
 function useDebouncedValue<T>(value: T, delay: number) {
@@ -162,7 +162,7 @@ export function MapPlanner({
           <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Mice in the plan">
             {matched.map((mouse) => (
               <li key={mouse.id}>
-                <span className="inline-flex items-center gap-1.5 rounded-md border border-zinc-200 bg-white py-0.5 pr-1 pl-1 text-sm text-zinc-800 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
+                <span className="inline-flex items-center gap-1.5 rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white py-0.5 pr-1 pl-1 text-sm text-zinc-800 dark:ring-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">
                   <GameImage src={mouseImageUrl(mouse.type)} width={20} height={20} className="size-5 shrink-0" />
                   {mouse.name}
                   <button
@@ -201,7 +201,7 @@ export function MapPlanner({
               <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
                 Each of these is attracted every hunt with the right setup.
               </p>
-              <ul className="mt-3 divide-y divide-zinc-100 rounded-xl border border-zinc-200 bg-white dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-900">
+              <ul className="mt-3 divide-y divide-zinc-100 rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white dark:divide-zinc-800 dark:ring-zinc-800 dark:bg-zinc-900">
                 {plan.guaranteed.map((entry) => (
                   <li key={entry.mouse.id} className="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-2.5 text-sm">
                     <MouseName mouse={entry.mouse} />
@@ -268,7 +268,7 @@ export function MapPlanner({
           {(plan.hard.length > 0 || plan.noData.length > 0) && (
             <section aria-labelledby="leftover-heading">
               <SectionHeading id="leftover-heading">Harder to plan</SectionHeading>
-              <ul className="mt-3 divide-y divide-zinc-100 rounded-xl border border-zinc-200 bg-white dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-900">
+              <ul className="mt-3 divide-y divide-zinc-100 rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white dark:divide-zinc-800 dark:ring-zinc-800 dark:bg-zinc-900">
                 {plan.hard.map((entry) => (
                   <li key={entry.mouse.id} className="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-2.5 text-sm">
                     <MouseName mouse={entry.mouse} />
@@ -347,7 +347,7 @@ function SetupCard({
   );
 
   return (
-    <li className="rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+    <li className="rounded-2xl ring-1 ring-zinc-200 bg-white shadow-xs dark:ring-zinc-800 dark:bg-zinc-900">
       <div className="flex gap-3 px-4 pt-4 pb-3">
         {place?.image ? (
           <GameImage src={place.image} width={44} height={44} className="size-11 shrink-0 rounded-md object-cover" />
@@ -403,10 +403,10 @@ function SetupCard({
               .filter(Boolean)
               .join('. ')}
             className={clsx(
-              'inline-flex items-center gap-1.5 rounded-md border px-1.5 py-0.5 text-sm',
+              'inline-flex items-center gap-1.5 rounded-full py-0.5 pr-2.5 pl-1 text-sm ring-1',
               entry.onlyHere
-                ? 'border-pink-300 bg-pink-50 text-pink-900 dark:border-pink-800 dark:bg-pink-950/40 dark:text-pink-100'
-                : 'border-zinc-200 bg-zinc-50 text-zinc-800 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200',
+                ? 'bg-pink-50 text-pink-900 ring-pink-300 dark:bg-pink-950/40 dark:text-pink-100 dark:ring-pink-800'
+                : 'bg-zinc-50 text-zinc-800 ring-zinc-200 dark:bg-zinc-800 dark:text-zinc-200 dark:ring-zinc-700',
             )}
           >
             <GameImage src={mouseImageUrl(entry.mouse.type)} width={20} height={20} className="size-5 shrink-0" />

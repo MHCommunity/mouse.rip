@@ -189,7 +189,7 @@ export default async function Location({ params }: { params: Promise<{ id: strin
                 <li key={item.id}>
                   <Link
                     href={`/items/${slug}`}
-                    className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:border-pink-300 hover:text-pink-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-pink-800 dark:hover:text-pink-300"
+                    className="inline-flex items-center gap-2 rounded-full ring-1 ring-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:ring-pink-300 hover:text-pink-700 dark:ring-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:ring-pink-800 dark:hover:text-pink-300"
                   >
                     <GameImage src={itemImageUrl(slug)} width={24} height={24} className="size-6 shrink-0 rounded" />
                     {item.name}
@@ -211,7 +211,7 @@ export default async function Location({ params }: { params: Promise<{ id: strin
             </Link>
             .
           </p>
-          <div className="mt-4 overflow-hidden rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="mt-4 overflow-hidden rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white dark:ring-zinc-800 dark:bg-zinc-900">
             <table className="w-full text-sm">
               <thead className="border-b border-zinc-200 bg-zinc-50 text-left text-xs text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-400">
                 <tr>

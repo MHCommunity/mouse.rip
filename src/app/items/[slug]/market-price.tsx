@@ -250,7 +250,7 @@ export function MarketPrice({ itemId }: { itemId: number }) {
       )}
 
       {state.status === 'error' && (
-        <p className="mt-4 rounded-lg border border-zinc-200 px-4 py-3 text-sm text-zinc-700 dark:border-zinc-800 dark:text-zinc-300">
+        <p className="mt-4 rounded-2xl ring-1 ring-zinc-200 px-4 py-3 text-sm text-zinc-700 dark:ring-zinc-800 dark:text-zinc-300">
           Couldn&rsquo;t load prices from Markethunt.{' '}
           <button
             type="button"
@@ -303,7 +303,7 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
   const low = window.reduce((best, point) => (point.price < best.price ? point : best), window[0]);
 
   return (
-    <div className="mt-4 rounded-lg border border-zinc-200 bg-white p-4 sm:p-5 dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="mt-4 rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white p-4 sm:p-5 dark:ring-zinc-800 dark:bg-zinc-900">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <div className="text-3xl font-semibold tabular-nums text-zinc-900 dark:text-white">
@@ -331,7 +331,7 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
           <div
             role="group"
             aria-label="Chart range"
-            className="flex items-center gap-1 rounded-lg border border-zinc-200 p-0.5 dark:border-zinc-800"
+            className="flex items-center gap-1 rounded-2xl ring-1 ring-zinc-200 p-0.5 dark:ring-zinc-800"
           >
             {RANGES.map((option) => (
               <button

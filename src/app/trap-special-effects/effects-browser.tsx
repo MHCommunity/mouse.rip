@@ -38,7 +38,7 @@ interface BrowserProps {
 }
 
 const selectClasses =
-  'w-full rounded-lg border border-zinc-950/10 bg-white px-3 py-2.5 text-base/6 text-zinc-950 shadow-sm hover:border-zinc-950/20 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 sm:py-1.5 sm:text-sm/6 dark:border-white/10 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/20';
+  'w-full rounded-lg border border-zinc-950/45 bg-white px-3 py-2.5 text-base/6 text-zinc-950 shadow-sm hover:border-zinc-950/60 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 sm:py-1.5 sm:text-sm/6 dark:border-white/35 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/45';
 
 const linkClasses = 'hover:text-pink-700 hover:underline dark:hover:text-pink-300';
 
@@ -127,7 +127,7 @@ export function EffectsBrowser({
           {shared.length > 0 && (
             <section aria-labelledby="shared-effects-heading">
               <SectionHeading id="shared-effects-heading">In many locations</SectionHeading>
-              <dl className="mt-4 divide-y divide-zinc-100 rounded-xl border border-zinc-200 bg-white px-5 shadow-sm dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-900">
+              <dl className="mt-4 divide-y divide-zinc-100 rounded-2xl ring-1 ring-zinc-200 bg-white px-5 shadow-xs dark:divide-zinc-800 dark:ring-zinc-800 dark:bg-zinc-900">
                 {shared.map((effect) => (
                   <div
                     key={effect.key}
@@ -179,7 +179,7 @@ export function EffectsBrowser({
                 return (
                   <details
                     key={region}
-                    className="group rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
+                    className="group rounded-2xl ring-1 ring-zinc-200 bg-white shadow-xs dark:ring-zinc-800 dark:bg-zinc-900"
                   >
                     <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 rounded-xl px-5 py-3 hover:bg-pink-50/50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:hover:bg-pink-950/20 [&::-webkit-details-marker]:hidden">
                       <span>
@@ -212,7 +212,7 @@ export function EffectsBrowser({
 
 function LocationCard({ location, effects }: { location: EffectLocation; effects: TrapEffect[] }) {
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="rounded-2xl ring-1 ring-zinc-200 bg-white shadow-xs dark:ring-zinc-800 dark:bg-zinc-900">
       <LocationEffects location={location} effects={effects} />
     </div>
   );

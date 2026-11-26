@@ -10,6 +10,7 @@ import { Link } from '@/components/link';
 import { loadMouseIndex, type IndexedMouse } from '@/lib/client-index';
 import { cleanNumber, findMouseByName, rankUp, type RankTitle } from '@/lib/rank-up';
 import { formatNumber } from '@/utils';
+import { HEADLINE_PANEL } from '@/components/panel';
 
 export type { RankTitle } from '@/lib/rank-up';
 
@@ -82,7 +83,7 @@ export function RankUpCalculatorFromUrl({ titles }: { titles: RankTitle[] }) {
 const labelClasses = 'flex flex-col gap-1.5 text-sm font-medium text-zinc-950 dark:text-white';
 const hintClasses = 'text-xs font-normal text-zinc-600 dark:text-zinc-400';
 const selectClasses =
-  'w-full rounded-lg border border-zinc-950/10 bg-white px-3 py-2.5 text-base/6 text-zinc-950 shadow-sm hover:border-zinc-950/20 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 sm:py-1.5 sm:text-sm/6 dark:border-white/10 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/20';
+  'w-full rounded-lg border border-zinc-950/45 bg-white px-3 py-2.5 text-base/6 text-zinc-950 shadow-sm hover:border-zinc-950/60 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 sm:py-1.5 sm:text-sm/6 dark:border-white/35 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/45';
 
 export function RankUpCalculator({
   titles,
@@ -221,10 +222,7 @@ export function RankUpCalculator({
         </div>
       </form>
 
-      <section
-        aria-live="polite"
-        className="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900"
-      >
+      <section aria-live="polite" className={`p-5 ${HEADLINE_PANEL}`}>
         {!target ? (
           <p className="text-sm text-zinc-700 dark:text-zinc-300">
             {current.name} is the top title, so there&rsquo;s nowhere left to climb.
@@ -291,7 +289,7 @@ export function RankUpCalculator({
           <h2 id="rank-steps-heading" className="text-base/7 font-semibold text-zinc-900 dark:text-white">
             Titles on the way
           </h2>
-          <ol className="mt-3 divide-y divide-zinc-100 rounded-xl border border-zinc-200 bg-white dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-900">
+          <ol className="mt-3 divide-y divide-zinc-100 rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white dark:divide-zinc-800 dark:ring-zinc-800 dark:bg-zinc-900">
             {steps.map((title) => (
               <li key={title.id} className="flex items-center gap-3 px-4 py-2.5">
                 <GameImage src={title.image} width={28} height={28} className="size-7 shrink-0" />

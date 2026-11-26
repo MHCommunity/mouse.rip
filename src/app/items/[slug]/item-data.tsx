@@ -26,7 +26,7 @@ function formatQuantity(min: number, max: number): string {
 
 function DropsTable({ rows }: { rows: ItemDropper[] }) {
   return (
-    <div className="overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-800">
+    <div className="overflow-x-auto rounded-2xl ring-1 ring-zinc-200 dark:ring-zinc-800">
       <table className="w-full text-sm">
         <thead className="bg-zinc-50 text-left text-xs text-zinc-600 dark:bg-zinc-900/60 dark:text-zinc-400">
           <tr>
@@ -121,7 +121,7 @@ export function ItemData({
           <SectionHeading>How to get it</SectionHeading>
 
           {obtainHint && (
-            <p className="mt-3 rounded-lg bg-blue-50 px-4 py-3 text-sm font-medium text-blue-900 dark:bg-blue-950/50 dark:text-blue-200">
+            <p className="mt-3 rounded-2xl bg-amber-50 ring-1 ring-amber-200 px-4 py-3 text-sm font-medium text-amber-950 dark:bg-amber-950/40 dark:ring-amber-900 dark:text-amber-100">
               {obtainHint}
             </p>
           )}
@@ -210,7 +210,7 @@ function MapRelations({
         {relations.map((relation) => (
           <div
             key={`${relation.map.mhctId}-${relation.scrollCase.id}`}
-            className="rounded-lg border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900"
+            className="rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white p-4 dark:ring-zinc-800 dark:bg-zinc-900"
           >
             <div className="flex flex-wrap items-baseline gap-x-2">
               <span className="font-semibold tracking-tight text-zinc-900 dark:text-white">{relation.map.name}</span>
@@ -225,10 +225,10 @@ function MapRelations({
               {relation.chests.map((chest) => (
                 <li key={chest.id}>
                   <span
-                    className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm shadow-sm transition ${
+                    className={`inline-flex items-center gap-1.5 rounded-full ring-1 px-3 py-1.5 text-sm shadow-xs transition ${
                       chest.id === itemId
-                        ? 'border-blue-300 bg-blue-50 text-blue-800 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-200'
-                        : 'border-zinc-200 bg-white text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300'
+                        ? 'bg-pink-50 text-pink-800 ring-pink-300 dark:bg-pink-950 dark:text-pink-200 dark:ring-pink-800'
+                        : 'bg-white text-zinc-700 ring-zinc-200 dark:bg-zinc-900 dark:text-zinc-300 dark:ring-zinc-800'
                     }`}
                   >
                     <ItemChipLink id={chest.id} name={chest.name} itemSlugs={itemSlugs} plain={chest.id === itemId} />

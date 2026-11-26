@@ -198,7 +198,7 @@ export function LocationMice({
           {groups.map((group) => (
             <div
               key={group.cheese ?? 'none'}
-              className="overflow-hidden rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900"
+              className="overflow-hidden rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white dark:ring-zinc-800 dark:bg-zinc-900"
             >
               <h3 className="flex items-center justify-between gap-3 border-b border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-semibold sm:px-4 dark:border-zinc-800 dark:bg-zinc-900/60">
                 <CheeseTitle cheese={group.cheese} />
