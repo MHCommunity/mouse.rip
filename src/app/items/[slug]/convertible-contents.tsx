@@ -174,7 +174,7 @@ export function ConvertibleContents({ itemId, rows }: { itemId: number; rows: Co
             </>
           )}
           .{' '}
-          <span className="text-zinc-400 dark:text-zinc-500">
+          <span className="text-zinc-500 dark:text-zinc-400">
             Covers {pricedCount} of {valued.length} rewards, at current Markethunt prices.
           </span>
         </p>

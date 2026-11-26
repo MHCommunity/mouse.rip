@@ -114,7 +114,7 @@ export default async function ItemTypePage({ params }: { params: Promise<{ type:
                 className="rounded-full bg-zinc-100 px-3 py-1 text-sm font-medium text-zinc-700 transition hover:bg-pink-50 hover:text-pink-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-pink-950/40 dark:hover:text-pink-300"
               >
                 {subgroupLabel(type, id)}
-                <span className="ml-1.5 text-xs tabular-nums opacity-60">{formatNumber(inGroup.length)}</span>
+                <span className="ml-1.5 text-xs font-normal tabular-nums">{formatNumber(inGroup.length)}</span>
               </a>
             ))}
           </nav>

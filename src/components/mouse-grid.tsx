@@ -28,7 +28,7 @@ export function MouseGrid({ mice }: { mice: Mouse[] }) {
                 {mouse.name}
               </div>
               {mouse.subgroup && (
-                <div className="truncate text-xs text-zinc-400 dark:text-zinc-500">{mouse.subgroup}</div>
+                <div className="truncate text-xs text-zinc-500 dark:text-zinc-400">{mouse.subgroup}</div>
               )}
             </div>
           </Link>

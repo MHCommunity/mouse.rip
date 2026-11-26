@@ -244,7 +244,7 @@ function MinLucks({
                 className={clsx(
                   'min-h-9 rounded-md px-3 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500',
                   POWER_TYPE_CHIP[type],
-                  power === type ? 'ring-2 ring-zinc-900 dark:ring-white' : 'opacity-80 hover:opacity-100',
+                  power === type ? 'ring-2 ring-zinc-900 dark:ring-white' : 'hover:brightness-95',
                 )}
               >
                 {powerTypeLabel(type)}

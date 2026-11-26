@@ -132,7 +132,6 @@ export function SearchButton({ className }: { className?: string }) {
     <button
       type="button"
       onClick={() => open()}
-      aria-label="Search"
       className={clsx(
         'group flex shrink-0 items-center gap-2.5 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-left text-sm shadow-sm transition hover:border-pink-300 hover:shadow-md active:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-pink-800',
         className,
@@ -140,7 +139,10 @@ export function SearchButton({ className }: { className?: string }) {
     >
       <MagnifyingGlassIcon className="size-4 shrink-0 text-zinc-500 dark:text-zinc-400" aria-hidden="true" />
       <span className="flex-1 text-zinc-600 max-[359px]:sr-only dark:text-zinc-400">Search…</span>
-      <kbd className="hidden shrink-0 rounded border whitespace-nowrap border-zinc-200 bg-zinc-50 px-1.5 py-0.5 text-[11px] font-medium text-zinc-500 pointer-fine:block dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400">
+      <kbd
+        aria-hidden="true"
+        className="hidden shrink-0 rounded border whitespace-nowrap border-zinc-200 bg-zinc-50 px-1.5 py-0.5 text-[11px] font-medium text-zinc-500 pointer-fine:block dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400"
+      >
         {shortcut}
       </kbd>
     </button>

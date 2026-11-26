@@ -220,7 +220,7 @@ export function ItemsBrowser({
           className="w-full border-0 bg-transparent py-3 text-base text-zinc-900 placeholder:text-zinc-400 focus:outline-none dark:text-white"
         />
         {filtering && items && (
-          <span className="shrink-0 text-xs tabular-nums text-zinc-400 dark:text-zinc-500">{total}</span>
+          <span className="shrink-0 text-xs tabular-nums text-zinc-500 dark:text-zinc-400">{total}</span>
         )}
       </div>
 
@@ -255,7 +255,9 @@ export function ItemsBrowser({
                     }`}
                   >
                     {classificationName(key)}
-                    <span className="ml-1.5 text-xs tabular-nums opacity-60">{formatNumber(chipCounts[key] ?? 0)}</span>
+                    <span className="ml-1.5 text-xs font-normal tabular-nums">
+                      {formatNumber(chipCounts[key] ?? 0)}
+                    </span>
                   </button>
                 ))}
             </>
@@ -291,7 +293,7 @@ export function ItemsBrowser({
               }`}
             >
               {key ? subgroupLabel(active, key) : `All ${classificationLabel(active).toLowerCase()}`}
-              <span className="ml-1.5 text-xs tabular-nums opacity-60">
+              <span className="ml-1.5 text-xs font-normal tabular-nums">
                 {formatNumber(key ? (subCounts[key] ?? 0) : Object.values(subCounts).reduce((a, b) => a + b, 0))}
               </span>
             </button>
@@ -327,7 +329,7 @@ export function ItemsBrowser({
                   <span className="font-semibold tracking-tight text-zinc-900 transition-colors group-hover:text-pink-700 dark:text-white dark:group-hover:text-pink-300">
                     {classificationName(key)}
                   </span>
-                  <span className="shrink-0 text-xs tabular-nums text-zinc-400 dark:text-zinc-500">
+                  <span className="shrink-0 text-xs tabular-nums text-zinc-500 dark:text-zinc-400">
                     {formatNumber(counts[key] ?? 0)}
                   </span>
                 </div>
@@ -376,7 +378,7 @@ export function ItemsBrowser({
             <section key={key}>
               <h2 className="text-sm font-semibold tracking-tight text-zinc-900 dark:text-white">
                 {sectionName(key)}
-                <span className="ml-2 text-xs font-normal tabular-nums text-zinc-400 dark:text-zinc-500">
+                <span className="ml-2 text-xs font-normal tabular-nums text-zinc-500 dark:text-zinc-400">
                   {formatNumber(list.length)}
                 </span>
               </h2>
@@ -409,7 +411,7 @@ export function ItemsBrowser({
             </section>
           ))}
           {total > ROW_LIMIT && !showAll && (
-            <p className="text-sm text-zinc-400 dark:text-zinc-500">
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">
               Showing the first {formatNumber(ROW_LIMIT)} of {formatNumber(total)}.{' '}
               <button
                 type="button"
