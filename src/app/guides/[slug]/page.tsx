@@ -46,6 +46,7 @@ function sourceName(url: string): string {
       'reddit.com': 'Reddit',
       'old.reddit.com': 'Reddit',
       'mhwiki.hitgrab.com': 'MHWiki',
+      'pastebin.com': 'Pastebin',
     };
     return names[host] ?? host;
   } catch {
