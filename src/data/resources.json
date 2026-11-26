@@ -10,7 +10,17 @@
       "all"
     ],
     "priority": 1,
-    "highlight": true
+    "highlight": true,
+    "install": [
+      {
+        "browser": "Chrome",
+        "url": "https://chrome.google.com/webstore/detail/mousehunt-improved/mbkpejkkhmebmdjokdplhkljgkcfhjol"
+      },
+      {
+        "browser": "Firefox",
+        "url": "https://addons.mozilla.org/en-US/firefox/addon/mousehunt-improved/"
+      }
+    ]
   },
   {
     "id": "mousehunt-essentials-guide",
