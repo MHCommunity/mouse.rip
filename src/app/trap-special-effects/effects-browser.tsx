@@ -4,9 +4,19 @@ import React, { useRef, useState } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
+import { GameImage } from '@/components/game-image';
 import { Link } from '@/components/link';
 import { SectionHeading } from '@/components/section-heading';
-import type { TrapEffect } from '@/types';
+import type { TrapEffect as SheetEffect } from '@/types';
+
+/** An item the effect names, matched from the sheet's wording. */
+export interface EffectItem {
+  name: string;
+  href: string;
+  image: string;
+}
+
+type TrapEffect = SheetEffect & { items?: EffectItem[] };
 
 export interface EffectLocation {
   /** The location's id where it has a page, otherwise a slug of its name. Used in ?location=. */
@@ -30,7 +40,7 @@ interface BrowserProps {
 const selectClasses =
   'w-full rounded-lg border border-zinc-950/10 bg-white px-3 py-2.5 text-base/6 text-zinc-950 shadow-sm hover:border-zinc-950/20 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 sm:py-1.5 sm:text-sm/6 dark:border-white/10 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/20';
 
-const linkClasses = 'hover:text-green-700 hover:underline dark:hover:text-green-300';
+const linkClasses = 'hover:text-pink-700 hover:underline dark:hover:text-pink-300';
 
 export function EffectsBrowserFromUrl(props: BrowserProps) {
   const searchParams = useSearchParams();
@@ -123,7 +133,9 @@ export function EffectsBrowser({
                     key={effect.key}
                     className="grid grid-cols-1 gap-x-4 gap-y-0.5 py-3 sm:grid-cols-[minmax(0,14rem)_1fr]"
                   >
-                    <dt className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{effect.name}</dt>
+                    <dt>
+                      <EffectName effect={effect} />
+                    </dt>
                     <dd className="text-sm text-zinc-600 dark:text-zinc-400">
                       <p className="text-zinc-800 dark:text-zinc-200">{effect.effect}</p>
                       <p className="mt-1">
@@ -224,11 +236,40 @@ function LocationEffects({ location, effects }: { location: EffectLocation; effe
             key={`${effect.name}-${effect.effect}`}
             className="grid grid-cols-1 gap-x-4 gap-y-0.5 py-2.5 sm:grid-cols-[minmax(0,14rem)_1fr]"
           >
-            <dt className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{effect.name}</dt>
+            <dt>
+              <EffectName effect={effect} />
+            </dt>
             <dd className="text-sm text-zinc-600 dark:text-zinc-400">{effect.effect}</dd>
           </div>
         ))}
       </dl>
     </div>
+  );
+}
+
+/** The trap, base or charm with its picture; the name links to its page when it's one item. */
+function EffectName({ effect }: { effect: TrapEffect }) {
+  const items = effect.items ?? [];
+  const single = items.length === 1 ? items[0] : undefined;
+  return (
+    <span className="flex items-start gap-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+      {items.length > 0 && (
+        <span className="flex shrink-0 gap-1">
+          {items.map((item) => (
+            <Link key={item.href} href={item.href} prefetch={false} title={item.name} className="shrink-0">
+              <GameImage src={item.image} width={24} height={24} className="size-6 object-contain" />
+              <span className="sr-only">{item.name}</span>
+            </Link>
+          ))}
+        </span>
+      )}
+      {single ? (
+        <Link href={single.href} prefetch={false} className="pt-0.5 hover:text-pink-700 dark:hover:text-pink-300">
+          {effect.name}
+        </Link>
+      ) : (
+        <span className="pt-0.5">{effect.name}</span>
+      )}
+    </span>
   );
 }

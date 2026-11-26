@@ -4,9 +4,19 @@ import { SparklesIcon } from '@heroicons/react/20/solid';
 import { PageHeader } from '@/components/page-header';
 import { PageLink } from '@/components/page-link';
 
+import { getAllGameItems, itemSlug } from '@/lib/game-data';
+import { itemImageUrl } from '@/lib/image-urls';
 import { getLocations, getTrapEffects } from '@/lib/site-data';
+import { matchEffectItems } from '@/lib/trap-effect-items';
 import { pageMetadata } from '@/seo';
-import { EffectsBrowser, EffectsBrowserFromUrl, type EffectLocation, type SharedEffect } from './effects-browser';
+import type { TrapEffect } from '@/types';
+import {
+  EffectsBrowser,
+  EffectsBrowserFromUrl,
+  type EffectItem,
+  type EffectLocation,
+  type SharedEffect,
+} from './effects-browser';
 
 export const metadata = pageMetadata({
   title: 'Trap and Base Special Effects',
@@ -33,6 +43,25 @@ export default function TrapSpecialEffectsPage() {
     }
   }
 
+  // The sheet names traps, bases and charms loosely; link the ones that clearly match an item.
+  const equipment = getAllGameItems().filter((item) =>
+    ['weapon', 'base', 'trinket', 'bait'].includes(item.classification),
+  );
+  const itemsFor = new Map<string, EffectItem[]>();
+  const withItems = (effect: TrapEffect) => {
+    if (!itemsFor.has(effect.name)) {
+      itemsFor.set(
+        effect.name,
+        matchEffectItems(effect.name, equipment).map((item) => ({
+          name: item.name,
+          href: `/items/${itemSlug(item.type)}`,
+          image: itemImageUrl(item.type),
+        })),
+      );
+    }
+    return { ...effect, items: itemsFor.get(effect.name) };
+  };
+
   const locations: EffectLocation[] = getTrapEffects()
     .filter((entry) => entry.effects.length > 0)
     .map((entry) => {
@@ -42,7 +71,7 @@ export default function TrapSpecialEffectsPage() {
         name: entry.location,
         region: entry.region,
         href: id ? `/locations/${id}` : undefined,
-        effects: entry.effects,
+        effects: entry.effects.map(withItems),
       };
     });
 
