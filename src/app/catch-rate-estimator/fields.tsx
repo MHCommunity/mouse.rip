@@ -453,3 +453,21 @@ export function ExtrasCard({
     </fieldset>
   );
 }
+
+/**
+ * On a phone the results sit under a long form. This rides at the bottom of the screen while the form is in view
+ * and jumps down to them.
+ */
+export function JumpToResults({ target }: { target: string }) {
+  return (
+    <div className="sticky bottom-3 z-10 flex justify-center lg:hidden">
+      <a
+        href={`#${target}`}
+        className="inline-flex min-h-11 items-center gap-1.5 rounded-full bg-pink-600 px-5 text-sm font-semibold text-white shadow-lg transition-colors hover:bg-pink-700 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-900"
+      >
+        See results
+        <span aria-hidden="true">↓</span>
+      </a>
+    </div>
+  );
+}

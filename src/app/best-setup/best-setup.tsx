@@ -27,6 +27,7 @@ import {
   fieldClasses,
   useCatchRateCatalog,
   useItemOptions,
+  JumpToResults,
 } from '../catch-rate-estimator/fields';
 
 const SETUP_KEY = 'mouse.rip:best-setup';
@@ -354,9 +355,10 @@ function BestSetupForm({
         <ExtrasCard catalog={catalog} setup={setup} onExtra={setExtra} items={ownItems} />
 
         <OwnedItemsCard catalog={catalog} owned={owned} onOwned={onOwned} imported={imported} />
+        <JumpToResults target="results" />
       </form>
 
-      <section aria-labelledby="best-heading" aria-live="polite" className="min-w-0">
+      <section id="results" aria-labelledby="best-heading" aria-live="polite" className="min-w-0 scroll-mt-4">
         <h2 id="best-heading" className="sr-only">
           Best setups
         </h2>

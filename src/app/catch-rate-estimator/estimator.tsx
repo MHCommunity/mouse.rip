@@ -26,6 +26,7 @@ import {
   labelClasses,
   useCatchRateCatalog,
   useItemOptions,
+  JumpToResults,
 } from './fields';
 
 const STORAGE_KEY = 'mouse.rip:catch-rate-estimator';
@@ -146,9 +147,10 @@ function EstimatorForm({
         <ExtrasCard catalog={catalog} setup={resolved} onExtra={setExtra} />
 
         <BonusCard catalog={catalog} setup={setup} onChange={onChange} />
+        <JumpToResults target="results" />
       </form>
 
-      <section aria-labelledby="results-heading" aria-live="polite" className="min-w-0">
+      <section id="results" aria-labelledby="results-heading" aria-live="polite" className="min-w-0 scroll-mt-4">
         <h2 id="results-heading" className="sr-only">
           Catch rates
         </h2>
