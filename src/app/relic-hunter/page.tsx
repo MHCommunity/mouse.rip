@@ -7,7 +7,7 @@ import { PageHeader } from '@/components/page-header';
 import { getEnvironments, getLocations, getRelicHunterHints } from '@/lib/site-data';
 import { RelicHunterLive } from './relic-hunter-live';
 import { RiddleFinder } from './riddle-finder';
-import { pageMetadata } from '@/seo';
+import { ogCard, pageMetadata } from '@/seo';
 import { SectionHeading } from '@/components/section-heading';
 
 export const metadata = pageMetadata({
@@ -15,6 +15,7 @@ export const metadata = pageMetadata({
   description:
     'See where the Relic Hunter is hiding right now, plus the riddles she drops for every location she visits across MouseHunt.',
   path: '/relic-hunter',
+  image: ogCard({ title: 'Relic Hunter', eyebrow: 'MouseHunt tool', icon: 'map-pin', accent: 'rose' }),
 });
 
 export default function RelicHunterPage() {

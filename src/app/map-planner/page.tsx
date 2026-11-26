@@ -8,7 +8,7 @@ import { PageLink } from '@/components/page-link';
 import planner from '@/data/generated/map-planner.json';
 import { plannerPlaces } from '@/lib/map-plan';
 import { getLocations } from '@/lib/site-data';
-import { pageMetadata } from '@/seo';
+import { ogCard, pageMetadata } from '@/seo';
 import { MapPlanner, MapPlannerFromUrl } from './map-planner';
 
 export const metadata = pageMetadata({
@@ -16,6 +16,7 @@ export const metadata = pageMetadata({
   description:
     'Paste the mice on your MouseHunt treasure map to see which locations and cheeses attract the most of them, from MHCT attraction rates.',
   path: '/map-planner',
+  image: ogCard({ title: 'Treasure map planner', eyebrow: 'MouseHunt tool', icon: 'map', accent: 'sky' }),
 });
 
 export default function MapPlannerPage() {

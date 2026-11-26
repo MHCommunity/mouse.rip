@@ -8,7 +8,7 @@ import { PageLink } from '@/components/page-link';
 import { titleImageUrl } from '@/lib/image-urls';
 import { getTitles } from '@/lib/site-data';
 import { WISDOM_BY_TITLE } from '@/lib/titles';
-import { pageMetadata } from '@/seo';
+import { ogCard, pageMetadata } from '@/seo';
 import { RankUpCalculator, RankUpCalculatorFromUrl, type RankTitle } from './rank-up-calculator';
 
 export const metadata = pageMetadata({
@@ -16,6 +16,7 @@ export const metadata = pageMetadata({
   description:
     'How much wisdom you need to reach your next MouseHunt title, or any title after it, and how many catches of a mouse that takes.',
   path: '/rank-up-calculator',
+  image: ogCard({ title: 'Rank-up calculator', eyebrow: 'MouseHunt tool', icon: 'trending-up', accent: 'amber' }),
 });
 
 export default function RankUpCalculatorPage() {

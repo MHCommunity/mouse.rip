@@ -9,8 +9,8 @@ test('a card link the site didn’t sign gets the site-wide card, not its own wo
 });
 
 test('a page’s own card link renders', async ({ page, request }) => {
-  // A group's card has no picture, so rendering it asks nothing of the image host.
-  await page.goto('/groups/common');
+  // A tool's card draws an icon, not a picture, so rendering it asks nothing of the image host.
+  await page.goto('/catch-rate-estimator');
   const card = await page.locator('meta[property="og:image"]').getAttribute('content');
   test.skip(!card?.includes('/og/card'), 'Built without OG_CARD_SECRET, so pages use the site-wide card.');
   const { pathname, search } = new URL(card!);

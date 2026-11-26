@@ -5,7 +5,7 @@ import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PageHeader } from '@/components/page-header';
 import { PageLink } from '@/components/page-link';
 
-import { pageMetadata } from '@/seo';
+import { ogCard, pageMetadata } from '@/seo';
 import { BestSetup, BestSetupFromUrl } from './best-setup';
 
 export const metadata = pageMetadata({
@@ -13,6 +13,7 @@ export const metadata = pageMetadata({
   description:
     'Find the MouseHunt weapon, base and charm that catch the most mice for a location and cheese, or the best setup for one mouse.',
   path: '/best-setup',
+  image: ogCard({ title: 'Best setup', eyebrow: 'MouseHunt tool', icon: 'trophy', accent: 'amber' }),
 });
 
 export default function BestSetupPage() {

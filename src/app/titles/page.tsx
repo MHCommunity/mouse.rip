@@ -5,7 +5,7 @@ import { Link } from '@/components/link';
 import { PageHeader } from '@/components/page-header';
 
 import { getTitles } from '@/lib/site-data';
-import { pageMetadata } from '@/seo';
+import { ogCard, pageMetadata } from '@/seo';
 import { titleImageUrl } from '@/lib/image-urls';
 import { WISDOM_BY_TITLE } from '@/lib/titles';
 
@@ -14,6 +14,7 @@ export const metadata = pageMetadata({
   description:
     'Every MouseHunt hunter title from Novice to Fabled, in order, with what each rank unlocks and the wisdom needed to reach it.',
   path: '/titles',
+  image: ogCard({ title: 'Titles and ranks', eyebrow: 'MouseHunt tool', icon: 'trophy', accent: 'amber' }),
 });
 
 const WISDOM_ITEM_URL = 'https://www.mousehuntgame.com/item.php?item_type=wisdom_stat_item';

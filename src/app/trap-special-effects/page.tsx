@@ -8,7 +8,7 @@ import { getAllGameItems, itemSlug } from '@/lib/game-data';
 import { itemImageUrl } from '@/lib/image-urls';
 import { getLocations, getTrapEffects } from '@/lib/site-data';
 import { matchEffectItems } from '@/lib/trap-effect-items';
-import { pageMetadata } from '@/seo';
+import { ogCard, pageMetadata } from '@/seo';
 import type { TrapEffect } from '@/types';
 import { EffectsBrowser, type EffectItem, type EffectLocation, type SharedEffect } from './effects-browser';
 
@@ -17,6 +17,12 @@ export const metadata = pageMetadata({
   description:
     'Which traps, bases, and charms have special effects in each MouseHunt location, such as bonus loot, instacatches, and attraction tweaks.',
   path: '/trap-special-effects',
+  image: ogCard({
+    title: 'Trap and base special effects',
+    eyebrow: 'MouseHunt tool',
+    icon: 'sparkles',
+    accent: 'green',
+  }),
 });
 
 /** An effect listed under this many locations or more is shown once, in its own section. */
