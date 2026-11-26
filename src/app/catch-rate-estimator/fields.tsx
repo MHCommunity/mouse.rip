@@ -365,6 +365,7 @@ export function ExtrasCard({
       <NumberField
         key="umbra"
         label="Highest Umbra floor"
+        hint="Prestige or Hailstone Singularity Base"
         value={extras.umbraFloor}
         min={0}
         max={200}
@@ -376,7 +377,7 @@ export function ExtrasCard({
     fields.push(
       <div key="golem" className="grid grid-cols-2 gap-3">
         <label className={labelClasses}>
-          Golem skin
+          Golem Guardian skin
           <select
             className={fieldClasses}
             value={extras.golemType ?? 'arcane'}
@@ -390,7 +391,7 @@ export function ExtrasCard({
           </select>
         </label>
         <NumberField
-          label="Charge"
+          label="Golem Guardian charge"
           hint="%"
           value={extras.golemCharge ?? 100}
           min={0}
@@ -419,7 +420,7 @@ export function ExtrasCard({
   if (hasBase('denture_base') || hasBase('upgraded_denture_base')) {
     fields.push(
       <Toggle key="teeth" checked={Boolean(extras.dentureToothless)} onChange={(v) => onExtra('dentureToothless', v)}>
-        Toothless <span className={hintClasses}>(out of charge)</span>
+        Denture Base is toothless <span className={hintClasses}>(out of charge)</span>
       </Toggle>,
     );
   }
@@ -428,7 +429,7 @@ export function ExtrasCard({
       <NumberField
         key="acolytes"
         label="Acolytes caught"
-        hint="2,000 power each"
+        hint="Father Winter’s Timepiece: 2,000 power each"
         value={extras.acolyteCatches}
         min={0}
         max={99}
