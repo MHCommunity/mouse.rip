@@ -60,7 +60,8 @@ function hostnameOf(url: string): string {
 
 export default function Tools() {
   const items = getResourcesByCategory('tool');
-  const byId = new Map(items.map((item) => [String(item.id), item]));
+  // On-site tools only, so a grouped tool that moves to another site shows once, under the off-site list.
+  const byId = new Map(items.filter((item) => isInternalPath(item.url)).map((item) => [String(item.id), item]));
   const grouped = new Set(GROUPS.flatMap((group) => group.tools.map((tool) => tool.id)));
   // A tool on the site that hasn't been given a group yet still shows, rather than going missing.
   const ungrouped = items.filter((item) => isInternalPath(item.url) && !grouped.has(String(item.id)));

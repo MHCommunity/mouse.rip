@@ -37,7 +37,7 @@ export function ToolCard({
 }) {
   const Title = `h${headingLevel}` as const;
   const className =
-    'group flex h-full items-start gap-4 rounded-2xl bg-white p-4 shadow-xs ring-1 ring-zinc-200 transition hover:-translate-y-0.5 hover:shadow-md hover:ring-pink-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 motion-reduce:transition-none motion-reduce:hover:translate-y-0 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:ring-pink-900';
+    'group flex h-full items-start gap-4 rounded-2xl bg-white p-4 shadow-xs ring-1 ring-zinc-200 transition hover:-translate-y-0.5 hover:shadow-md hover:ring-pink-200 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 motion-reduce:transition-none motion-reduce:hover:translate-y-0 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:ring-pink-900';
   const body = (
     <>
       {image && (
