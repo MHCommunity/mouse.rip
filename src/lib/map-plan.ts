@@ -129,24 +129,22 @@ export function rowsForMouse(data: PlannerData, id: number): Row[] {
 /**
  * Expected hunts to attract every mouse in a setup at least once, ignoring catch rate.
  *
- * A hunt attracts at most one mouse, so E[T] = sum over k of P(T > k), where
- * P(T > k) = 1 - product(1 - (1 - p_i)^k).
+ * A hunt attracts at most one mouse, mouse i with chance p_i, so this is the coupon collector's problem with
+ * unequal odds (and some hunts attracting none of them). Spreading the hunts out as a Poisson process makes
+ * each mouse arrive independently without changing the expected count, which gives
+ * E[T] = ∫₀^∞ (1 − ∏(1 − e^(−p_i·t))) dt, worked out here with Simpson's rule.
  */
 export function expectedHuntsToClear(rates: number[]): number {
   if (rates.length === 0) return 0;
-  const missChance = rates.map(() => 1);
-  let expected = 0;
-  for (let hunt = 0; hunt < 10_000; hunt++) {
-    let allSeen = 1;
-    for (const chance of missChance) allSeen *= 1 - chance;
-    const notDone = 1 - allSeen;
-    expected += notDone;
-    if (notDone < 0.0001) break;
-    rates.forEach((rate, index) => {
-      missChance[index] *= 1 - rate;
-    });
-  }
-  return expected;
+  if (rates.some((rate) => !(rate > 0))) return Infinity;
+  const unseen = (t: number) => 1 - rates.reduce((all, rate) => all * (1 - Math.exp(-rate * t)), 1);
+  // Past here every mouse has almost surely turned up: the integrand is below n·e^(−p_min·t) < 1e-6.
+  const end = Math.log(rates.length * 1e6) / Math.min(...rates);
+  const steps = 2 * Math.ceil(end / 0.5);
+  const h = end / steps;
+  let sum = unseen(0) + unseen(end);
+  for (let i = 1; i < steps; i++) sum += (i % 2 === 1 ? 4 : 2) * unseen(i * h);
+  return (sum * h) / 3;
 }
 
 export function buildPlan(mice: PlanMouse[], data: PlannerData, places: Record<string, Place>): Plan {
