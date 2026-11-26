@@ -222,7 +222,7 @@ export function SearchDialog({
               <MagnifyingGlassIcon className="size-5 shrink-0 text-zinc-500 dark:text-zinc-400" aria-hidden="true" />
               <ComboboxInput
                 autoFocus
-                className="w-full border-0 bg-transparent py-4 text-base text-zinc-900 placeholder:text-zinc-500 focus:outline-none focus:ring-0 dark:text-white dark:placeholder:text-zinc-400"
+                className="w-full border-0 bg-transparent py-4 text-base text-zinc-900 placeholder:text-zinc-500 focus:outline-hidden focus:ring-0 dark:text-white dark:placeholder:text-zinc-400"
                 placeholder="Search mice, items, locations, guides…"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}

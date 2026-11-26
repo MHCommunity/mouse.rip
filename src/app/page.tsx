@@ -231,7 +231,7 @@ export default function Home() {
             href={BEGINNER_GUIDE}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-0.5 font-medium text-pink-700 underline-offset-2 hover:underline focus:outline-none focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-pink-500 dark:text-pink-300"
+            className="inline-flex items-center gap-0.5 font-medium text-pink-700 underline-offset-2 hover:underline focus:outline-hidden focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-pink-500 dark:text-pink-300"
           >
             Start with the Essentials guide
             <ArrowUpRightIcon className="size-3.5" aria-hidden="true" />
@@ -248,7 +248,7 @@ export default function Home() {
               <li key={href}>
                 <Link
                   href={href}
-                  className="group flex h-full items-center gap-2.5 rounded-lg border border-zinc-200 bg-white px-3 py-2.5 transition-colors hover:border-pink-300 hover:bg-pink-50/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 sm:items-start sm:gap-3 sm:px-3.5 sm:py-3 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-pink-800 dark:hover:bg-pink-950/20"
+                  className="group flex h-full items-center gap-2.5 rounded-lg border border-zinc-200 bg-white px-3 py-2.5 transition-colors hover:border-pink-300 hover:bg-pink-50/50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 sm:items-start sm:gap-3 sm:px-3.5 sm:py-3 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-pink-800 dark:hover:bg-pink-950/20"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -296,7 +296,7 @@ export default function Home() {
                     <Link
                       href={href}
                       className={clsx(
-                        'group flex h-full items-center gap-3 rounded-lg border border-zinc-200 bg-white px-3.5 py-3 transition-colors focus:outline-none focus-visible:ring-2 dark:border-zinc-800 dark:bg-zinc-900',
+                        'group flex h-full items-center gap-3 rounded-lg border border-zinc-200 bg-white px-3.5 py-3 transition-colors focus:outline-hidden focus-visible:ring-2 dark:border-zinc-800 dark:bg-zinc-900',
                         ACCENTS[accent].tile,
                       )}
                     >
@@ -340,7 +340,7 @@ export default function Home() {
 
           {/* Phones have no sidebar, so this is their way into the location pages. Folded, since it's 14 regions long. */}
           <details className="group rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-            <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 rounded-lg px-3.5 py-3 hover:bg-pink-50/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:hover:bg-pink-950/20 [&::-webkit-details-marker]:hidden">
+            <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 rounded-lg px-3.5 py-3 hover:bg-pink-50/50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:hover:bg-pink-950/20 [&::-webkit-details-marker]:hidden">
               <span>
                 <span className="block text-sm font-semibold text-zinc-900 dark:text-zinc-100">Locations</span>
                 <span className="mt-0.5 block text-xs/5 text-zinc-600 dark:text-zinc-400">
@@ -357,7 +357,7 @@ export default function Home() {
                 <li key={region.id}>
                   <Link
                     href={`/regions/${region.id}`}
-                    className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 text-sm font-medium text-zinc-800 transition-colors hover:border-pink-300 hover:bg-pink-50/50 hover:text-pink-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 sm:min-h-9 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-pink-800 dark:hover:bg-pink-950/20 dark:hover:text-pink-300"
+                    className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 text-sm font-medium text-zinc-800 transition-colors hover:border-pink-300 hover:bg-pink-50/50 hover:text-pink-700 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 sm:min-h-9 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-pink-800 dark:hover:bg-pink-950/20 dark:hover:text-pink-300"
                   >
                     {region.name}
                     <span className="text-xs font-normal tabular-nums text-zinc-600 dark:text-zinc-400">

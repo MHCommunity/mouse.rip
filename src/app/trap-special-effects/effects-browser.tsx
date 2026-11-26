@@ -28,7 +28,7 @@ interface BrowserProps {
 }
 
 const selectClasses =
-  'w-full rounded-lg border border-zinc-950/10 bg-white px-3 py-2.5 text-base/6 text-zinc-950 shadow-sm hover:border-zinc-950/20 focus:border-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500/30 sm:py-1.5 sm:text-sm/6 dark:border-white/10 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/20';
+  'w-full rounded-lg border border-zinc-950/10 bg-white px-3 py-2.5 text-base/6 text-zinc-950 shadow-sm hover:border-zinc-950/20 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 sm:py-1.5 sm:text-sm/6 dark:border-white/10 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/20';
 
 const linkClasses = 'hover:text-green-700 hover:underline dark:hover:text-green-300';
 
@@ -107,7 +107,7 @@ export function EffectsBrowser({
           <button
             type="button"
             onClick={() => choose('')}
-            className="mt-4 text-sm font-medium text-pink-700 hover:text-pink-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:text-pink-300 dark:hover:text-pink-200"
+            className="mt-4 text-sm font-medium text-pink-700 hover:text-pink-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:text-pink-300 dark:hover:text-pink-200"
           >
             Show all locations
           </button>
@@ -138,7 +138,7 @@ export function EffectsBrowser({
                                   choose(location.key);
                                   pickerRef.current?.scrollIntoView({ block: 'start' });
                                 }}
-                                className={`${linkClasses} focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500`}
+                                className={`${linkClasses} focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500`}
                               >
                                 {location.name}
                               </button>
@@ -169,7 +169,7 @@ export function EffectsBrowser({
                     key={region}
                     className="group rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
                   >
-                    <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 rounded-xl px-5 py-3 hover:bg-pink-50/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:hover:bg-pink-950/20 [&::-webkit-details-marker]:hidden">
+                    <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 rounded-xl px-5 py-3 hover:bg-pink-50/50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:hover:bg-pink-950/20 [&::-webkit-details-marker]:hidden">
                       <span>
                         <span className="block text-sm font-semibold text-zinc-900 dark:text-zinc-100">{region}</span>
                         <span className="mt-0.5 block text-xs/5 text-zinc-600 dark:text-zinc-400">

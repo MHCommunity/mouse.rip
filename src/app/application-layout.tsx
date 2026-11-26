@@ -64,7 +64,7 @@ function LocationRegionGroup({ region, pathname }: { region: LocationRegion; pat
         aria-expanded={expanded}
         aria-controls={listId}
         onClick={() => setExpanded(!expanded)}
-        className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left text-sm/5 font-medium text-zinc-700 hover:bg-zinc-950/5 hover:text-zinc-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 sm:py-1.5 dark:text-zinc-300 dark:hover:bg-white/5 dark:hover:text-white"
+        className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left text-sm/5 font-medium text-zinc-700 hover:bg-zinc-950/5 hover:text-zinc-950 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 sm:py-1.5 dark:text-zinc-300 dark:hover:bg-white/5 dark:hover:text-white"
       >
         <ChevronRightIcon
           aria-hidden="true"
@@ -128,7 +128,7 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
             <SidebarHeader>
               <SidebarItem href="/" aria-label="mouse.rip home">
                 <Logo aria-hidden="true" />
-                <SidebarLabel className="rounded text-2xl text-pink-800 hover:text-pink-900 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:text-pink-200 dark:hover:text-pink-300">
+                <SidebarLabel className="rounded text-2xl text-pink-800 hover:text-pink-900 focus:outline-hidden focus:ring-2 focus:ring-pink-500 dark:text-pink-200 dark:hover:text-pink-300">
                   mouse.rip
                 </SidebarLabel>
               </SidebarItem>
@@ -144,7 +144,7 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                 <SidebarItem
                   href="/"
                   current={pathname === '/'}
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="rounded focus:outline-hidden focus:ring-2 focus:ring-pink-500"
                 >
                   <HomeIcon aria-hidden="true" />
                   <SidebarLabel>Home</SidebarLabel>
@@ -157,7 +157,7 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                     pathname.startsWith('/titles') ||
                     pathname.startsWith('/trap-special-effects')
                   }
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="rounded focus:outline-hidden focus:ring-2 focus:ring-pink-500"
                 >
                   <AcademicCapIcon aria-hidden="true" />
                   <SidebarLabel>Guides</SidebarLabel>
@@ -165,7 +165,7 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                 <SidebarItem
                   href="/extensions"
                   current={pathname.startsWith('/extension')}
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="rounded focus:outline-hidden focus:ring-2 focus:ring-pink-500"
                 >
                   <BoltIcon aria-hidden="true" />
                   <SidebarLabel>Extensions</SidebarLabel>
@@ -173,7 +173,7 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                 <SidebarItem
                   href="/tools"
                   current={pathname === '/tools' || pathname.startsWith('/tools/')}
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="rounded focus:outline-hidden focus:ring-2 focus:ring-pink-500"
                 >
                   <WrenchIcon aria-hidden="true" />
                   <SidebarLabel>Tools</SidebarLabel>
@@ -181,7 +181,7 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                 <SidebarItem
                   href="/spreadsheets"
                   current={pathname.startsWith('/spreadsheet')}
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="rounded focus:outline-hidden focus:ring-2 focus:ring-pink-500"
                 >
                   <TableCellsIcon aria-hidden="true" />
                   <SidebarLabel>Spreadsheets</SidebarLabel>
@@ -189,7 +189,7 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                 <SidebarItem
                   href="/userscripts"
                   current={pathname.startsWith('/userscript')}
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="rounded focus:outline-hidden focus:ring-2 focus:ring-pink-500"
                 >
                   <SwatchIcon aria-hidden="true" />
                   <SidebarLabel>Userscripts</SidebarLabel>
@@ -199,7 +199,7 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                   current={
                     pathname.startsWith('/mice') || pathname.startsWith('/mouse') || pathname.startsWith('/groups')
                   }
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="rounded focus:outline-hidden focus:ring-2 focus:ring-pink-500"
                 >
                   <MouseIcon aria-hidden="true" />
                   <SidebarLabel>Mice</SidebarLabel>
@@ -207,7 +207,7 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                 <SidebarItem
                   href="/items"
                   current={pathname.startsWith('/item')}
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="rounded focus:outline-hidden focus:ring-2 focus:ring-pink-500"
                 >
                   <CheeseIcon aria-hidden="true" />
                   <SidebarLabel>Items</SidebarLabel>

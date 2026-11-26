@@ -88,7 +88,7 @@ export default async function UserscriptPage({ params }: { params: Promise<{ id:
           href={item.url || '#'}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-pink-600 px-4 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-pink-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-900"
+          className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-pink-600 px-4 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-pink-700 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-900"
         >
           {item.source ? `Install via ${item.source}` : 'Install script'}
           <ArrowRightIcon className="size-4" aria-hidden="true" />

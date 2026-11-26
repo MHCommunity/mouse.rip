@@ -339,7 +339,7 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
                 type="button"
                 onClick={() => setRange(option.key)}
                 aria-pressed={range === option.key}
-                className={`min-h-9 min-w-11 rounded-md px-3 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 ${
+                className={`min-h-9 min-w-11 rounded-md px-3 text-sm font-medium transition focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 ${
                   range === option.key
                     ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900'
                     : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'

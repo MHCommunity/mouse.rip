@@ -71,7 +71,7 @@ export function SearchBar({ className }: { className?: string }) {
             open(value);
           }
         }}
-        className="min-w-0 flex-1 bg-transparent text-base text-zinc-900 placeholder:text-zinc-500 focus:outline-none dark:text-white dark:placeholder:text-zinc-400 [&::-webkit-search-cancel-button]:hidden"
+        className="min-w-0 flex-1 bg-transparent text-base text-zinc-900 placeholder:text-zinc-500 focus:outline-hidden dark:text-white dark:placeholder:text-zinc-400 [&::-webkit-search-cancel-button]:hidden"
       />
       <kbd className="hidden shrink-0 rounded-md border whitespace-nowrap border-zinc-200 bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-500 pointer-fine:block dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400">
         {shortcut}
@@ -113,7 +113,7 @@ export function SearchExamples({
           // Two fit on one line at phone width; the rest join from sm up.
           className={clsx(
             index >= 2 && 'max-sm:hidden',
-            'inline-flex items-center rounded-md border border-zinc-200 bg-white px-2 py-1 font-medium pointer-coarse:min-h-11 pointer-coarse:px-3 text-zinc-800 transition-colors hover:border-pink-300 hover:bg-pink-50/50 hover:text-pink-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-pink-800 dark:hover:bg-pink-950/20 dark:hover:text-pink-300',
+            'inline-flex items-center rounded-md border border-zinc-200 bg-white px-2 py-1 font-medium pointer-coarse:min-h-11 pointer-coarse:px-3 text-zinc-800 transition-colors hover:border-pink-300 hover:bg-pink-50/50 hover:text-pink-700 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-pink-800 dark:hover:bg-pink-950/20 dark:hover:text-pink-300',
           )}
         >
           {name}
@@ -133,7 +133,7 @@ export function SearchButton({ className }: { className?: string }) {
       type="button"
       onClick={() => open()}
       className={clsx(
-        'group flex shrink-0 items-center gap-2.5 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-left text-sm shadow-sm transition hover:border-pink-300 hover:shadow-md active:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-pink-800',
+        'group flex shrink-0 items-center gap-2.5 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-left text-sm shadow-sm transition hover:border-pink-300 hover:shadow-md active:translate-y-px focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-pink-800',
         className,
       )}
     >

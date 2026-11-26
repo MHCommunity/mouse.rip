@@ -48,7 +48,7 @@ export function Item({ item, showtags = false, headingLevel = 2, showCategory = 
   const destination = internal ? null : (item.source ?? hostnameOf(href));
 
   const className = clsx(
-    'group flex flex-col gap-1 px-4 py-3.5 transition-colors hover:bg-zinc-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset sm:flex-row sm:items-start sm:gap-6 dark:hover:bg-white/5',
+    'group flex flex-col gap-1 px-4 py-3.5 transition-colors hover:bg-zinc-50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-inset sm:flex-row sm:items-start sm:gap-6 dark:hover:bg-white/5',
     focusStyles[item.category],
   );
 

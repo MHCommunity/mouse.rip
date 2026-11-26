@@ -112,7 +112,7 @@ export function TimersStrip({ className }: { className?: string }) {
                   <li key={timer.id}>
                     <Link
                       href={timerLocationHref(timer)}
-                      className="group flex h-full flex-col rounded-lg border border-zinc-200 bg-white px-3.5 py-3 transition-colors hover:border-pink-300 hover:bg-pink-50/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-pink-800 dark:hover:bg-pink-950/20"
+                      className="group flex h-full flex-col rounded-lg border border-zinc-200 bg-white px-3.5 py-3 transition-colors hover:border-pink-300 hover:bg-pink-50/50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-pink-800 dark:hover:bg-pink-950/20"
                     >
                       <span className="text-xs text-zinc-600 dark:text-zinc-400">{timer.name}</span>
                       <span className="mt-0.5 flex flex-wrap items-center gap-1.5">

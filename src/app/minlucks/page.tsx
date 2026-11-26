@@ -227,7 +227,7 @@ function MinLucks({
               aria-pressed={power === null}
               onClick={() => setPower(null)}
               className={clsx(
-                'min-h-9 rounded-md px-3 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500',
+                'min-h-9 rounded-md px-3 text-sm font-medium focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500',
                 power === null
                   ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900'
                   : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700',
@@ -242,7 +242,7 @@ function MinLucks({
                 aria-pressed={power === type}
                 onClick={() => setPower(power === type ? null : type)}
                 className={clsx(
-                  'min-h-9 rounded-md px-3 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500',
+                  'min-h-9 rounded-md px-3 text-sm font-medium focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500',
                   POWER_TYPE_CHIP[type],
                   power === type ? 'ring-2 ring-zinc-900 dark:ring-white' : 'hover:brightness-95',
                 )}
@@ -305,7 +305,7 @@ function MinLucks({
                     pendingFocus.current = shown;
                     setShown(shown + PAGE_SIZE);
                   }}
-                  className="min-h-9 rounded-md bg-zinc-100 px-3 font-medium text-zinc-800 hover:bg-zinc-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+                  className="min-h-9 rounded-md bg-zinc-100 px-3 font-medium text-zinc-800 hover:bg-zinc-200 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
                 >
                   Show {Math.min(PAGE_SIZE, filteredMice.length - shown)} more
                 </button>

@@ -32,7 +32,7 @@ const INITIAL_SETUPS = 20;
 const OTHER_SETUPS_PER_MOUSE = 3;
 
 const selectClasses =
-  'rounded-lg border border-zinc-950/10 bg-white px-3 py-1.5 text-sm/6 text-zinc-950 shadow-sm hover:border-zinc-950/20 focus:border-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500/30 dark:border-white/10 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/20';
+  'rounded-lg border border-zinc-950/10 bg-white px-3 py-1.5 text-sm/6 text-zinc-950 shadow-sm hover:border-zinc-950/20 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 dark:border-white/10 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/20';
 const linkClasses = 'font-medium text-pink-700 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200';
 
 function useDebouncedValue<T>(value: T, delay: number) {
@@ -146,7 +146,7 @@ export function MapPlanner({
           }}
           placeholder={'Glazy\nAbominable Snow\nRelic Hunter'}
           spellCheck={false}
-          className="mt-2 block w-full rounded-lg border border-zinc-950/45 bg-white px-3 py-2 text-base/6 text-zinc-950 shadow-sm placeholder:text-zinc-500 focus:border-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500/30 sm:text-sm/6 dark:border-white/35 dark:bg-zinc-900 dark:text-white dark:placeholder:text-zinc-400"
+          className="mt-2 block w-full rounded-lg border border-zinc-950/45 bg-white px-3 py-2 text-base/6 text-zinc-950 shadow-sm placeholder:text-zinc-500 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 sm:text-sm/6 dark:border-white/35 dark:bg-zinc-900 dark:text-white dark:placeholder:text-zinc-400"
         />
 
         {loadFailed && (
@@ -166,7 +166,7 @@ export function MapPlanner({
                     type="button"
                     onClick={() => removeMouse(mouse)}
                     aria-label={`Remove ${mouse.name}`}
-                    className="rounded p-0.5 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:hover:bg-zinc-800 dark:hover:text-white"
+                    className="rounded p-0.5 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:hover:bg-zinc-800 dark:hover:text-white"
                   >
                     <XMarkIcon className="size-4" aria-hidden="true" />
                   </button>
@@ -416,7 +416,7 @@ function SetupCard({
       </ul>
 
       <details className="group border-t border-zinc-100 dark:border-zinc-800">
-        <summary className="flex cursor-pointer list-none items-center gap-1.5 px-4 py-2 text-xs font-medium text-zinc-600 hover:text-zinc-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:text-zinc-400 dark:hover:text-white [&::-webkit-details-marker]:hidden">
+        <summary className="flex cursor-pointer list-none items-center gap-1.5 px-4 py-2 text-xs font-medium text-zinc-600 hover:text-zinc-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:text-zinc-400 dark:hover:text-white [&::-webkit-details-marker]:hidden">
           <ChevronDownIcon
             className="size-4 transition-transform group-open:rotate-180 motion-reduce:transition-none"
             aria-hidden="true"

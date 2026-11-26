@@ -90,7 +90,7 @@ export function LocationLoot({ rows }: { rows: LocationLootRow[] }) {
       </div>
       {rest.length > 0 && (
         <details className="group mt-2">
-          <summary className="inline-flex min-h-9 cursor-pointer items-center rounded-md px-1 text-sm font-medium text-pink-700 hover:text-pink-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:text-pink-300 dark:hover:text-pink-200">
+          <summary className="inline-flex min-h-9 cursor-pointer items-center rounded-md px-1 text-sm font-medium text-pink-700 hover:text-pink-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:text-pink-300 dark:hover:text-pink-200">
             <span className="group-open:hidden">Show all {rows.length}</span>
             <span className="hidden group-open:inline">Show fewer</span>
           </summary>

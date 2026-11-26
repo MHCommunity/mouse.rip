@@ -102,7 +102,7 @@ export function MiceBrowser({ groups }: { groups: SlimGroup[] }) {
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Search mice by name…"
           aria-label="Search mice by name"
-          className="w-full border-0 bg-transparent py-3 text-base text-zinc-900 placeholder:text-zinc-500 focus:outline-none dark:text-white dark:placeholder:text-zinc-400"
+          className="w-full border-0 bg-transparent py-3 text-base text-zinc-900 placeholder:text-zinc-500 focus:outline-hidden dark:text-white dark:placeholder:text-zinc-400"
         />
         {filtering && mice && (
           <span className="shrink-0 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">{results.length}</span>
@@ -118,7 +118,7 @@ export function MiceBrowser({ groups }: { groups: SlimGroup[] }) {
               key={type}
               type="button"
               onClick={() => setActivePower((current) => (current === type ? null : type))}
-              className={`rounded-md px-2 py-1 text-xs font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 ${
+              className={`rounded-md px-2 py-1 text-xs font-medium transition focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 ${
                 POWER_TYPE_CHIP[type]
               } ${active ? 'ring-2 ring-pink-500' : ''} ${activePower && !active ? 'opacity-50' : ''}`}
             >
@@ -188,7 +188,7 @@ export function MiceBrowser({ groups }: { groups: SlimGroup[] }) {
               <Link
                 key={group.slug}
                 href={`/groups/${group.slug}`}
-                className="group flex flex-col overflow-hidden rounded-lg border border-zinc-200 bg-white transition-colors hover:border-pink-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-pink-800"
+                className="group flex flex-col overflow-hidden rounded-lg border border-zinc-200 bg-white transition-colors hover:border-pink-300 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-pink-800"
               >
                 {/* The game's banner for the group: its mice, painted together. */}
                 <GameImage

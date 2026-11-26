@@ -36,7 +36,7 @@ export function ClampedText({ children, className }: { children: React.ReactNode
           type="button"
           aria-expanded={expanded}
           onClick={() => setExpanded(!expanded)}
-          className="mt-1 inline-flex min-h-9 items-center rounded-md text-sm font-medium text-pink-700 hover:text-pink-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 sm:hidden dark:text-pink-300 dark:hover:text-pink-200"
+          className="mt-1 inline-flex min-h-9 items-center rounded-md text-sm font-medium text-pink-700 hover:text-pink-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 sm:hidden dark:text-pink-300 dark:hover:text-pink-200"
         >
           {expanded ? 'Less' : 'More'}
         </button>

@@ -33,7 +33,7 @@ function useDebouncedValue<T>(value: T, delay: number) {
 }
 
 const pillBase =
-  'shrink-0 rounded-full px-3 py-1 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500';
+  'shrink-0 rounded-full px-3 py-1 text-sm font-medium transition focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500';
 
 function filtersFromUrl(params: URLSearchParams, classificationOrder: string[]) {
   const type = params.get('type');
@@ -217,7 +217,7 @@ export function ItemsBrowser({
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Search items by name…"
           aria-label="Search items by name"
-          className="w-full border-0 bg-transparent py-3 text-base text-zinc-900 placeholder:text-zinc-400 focus:outline-none dark:text-white"
+          className="w-full border-0 bg-transparent py-3 text-base text-zinc-900 placeholder:text-zinc-400 focus:outline-hidden dark:text-white"
         />
         {filtering && items && (
           <span className="shrink-0 text-xs tabular-nums text-zinc-500 dark:text-zinc-400">{total}</span>
