@@ -29,8 +29,22 @@ const searchExamples = ['Glazy', 'Abominable Snow', 'Zombie', 'Relic Hunter'];
 /** The essentials guide new hunters should start with. */
 const BEGINNER_GUIDE = 'https://guide.mouse.rip/';
 
-/** The lookups hunters reach for mid-session, one tap from the front door. */
+/** The tools hunters reach for mid-session, one tap from the front door. */
 const quickLookups = [
+  {
+    href: '/catch-rate-estimator',
+    name: 'Catch rate estimator',
+    description: 'Your odds against every mouse',
+    image: itemImageUrl('acronym_weapon'),
+    tint: 'pink',
+  },
+  {
+    href: '/best-setup',
+    name: 'Best setup',
+    description: 'The trap that catches the most',
+    image: itemImageUrl('infinite_dark_magic_mirror_weapon'),
+    tint: 'violet',
+  },
   {
     href: '/minlucks',
     name: 'Minlucks',
@@ -44,7 +58,6 @@ const quickLookups = [
     name: 'Relic Hunter',
     description: 'Where she is right now',
     image: mouseImageUrl('relic_hunter'),
-    mouse: true,
     tint: 'violet',
   },
   {
@@ -61,7 +74,7 @@ const quickLookups = [
     image: '/images/essence/icuri.png',
     tint: 'pink',
   },
-] satisfies { href: string; name: string; description: string; image: string; mouse?: boolean; tint: Tint }[];
+] satisfies { href: string; name: string; description: string; image: string; tint: Tint }[];
 
 type DirectoryEntry = {
   href: string;
@@ -249,10 +262,10 @@ export default function Home() {
 
         <nav aria-labelledby="lookups-heading" className="mt-7">
           <h2 id="lookups-heading" className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-            Quick lookups
+            Handy tools
           </h2>
-          <ul className="mt-3 grid grid-cols-2 gap-2 lg:grid-cols-4">
-            {quickLookups.map(({ href, name, description, image, mouse, tint }) => (
+          <ul className="mt-3 grid grid-cols-2 gap-2 lg:grid-cols-3">
+            {quickLookups.map(({ href, name, description, image, tint }) => (
               <li key={href}>
                 <Link
                   href={href}
@@ -272,8 +285,8 @@ export default function Home() {
                       height={32}
                       loading="lazy"
                       decoding="async"
-                      // Mouse art stays square, as it is in the game; other art gets soft corners.
-                      className={clsx('size-8 shrink-0 object-cover', !mouse && 'rounded-md')}
+                      // Soft corners on every picture here, the Relic Hunter's too, so the cards match.
+                      className="size-8 shrink-0 rounded-md object-contain"
                     />
                   </span>
                   <span className="min-w-0">
