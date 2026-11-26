@@ -30,6 +30,8 @@ export function ItemPicker({
   placeholder = 'Type to search',
   clearable = false,
   clearLabel = 'None',
+  onFocus,
+  loading = false,
 }: {
   label: string;
   options: PickerOption[];
@@ -39,6 +41,10 @@ export function ItemPicker({
   /** Offer a way back to nothing picked, such as no charm. */
   clearable?: boolean;
   clearLabel?: string;
+  /** For a list that loads on first use. */
+  onFocus?: () => void;
+  /** The options are still on their way. */
+  loading?: boolean;
 }) {
   const [query, setQuery] = useState('');
   const selected = options.find((option) => option.value === value) ?? null;
@@ -80,6 +86,7 @@ export function ItemPicker({
             onChange={(event) => setQuery(event.target.value)}
             placeholder={placeholder}
             autoComplete="off"
+            onFocus={onFocus}
           />
           <div className="absolute inset-y-0 right-1 flex items-center">
             {clearable && selected && (
@@ -110,6 +117,11 @@ export function ItemPicker({
             >
               {clearLabel}
             </Headless.ComboboxOption>
+          )}
+          {loading && options.length === 0 && (
+            <div className="px-2.5 py-1.5 text-sm text-zinc-600 dark:text-zinc-400" role="status">
+              Loading…
+            </div>
           )}
           {filtered.map((option) => (
             <Headless.ComboboxOption

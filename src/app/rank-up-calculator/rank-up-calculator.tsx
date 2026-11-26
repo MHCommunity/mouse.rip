@@ -1,7 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
-import React, { useEffect, useState, useSyncExternalStore } from 'react';
+import React, { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { GameImage } from '@/components/game-image';
@@ -11,6 +10,8 @@ import { loadMouseIndex, type IndexedMouse } from '@/lib/client-index';
 import { cleanNumber, findMouseByName, rankUp, type RankTitle } from '@/lib/rank-up';
 import { formatNumber } from '@/utils';
 import { HEADLINE_PANEL } from '@/components/panel';
+import { ItemPicker } from '@/components/item-picker';
+import { mouseImageUrl } from '@/lib/image-urls';
 
 export type { RankTitle } from '@/lib/rank-up';
 
@@ -155,6 +156,10 @@ export function RankUpCalculator({
     exactWisdom,
   });
   const mouse = findMouseByName(mice, mouseName);
+  const mouseOptions = useMemo(
+    () => (mice ?? []).map((m) => ({ value: m.name, name: m.name, image: mouseImageUrl(m.type) })),
+    [mice],
+  );
 
   return (
     <div className="space-y-8">
@@ -243,27 +248,19 @@ export function RankUpCalculator({
             </p>
 
             <div className="mt-5 border-t border-zinc-200 pt-5 dark:border-zinc-800">
-              <label className={clsx(labelClasses, 'max-w-sm')}>
-                <span>
-                  In catches of <span className={hintClasses}>(optional)</span>
-                </span>
-                <Input
-                  type="text"
-                  list="wisdom-mice"
-                  autoComplete="off"
-                  placeholder="Type a mouse, e.g. Glazy"
-                  value={mouseName}
+              <div className="max-w-sm">
+                <ItemPicker
+                  label="In catches of (optional)"
+                  options={mouseOptions}
+                  value={mouse?.name ?? ''}
+                  onChange={(name) => change({ mouse: name })}
                   onFocus={() => setWantsMice(true)}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => change({ mouse: e.target.value })}
+                  loading={!mice}
+                  placeholder="Type a mouse, e.g. Glazy"
+                  clearable
+                  clearLabel="No mouse"
                 />
-                <datalist id="wisdom-mice">
-                  {mice?.map((m) => (
-                    <option key={m.type} value={m.name}>
-                      {m.name}
-                    </option>
-                  ))}
-                </datalist>
-              </label>
+              </div>
               {mouse && (
                 <p className="mt-3 text-sm text-zinc-700 dark:text-zinc-300">
                   <strong className="font-semibold text-zinc-950 dark:text-white">

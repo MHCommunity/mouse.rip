@@ -13,6 +13,7 @@ test('works out the wisdom and catches needed', async ({ page }) => {
   await fillBaronToCount(page);
   await expect(result(page)).toContainText('4,900,621');
   await page.getByLabel(/In catches of/).fill('Glazy');
+  await page.getByRole('option', { name: 'Glazy Mouse' }).click();
   await expect(result(page)).toContainText('1,362 catches of Glazy Mouse');
   await expect(page).toHaveURL(/title=baron_baroness.*progress=42\.5.*mouse=Glazy/);
 });
@@ -44,7 +45,7 @@ test('the mouse list only loads when it is wanted', async ({ page }) => {
   page.on('request', (request) => requested.push(request.url()));
   await page.goto('/rank-up-calculator', { waitUntil: 'networkidle' });
   const before = requested.length;
-  await page.getByLabel(/In catches of/).focus();
-  await expect(page.locator('#wisdom-mice option').first()).toBeAttached();
+  await page.getByLabel(/In catches of/).fill('Glaz');
+  await expect(page.getByRole('option', { name: 'Glazy Mouse' })).toBeVisible();
   expect(requested.length).toBeGreaterThan(before);
 });
