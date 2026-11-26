@@ -92,7 +92,7 @@ export default function MinLucksPage() {
   // boundary so the header can still be prerendered.
   return (
     <div>
-      <PageHeader title="Mouse minlucks" description="The minimum luck that guarantees a catch with each power type." />
+      <PageHeader title="Minlucks" description="The minimum luck that guarantees a catch with each power type." />
       {/* Until the link's filters are readable, show the page unfiltered rather than nothing. */}
       <Suspense fallback={<MinLucks initialQuery="" initialPower={null} syncUrl={false} />}>
         <MinLucksFromUrl />

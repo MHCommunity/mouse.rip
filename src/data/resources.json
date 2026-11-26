@@ -80,7 +80,7 @@
     "name": "Minimum Luck Values List",
     "description": "Minluck values for all mice.",
     "url": "https://docs.google.com/spreadsheets/d/13hKjNDFTFR3rTkmQzyi3d4ZDOlQJUvTfWPDQemmFW_Y/edit#gid=824520716",
-    "source": "Google Docs",
+    "source": "Google Sheets",
     "category": "spreadsheet"
   },
   {
@@ -88,7 +88,7 @@
     "name": "Wisdom Values",
     "description": "Wisdom earned for each mouse.",
     "url": "https://docs.google.com/spreadsheets/d/1nzD6iiHauMMwD2eHBuAyRziYJtCVnNwSYzCKbBnrRgc/edit#gid=1426419522",
-    "source": "Google Docs",
+    "source": "Google Sheets",
     "category": "spreadsheet"
   },
   {
@@ -96,7 +96,7 @@
     "name": "MouseHunt Crown Tracker",
     "description": "Track your crowns and progress.",
     "url": "https://docs.google.com/spreadsheets/d/16s24Y4UdkCMt1JBHvVrI6a8N3gbVF6uSkz8SJJ88SP4/edit?gid=577298820#gid=577298820",
-    "source": "Google Docs",
+    "source": "Google Sheets",
     "category": "spreadsheet"
   },
   {
@@ -104,7 +104,7 @@
     "name": "Location Trap Effects",
     "description": "Effects of traps and bases that are location-specific.",
     "url": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRg_s_It1mDCefWgwc-7Gexr5Hc7lKBztFue9kYZidI76iodSUan3BoGsagLCI1M26U_zG7uVMe9kgK/pubhtml?gid=0&single=true",
-    "source": "Google Docs",
+    "source": "Google Sheets",
     "category": "spreadsheet"
   },
   {
@@ -112,7 +112,7 @@
     "name": "Most Mice Caught in a Row",
     "description": "Records for catching the same mouse many times in a row.",
     "url": "https://docs.google.com/spreadsheets/d/1AaZ7Fm_wpT_QNyvNoMLhcUdW7Z9MIJhGqlWGWAZmBjw/edit?authkey=CIT9pL4M&authkey=CIT9pL4M",
-    "source": "Google Docs",
+    "source": "Google Sheets",
     "category": "spreadsheet"
   },
   {
@@ -120,7 +120,7 @@
     "name": "MouseHunt Item DB",
     "description": "Item IDs, types, stats, and more.",
     "url": "https://docs.google.com/spreadsheets/d/1xWFQgV3T2NOvfN_I8kvFxWHbH9i240rp2UFi2SEi6Zc/edit#gid=1624144283",
-    "source": "Google Docs",
+    "source": "Google Sheets",
     "category": "spreadsheet"
   },
   {
@@ -135,28 +135,27 @@
   },
   {
     "id": "catch-rate-estimator",
-    "name": "Catch Rate Estimator",
-    "description": "Estimate your catch rate against each mouse from your trap setup.",
+    "name": "MH-Tools Catch Rate Estimator",
+    "description": "The original that mouse.rip’s estimator is built on. It also shows gold, points and tournament points, and fills in your setup from the game with a bookmarklet.",
     "url": "https://tsitu.github.io/MH-Tools/cre.html",
     "source": "tsitu.github.io",
     "category": "tool",
-    "highlight": true,
     "locations": [
       "all"
     ]
   },
   {
     "id": "best-setup-tool",
-    "name": "Best Setup Tool",
-    "description": "Rank the trap setups you own by catch rate for a location and cheese.",
+    "name": "MH-Tools Best Setup",
+    "description": "The original Best Setup, which can load the traps you own straight from the game with a bookmarklet.",
     "url": "https://tsitu.github.io/MH-Tools/setup.html",
     "source": "tsitu.github.io",
     "category": "tool"
   },
   {
     "id": "map-solver",
-    "name": "Map Solver",
-    "description": "Paste your treasure map's mice to find the locations that attract the most of them.",
+    "name": "MH-Tools Map Solver",
+    "description": "MH-Tools' map solver: paste your treasure map's mice to find the locations that attract the most of them.",
     "url": "https://tsitu.github.io/MH-Tools/map.html",
     "source": "tsitu.github.io",
     "category": "tool",
@@ -260,7 +259,7 @@
   {
     "id": "queso-pump-calculator",
     "name": "Queso pump calculator",
-    "description": "Find the most time-efficient Queso cheese to pump the volcano with.",
+    "description": "The fastest Queso cheese for farming the Nachore that pumps the volcano.",
     "url": "/queso-pump-calculator",
     "category": "tool",
     "tags": [
@@ -362,7 +361,7 @@
   },
   {
     "id": "ranks-beyond-mhbasics",
-    "name": "'Shellnut' Guide",
+    "name": "Shellnut Guide",
     "description": "A guide from Baron rank onwards, outlining key traps, bases, and areas to focus on.",
     "url": "/guides/ranks-beyond-mhbasics",
     "sourceUrl": "https://pastebin.com/mfXiFLYA",
@@ -510,7 +509,7 @@
   },
   {
     "id": "folklore-forest-first-edition-guide",
-    "name": "Folklore Forest - First Edition Guide",
+    "name": "Folklore Forest: First Edition Guide",
     "description": "An introduction to the first three Folklore Forest areas and their mechanics.",
     "url": "https://www.reddit.com/r/mousehunt/comments/x0ypts/folklore_forest_first_edition_guide/",
     "source": "Reddit",
@@ -524,8 +523,8 @@
   },
   {
     "id": "minlucks",
-    "name": "Mouse minluck search",
-    "description": "Minluck for every mouse against each power type.",
+    "name": "Minlucks",
+    "description": "The luck that guarantees a catch for every mouse, with each power type.",
     "url": "/minlucks",
     "category": "tool",
     "locations": [

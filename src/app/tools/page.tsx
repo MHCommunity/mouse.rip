@@ -52,7 +52,7 @@ export default function Tools() {
     <div>
       <PageHeader
         title="MouseHunt tools"
-        description="Calculators and lookups for planning your next hunt: our own first, then the community’s favourites on other sites."
+        description="Calculators and lookups for planning your next hunt: our own first, then the community’s favorites on other sites."
         count={items.length}
         countLabel="tools"
         icon={WrenchIcon}
