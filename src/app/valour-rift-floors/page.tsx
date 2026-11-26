@@ -5,6 +5,8 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { Suspense, useState, type ChangeEvent } from 'react';
 
 import { Input } from '@/components/input';
+import { BuildingOffice2Icon } from '@heroicons/react/20/solid';
+import { formatNumber } from '@/utils';
 import { PageHeader } from '@/components/page-header';
 
 interface FloorGroup {
@@ -38,6 +40,8 @@ export default function ValourRiftFloorsPage() {
       <PageHeader
         title="Valour Rift floors"
         description="Floor types in the Valour Rift tower repeat in a cycle of eight. Enter your floor to see what's coming next."
+        icon={BuildingOffice2Icon}
+        iconClassName="bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300"
       />
       {/* useSearchParams needs a Suspense boundary so the header can still be prerendered. */}
       {/* Until the link's floor is readable, show the full cycle rather than nothing. */}
@@ -100,9 +104,11 @@ function ValourRiftFloors({
         />
       </div>
 
-      <ol className="mt-6 divide-y divide-zinc-200 overflow-hidden rounded-lg border border-zinc-200 bg-white dark:divide-zinc-800 dark:border-zinc-800 dark:bg-zinc-900">
+      <ol className="mt-6 divide-y divide-zinc-100 overflow-hidden rounded-2xl bg-white shadow-xs ring-1 ring-zinc-200 dark:divide-zinc-800 dark:bg-zinc-900 dark:ring-zinc-800">
         {reorderedFloors.map((floor, idx) => {
           const isCurrent = hasFloor && idx === 0;
+          // From the entered floor, the next three floors of this type; otherwise the first three in the tower.
+          const floors = hasFloor ? [0, 1, 2].map((lap) => floorNum + idx + lap * FLOOR_ORDER.length) : floor.floors;
 
           return (
             <li
@@ -128,7 +134,7 @@ function ValourRiftFloors({
               </span>
               <span className="text-sm tabular-nums text-zinc-600 dark:text-zinc-400">
                 <span className="sr-only">Floors </span>
-                {floor.floors.join(', ')}
+                {floors.map((number) => formatNumber(number)).join(', ')}
               </span>
             </li>
           );
