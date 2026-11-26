@@ -11,7 +11,11 @@ import { POWER_TYPES, POWER_TYPE_CHIP, bestPowerTypes, powerTypeLabel } from '@/
 import { mouseGroupImageUrl, mouseImageUrl } from '@/lib/image-urls';
 import { GameImage } from '@/components/game-image';
 import { SectionHeading } from '@/components/section-heading';
+import { useRememberedCount } from '@/lib/use-remembered-count';
 import { formatNumber } from '@/utils';
+
+// A broad filter can match hundreds of mice, so this many render until the rest are asked for.
+const ROW_LIMIT = 400;
 
 export interface SlimGroup {
   slug: string;
@@ -113,11 +117,19 @@ export function MiceBrowser({
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [mice, query, activePower, filtering]);
 
-  // A broad filter can match hundreds of mice, so the first 400 render until the rest are asked for. Changing the
-  // filter caps it again.
+  // How many results are shown. Kept across a visit to a mouse's page and Back, so "Show all" doesn't have to be
+  // pressed again to return to the same mouse. Changing the filter caps the list again.
   const filterKey = `${query.trim().toLowerCase()}|${activePower ?? ''}`;
-  const [showAllFor, setShowAllFor] = useState<string | null>(null);
-  const cap = showAllFor === filterKey ? results.length : 400;
+  const [cap, setCap] = useRememberedCount(
+    syncUrl ? `mice|${filterKey}` : null,
+    ROW_LIMIT,
+    !filtering || mice !== null || loadFailed,
+  );
+  const [lastFilterKey, setLastFilterKey] = useState(filterKey);
+  if (filterKey !== lastFilterKey) {
+    setLastFilterKey(filterKey);
+    setCap(ROW_LIMIT);
+  }
 
   return (
     <div>
@@ -210,10 +222,10 @@ export function MiceBrowser({
             })}
             {results.length > cap && (
               <li className="w-full pt-2 text-sm text-zinc-600 dark:text-zinc-400">
-                Showing the first {cap} of {formatNumber(results.length)}.{' '}
+                Showing the first {formatNumber(cap)} of {formatNumber(results.length)}.{' '}
                 <button
                   type="button"
-                  onClick={() => setShowAllFor(filterKey)}
+                  onClick={() => setCap(results.length)}
                   className="font-medium text-pink-700 underline underline-offset-2 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200"
                 >
                   Show all {formatNumber(results.length)}
