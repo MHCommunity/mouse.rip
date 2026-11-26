@@ -144,7 +144,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
             <img
               src={image}
               alt=""
-              className={`shrink-0 rounded-2xl bg-white object-contain p-2 shadow-sm ring-1 ring-zinc-950/5 dark:ring-white/10 ${
+              className={`shrink-0 bg-white object-contain p-2 shadow-sm ring-1 ring-zinc-950/5 dark:ring-white/10 ${
                 mouse.images?.is_landscape ? 'h-20 w-32 sm:h-36 sm:w-64' : 'size-20 sm:size-36'
               }`}
             />
@@ -211,8 +211,9 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
           <SectionHeading id="how-to-catch-heading" className="text-lg/7">
             How to catch it
           </SectionHeading>
-          <div className="mt-3 overflow-hidden rounded-2xl bg-white shadow-xs ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
-            <div className="px-4 py-4 sm:px-5">
+          {/* Where to hunt and the power types sit side by side once there's room, and stack on a phone. */}
+          <div className={`mt-3 grid gap-4 ${bestSpot && typeRows.length > 0 ? 'lg:grid-cols-2' : ''}`}>
+            <div className="rounded-2xl bg-white shadow-xs ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800 px-4 py-4 sm:px-5">
               <p className="text-sm font-medium text-zinc-600 dark:text-zinc-400">Best place to hunt</p>
               {bestSpot ? (
                 <>
@@ -263,8 +264,11 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
             </div>
 
             {typeRows.length > 0 && (
-              <div className="border-t border-zinc-200 dark:border-zinc-800">
-                <table className="w-full text-sm">
+              <div className="overflow-hidden rounded-2xl bg-white shadow-xs ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
+                <p className="px-4 pt-4 text-sm font-medium text-zinc-600 sm:px-5 dark:text-zinc-400">
+                  Power types and minluck
+                </p>
+                <table className="mt-1 w-full text-sm">
                   <caption className="sr-only">Minluck and effectiveness by power type</caption>
                   <thead className="text-left text-xs text-zinc-600 dark:text-zinc-400">
                     <tr>
@@ -353,7 +357,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
                       src={mouseImageUrl(otherSlug)}
                       alt=""
                       loading="lazy"
-                      className="size-14 shrink-0 rounded-xl bg-white object-contain p-1"
+                      className="size-14 shrink-0 bg-white object-contain p-1"
                     />
                     <span className="text-sm/5 font-medium text-zinc-800 group-hover:text-pink-700 dark:text-zinc-200 dark:group-hover:text-pink-300">
                       {other.name}

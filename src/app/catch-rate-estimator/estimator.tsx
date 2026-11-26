@@ -348,7 +348,7 @@ function Results({ catalog, setup, result }: { catalog: Catalog; setup: Setup; r
                       src={mouseImageUrl(mouse.type)}
                       width={28}
                       height={28}
-                      className="size-7 shrink-0 rounded-md bg-white object-contain"
+                      className="size-7 shrink-0 bg-white object-contain"
                     />
                     {mouse.name}
                   </Link>
