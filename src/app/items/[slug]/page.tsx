@@ -6,7 +6,7 @@ import { ExternalRefs } from '@/components/external-refs';
 import { Heading } from '@/components/heading';
 import { Link } from 'next-view-transitions';
 
-import { getLocations } from '@/lib/site-data';
+import { getLocations, getTitles } from '@/lib/site-data';
 import {
   getAllGameItems,
   getConvertibleContents,
@@ -208,7 +208,7 @@ function StatsTable({ stats }: { stats: GameItemStats }) {
         label="Power type"
         value={
           <span
-            className={`inline-flex rounded-md px-2 py-0.5 text-xs font-medium ${POWER_TYPE_CHIP[stats.power_type] ?? ''}`}
+            className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${POWER_TYPE_CHIP[stats.power_type] ?? ''}`}
           >
             {powerTypeLabel(stats.power_type)}
           </span>
@@ -230,7 +230,7 @@ function StatsTable({ stats }: { stats: GameItemStats }) {
         label="Cheese effect"
         value={
           <span
-            className={`inline-flex rounded-md px-2 py-0.5 text-xs font-medium ${
+            className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
               stats.cheese_effect.includes('Fresh')
                 ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
                 : stats.cheese_effect.includes('Stale')
@@ -248,7 +248,15 @@ function StatsTable({ stats }: { stats: GameItemStats }) {
       <StatRow
         key="min_title"
         label="Minimum title"
-        value={stats.min_title.charAt(0).toUpperCase() + stats.min_title.slice(1)}
+        value={
+          <Link
+            href="/titles"
+            className="font-medium text-zinc-900 underline decoration-zinc-300 underline-offset-2 hover:text-pink-700 hover:decoration-pink-400 dark:text-white dark:decoration-zinc-600 dark:hover:text-pink-300"
+          >
+            {/* The game stores the title's id ("archduke_archduchess"); show its name. */}
+            {getTitles().find((title) => title.id === stats.min_title)?.name ?? titleCase(stats.min_title)}
+          </Link>
+        }
       />,
     );
 
@@ -313,13 +321,13 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
 
       <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Items', href: '/items' }, { name: item.name }]} />
 
-      <header className="flex items-start gap-4 sm:gap-6">
+      <header className="flex items-start gap-4 rounded-3xl bg-linear-to-br from-pink-50 via-white to-amber-50 p-4 ring-1 ring-pink-100/80 sm:gap-6 sm:p-6 dark:from-pink-950/30 dark:via-zinc-900 dark:to-amber-950/20 dark:ring-zinc-800">
         {image && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={image}
             alt=""
-            className="size-20 shrink-0 rounded-xl bg-white object-contain p-2 ring-1 ring-zinc-950/10 sm:size-40 dark:ring-white/15"
+            className="size-20 shrink-0 rounded-2xl bg-white object-contain p-2 shadow-sm ring-1 ring-zinc-950/5 sm:size-40 dark:ring-white/10"
           />
         )}
         <div className="min-w-0">
@@ -328,14 +336,14 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
             <Link
               href={`/items/type/${item.classification}`}
               title={`All ${classificationLabel(item.classification).toLowerCase()}`}
-              className="inline-flex rounded-md bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600 transition hover:ring-2 hover:ring-pink-400 dark:bg-zinc-800 dark:text-zinc-300"
+              className="inline-flex rounded-full bg-white/80 px-2.5 py-0.5 text-xs font-medium text-zinc-700 ring-1 ring-zinc-200 transition hover:ring-2 hover:ring-pink-400 dark:bg-white/5 dark:text-zinc-300 dark:ring-zinc-700"
             >
               {classificationName(item.classification)}
             </Link>
             {flags.map((flag) => (
               <span
                 key={flag.label}
-                className={`inline-flex rounded-md px-2 py-0.5 text-xs font-medium ${
+                className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
                   flag.limit
                     ? 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300'
                     : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'

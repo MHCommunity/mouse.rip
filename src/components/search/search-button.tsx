@@ -113,7 +113,7 @@ export function SearchExamples({
           // Two fit on one line at phone width; the rest join from sm up.
           className={clsx(
             index >= 2 && 'max-sm:hidden',
-            'inline-flex items-center rounded-md border border-zinc-200 bg-white px-2 py-1 font-medium pointer-coarse:min-h-11 pointer-coarse:px-3 text-zinc-800 transition-colors hover:border-pink-300 hover:bg-pink-50/50 hover:text-pink-700 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-pink-800 dark:hover:bg-pink-950/20 dark:hover:text-pink-300',
+            'inline-flex items-center rounded-full border border-zinc-200 bg-white px-2.5 py-1 font-medium pointer-coarse:min-h-11 pointer-coarse:px-3.5 text-zinc-800 transition-colors hover:border-pink-300 hover:bg-pink-50/50 hover:text-pink-700 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-pink-800 dark:hover:bg-pink-950/20 dark:hover:text-pink-300',
           )}
         >
           {name}

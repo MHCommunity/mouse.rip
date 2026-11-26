@@ -7,6 +7,7 @@ import clsx from 'clsx';
 
 import { ItemList } from '@/components/item-list';
 import { SearchBar, SearchExamples } from '@/components/search/search-button';
+import { TINTS, type Tint } from '@/components/tool-card';
 import { TimersStrip } from '@/components/timers';
 
 import { getLocations, getResourcesByCategory, getPopularResources } from '@/lib/site-data';
@@ -36,6 +37,7 @@ const quickLookups = [
     description: 'Luck that guarantees a catch',
     // The game's own luck stat icon, from the trap stats on the Camp page.
     image: '/images/stats/luck.png',
+    tint: 'green',
   },
   {
     href: '/relic-hunter',
@@ -43,20 +45,23 @@ const quickLookups = [
     description: 'Where she is right now',
     image: mouseImageUrl('relic_hunter'),
     mouse: true,
+    tint: 'violet',
   },
   {
     href: '/valour-rift-floors',
     name: 'Valour Rift floors',
     description: 'Which floor types come next',
     image: locationImageUrl('valour-rift'),
+    tint: 'sky',
   },
   {
     href: '/essence-calculator',
     name: 'Essence calculator',
     description: 'What your essences craft into',
     image: '/images/essence/icuri.png',
+    tint: 'pink',
   },
-];
+] satisfies { href: string; name: string; description: string; image: string; mouse?: boolean; tint: Tint }[];
 
 type DirectoryEntry = {
   href: string;
@@ -216,12 +221,15 @@ export default function Home() {
           community&rsquo;s best guides and tools.
         </p>
 
-        <div className="mt-5 max-w-2xl">
-          <SearchBar />
+        <div className="mt-5">
+          <div className="max-w-2xl">
+            <SearchBar />
+          </div>
+          {/* Wider than the search bar, so the pill-shaped examples fit on one line on a desktop. */}
           <SearchExamples
             examples={searchExamples}
             label="Try a mouse for its minluck and best cheese:"
-            className="mt-3"
+            className="mt-3 max-w-3xl"
           />
         </div>
 
@@ -244,23 +252,30 @@ export default function Home() {
             Quick lookups
           </h2>
           <ul className="mt-3 grid grid-cols-2 gap-2 lg:grid-cols-4">
-            {quickLookups.map(({ href, name, description, image, mouse }) => (
+            {quickLookups.map(({ href, name, description, image, mouse, tint }) => (
               <li key={href}>
                 <Link
                   href={href}
-                  className="group flex h-full items-center gap-2.5 rounded-lg border border-zinc-200 bg-white px-3 py-2.5 transition-colors hover:border-pink-300 hover:bg-pink-50/50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 sm:items-start sm:gap-3 sm:px-3.5 sm:py-3 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-pink-800 dark:hover:bg-pink-950/20"
+                  className="group flex h-full items-center gap-2.5 rounded-2xl bg-white px-3 py-2.5 shadow-xs ring-1 ring-zinc-200 transition hover:-translate-y-0.5 hover:shadow-md hover:ring-pink-200 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:gap-3 sm:px-3.5 sm:py-3 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:ring-pink-900"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={image}
-                    alt=""
-                    width={32}
-                    height={32}
-                    loading="lazy"
-                    decoding="async"
-                    // Mouse art stays square, as it is in the game; other art gets soft corners.
-                    className={clsx('size-8 shrink-0 object-cover sm:mt-0.5', !mouse && 'rounded-md')}
-                  />
+                  <span
+                    className={clsx(
+                      'flex size-11 shrink-0 items-center justify-center rounded-xl ring-1 ring-inset',
+                      TINTS[tint],
+                    )}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={image}
+                      alt=""
+                      width={32}
+                      height={32}
+                      loading="lazy"
+                      decoding="async"
+                      // Mouse art stays square, as it is in the game; other art gets soft corners.
+                      className={clsx('size-8 shrink-0 object-cover', !mouse && 'rounded-md')}
+                    />
+                  </span>
                   <span className="min-w-0">
                     <span className="block text-sm/5 font-semibold text-zinc-900 group-hover:text-pink-700 dark:text-zinc-100 dark:group-hover:text-pink-300">
                       {name}
