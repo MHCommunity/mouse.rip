@@ -107,6 +107,8 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
 
   const attraction = getMouseAttraction(mouse.id);
   const bestSpot = bestAttractionRow(attraction);
+  // Without data the attraction section below says so; the card only shows for the Relic Hunter, who has a page.
+  const whereCard = Boolean(bestSpot) || mouse.type === 'relic_hunter';
 
   return (
     <div>
@@ -185,41 +187,50 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
         </dl>
       </header>
 
-      {(typeRows.length > 0 || bestSpot) && (
+      {(typeRows.length > 0 || whereCard) && (
         <section aria-labelledby="how-to-catch-heading" className="mt-10">
           <SectionHeading id="how-to-catch-heading">How to catch it</SectionHeading>
           {/* Where to hunt and the power types sit side by side once there's room, and stack on a phone. */}
-          <div className={`mt-3 grid gap-4 ${bestSpot && typeRows.length > 0 ? 'lg:grid-cols-2' : ''}`}>
-            <div className="rounded-2xl bg-white shadow-xs ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800 px-4 py-4 sm:px-5">
-              <p className="text-sm font-medium text-zinc-600 dark:text-zinc-400">Best place to hunt</p>
-              {bestSpot ? (
-                <>
-                  <div className="mt-1 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-                    <p className="text-base text-zinc-900 dark:text-zinc-100">
-                      <LocationCell location={bestSpot.location} stage={bestSpot.stage} />
-                      <span className="text-zinc-600 dark:text-zinc-400"> with </span>
-                      <CheeseCell cheese={bestSpot.cheese} />
-                      {bestSpot.charm && (
-                        <>
-                          <span className="text-zinc-600 dark:text-zinc-400"> and </span>
-                          {bestSpot.charm}
-                        </>
-                      )}
+          <div className={`mt-3 grid gap-4 ${whereCard && typeRows.length > 0 ? 'lg:grid-cols-2' : ''}`}>
+            {whereCard && (
+              <div className="rounded-2xl bg-white shadow-xs ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800 px-4 py-4 sm:px-5">
+                <p className="text-sm font-medium text-zinc-600 dark:text-zinc-400">Best place to hunt</p>
+                {bestSpot ? (
+                  <>
+                    <div className="mt-1 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+                      <p className="text-base text-zinc-900 dark:text-zinc-100">
+                        <LocationCell location={bestSpot.location} stage={bestSpot.stage} />
+                        <span className="text-zinc-600 dark:text-zinc-400"> with </span>
+                        <CheeseCell cheese={bestSpot.cheese} />
+                        {bestSpot.charm && (
+                          <>
+                            <span className="text-zinc-600 dark:text-zinc-400"> and </span>
+                            {bestSpot.charm}
+                          </>
+                        )}
+                      </p>
+                      <p className="rounded-full bg-pink-50 px-3 py-1 text-lg font-semibold tabular-nums text-pink-800 ring-1 ring-pink-100 dark:bg-pink-950/50 dark:text-pink-200 dark:ring-pink-900/60">
+                        {formatRate(bestSpot.rate)}
+                      </p>
+                    </div>
+                    <p className="mt-1 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
+                      {bestSpot.total_hunts
+                        ? `Attraction rate from ${formatNumber(bestSpot.total_hunts)} hunts on MHCT.`
+                        : 'Attraction rate from MH-Tools.'}
                     </p>
-                    <p className="rounded-full bg-pink-50 px-3 py-1 text-lg font-semibold tabular-nums text-pink-800 ring-1 ring-pink-100 dark:bg-pink-950/50 dark:text-pink-200 dark:ring-pink-900/60">
-                      {formatRate(bestSpot.rate)}
-                    </p>
-                  </div>
-                  <p className="mt-1 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
-                    {bestSpot.total_hunts
-                      ? `Attraction rate from ${formatNumber(bestSpot.total_hunts)} hunts on MHCT.`
-                      : 'Attraction rate from MH-Tools.'}
+                  </>
+                ) : (
+                  // Only the Relic Hunter gets this card without data: she moves every day.
+                  <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">
+                    She moves to a new location every day.{' '}
+                    <Link href="/relic-hunter" className={accentLink}>
+                      See where she is today
+                    </Link>
+                    .
                   </p>
-                </>
-              ) : (
-                <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">No attraction data for this mouse yet.</p>
-              )}
-            </div>
+                )}
+              </div>
+            )}
 
             {typeRows.length > 0 && (
               <div className="overflow-hidden rounded-2xl bg-white shadow-xs ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
