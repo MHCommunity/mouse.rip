@@ -8,18 +8,10 @@ import { GameImage } from '@/components/game-image';
 import { Input } from '@/components/input';
 import { Link } from '@/components/link';
 import { mouseImageUrl } from '@/lib/image-urls';
+import { rankMice, type RankBy, type RankedMouse } from '@/lib/rankings';
 import { formatNumber } from '@/utils';
 
-export interface RankedMouse {
-  slug: string;
-  name: string;
-  group: string;
-  points: number;
-  gold: number;
-  wisdom: number;
-}
-
-type RankBy = 'points' | 'gold' | 'wisdom';
+export type { RankedMouse } from '@/lib/rankings';
 
 const COLUMNS: { key: RankBy; label: string }[] = [
   { key: 'points', label: 'Points' },
@@ -77,15 +69,7 @@ export function RankingsTable({
   const groups = useMemo(() => [...new Set(mice.map((mouse) => mouse.group))].sort(), [mice]);
 
   // Ranks are over every mouse, so filtering by group keeps each mouse's overall rank.
-  const ranked = useMemo(() => {
-    const sorted = [...mice].sort((a, b) => b[by] - a[by] || a.name.localeCompare(b.name));
-    // Mice with the same value share the rank of the first of them.
-    const rankOf = new Map<number, number>();
-    sorted.forEach((mouse, index) => {
-      if (!rankOf.has(mouse[by])) rankOf.set(mouse[by], index + 1);
-    });
-    return sorted.map((mouse) => ({ mouse, rank: rankOf.get(mouse[by]) ?? 0 }));
-  }, [mice, by]);
+  const ranked = useMemo(() => rankMice(mice, by), [mice, by]);
 
   const rows = useMemo(() => {
     const needle = query.trim().toLowerCase();

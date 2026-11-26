@@ -8,15 +8,10 @@ import { GameImage } from '@/components/game-image';
 import { Input } from '@/components/input';
 import { Link } from '@/components/link';
 import { loadMouseIndex, type IndexedMouse } from '@/lib/client-index';
+import { cleanNumber, findMouseByName, rankUp, type RankTitle } from '@/lib/rank-up';
 import { formatNumber } from '@/utils';
 
-export interface RankTitle {
-  id: string;
-  name: string;
-  /** Total wisdom needed to reach this title. */
-  wisdom: number;
-  image: string;
-}
+export type { RankTitle } from '@/lib/rank-up';
 
 /** What the hunter has entered, as it goes in the URL and in local storage. */
 interface Entries {
@@ -89,14 +84,6 @@ const hintClasses = 'text-xs font-normal text-zinc-600 dark:text-zinc-400';
 const selectClasses =
   'w-full rounded-lg border border-zinc-950/10 bg-white px-3 py-2.5 text-base/6 text-zinc-950 shadow-sm hover:border-zinc-950/20 focus:border-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500/30 sm:py-1.5 sm:text-sm/6 dark:border-white/10 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/20';
 
-/** Digits only, with an optional decimal part when `decimal` is set. */
-function cleanNumber(value: string, decimal = false): string {
-  const stripped = value.replace(decimal ? /[^0-9.]/g : /[^0-9]/g, '');
-  if (!decimal) return stripped;
-  const [whole, ...rest] = stripped.split('.');
-  return rest.length > 0 ? `${whole}.${rest.join('')}` : whole;
-}
-
 export function RankUpCalculator({
   titles,
   initial = {},
@@ -160,26 +147,13 @@ export function RankUpCalculator({
     router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
   };
 
-  const current = titles[currentIndex];
-  const next = titles[currentIndex + 1];
-  const target = titles[Math.max(targetIndex, currentIndex + 1)] ?? next;
-
-  // Exact wisdom wins; otherwise place the hunter within their title from the progress percentage.
-  const percent = Math.min(100, Number.parseFloat(progress) || 0);
-  const wisdom = exactWisdom
-    ? Number.parseInt(exactWisdom, 10)
-    : current.wisdom + (next ? ((next.wisdom - current.wisdom) * percent) / 100 : 0);
-
-  // Exact wisdom can be past the title picked, so read the title off the wisdom instead.
-  const reached = titles.reduce((index, title, i) => (wisdom >= title.wisdom ? i : index), 0);
-  const steps = target ? titles.slice(reached + 1, titles.indexOf(target) + 1) : [];
-  const needed = target ? Math.max(0, Math.ceil(target.wisdom - wisdom)) : 0;
-
-  // "Glazy" finds Glazy Mouse as well as the full name does.
-  const wanted = mouseName.trim().toLowerCase();
-  const mouse = wanted
-    ? mice?.find((m) => m.name.toLowerCase() === wanted || m.abbreviated_name?.toLowerCase() === wanted)
-    : undefined;
+  const { current, next, target, wisdom, reached, steps, needed } = rankUp(titles, {
+    currentIndex,
+    targetIndex,
+    progress,
+    exactWisdom,
+  });
+  const mouse = findMouseByName(mice, mouseName);
 
   return (
     <div className="space-y-8">

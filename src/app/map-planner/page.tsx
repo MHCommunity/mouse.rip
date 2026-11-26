@@ -5,8 +5,7 @@ import { PageHeader } from '@/components/page-header';
 import { PageLink } from '@/components/page-link';
 
 import planner from '@/data/generated/map-planner.json';
-import { locationImageUrl } from '@/lib/image-urls';
-import { LOCATION_ALIASES, type Place } from '@/lib/map-plan';
+import { plannerPlaces } from '@/lib/map-plan';
 import { getLocations } from '@/lib/site-data';
 import { pageMetadata } from '@/seo';
 import { MapPlanner, MapPlannerFromUrl } from './map-planner';
@@ -19,14 +18,7 @@ export const metadata = pageMetadata({
 });
 
 export default function MapPlannerPage() {
-  const pages = new Map(getLocations().flatMap((region) => region.locations.map((l) => [l.name, l.id] as const)));
-
-  // Every location the planner can suggest, resolved to its page here. Anything without one is an event area.
-  const places: Record<string, Place> = {};
-  for (const name of planner.locations) {
-    const id = pages.get(LOCATION_ALIASES[name] ?? name);
-    places[name] = id ? { href: `/locations/${id}`, image: locationImageUrl(id) } : { event: true };
-  }
+  const places = plannerPlaces(planner.locations, getLocations());
 
   return (
     <div>

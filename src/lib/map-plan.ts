@@ -5,6 +5,8 @@
  * compact attraction table that scripts/update-data.js writes to map-planner.json.
  */
 
+import { locationImageUrl } from '@/lib/image-urls';
+
 /** map-planner.json: name tables, and per mouse id, rows of [location, stage, cheese, rate, hunts, charm?]. */
 export interface PlannerData {
   locations: string[];
@@ -98,6 +100,20 @@ export const LOCATION_ALIASES: Record<string, string> = {
   'Cursed City': 'Lost City',
   'Sand Crypts': 'Sand Dunes',
 };
+
+/** Each location the planner can suggest, resolved to its page. Anything without one is an event area. */
+export function plannerPlaces(
+  names: string[],
+  regions: { locations: { id: string; name: string }[] }[],
+): Record<string, Place> {
+  const pages = new Map(regions.flatMap((region) => region.locations.map((l) => [l.name, l.id] as const)));
+  const places: Record<string, Place> = {};
+  for (const name of names) {
+    const id = pages.get(LOCATION_ALIASES[name] ?? name);
+    places[name] = id ? { href: `/locations/${id}`, image: locationImageUrl(id) } : { event: true };
+  }
+  return places;
+}
 
 export function rowsForMouse(data: PlannerData, id: number): Row[] {
   return (data.mice[id] ?? []).map(([location, stage, cheese, rate, hunts, charm]) => ({
