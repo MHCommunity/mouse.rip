@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { JsonLd } from '@/components/json-ld';
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 
 import { getAllGameItems, itemSlug } from '@/lib/game-data';
 import {
@@ -101,7 +101,14 @@ export default async function ItemTypePage({ params }: { params: Promise<{ type:
       <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-white">{label}</h1>
       <p className="mt-2 max-w-2xl text-pretty text-zinc-500 dark:text-zinc-400">
         {CLASSIFICATION_DESCRIPTIONS[type] ?? `All ${label.toLowerCase()} in MouseHunt.`} {formatNumber(items.length)}{' '}
-        in total.
+        in total.{' '}
+        <Link
+          href={`/items?type=${type}`}
+          className="font-medium text-pink-700 underline decoration-pink-700/30 underline-offset-2 hover:text-pink-900 hover:decoration-current dark:text-pink-300 dark:decoration-pink-300/40 dark:hover:text-pink-200"
+        >
+          Search or filter them
+        </Link>
+        .
       </p>
 
       {groups ? (

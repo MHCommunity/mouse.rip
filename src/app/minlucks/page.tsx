@@ -2,11 +2,15 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 import clsx from 'clsx';
 
 import { ColorScaleBadge, MinluckLegend } from '@/components/color-scale-badge';
+import { Breadcrumbs } from '@/components/breadcrumbs';
+import { SparklesIcon } from '@heroicons/react/20/solid';
 import { PageHeader } from '@/components/page-header';
+import { useRememberedCount } from '@/lib/use-remembered-count';
+import { formatNumber } from '@/utils';
 import { GameImage } from '@/components/game-image';
 import { Input, InputGroup } from '@/components/input';
 
@@ -55,7 +59,6 @@ function MouseRow({ mouse, power }: { mouse: SlimMouse; power: string | null }) 
       <div className="min-w-0 flex-1">
         <Link
           href={`/mice/${mouse.type.replaceAll('_', '-')}`}
-          prefetch={false}
           className="font-medium text-zinc-900 hover:text-pink-700 dark:text-zinc-100 dark:hover:text-pink-300"
         >
           {mouse.name}
@@ -92,7 +95,13 @@ export default function MinLucksPage() {
   // boundary so the header can still be prerendered.
   return (
     <div>
-      <PageHeader title="Minlucks" description="The minimum luck that guarantees a catch with each power type." />
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Tools', href: '/tools' }, { name: 'Minlucks' }]} />
+      <PageHeader
+        title="Minlucks"
+        description="The minimum luck that guarantees a catch with each power type."
+        icon={SparklesIcon}
+        iconClassName="bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300"
+      />
       {/* Until the link's filters are readable, show the page unfiltered rather than nothing. */}
       <Suspense fallback={<MinLucks initialQuery="" initialPower={null} syncUrl={false} />}>
         <MinLucksFromUrl />
@@ -129,7 +138,11 @@ function MinLucks({
   const [loadFailed, setLoadFailed] = useState(false);
   const [filter, setFilter] = useState(initialQuery);
   const [power, setPower] = useState<string | null>(initialPower);
-  const [shown, setShown] = useState(PAGE_SIZE);
+  // Kept across a visit to a mouse's page and Back, so the list is still long enough to return to the same row.
+  const [shown, setShown] = useRememberedCount(
+    syncUrl ? `minlucks|${filter.trim().toLowerCase()}|${power ?? ''}` : null,
+    PAGE_SIZE,
+  );
   // Where to move focus after "Show more", so keyboard users land on the new rows.
   const pendingFocus = useRef<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -257,7 +270,7 @@ function MinLucks({
           <MinluckLegend />
           {mice && (
             <p className="text-sm text-zinc-600 tabular-nums dark:text-zinc-400" aria-live="polite">
-              {filteredMice.length.toLocaleString()} {filteredMice.length === 1 ? 'mouse' : 'mice'}
+              {formatNumber(filteredMice.length)} {filteredMice.length === 1 ? 'mouse' : 'mice'}
             </p>
           )}
         </div>
@@ -285,6 +298,7 @@ function MinLucks({
               onClick={() => {
                 setFilter('');
                 setPower(null);
+                inputRef.current?.focus();
               }}
             >
               Clear filters
@@ -310,7 +324,7 @@ function MinLucks({
                   Show {Math.min(PAGE_SIZE, filteredMice.length - shown)} more
                 </button>
                 <span>
-                  Showing {shown.toLocaleString()} of {filteredMice.length.toLocaleString()}
+                  Showing {formatNumber(shown)} of {formatNumber(filteredMice.length)}
                 </span>
               </div>
             )}

@@ -1,4 +1,4 @@
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 
 import React from 'react';
 
@@ -71,7 +71,7 @@ const quickLookups = [
     href: '/essence-calculator',
     name: 'Essence calculator',
     description: 'What your essences craft into',
-    image: '/images/essence/icuri.png',
+    image: '/images/essence/small/icuri.png',
     tint: 'pink',
   },
 ] satisfies { href: string; name: string; description: string; image: string; tint: Tint }[];
@@ -96,11 +96,11 @@ type Accent = 'emerald' | 'amber' | 'pink' | 'green' | 'cyan' | 'purple' | 'blue
 const ACCENTS: Record<Accent, { name: string; tile: string }> = {
   emerald: {
     name: 'text-emerald-800 dark:text-emerald-200',
-    tile: 'hover:ring-emerald-300 hover:bg-emerald-50/60 focus-visible:ring-emerald-500 dark:hover:ring-emerald-800 dark:hover:bg-emerald-950/30',
+    tile: 'hover:ring-emerald-300 hover:bg-emerald-50/60 focus-visible:ring-emerald-600 dark:hover:ring-emerald-800 dark:hover:bg-emerald-950/30',
   },
   amber: {
     name: 'text-amber-800 dark:text-amber-200',
-    tile: 'hover:ring-amber-300 hover:bg-amber-50/60 focus-visible:ring-amber-500 dark:hover:ring-amber-800 dark:hover:bg-amber-950/30',
+    tile: 'hover:ring-amber-300 hover:bg-amber-50/60 focus-visible:ring-amber-700 dark:hover:ring-amber-800 dark:hover:bg-amber-950/30',
   },
   pink: {
     name: 'text-pink-800 dark:text-pink-200',
@@ -108,11 +108,11 @@ const ACCENTS: Record<Accent, { name: string; tile: string }> = {
   },
   green: {
     name: 'text-green-800 dark:text-green-200',
-    tile: 'hover:ring-green-300 hover:bg-green-50/60 focus-visible:ring-green-500 dark:hover:ring-green-800 dark:hover:bg-green-950/30',
+    tile: 'hover:ring-green-300 hover:bg-green-50/60 focus-visible:ring-green-700 dark:hover:ring-green-800 dark:hover:bg-green-950/30',
   },
   cyan: {
     name: 'text-cyan-800 dark:text-cyan-200',
-    tile: 'hover:ring-cyan-300 hover:bg-cyan-50/60 focus-visible:ring-cyan-500 dark:hover:ring-cyan-800 dark:hover:bg-cyan-950/30',
+    tile: 'hover:ring-cyan-300 hover:bg-cyan-50/60 focus-visible:ring-cyan-600 dark:hover:ring-cyan-800 dark:hover:bg-cyan-950/30',
   },
   purple: {
     name: 'text-purple-800 dark:text-purple-200',

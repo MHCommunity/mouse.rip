@@ -1,4 +1,5 @@
 import { AcademicCapIcon } from '@heroicons/react/20/solid';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PageHeader } from '@/components/page-header';
 import { ItemList } from '@/components/item-list';
 import { SectionHeading } from '@/components/section-heading';
@@ -40,6 +41,7 @@ export default async function Guides() {
 
   return (
     <>
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Guides' }]} />
       <PageHeader
         title="MouseHunt guides"
         description="Strategy and how-tos written by other hunters."

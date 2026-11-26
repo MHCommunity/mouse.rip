@@ -20,7 +20,7 @@ export const cardClasses =
 export const labelClasses = 'flex flex-col gap-1.5 text-sm font-medium text-zinc-950 dark:text-white';
 export const hintClasses = 'text-xs font-normal text-zinc-600 dark:text-zinc-400';
 export const fieldClasses =
-  'w-full rounded-xl border border-zinc-950/45 bg-white px-3 py-2.5 text-base/6 text-zinc-950 shadow-xs hover:border-zinc-950/60 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 sm:py-2 sm:text-sm/6 dark:border-white/35 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/45';
+  'w-full rounded-xl border border-zinc-950/45 bg-white px-3 py-2.5 text-base/6 text-zinc-950 shadow-xs placeholder:text-zinc-500 hover:border-zinc-950/60 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500 sm:py-2 sm:text-sm/6 dark:border-white/35 dark:bg-white/5 dark:text-white dark:placeholder:text-zinc-400 dark:scheme-dark dark:hover:border-white/45';
 
 /** The catch rate data, loaded once the page is in the browser. */
 export function useCatchRateCatalog(): { catalog: Catalog | null; failed: boolean } {
@@ -44,9 +44,15 @@ export function useCatchRateCatalog(): { catalog: Catalog | null; failed: boolea
 
 export function CatalogStatus({ failed }: { failed: boolean }) {
   return failed ? (
-    <p className={cardClasses}>The catch rate data didn’t load. Check your connection and reload the page.</p>
+    <p role="alert" className={cardClasses}>
+      The catch rate data didn’t load. Check your connection and reload the page.
+    </p>
   ) : (
-    <div className="h-96 animate-pulse rounded-2xl bg-zinc-100 dark:bg-zinc-800/60" aria-label="Loading" />
+    <div
+      role="status"
+      aria-label="Loading"
+      className="h-96 animate-pulse rounded-2xl bg-zinc-100 dark:bg-zinc-800/60"
+    />
   );
 }
 
@@ -175,7 +181,7 @@ export function Toggle({
   children: React.ReactNode;
 }) {
   return (
-    <label className="flex cursor-pointer items-center gap-2 text-sm text-zinc-800 dark:text-zinc-200">
+    <label className="flex min-h-6 cursor-pointer items-center gap-2 text-sm text-zinc-800 dark:text-zinc-200">
       <input
         type="checkbox"
         checked={checked}
@@ -202,6 +208,9 @@ export function NumberField({
   min: number;
   max: number;
 }) {
+  // What's being typed, kept apart from the number while the field has focus. Without it an emptied field refills
+  // with its default under the cursor, and a number over the maximum is rewritten before it's finished.
+  const [typing, setTyping] = useState<string | null>(null);
   return (
     <label className={labelClasses}>
       <span>
@@ -209,15 +218,19 @@ export function NumberField({
       </span>
       <input
         type="number"
-        inputMode="numeric"
+        // A decimal keypad on a phone. Fields that take a negative leave it to the browser, whose number keyboard
+        // has a minus sign.
+        inputMode={min < 0 ? undefined : 'decimal'}
         min={min}
         max={max}
         className={fieldClasses}
-        value={value ?? ''}
+        value={typing ?? value ?? ''}
         onChange={(event) => {
+          setTyping(event.target.value);
           const number = event.target.value === '' ? undefined : Number(event.target.value);
           onChange(number === undefined || !Number.isFinite(number) ? undefined : Math.min(max, Math.max(min, number)));
         }}
+        onBlur={() => setTyping(null)}
       />
     </label>
   );
@@ -472,3 +485,19 @@ export function JumpToResults({ target }: { target: string }) {
     </div>
   );
 }
+
+/** What to try when a location, stage and cheese have no mice to show. */
+export function NoDataHint({ cheese, charmsWithData }: { cheese: string; charmsWithData: string[] }) {
+  if (charmsWithData.length === 0) return <>Try another cheese or stage.</>;
+  const list = new Intl.ListFormat('en', { type: 'disjunction' }).format(charmsWithData.slice(0, 4));
+  return (
+    <>
+      {cheese} only has attraction data here with a charm. Pick {list}
+      {charmsWithData.length > 4 ? ', or another marked “Own attraction data”,' : ''} under Charm, or try another
+      cheese.
+    </>
+  );
+}
+
+export const startOverClasses =
+  'text-sm font-medium text-zinc-600 underline decoration-zinc-300 underline-offset-2 hover:text-zinc-950 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:text-zinc-400 dark:decoration-zinc-600 dark:hover:text-white';

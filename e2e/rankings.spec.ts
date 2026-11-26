@@ -47,3 +47,35 @@ test('a rank on a mouse page lands on that mouse, highlighted, even far down the
   expect(box?.y).toBeGreaterThan(200);
   expect(box?.y).toBeLessThan(700);
 });
+
+test('the name filter goes in the address, and an empty result can be cleared', async ({ page }) => {
+  await page.goto('/mice/rankings');
+  const search = page.getByRole('searchbox', { name: 'Find a mouse' });
+  await search.fill('glazy');
+  await expect(page).toHaveURL(/q=glazy/);
+
+  await page.goto('/mice/rankings?by=gold&q=glazy');
+  await expect(page.locator(rows)).toHaveCount(1);
+
+  await search.fill('zzzz');
+  await page.getByRole('button', { name: 'Clear the search' }).click();
+  await expect(page.locator(rows)).toHaveCount(100);
+  await expect(search).toBeFocused();
+});
+
+test('going to a mouse and Back returns to the same place in a long list', async ({ page }) => {
+  await page.goto('/mice/rankings');
+  for (const count of [200, 300]) {
+    await page.getByRole('button', { name: /^Show 100 more of/ }).scrollIntoViewIfNeeded();
+    await expect(page.locator(rows)).toHaveCount(count);
+  }
+  const link = page.locator(rows).nth(250).getByRole('link');
+  await link.scrollIntoViewIfNeeded();
+  const before = await page.evaluate(() => window.scrollY);
+  await link.click();
+  await expect(page.getByRole('heading', { level: 1 })).not.toHaveText('Mice ranked');
+  await page.goBack();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Mice ranked');
+  expect(await page.locator(rows).count()).toBeGreaterThanOrEqual(300);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(before - 400);
+});

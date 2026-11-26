@@ -73,8 +73,27 @@ export function applyChanges(catalog: Catalog, setup: Setup, changes: Partial<Se
     next.stage = stages[0] ?? '-';
   }
   const available = cheesesFor(catalog, next.location, next.stage);
-  if (!available.some((cheese) => cheese.type === next.cheese)) next.cheese = available[0]?.type ?? '';
+  if (!available.some((cheese) => cheese.type === next.cheese)) {
+    next.cheese = mostHuntedCheese(catalog, next.location, next.stage) ?? available[0]?.type ?? '';
+  }
   return next;
+}
+
+/**
+ * The cheese with the most hunts recorded at a location and stage, as the one to start on. Alphabetical order
+ * opened the Mountain on Abominable Asiago and the Toxic Spill on a cheese hardly anyone arms. A cheese hunted
+ * without any particular charm comes first, since one that only has data with a charm shows nothing until the
+ * charm is picked too.
+ */
+function mostHuntedCheese(catalog: Catalog, location: string, stage: string): string | undefined {
+  let best: Catalog['populations'][number] | undefined;
+  for (const population of catalog.populations) {
+    if (population.location !== location || population.stage.replace(SUFFIX, '') !== stage) continue;
+    const plain = Number(population.charm === '-');
+    const bestPlain = Number(best?.charm === '-');
+    if (!best || plain > bestPlain || (plain === bestPlain && population.sample > best.sample)) best = population;
+  }
+  return best?.cheese;
 }
 
 /** URL parameter for each extra, with how to read it back. */
@@ -145,6 +164,60 @@ export function setupFromParams(params: URLSearchParams): Setup {
     bonusLuck: finite(params.get('bonus_luck')) ?? 0,
     extras,
   };
+}
+
+/** What a saved setup says about its location, which a link to another location replaces. */
+const PLACE_PARAMS = ['stage', 'cheese', 'empowered', 'target'];
+
+/**
+ * A link that names a place but no trap, such as a location page's, keeps the hunter's own setup: the saved one
+ * with the link laid over it. The saved stage, cheese and target go when the link is for somewhere else.
+ */
+export function overlayOnSaved(saved: string, link: URLSearchParams): URLSearchParams {
+  const merged = new URLSearchParams(saved);
+  if (link.has('location') && link.get('location') !== merged.get('location')) {
+    for (const param of PLACE_PARAMS) merged.delete(param);
+  }
+  for (const [param, value] of link) merged.set(param, value);
+  return merged;
+}
+
+/**
+ * A Best Setup link aimed at one mouse in the place it's best hunted, for that mouse's page. Undefined when the
+ * catch rate data doesn't have the mouse there, so the page never links to a search that can't find it.
+ *
+ * The spot is named the way the attraction tables name it. `keep=1` asks the tool to lay the link over the
+ * hunter's saved charm, shield and bonuses even though it names a cheese (see overlayOnSaved).
+ */
+export function bestSetupLinkFor(
+  catalog: Catalog,
+  mouse: string,
+  spot: { location: string; stage?: string | null; cheese: string; charm?: string | null },
+): string | undefined {
+  const location = catalog.locations.find((entry) => entry.name === spot.location)?.id;
+  const cheese = [...catalog.cheeseName].find(([, name]) => name === spot.cheese)?.[0];
+  // A spot only names a charm when the mouse never comes without it, so the link has to arm it.
+  const charm = spot.charm ? [...catalog.charms.values()].find((item) => item.name === spot.charm)?.type : '';
+  if (!location || !cheese || charm === undefined) return undefined;
+
+  const stage = spot.stage || '-';
+  const attractsIt = catalog.populations.some(
+    (population) =>
+      population.location === location &&
+      population.stage.replace(SUFFIX, '') === stage &&
+      population.cheese === cheese &&
+      population.charm === (charm || '-') &&
+      population.mice.some((entry) => entry.type === mouse),
+  );
+  if (!attractsIt) return undefined;
+
+  const params = new URLSearchParams({ location });
+  if (stage !== '-') params.set('stage', stage);
+  params.set('cheese', cheese);
+  if (charm) params.set('charm', charm);
+  params.set('target', mouse);
+  params.set('keep', '1');
+  return `/best-setup?${params.toString()}`;
 }
 
 /** URL parameters for a setup, leaving out what's empty or at its default so links stay short. */

@@ -1,3 +1,7 @@
+'use client';
+
+// A client module on purpose. Imported into a server component's graph, `import * as Headless` makes every
+// Headless UI component part of that page's JavaScript; here the bundler keeps only what's used.
 import * as Headless from '@headlessui/react';
 import clsx from 'clsx';
 import React, { forwardRef } from 'react';
@@ -74,7 +78,7 @@ export const Input = forwardRef(function Input(
           // Basic layout
           'relative block w-full appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)]',
           // Typography
-          'text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white',
+          'text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white dark:placeholder:text-zinc-400',
           // Border
           // Edge at 3:1 or better against the page, so the field reads as a field.
           'border border-zinc-950/45 data-hover:border-zinc-950/60 dark:border-white/35 dark:data-hover:border-white/50',

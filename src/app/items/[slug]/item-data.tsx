@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 
 import { LocationCell } from '@/components/mhct-cells';
 import type { ConvertibleRow, FoundInConvertible, ItemDropper, MapRelation } from '@/types';
@@ -55,7 +55,7 @@ function DropsTable({ rows }: { rows: ItemDropper[] }) {
                 <LocationCell location={row.locations[0]} />
                 {row.locations.length > 1 && (
                   <details className="group">
-                    <summary className="cursor-pointer text-xs text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200">
+                    <summary className="mt-1 cursor-pointer py-1 text-xs text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200">
                       <span className="group-open:hidden">+{row.locations.length - 1} more</span>
                       <span className="hidden group-open:inline">Fewer</span>
                     </summary>
@@ -287,7 +287,6 @@ function SourceChip({ source }: { source: { name: string; slug?: string } }) {
   return source.slug ? (
     <Link
       href={`/items/${source.slug}`}
-      prefetch={false}
       className={`${classes} text-zinc-700 transition hover:text-pink-700 hover:ring-pink-300 dark:text-zinc-300 dark:hover:text-pink-300 dark:hover:ring-pink-800`}
     >
       <GameImage src={itemImageUrl(source.slug)} className="size-5 shrink-0 rounded" />

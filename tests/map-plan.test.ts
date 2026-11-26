@@ -178,6 +178,28 @@ describe('buildPlan', () => {
     expect(plan.setups).toHaveLength(2);
   });
 
+  test('a mouse that needs a charm gets a setup that names it, apart from mice that need none or another', () => {
+    const charms = { ...data({}), charms: ['', 'Lucky Charm', 'Scholar Charm'] };
+    const table = {
+      ...charms,
+      mice: {
+        1: [[0, 0, 0, 3000, 1000]],
+        2: [[0, 0, 0, 2000, 1000, 1]],
+        3: [[0, 0, 0, 1500, 1000, 1]],
+        4: [[0, 0, 0, 1000, 1000, 2]],
+      },
+    } as PlannerData;
+    const plan = buildPlan([mouse(1), mouse(2), mouse(3), mouse(4)], table, testPlaces);
+    const summary = plan.setups.map((s) => [s.charm, s.mice.map((m) => m.mouse.id), s.raw]);
+    expect(summary).toEqual([
+      ['', [1], 30],
+      ['Lucky Charm', [2, 3], 35],
+      ['Scholar Charm', [4], 10],
+    ]);
+    // Same place and mice count as different setups, so ranking doesn't fold a charm setup into another.
+    expect(rankSetups(plan.setups, 'best').map((s) => s.charm)).toEqual(['Lucky Charm', '', 'Scholar Charm']);
+  });
+
   test('caps each mouse in the overall score so one easy mouse does not carry a setup', () => {
     const plan = buildPlan([mouse(1)], data({ 1: [[0, 0, 0, 9000, 1000]] }), testPlaces);
     expect(plan.setups[0].raw).toBe(90);

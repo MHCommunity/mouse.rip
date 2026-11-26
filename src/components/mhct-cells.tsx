@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 
 import lookup from '@/data/generated/name-lookup.json';
 import { LOCATION_ALIASES } from '@/lib/map-plan';

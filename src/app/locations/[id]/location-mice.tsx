@@ -2,7 +2,7 @@ import 'server-only';
 
 import React from 'react';
 
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 
 import { ColorScaleBadge } from '@/components/color-scale-badge';
 import { GameImage } from '@/components/game-image';

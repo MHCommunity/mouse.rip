@@ -18,7 +18,7 @@ const FILLED: { name: string; path: string; fill?: (page: Page) => Promise<void>
     name: 'rank-up calculator with an answer',
     path: '/rank-up-calculator?title=baron_baroness&target=duke_dutchess&progress=42.5&mouse=Glazy',
     fill: async (page) => {
-      await expect(page.locator('section[aria-live]')).toContainText('catches of Glazy Mouse');
+      await expect(page.getByRole('region', { name: 'Result' })).toContainText('catches of Glazy Mouse');
     },
   },
   {
@@ -39,6 +39,8 @@ const FILLED: { name: string; path: string; fill?: (page: Page) => Promise<void>
   { name: 'rankings, focused on a mouse', path: '/mice/rankings?by=gold&mouse=glazed' },
   { name: 'items, filtered', path: '/items?type=stat&sub=currency&tradable=1' },
   { name: 'mice, filtered to nothing', path: '/mice?q=zzzz' },
+  { name: 'mice, with a power type chosen', path: '/mice?weakto=arcane' },
+  { name: 'userscripts, on a tag with a two-digit count', path: '/userscripts/tags/ui' },
   {
     name: 'search open with results',
     path: '/',
@@ -52,10 +54,10 @@ const FILLED: { name: string; path: string; fill?: (page: Page) => Promise<void>
 
 const CHECKS = [...PAGES.map((path) => ({ name: path, path, fill: undefined })), ...FILLED];
 
-/** The WCAG 2.1 A and AA rules. */
+/** The WCAG 2.2 A and AA rules, which add a minimum size for things to tap. */
 async function audit(page: Page) {
   const { violations } = await new AxeBuilder({ page })
-    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
     .analyze();
   return violations.map((violation) => ({
     rule: violation.id,
@@ -71,7 +73,7 @@ for (const scheme of ['light', 'dark'] as const) {
     test.use({ colorScheme: scheme });
 
     for (const check of CHECKS) {
-      test(`${check.name} meets WCAG 2.1 AA`, async ({ page }) => {
+      test(`${check.name} meets WCAG 2.2 AA`, async ({ page }) => {
         await page.goto(check.path, { waitUntil: 'networkidle' });
         await check.fill?.(page);
         // Let transitions finish, so colours are measured at rest.

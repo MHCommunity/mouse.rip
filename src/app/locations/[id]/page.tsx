@@ -5,7 +5,7 @@ import { Breadcrumbs } from '@/components/breadcrumbs';
 import { ExternalRefs } from '@/components/external-refs';
 import { Heading } from '@/components/heading';
 import { ItemList } from '@/components/item-list';
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 
 import { getResourcesForLocation, getLocation, getLocations, getTrapEffects } from '@/lib/site-data';
 import { getItemsForEnvironment, getLocationLoot, itemSlug } from '@/lib/game-data';

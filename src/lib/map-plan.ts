@@ -1,5 +1,6 @@
 /**
- * Plans a treasure map: which setups (location, stage, cheese) attract the most of its mice.
+ * Plans a treasure map: which setups (location, stage, cheese, and a charm where a mouse needs one) attract the
+ * most of its mice.
  *
  * Ported from the Plan tab in MouseHunt Improved's better-maps module, working from the
  * compact attraction table that scripts/update-data.js writes to map-planner.json.
@@ -53,6 +54,8 @@ export interface Setup {
   location: string;
   stage: string;
   cheese: string;
+  /** The charm these mice need here, or '' when they come without one. */
+  charm: string;
   mice: SetupMouse[];
   /** Sum of the listed mice's rates: the chance one hunt attracts any of them. */
   raw: number;
@@ -184,7 +187,9 @@ export function buildPlan(mice: PlanMouse[], data: PlannerData, places: Record<s
     locationCount.set(mouse.id, new Set(usable.map((row) => row.location)).size);
 
     for (const row of usable) {
-      const key = `${row.location}|${row.stage}|${row.cheese}`;
+      // A row only has a charm when the mouse never comes without one, so the charm is part of the setup: mice
+      // that need different charms can't be hunted together, and their rates don't add up to one "per hunt".
+      const key = `${row.location}|${row.stage}|${row.cheese}|${row.charm}`;
       let setup = setups.get(key);
       if (!setup) {
         setup = {
@@ -192,6 +197,7 @@ export function buildPlan(mice: PlanMouse[], data: PlannerData, places: Record<s
           location: row.location,
           stage: row.stage,
           cheese: row.cheese,
+          charm: row.charm,
           mice: [],
           raw: 0,
           capped: 0,

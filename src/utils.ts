@@ -79,7 +79,8 @@ export function formatSb(value: number): string {
  * @return {boolean} True for paths like `/guides/foo`
  */
 export function isInternalPath(url: string): boolean {
-  return typeof url === 'string' && url.startsWith('/');
+  // "//example.com" starts with a slash too, but it's another site.
+  return typeof url === 'string' && url.startsWith('/') && !url.startsWith('//');
 }
 
 /**

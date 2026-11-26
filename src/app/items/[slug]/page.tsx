@@ -5,7 +5,7 @@ import React from 'react';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { ExternalRefs } from '@/components/external-refs';
 import { Heading } from '@/components/heading';
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 
 import { getLocations, getTitles } from '@/lib/site-data';
 import {
@@ -22,7 +22,7 @@ import { descriptionToParagraphs, powerTypeLabel, POWER_TYPE_CHIP } from '@/lib/
 import type { GameItem, GameItemStats, MapRelation } from '@/types';
 import { JsonLd } from '@/components/json-ld';
 import { itemJsonLd, itemSeo } from '@/lib/entity-seo';
-import { itemImageUrl } from '@/lib/image-urls';
+import { itemCdnImageUrl, itemImageUrl } from '@/lib/image-urls';
 import { ogCard, pageMetadata } from '@/seo';
 import { formatNumber, titleCase } from '@/utils';
 import { classificationLabel, classificationName } from '@/lib/item-classifications';
@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     contents: item.classification === 'convertible' ? getConvertibleContents(item.id) : [],
     drops: getItemDrops(item.id),
   });
-  const cardImage = pickImage(item);
+  const cardImage = item?.images ? itemCdnImageUrl(item.type, 'large') : undefined;
   const stats = item.has_stats && typeof item.has_stats === 'object' ? item.has_stats : null;
   const cardSubtitle = stats
     ? [
@@ -386,7 +386,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
                 A skin for the{' '}
                 <Link
                   href={`/items/${itemSlug(skinFor.type)}`}
-                  className="font-medium text-pink-700 hover:text-pink-800 dark:text-pink-300 dark:hover:text-pink-200"
+                  className="font-medium text-pink-700 underline decoration-pink-700/30 underline-offset-2 hover:text-pink-800 hover:decoration-current dark:text-pink-300 dark:decoration-pink-300/40 dark:hover:text-pink-200"
                 >
                   {skinFor.name}
                 </Link>

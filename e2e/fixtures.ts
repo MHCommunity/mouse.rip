@@ -7,7 +7,7 @@ const PIXEL = Buffer.from(
 );
 
 /** Timers that are always current, whenever the tests run. */
-function timers() {
+export function timers() {
   const hour = 3_600_000;
   const now = Date.now();
   const iso = (offset: number) => new Date(now + offset).toISOString();
@@ -28,10 +28,20 @@ function timers() {
   };
 }
 
-/** A month of prices, so an item's price chart has something to draw. */
-function marketHistory(itemId: number) {
+/** Where the Relic Hunter is, as api.mouse.rip answers. */
+export function relicHunter() {
+  return {
+    id: 'laboratory',
+    name: 'Laboratory',
+    image: 'https://www.mousehuntgame.com/images/environments/laboratory.jpg',
+    last_seen: new Date(Date.now() - 20 * 60_000).toISOString(),
+  };
+}
+
+/** A month of prices ending `endedDaysAgo` days back, so an item's price chart has something to draw. */
+export function marketHistory(itemId: number, endedDaysAgo = 0) {
   const day = 86_400_000;
-  const start = Date.now() - 30 * day;
+  const start = Date.now() - (30 + endedDaysAgo) * day;
   return {
     item_info: { item_id: itemId, name: 'Test item', currently_tradeable: true },
     market_data: Array.from({ length: 30 }, (_, i) => ({
@@ -49,6 +59,7 @@ async function stubOutsideServices(page: Page) {
     route.fulfill({ status: 200, contentType: 'image/png', body: PIXEL }),
   );
   await page.route('https://api.mouse.rip/timers', (route) => route.fulfill({ json: timers() }));
+  await page.route('https://api.mouse.rip/relic-hunter', (route) => route.fulfill({ json: relicHunter() }));
   await page.route('https://api.markethunt.win/items', (route) => route.fulfill({ json: [] }));
   await page.route(/^https:\/\/api\.markethunt\.win\/items\/(\d+)$/, (route) =>
     route.fulfill({ json: marketHistory(Number(route.request().url().split('/').pop())) }),

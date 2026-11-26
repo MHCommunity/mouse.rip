@@ -33,7 +33,7 @@ const INITIAL_SETUPS = 20;
 const OTHER_SETUPS_PER_MOUSE = 3;
 
 const selectClasses =
-  'rounded-lg border border-zinc-950/45 bg-white px-3 py-1.5 text-sm/6 text-zinc-950 shadow-sm hover:border-zinc-950/60 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 dark:border-white/35 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/45';
+  'rounded-lg border border-zinc-950/45 bg-white px-3 py-1.5 text-sm/6 text-zinc-950 shadow-sm hover:border-zinc-950/60 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500 dark:border-white/35 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/45';
 const linkClasses = 'font-medium text-pink-700 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200';
 
 function useDebouncedValue<T>(value: T, delay: number) {
@@ -74,6 +74,7 @@ export function MapPlanner({
 
   // A shared link's mice, kept from the first render so the load below fills them in once.
   const linkedIds = useRef(initialIds);
+  const textRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     let alive = true;
@@ -124,6 +125,8 @@ export function MapPlanner({
         .filter((part) => !names.has(normalizeMouseName(part.replace(/^\s*(?:[-*•]|\d+[.)])\s*/, ''))))
         .join('\n'),
     );
+    // The chip and its button are gone now; put the keyboard back in the list they came from.
+    textRef.current?.focus();
   };
 
   return (
@@ -140,6 +143,7 @@ export function MapPlanner({
           One per line, or separated by commas. &ldquo;Mouse&rdquo; at the end is optional.
         </p>
         <textarea
+          ref={textRef}
           id="map-mice"
           rows={6}
           value={text}
@@ -149,11 +153,11 @@ export function MapPlanner({
           }}
           placeholder={'Glazy\nAbominable Snow\nRelic Hunter'}
           spellCheck={false}
-          className="mt-2 block w-full rounded-lg border border-zinc-950/45 bg-white px-3 py-2 text-base/6 text-zinc-950 shadow-sm placeholder:text-zinc-500 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 sm:text-sm/6 dark:border-white/35 dark:bg-zinc-900 dark:text-white dark:placeholder:text-zinc-400"
+          className="mt-2 block w-full rounded-lg border border-zinc-950/45 bg-white px-3 py-2 text-base/6 text-zinc-950 shadow-sm placeholder:text-zinc-500 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500 sm:text-sm/6 dark:border-white/35 dark:bg-zinc-900 dark:text-white dark:placeholder:text-zinc-400"
         />
 
         {loadFailed && (
-          <p className="mt-3 text-sm text-red-700 dark:text-red-400">
+          <p role="alert" className="mt-3 text-sm text-red-700 dark:text-red-400">
             The attraction data didn&rsquo;t load. Refresh the page to try again.
           </p>
         )}
@@ -178,6 +182,15 @@ export function MapPlanner({
             ))}
           </ul>
         )}
+
+        {/* Always there, so a screen reader hears what the planner made of the list. */}
+        <p role="status" className="sr-only">
+          {plan
+            ? `${formatNumber(ranked.length)} ${ranked.length === 1 ? 'setup' : 'setups'} for ${matched.length} ${
+                matched.length === 1 ? 'mouse' : 'mice'
+              }.${unmatched.length > 0 ? ` ${unmatched.length} ${unmatched.length === 1 ? 'name wasn’t' : 'names weren’t'} recognised.` : ''}`
+            : ''}
+        </p>
 
         {unmatched.length > 0 && (
           <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
@@ -226,10 +239,12 @@ export function MapPlanner({
                 {ranked.length > 0 && (
                   <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">
                     <span className="rounded border border-pink-300 bg-pink-50 px-1 text-pink-900 dark:border-pink-800 dark:bg-pink-950/40 dark:text-pink-100">
-                      Pink
+                      only here
                     </span>{' '}
-                    mice can only be planned at that location. Rates in italics have fewer than{' '}
-                    {formatNumber(MIN_HUNTS)} hunts behind them.
+                    marks a mouse that can’t be planned anywhere else. A rate with an asterisk has fewer than{' '}
+                    {formatNumber(MIN_HUNTS)} hunts behind it. “Per hunt” is the chance a hunt attracts one of the mice
+                    listed, and the hunts figure is how many it takes on average to attract them all, not counting
+                    misses.
                   </p>
                 )}
               </div>
@@ -341,10 +356,11 @@ function SetupCard({
   rowsByMouse: Map<number, Row[]>;
 }) {
   const place = places[setup.location];
-  // Name the stage only when it differs from this setup's.
-  const alternatives = setup.alternatives.map((alt) =>
-    alt.stage && alt.stage !== setup.stage ? `${alt.stage} with ${alt.cheese}` : alt.cheese,
-  );
+  // Name the stage and the charm only when they differ from this setup's.
+  const alternatives = setup.alternatives.map((alt) => {
+    const bait = alt.charm && alt.charm !== setup.charm ? `${alt.cheese} and ${alt.charm}` : alt.cheese;
+    return alt.stage && alt.stage !== setup.stage ? `${alt.stage} with ${bait}` : bait;
+  });
 
   return (
     <li className="rounded-2xl ring-1 ring-zinc-200 bg-white shadow-xs dark:ring-zinc-800 dark:bg-zinc-900">
@@ -381,6 +397,12 @@ function SetupCard({
           </div>
           <p className="mt-0.5 text-sm text-zinc-700 dark:text-zinc-300">
             {setup.cheese}
+            {setup.charm && (
+              <>
+                {' '}
+                and <span className="font-medium text-zinc-950 dark:text-white">{setup.charm}</span>
+              </>
+            )}
             {alternatives.length > 0 && (
               <span className="text-zinc-600 dark:text-zinc-400">
                 {' '}
@@ -413,7 +435,14 @@ function SetupCard({
             {entry.mouse.name}
             <span className={clsx('tabular-nums opacity-75', entry.hunts < MIN_HUNTS && 'italic')}>
               {formatRate(entry.rate)}
+              {entry.hunts < MIN_HUNTS && (
+                <>
+                  <span aria-hidden="true">*</span>
+                  <span className="sr-only"> (few hunts recorded)</span>
+                </>
+              )}
             </span>
+            {entry.onlyHere && <span className="text-xs font-medium">only here</span>}
           </li>
         ))}
       </ul>
@@ -430,7 +459,13 @@ function SetupCard({
           {setup.mice.map((entry) => {
             const others = (rowsByMouse.get(entry.mouse.id) ?? [])
               .filter(
-                (row) => !(row.location === setup.location && row.stage === setup.stage && row.cheese === setup.cheese),
+                (row) =>
+                  !(
+                    row.location === setup.location &&
+                    row.stage === setup.stage &&
+                    row.cheese === setup.cheese &&
+                    row.charm === setup.charm
+                  ),
               )
               .slice(0, OTHER_SETUPS_PER_MOUSE);
             return (

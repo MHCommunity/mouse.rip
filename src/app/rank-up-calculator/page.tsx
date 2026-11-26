@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 
 import { ArrowTrendingUpIcon } from '@heroicons/react/20/solid';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PageHeader } from '@/components/page-header';
 import { PageLink } from '@/components/page-link';
 
@@ -30,6 +31,9 @@ export default function RankUpCalculatorPage() {
 
   return (
     <div className="max-w-3xl">
+      <Breadcrumbs
+        items={[{ name: 'Home', href: '/' }, { name: 'Tools', href: '/tools' }, { name: 'Rank-up calculator' }]}
+      />
       <PageHeader
         title="Rank-up calculator"
         description={

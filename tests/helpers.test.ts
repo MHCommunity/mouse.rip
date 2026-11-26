@@ -90,7 +90,7 @@ describe('links', () => {
     );
     expect(mouseGroupImageUrl('event_mice')).toBe('https://i.mouse.rip/images/mice/groups/event-mice.jpg');
     expect(locationImageUrl('town_of_gnawnia')).toBe('https://i.mouse.rip/images/locations/town-of-gnawnia.png');
-    expect(titleImageUrl('lord_lady')).toBe('https://i.mouse.rip/images/titles/lord-lady.png');
+    expect(titleImageUrl('lord_lady')).toBe('/images/titles/lord-lady.png');
   });
 });
 

@@ -17,7 +17,10 @@ export function cleanNumber(value: string, decimal = false): string {
 }
 
 export interface RankUp {
+  /** The hunter's title: the one picked, or with exact wisdom the one that wisdom has reached. */
   current: RankTitle;
+  /** Its index in `titles`. */
+  currentIndex: number;
   /** The title after the current one; undefined at the top. */
   next?: RankTitle;
   /** The title aimed for, always above the current one; undefined at the top. */
@@ -43,21 +46,26 @@ export function rankUp(
     exactWisdom,
   }: { currentIndex: number; targetIndex: number; progress: string; exactWisdom: string },
 ): RankUp {
-  const current = titles[currentIndex];
-  const next = titles[currentIndex + 1];
-  const target = titles[Math.max(targetIndex, currentIndex + 1)] ?? next;
-
+  const picked = titles[currentIndex];
+  const afterPicked = titles[currentIndex + 1];
   const percent = Math.min(100, Number.parseFloat(progress) || 0);
   const wisdom = exactWisdom
     ? Number.parseInt(exactWisdom, 10)
-    : current.wisdom + (next ? ((next.wisdom - current.wisdom) * percent) / 100 : 0);
+    : picked.wisdom + (afterPicked ? ((afterPicked.wisdom - picked.wisdom) * percent) / 100 : 0);
 
-  // Exact wisdom can be past the title picked, so read the title off the wisdom instead.
+  // Exact wisdom can be past the title picked, so read the title off the wisdom instead. It then stands in for
+  // the picked title everywhere: without that, a hunter who only types their wisdom is told they've "already
+  // reached" some title, with no figure for the one after it.
   const reached = titles.reduce((index, title, i) => (wisdom >= title.wisdom ? i : index), 0);
+  const from = exactWisdom ? reached : currentIndex;
+  const current = titles[from];
+  const next = titles[from + 1];
+  const target = titles[Math.max(targetIndex, from + 1)] ?? next;
+
   const steps = target ? titles.slice(reached + 1, titles.indexOf(target) + 1) : [];
   const needed = target ? Math.max(0, Math.ceil(target.wisdom - wisdom)) : 0;
 
-  return { current, next, target, wisdom, reached, steps, needed };
+  return { current, currentIndex: from, next, target, wisdom, reached, steps, needed };
 }
 
 /** The mouse a hunter typed, by its full name or the short one ("Glazy" for Glazy Mouse). */

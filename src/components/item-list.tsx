@@ -31,7 +31,7 @@ export function ItemList({
         Nothing here yet. Suggest something on{' '}
         <a
           href="https://discord.gg/mousehunt"
-          className="font-medium text-pink-600 hover:text-pink-800 dark:text-pink-400 dark:hover:text-pink-200"
+          className="font-medium text-pink-600 underline decoration-pink-600/30 underline-offset-2 hover:text-pink-800 hover:decoration-current dark:text-pink-400 dark:decoration-pink-400/40 dark:hover:text-pink-200"
         >
           Discord
         </a>

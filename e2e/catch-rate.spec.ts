@@ -56,3 +56,77 @@ test('a return visit picks up the last setup', async ({ page }) => {
   await page.goto('/catch-rate-estimator');
   await expect(stat(page, 'Power')).toHaveText('16,027');
 });
+
+test('a location page link keeps the trap from the last visit', async ({ page }) => {
+  await page.goto(`${STINGER}&gs=0`);
+  await expect(stat(page, 'Power')).toHaveText(/\d/);
+  // What "Catch rates here" on a location page opens.
+  await page.goto('/catch-rate-estimator?location=harbour');
+  await expect(page.getByLabel('Location')).toHaveValue('harbour');
+  await expect(page.getByRole('combobox', { name: 'Weapon' })).toHaveValue('S.T.I.N.G.E.R. Trap');
+  await expect(page.getByRole('combobox', { name: 'Base' })).toHaveValue('Rainbow Diamond Refractor Base');
+  await expect(page.getByRole('checkbox', { name: 'Golden Shield' })).not.toBeChecked();
+  await expect(page.getByText('Overall catch rate')).toBeVisible();
+  // And it is still the saved setup afterwards.
+  await page.goto('/catch-rate-estimator');
+  await expect(page.getByRole('combobox', { name: 'Weapon' })).toHaveValue('S.T.I.N.G.E.R. Trap');
+});
+
+test('typing into a filled picker replaces what was picked', async ({ page }) => {
+  await page.goto(STINGER);
+  await expect(page.getByText('Overall catch rate')).toBeVisible();
+  await page.getByRole('combobox', { name: 'Weapon' }).click();
+  await page.keyboard.type('Sandtail');
+  await expect(page.getByRole('combobox', { name: 'Weapon' })).toHaveValue('Sandtail');
+  await page.getByRole('option', { name: /Sandtail Sentinel/ }).click();
+  await expect(page).toHaveURL(/weapon=sentinel_weapon/);
+});
+
+test('a number field with a default can be cleared and retyped', async ({ page }) => {
+  await page.goto('/catch-rate-estimator?location=zugzwang_tower&weapon=floating_law_upgraded_weapon&base=rift_base');
+  const amplifier = page.getByLabel(/Amplifier/);
+  await expect(amplifier).toHaveValue('100');
+  await amplifier.click();
+  await page.keyboard.press('End');
+  for (let i = 0; i < 3; i++) await page.keyboard.press('Backspace');
+  await expect(amplifier).toHaveValue('');
+  await page.keyboard.type('150');
+  await expect(amplifier).toHaveValue('150');
+  await expect(page).toHaveURL(/amp=150/);
+  // Over the maximum is held to it once the field is left.
+  await amplifier.fill('999');
+  await amplifier.blur();
+  await expect(amplifier).toHaveValue('175');
+});
+
+test('clearing a bonus leaves the bonuses panel open', async ({ page }) => {
+  await page.goto(`${STINGER}&bonus_luck=5`);
+  const luck = page.getByLabel('Extra luck');
+  await expect(luck).toBeVisible();
+  await luck.fill('');
+  await expect(luck).toBeVisible();
+  await luck.fill('-7');
+  await expect(page.getByText('+0% power, −7 luck')).toBeVisible();
+});
+
+test('a setup picked up from the last visit goes into the address, and Start over clears both', async ({ page }) => {
+  await page.goto(STINGER);
+  await expect(stat(page, 'Power')).toHaveText('16,027');
+  await page.goto('/catch-rate-estimator');
+  await expect(stat(page, 'Power')).toHaveText('16,027');
+  await expect(page).toHaveURL(/weapon=floating_law_upgraded_weapon/);
+
+  await page.getByRole('button', { name: 'Start over' }).click();
+  await expect(page.getByText('Pick a location, weapon and base')).toBeVisible();
+  await expect(page).toHaveURL(/\/catch-rate-estimator$/);
+  await page.reload();
+  await expect(page.getByText('Pick a location, weapon and base')).toBeVisible();
+});
+
+test('a location opens on the cheese most hunted there, with where the rates come from', async ({ page }) => {
+  await page.goto('/catch-rate-estimator?location=mountain&weapon=floating_law_upgraded_weapon&base=rift_base');
+  await expect(page.getByLabel('Cheese')).not.toHaveValue('abominable_asiago_cheese');
+  await expect(
+    page.getByText(/Attraction rates from [\d,]+ hunts on MHCT\.|Attraction rates from MH-Tools\./),
+  ).toBeVisible();
+});

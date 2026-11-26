@@ -1,6 +1,6 @@
 import { expect, test } from './fixtures';
 
-const result = (page: import('@playwright/test').Page) => page.locator('section[aria-live]');
+const result = (page: import('@playwright/test').Page) => page.getByRole('region', { name: 'Result' });
 
 async function fillBaronToCount(page: import('@playwright/test').Page) {
   await page.getByLabel('Current title').selectOption({ label: 'Baron/Baroness' });
@@ -38,6 +38,9 @@ test('exact wisdom replaces the title and progress', async ({ page }) => {
   await page.getByLabel(/Exact wisdom/).fill('7500000');
   await expect(page.getByLabel(/Exact wisdom/)).toHaveValue('7,500,000');
   await expect(page.getByLabel('Progress to the next title (%)')).toBeDisabled();
+  // On a first visit the target is Recruit; the wisdom is past that, so the target moves on from where it is.
+  await expect(result(page)).toContainText('Wisdom needed for Count/Countess');
+  await expect(page.getByLabel('Target title').locator('option').first()).toHaveText('Count/Countess');
 });
 
 test('the mouse list only loads when it is wanted', async ({ page }) => {
@@ -48,4 +51,18 @@ test('the mouse list only loads when it is wanted', async ({ page }) => {
   await page.getByLabel(/In catches of/).fill('Glaz');
   await expect(page.getByRole('option', { name: 'Glazy Mouse' })).toBeVisible();
   expect(requested.length).toBeGreaterThan(before);
+});
+
+test('entries from the last visit go into the address, and Start over clears them', async ({ page }) => {
+  await page.goto('/rank-up-calculator');
+  await fillBaronToCount(page);
+  await expect(result(page)).toContainText('4,900,621');
+  await page.goto('/rank-up-calculator');
+  await expect(page).toHaveURL(/title=baron_baroness.*progress=42\.5/);
+
+  await page.getByRole('button', { name: 'Start over' }).click();
+  await expect(page.getByLabel('Progress to the next title (%)')).toHaveValue('');
+  await expect(page).toHaveURL(/\/rank-up-calculator$/);
+  await page.reload();
+  await expect(page.getByLabel('Current title').locator('option:checked')).toHaveText('Novice');
 });

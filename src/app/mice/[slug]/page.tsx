@@ -4,7 +4,7 @@ import React from 'react';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { ExternalRefs } from '@/components/external-refs';
 import { Heading } from '@/components/heading';
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 
 import {
   getAllMice,
@@ -26,6 +26,9 @@ import {
   powerTypeSetLabel,
 } from '@/lib/power-types';
 import { JsonLd } from '@/components/json-ld';
+import catchRateData from '@/data/generated/catch-rate.json';
+import { buildCatalog, type Catalog, type RawCatchRateData } from '@/lib/catch-rate/data';
+import { bestSetupLinkFor } from '@/lib/catch-rate/options';
 import { mouseJsonLd, mouseSeo } from '@/lib/entity-seo';
 import { ogCard, pageMetadata } from '@/seo';
 import { mouseImageUrl } from '@/lib/image-urls';
@@ -63,7 +66,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   });
 }
 
-const accentLink = 'font-medium text-pink-700 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200';
+// The catch rate tools' data, to link each mouse to a Best Setup search that can find it. Built once per build
+// worker, and only on the server: this page is prerendered, so none of it reaches the browser.
+let catalog: Catalog | undefined;
+function catchRateCatalog(): Catalog {
+  catalog ??= buildCatalog(catchRateData as unknown as RawCatchRateData);
+  return catalog;
+}
+
+const accentLink =
+  'font-medium text-pink-700 underline decoration-pink-700/30 underline-offset-2 hover:text-pink-900 hover:decoration-current dark:text-pink-300 dark:decoration-pink-300/40 dark:hover:text-pink-200';
 
 export default async function MousePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -102,6 +114,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
 
   const attraction = getMouseAttraction(mouse.id);
   const bestSpot = bestAttractionRow(attraction);
+  const bestSetupHref = bestSpot ? bestSetupLinkFor(catchRateCatalog(), mouse.type, bestSpot) : undefined;
   // Without data the attraction section below says so; the card only shows for the Relic Hunter, who has a page.
   const whereCard = Boolean(bestSpot) || mouse.type === 'relic_hunter';
 
@@ -226,6 +239,13 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
                         ? `Attraction rate from ${formatNumber(bestSpot.total_hunts)} hunts on MHCT.`
                         : 'Attraction rate from MH-Tools.'}
                     </p>
+                    {bestSetupHref && (
+                      <p className="mt-3 text-sm">
+                        <Link href={bestSetupHref} className={`${accentLink} inline-block py-0.5`}>
+                          Best setup for this mouse
+                        </Link>
+                      </p>
+                    )}
                   </>
                 ) : (
                   // Only the Relic Hunter gets this card without data: she moves every day.

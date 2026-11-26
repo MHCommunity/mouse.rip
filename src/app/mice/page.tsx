@@ -7,7 +7,7 @@ import { Link } from '@/components/link';
 
 import { getAllMice, getAllMiceGroups } from '@/lib/game-data';
 import { pageMetadata } from '@/seo';
-import { MiceBrowser, type SlimGroup } from './mice-browser';
+import { MiceBrowser, MiceBrowserFromUrl, type SlimGroup } from './mice-browser';
 
 export const metadata = pageMetadata({
   title: 'MouseHunt Mice & Groups',
@@ -52,12 +52,12 @@ export default function MiceIndexPage() {
         iconClassName="bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"
       />
 
-      {/* MiceBrowser reads the filters off the URL with useSearchParams, which
-          would opt this page into dynamic rendering without a boundary here. The
-          page must stay static: game-data reads its JSON off disk at build time,
-          and that disk isn't there in the Cloudflare worker. */}
-      <Suspense>
-        <MiceBrowser groups={groups} />
+      {/* The browser reads its filters off the URL with useSearchParams, which would opt this page into dynamic
+          rendering without a boundary here. The page must stay static: game-data reads its JSON off disk at build
+          time, and that disk isn't there in the Cloudflare worker. The fallback is the browser with no filters,
+          so the search box and group cards are in the HTML and not waiting on JavaScript. */}
+      <Suspense fallback={<MiceBrowser groups={groups} />}>
+        <MiceBrowserFromUrl groups={groups} />
       </Suspense>
     </div>
   );

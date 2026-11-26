@@ -123,9 +123,11 @@ table,
     animation-iteration-count: 1 !important;
   }
 
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: none;
+  /* Every transition, the sidebar's sliding indicator included. */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }
 

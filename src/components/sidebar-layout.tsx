@@ -1,6 +1,7 @@
 'use client';
 
 import * as Headless from '@headlessui/react';
+import { usePathname } from 'next/navigation';
 import React, { useState } from 'react';
 import { NavbarItem } from './navbar';
 
@@ -22,7 +23,7 @@ function CloseMenuIcon() {
 
 function MobileSidebar({ open, close, children }: React.PropsWithChildren<{ open: boolean; close: () => void }>) {
   return (
-    <Headless.Dialog open={open} onClose={close} className="lg:hidden">
+    <Headless.Dialog open={open} onClose={close} aria-label="Site navigation" className="lg:hidden">
       <Headless.DialogBackdrop
         transition
         className="fixed inset-0 bg-black/30 transition data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
@@ -47,9 +48,16 @@ function MobileSidebar({ open, close, children }: React.PropsWithChildren<{ open
 export function SidebarLayout({
   navbar,
   sidebar,
+  footer,
   children,
-}: React.PropsWithChildren<{ navbar: React.ReactNode; sidebar: React.ReactNode }>) {
-  const [showSidebar, setShowSidebar] = useState(false);
+}: React.PropsWithChildren<{ navbar: React.ReactNode; sidebar: React.ReactNode; footer?: React.ReactNode }>) {
+  // The drawer belongs to the page it was opened on: it's open only while the visitor is still there. Its own
+  // links close it as they're tapped, but search opened from inside it navigates by itself, and the drawer used
+  // to stay up over the new page.
+  const pathname = usePathname();
+  const [openedOn, setOpenedOn] = useState<string | null>(null);
+  const showSidebar = openedOn === pathname;
+  const setShowSidebar = (show: boolean) => setOpenedOn(show ? pathname : null);
 
   return (
     <div className="relative isolate flex min-h-svh w-full bg-white max-lg:flex-col lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950">
@@ -71,16 +79,15 @@ export function SidebarLayout({
         <div className="min-w-0 flex-1">{navbar}</div>
       </header>
 
-      {/* Content */}
-      <main
-        id="main-content"
-        tabIndex={-1}
-        className="flex flex-1 flex-col pb-2 focus:outline-hidden lg:min-w-0 lg:pt-2 lg:pr-2 lg:pl-64"
-      >
+      {/* Content. The footer shares the page's card but sits outside <main>, where it's the site's footer landmark. */}
+      <div className="flex flex-1 flex-col pb-2 lg:min-w-0 lg:pt-2 lg:pr-2 lg:pl-64">
         <div className="grow p-6 lg:rounded-2xl lg:bg-white lg:p-10 lg:shadow-xs lg:ring-1 lg:ring-zinc-950/5 dark:lg:bg-zinc-900 dark:lg:ring-white/10">
-          <div className="mx-auto w-full max-w-5xl">{children}</div>
+          <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-5xl focus:outline-hidden">
+            {children}
+          </main>
+          {footer && <div className="mx-auto w-full max-w-5xl">{footer}</div>}
         </div>
-      </main>
+      </div>
     </div>
   );
 }

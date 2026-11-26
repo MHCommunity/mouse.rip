@@ -3,7 +3,7 @@
 import * as Headless from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon, XMarkIcon } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 
 import { GameImage } from '@/components/game-image';
 
@@ -30,8 +30,9 @@ export function ItemPicker({
   placeholder = 'Type to search',
   clearable = false,
   clearLabel = 'None',
-  onFocus,
+  onUse,
   loading = false,
+  failed = false,
 }: {
   label: string;
   options: PickerOption[];
@@ -41,12 +42,15 @@ export function ItemPicker({
   /** Offer a way back to nothing picked, such as no charm. */
   clearable?: boolean;
   clearLabel?: string;
-  /** For a list that loads on first use. */
-  onFocus?: () => void;
+  /** For a list that loads on first use: called when the field is focused or typed in. */
+  onUse?: () => void;
   /** The options are still on their way. */
   loading?: boolean;
+  /** The options didn't arrive. */
+  failed?: boolean;
 }) {
   const [query, setQuery] = useState('');
+  const showAllRef = useRef<HTMLButtonElement>(null);
   const selected = options.find((option) => option.value === value) ?? null;
 
   const { filtered, hidden } = useMemo(() => {
@@ -79,27 +83,46 @@ export function ItemPicker({
           )}
           <Headless.ComboboxInput
             className={clsx(
-              'w-full rounded-xl border border-zinc-950/45 bg-white py-2.5 pr-16 text-base/6 text-zinc-950 shadow-xs placeholder:text-zinc-500 hover:border-zinc-950/60 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 sm:py-2 sm:text-sm/6 dark:border-white/35 dark:bg-white/5 dark:text-white dark:placeholder:text-zinc-400 dark:hover:border-white/45',
+              'w-full rounded-xl border border-zinc-950/45 bg-white py-2.5 pr-16 text-base/6 text-zinc-950 shadow-xs placeholder:text-zinc-500 hover:border-zinc-950/60 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500 sm:py-2 sm:text-sm/6 dark:border-white/35 dark:bg-white/5 dark:text-white dark:placeholder:text-zinc-400 dark:hover:border-white/45',
               selected?.image ? 'pl-10' : 'pl-3',
             )}
             displayValue={(option: PickerOption | null) => option?.name ?? ''}
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={(event) => {
+              setQuery(event.target.value);
+              onUse?.();
+            }}
             placeholder={placeholder}
             autoComplete="off"
-            onFocus={onFocus}
+            onFocus={(event) => {
+              // The field holds the picked item's name, so select it: typing then replaces it instead of adding to
+              // the end. Deferred, because a click puts the cursor down after the focus event and would undo it.
+              const input = event.target;
+              requestAnimationFrame(() => {
+                if (document.activeElement === input) input.select();
+              });
+              onUse?.();
+            }}
           />
           <div className="absolute inset-y-0 right-1 flex items-center">
             {clearable && selected && (
               <button
                 type="button"
-                onClick={() => onChange('')}
+                onClick={() => {
+                  onChange('');
+                  // This button goes once there's nothing to clear. The "show all" button stays, and unlike the
+                  // field it doesn't open the list when focused.
+                  showAllRef.current?.focus();
+                }}
                 className="rounded-md p-1.5 text-zinc-500 hover:text-zinc-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:text-zinc-400 dark:hover:text-white"
               >
                 <XMarkIcon className="size-4" aria-hidden="true" />
                 <span className="sr-only">Clear {label.toLowerCase()}</span>
               </button>
             )}
-            <Headless.ComboboxButton className="rounded-md p-1.5 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">
+            <Headless.ComboboxButton
+              ref={showAllRef}
+              className="rounded-md p-1.5 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+            >
               <ChevronUpDownIcon className="size-4" aria-hidden="true" />
               <span className="sr-only">Show all</span>
             </Headless.ComboboxButton>
@@ -113,7 +136,7 @@ export function ItemPicker({
           {clearable && !query && (
             <Headless.ComboboxOption
               value={null}
-              className="flex cursor-default items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm text-zinc-600 select-none data-focus:bg-pink-50 data-focus:text-pink-900 dark:text-zinc-400 dark:data-focus:bg-pink-950/50 dark:data-focus:text-pink-100"
+              className="flex cursor-default items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm text-zinc-600 select-none data-focus:bg-pink-50 data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-pink-600 dark:data-focus:outline-pink-400 data-focus:text-pink-900 dark:text-zinc-400 dark:data-focus:bg-pink-950/50 dark:data-focus:text-pink-100"
             >
               {clearLabel}
             </Headless.ComboboxOption>
@@ -127,7 +150,7 @@ export function ItemPicker({
             <Headless.ComboboxOption
               key={option.value}
               value={option}
-              className="group flex cursor-default items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-sm text-zinc-900 select-none data-focus:bg-pink-50 data-focus:text-pink-900 dark:text-zinc-100 dark:data-focus:bg-pink-950/50 dark:data-focus:text-pink-100"
+              className="group flex cursor-default items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-sm text-zinc-900 select-none data-focus:bg-pink-50 data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-pink-600 dark:data-focus:outline-pink-400 data-focus:text-pink-900 dark:text-zinc-100 dark:data-focus:bg-pink-950/50 dark:data-focus:text-pink-100"
             >
               {option.image ? (
                 <GameImage
@@ -138,11 +161,16 @@ export function ItemPicker({
                 />
               ) : null}
               <span className="min-w-0 flex-1 truncate">{option.name}</span>
-              {option.hint && <span className="shrink-0 text-xs text-zinc-500 dark:text-zinc-400">{option.hint}</span>}
+              {option.hint && <span className="shrink-0 text-xs text-zinc-600 dark:text-zinc-400">{option.hint}</span>}
               <CheckIcon className="invisible size-4 shrink-0 group-data-selected:visible" aria-hidden="true" />
             </Headless.ComboboxOption>
           ))}
-          {filtered.length === 0 && (
+          {failed && options.length === 0 && (
+            <div className="px-2.5 py-1.5 text-sm text-zinc-600 dark:text-zinc-400" role="status">
+              The list didn’t load. Check your connection, then type here to try again.
+            </div>
+          )}
+          {filtered.length === 0 && query.trim() !== '' && options.length > 0 && (
             <div className="px-2.5 py-2 text-sm text-zinc-600 dark:text-zinc-400">Nothing matches “{query}”.</div>
           )}
           {hidden > 0 && (

@@ -36,7 +36,7 @@ export function UserscriptTagBar({ scripts, current }: { scripts: { tags?: strin
               <span
                 className={clsx(
                   'text-xs tabular-nums',
-                  tag === current ? 'text-pink-100' : 'text-zinc-500 dark:text-zinc-400',
+                  tag === current ? 'text-white' : 'text-zinc-600 dark:text-zinc-400',
                 )}
               >
                 {count}

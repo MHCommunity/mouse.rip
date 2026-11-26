@@ -1,4 +1,4 @@
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 
 import React from 'react';
 

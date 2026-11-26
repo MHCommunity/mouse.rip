@@ -33,13 +33,39 @@ export function timerLocationHref(timer: LocationTimer): string {
   return `/locations/${SITE_IDS[timer.id] ?? timer.id.replaceAll('_', '-')}`;
 }
 
+const isStage = (stage: unknown): stage is TimerStage => {
+  const { name, starts_at, ends_at } = (stage ?? {}) as Record<string, unknown>;
+  return typeof name === 'string' && typeof starts_at === 'string' && typeof ends_at === 'string';
+};
+
+function isTimersResponse(data: unknown): data is TimersResponse {
+  const { daily_reset, locations } = (data ?? {}) as Partial<TimersResponse>;
+  return (
+    typeof daily_reset?.at === 'string' &&
+    Array.isArray(locations) &&
+    locations.every(
+      (timer) =>
+        typeof timer?.id === 'string' &&
+        typeof timer.name === 'string' &&
+        isStage(timer.current) &&
+        Array.isArray(timer.upcoming) &&
+        timer.upcoming.every(isStage),
+    )
+  );
+}
+
 let cached: Promise<TimersResponse> | null = null;
 
 /** Shared across every timer on the page; dropped after a failure so the next caller retries. */
 function loadTimers(force = false): Promise<TimersResponse> {
   if (!cached || force) {
-    cached = fetch('https://api.mouse.rip/timers')
-      .then((response) => (response.ok ? (response.json() as Promise<TimersResponse>) : Promise.reject(response)))
+    cached = fetch('https://api.mouse.rip/timers', { signal: AbortSignal.timeout(10_000) })
+      .then((response) => (response.ok ? (response.json() as Promise<unknown>) : Promise.reject(response)))
+      .then((data) => {
+        // The components read these without checking, so a response that has lost them counts as a failed load.
+        if (!isTimersResponse(data)) throw new Error('Unexpected timers response');
+        return data;
+      })
       .catch((error) => {
         cached = null;
         throw error;
@@ -90,7 +116,13 @@ export function useTimers(): { state: TimersState; now: number } {
       const time = Date.now();
       setNow(time);
       const data = dataRef.current;
-      if (!data) return;
+      if (!data) {
+        // The first load failed, or is still on its way (in which case this joins it). Keep trying, or a blip
+        // at page load leaves "timers are unavailable" up for as long as the tab is open.
+        lastFetch = time;
+        load(false);
+        return;
+      }
       const stale =
         data.locations.some((timer) => !stagesAt(timer, time)?.next.length) || Date.parse(data.daily_reset.at) <= time;
       // At most one refresh a minute, however stale.

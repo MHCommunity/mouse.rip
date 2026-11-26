@@ -1,15 +1,23 @@
 'use client';
 
 import clsx from 'clsx';
-import React, { useEffect, useState, useSyncExternalStore } from 'react';
+import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
+import { Announce } from '@/components/announce';
 import { GameImage } from '@/components/game-image';
 import { ItemPicker } from '@/components/item-picker';
 import { Link } from '@/components/link';
 import type { Catalog } from '@/lib/catch-rate/data';
 import { estimate, matchShownTotals, type Extras, type Setup } from '@/lib/catch-rate/engine';
-import { EMPTY_SETUP, applyChanges, resolveStage, setupFromParams, setupToParams } from '@/lib/catch-rate/options';
+import {
+  EMPTY_SETUP,
+  applyChanges,
+  overlayOnSaved,
+  resolveStage,
+  setupFromParams,
+  setupToParams,
+} from '@/lib/catch-rate/options';
 import { mouseImageUrl } from '@/lib/image-urls';
 import { powerTypeLabel } from '@/lib/power-types';
 import { formatNumber } from '@/utils';
@@ -27,6 +35,8 @@ import {
   useCatchRateCatalog,
   useItemOptions,
   JumpToResults,
+  NoDataHint,
+  startOverClasses,
 } from './fields';
 
 const STORAGE_KEY = 'mouse.rip:catch-rate-estimator';
@@ -47,17 +57,28 @@ function percent(value: number, digits = 1): string {
   return value >= 100 - 0.5 * 10 ** -digits ? '100%' : `${value.toFixed(digits)}%`;
 }
 
+/** "+6" or "−7", for a bonus that can go either way. */
+function signed(value: number): string {
+  return value < 0 ? `−${Math.abs(value)}` : `+${value}`;
+}
+
 /** A shared link wins; without one, pick up the setup this device used last. */
 export function CatchRateEstimatorFromUrl() {
   const params = useSearchParams();
   const stored = useSyncExternalStore(noSubscribe, readStorage, () => ON_SERVER);
-  const linked = params.has('location') || params.has('weapon');
-  const ready = linked || stored !== ON_SERVER;
-  const initial = linked
-    ? setupFromParams(new URLSearchParams(params.toString()))
-    : ready && stored
-      ? setupFromParams(new URLSearchParams(stored))
-      : EMPTY_SETUP;
+  const link = new URLSearchParams(params.toString());
+  const linked = link.has('location') || link.has('weapon');
+  // A link with no trap in it (a location page's "Catch rates here") keeps the hunter's own trap, so it waits
+  // for the saved setup like a visit with no link does.
+  const keepsTrap = linked && !link.has('weapon') && !link.has('base');
+  const ready = (linked && !keepsTrap) || stored !== ON_SERVER;
+  const initial = !ready
+    ? EMPTY_SETUP
+    : linked
+      ? setupFromParams(keepsTrap ? overlayOnSaved(stored, link) : link)
+      : stored
+        ? setupFromParams(new URLSearchParams(stored))
+        : EMPTY_SETUP;
   // The estimator takes its setup once, so it mounts again when the saved one arrives.
   // Until the saved setup is read, don't save or touch the URL, or the empty first render would overwrite both.
   return <CatchRateEstimator key={ready ? 'ready' : 'server'} initial={initial} syncUrl={ready} />;
@@ -85,6 +106,18 @@ export function CatchRateEstimator({ initial = EMPTY_SETUP, syncUrl }: { initial
     const query = setupToParams(next).toString();
     router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
   };
+
+  // A setup picked up from the last visit, or filled out from a link that only named a location, isn't in the
+  // address yet. Put it there once, so the address can be copied and shared without touching the form first.
+  const addressed = useRef(false);
+  useEffect(() => {
+    if (!syncUrl || addressed.current) return;
+    addressed.current = true;
+    const query = setupToParams(setup).toString();
+    if (query && query !== window.location.search.slice(1)) {
+      window.history.replaceState(null, '', `${pathname}?${query}`);
+    }
+  }, [syncUrl, setup, pathname]);
 
   if (!catalog) return <CatalogStatus failed={failed} />;
   // A link may name only a location (a location page, or another tool); fill in a valid stage and cheese.
@@ -147,14 +180,31 @@ function EstimatorForm({
         <ExtrasCard catalog={catalog} setup={resolved} onExtra={setExtra} />
 
         <BonusCard catalog={catalog} setup={setup} onChange={onChange} />
+        {(setup.location || setup.weapon || setup.base) && (
+          <button type="button" onClick={() => onChange({ ...EMPTY_SETUP })} className={startOverClasses}>
+            Start over
+          </button>
+        )}
         <JumpToResults target="results" />
       </form>
 
-      <section id="results" aria-labelledby="results-heading" aria-live="polite" className="min-w-0 scroll-mt-4">
+      <section id="results" aria-labelledby="results-heading" className="min-w-0 scroll-mt-4">
         <h2 id="results-heading" className="sr-only">
           Catch rates
         </h2>
-        <Results setup={resolved} result={result} />
+        <Announce>
+          {result
+            ? `Catch rate ${percent(result.overall.catchRate * 100)} overall, across ${result.mice.length} mice.`
+            : setup.location && setup.weapon && setup.base
+              ? 'No attraction data for this setup.'
+              : ''}
+        </Announce>
+        <Results
+          setup={resolved}
+          result={result}
+          cheese={catalog.cheeseName.get(setup.cheese) ?? 'This cheese'}
+          charmsWithData={options.charms.filter((charm) => charm.hint).map((charm) => charm.name)}
+        />
       </section>
     </div>
   );
@@ -164,18 +214,21 @@ function EstimatorForm({
 function BonusCard({ catalog, setup, onChange }: { catalog: Catalog; setup: Setup; onChange: (setup: Setup) => void }) {
   const [shownPower, setShownPower] = useState('');
   const [shownLuck, setShownLuck] = useState('');
+  // Starts open when there's a bonus to show, then stays how the hunter leaves it: following the bonus instead
+  // would shut the panel on them the moment they clear a field.
+  const [open, setOpen] = useState(Boolean(setup.bonusPower || setup.bonusLuck));
   const matched =
     shownPower && shownLuck
       ? matchShownTotals(setup, catalog, { power: Number(shownPower), luck: Number(shownLuck) })
       : undefined;
 
   return (
-    <details className={clsx(cardClasses, 'group')} open={Boolean(setup.bonusPower || setup.bonusLuck) || undefined}>
+    <details className={clsx(cardClasses, 'group')} open={open} onToggle={(event) => setOpen(event.currentTarget.open)}>
       <summary className="cursor-pointer text-sm font-medium text-zinc-950 marker:text-zinc-400 dark:text-white">
         Auras and other bonuses
         {(setup.bonusPower !== 0 || setup.bonusLuck !== 0) && (
           <span className="ml-2 text-xs font-normal text-pink-700 dark:text-pink-300">
-            +{setup.bonusPower}% power, +{setup.bonusLuck} luck
+            {signed(setup.bonusPower)}% power, {signed(setup.bonusLuck)} luck
           </span>
         )}
       </summary>
@@ -206,22 +259,25 @@ function BonusCard({ catalog, setup, onChange }: { catalog: Catalog; setup: Setu
           <div className="mt-2 grid grid-cols-2 gap-3">
             <label className={labelClasses}>
               <span className={hintClasses}>Power shown</span>
+              {/* Text, not number: the camp shows "20,741", and a number field throws a pasted comma away. */}
               <input
-                type="number"
+                type="text"
                 inputMode="numeric"
+                autoComplete="off"
                 className={fieldClasses}
                 value={shownPower}
-                onChange={(event) => setShownPower(event.target.value)}
+                onChange={(event) => setShownPower(event.target.value.replace(/\D/g, ''))}
               />
             </label>
             <label className={labelClasses}>
               <span className={hintClasses}>Luck shown</span>
               <input
-                type="number"
+                type="text"
                 inputMode="numeric"
+                autoComplete="off"
                 className={fieldClasses}
                 value={shownLuck}
-                onChange={(event) => setShownLuck(event.target.value)}
+                onChange={(event) => setShownLuck(event.target.value.replace(/\D/g, ''))}
               />
             </label>
           </div>
@@ -237,7 +293,7 @@ function BonusCard({ catalog, setup, onChange }: { catalog: Catalog; setup: Setu
             className="mt-3 rounded-lg bg-pink-600 px-3 py-1.5 text-sm font-medium text-white shadow-xs hover:bg-pink-700 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:focus-visible:ring-offset-zinc-900"
           >
             {matched
-              ? `Use +${matched.bonusPower}% power and +${matched.bonusLuck} luck`
+              ? `Use ${signed(matched.bonusPower)}% power and ${signed(matched.bonusLuck)} luck`
               : !setup.weapon || !setup.base
                 ? 'Pick a weapon and base first'
                 : 'Type the power and luck your camp shows'}
@@ -248,7 +304,18 @@ function BonusCard({ catalog, setup, onChange }: { catalog: Catalog; setup: Setu
   );
 }
 
-function Results({ setup, result }: { setup: Setup; result: ReturnType<typeof estimate> }) {
+function Results({
+  setup,
+  result,
+  cheese,
+  charmsWithData,
+}: {
+  setup: Setup;
+  result: ReturnType<typeof estimate>;
+  cheese: string;
+  /** Charms that have their own attraction data for this location and cheese. */
+  charmsWithData: string[];
+}) {
   if (!setup.location || !setup.weapon || !setup.base) {
     return (
       <div className="rounded-2xl border border-dashed border-zinc-300 p-8 text-center dark:border-zinc-700">
@@ -263,7 +330,9 @@ function Results({ setup, result }: { setup: Setup; result: ReturnType<typeof es
     return (
       <div className="rounded-2xl border border-dashed border-zinc-300 p-8 text-center dark:border-zinc-700">
         <p className="text-base font-medium text-zinc-900 dark:text-white">No attraction data for this setup</p>
-        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">Try another cheese or stage.</p>
+        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+          <NoDataHint cheese={cheese} charmsWithData={charmsWithData} />
+        </p>
       </div>
     );
   }
@@ -291,6 +360,11 @@ function Results({ setup, result }: { setup: Setup; result: ReturnType<typeof es
             {overall.minluck !== undefined && overall.minluck > 0 && (
               <span className="block">{formatNumber(overall.minluck)} luck catches every mouse here.</span>
             )}
+            <span className="block text-xs text-zinc-600 dark:text-zinc-400">
+              {result.population.source === 'mhct' && result.population.sample > 0
+                ? `Attraction rates from ${formatNumber(result.population.sample)} hunts on MHCT.`
+                : 'Attraction rates from MH-Tools.'}
+            </span>
           </p>
         </div>
         <dl className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
@@ -333,7 +407,6 @@ function Results({ setup, result }: { setup: Setup; result: ReturnType<typeof es
                 <td className="px-3 py-2 sm:px-4">
                   <Link
                     href={`/mice/${mouse.type.replaceAll('_', '-')}`}
-                    prefetch={false}
                     className="inline-flex items-center gap-2 font-medium text-zinc-900 hover:text-pink-700 dark:text-zinc-100 dark:hover:text-pink-300"
                   >
                     <GameImage
@@ -390,9 +463,11 @@ function CatchRateCell({ rate, immune }: { rate: number; immune: boolean }) {
       : value >= 40
         ? 'bg-amber-50 text-amber-900 ring-amber-200 dark:bg-amber-950/40 dark:text-amber-200 dark:ring-amber-900'
         : 'bg-rose-50 text-rose-800 ring-rose-200 dark:bg-rose-950/50 dark:text-rose-200 dark:ring-rose-900';
+  // Rounded down, so a catch that can still fail never reads as 100%.
+  const shown = value >= 100 ? '100' : value < 10 ? value.toFixed(2) : (Math.floor(value * 10) / 10).toFixed(1);
   return (
     <span className={clsx('inline-flex rounded-full px-2 py-0.5 text-xs font-semibold tabular-nums ring-1', tone)}>
-      {value >= 100 ? '100%' : `${Math.min(99.99, value).toFixed(value < 10 ? 2 : 1)}%`}
+      {shown}%
     </span>
   );
 }

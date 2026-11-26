@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 
 // Imported directly (it's tiny): the footer renders inside a client layout, so
 // going through @/lib/game-data would pull server-only data into the bundle.
@@ -36,12 +36,12 @@ export function Footer() {
         <div className="grid grid-cols-2 gap-8">
           <div>
             <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Browse</div>
-            <ul className="mt-3 space-y-2">
+            <ul className="mt-3 space-y-1">
               {browse.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                    className="inline-block py-0.5 text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                   >
                     {item.label}
                   </Link>
@@ -52,15 +52,16 @@ export function Footer() {
 
           <div>
             <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Community</div>
-            <ul className="mt-3 space-y-2">
+            <ul className="mt-3 space-y-1">
               <li>
                 <a
                   href="https://github.com/MHCommunity"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                  className="inline-block py-0.5 text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                 >
                   GitHub
+                  <span className="sr-only"> (opens in a new tab)</span>
                 </a>
               </li>
               <li>
@@ -68,15 +69,16 @@ export function Footer() {
                   href="https://discord.gg/mousehunt"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                  className="inline-block py-0.5 text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                 >
                   Discord
+                  <span className="sr-only"> (opens in a new tab)</span>
                 </a>
               </li>
               <li>
                 <Link
                   href="/about"
-                  className="text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                  className="inline-block py-0.5 text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                 >
                   About
                 </Link>

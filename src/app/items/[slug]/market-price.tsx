@@ -44,9 +44,26 @@ const dateFormat = new Intl.DateTimeFormat('en-US', {
 });
 
 /** Markethunt's YYYY-MM-DD as "Oct 14, 2026". Read as UTC so the day doesn't shift with the visitor's time zone. */
-function formatDate(date: string): string {
+export function formatPriceDate(date: string): string {
   const parsed = new Date(`${date}T00:00:00Z`);
   return Number.isNaN(parsed.getTime()) ? date : dateFormat.format(parsed);
+}
+const formatDate = formatPriceDate;
+
+/** Markethunt only has a price for days an item traded. Past this, the latest one is history, not today's price. */
+const CURRENT_PRICE_DAYS = 14;
+
+/** Whether a Markethunt date is recent enough to call its price current. */
+export function isCurrentPrice(date: string, now: number): boolean {
+  const time = new Date(`${date}T00:00:00Z`).getTime();
+  return Number.isFinite(time) && now - time <= CURRENT_PRICE_DAYS * 86_400_000;
+}
+
+/** A day's entry with the fields the card needs, whatever else the response holds. */
+function isPricePoint(point: unknown): point is PricePoint {
+  if (!point || typeof point !== 'object') return false;
+  const { date, price } = point as Record<string, unknown>;
+  return typeof date === 'string' && typeof price === 'number' && Number.isFinite(price);
 }
 
 // Chart geometry (SVG user units; the element itself is responsive).
@@ -222,14 +239,18 @@ export function MarketPrice({ itemId }: { itemId: number }) {
   useEffect(() => {
     let active = true;
     const setState = (next: State) => setResult({ itemId, attempt, state: next });
-    fetch(`https://api.markethunt.win/items/${itemId}`)
+    // Without a limit, a request that stalls leaves the loading block pulsing with no "Try again".
+    fetch(`https://api.markethunt.win/items/${itemId}`, { signal: AbortSignal.timeout(15_000) })
       .then((res) => (res.ok ? (res.json() as Promise<MarkethuntResponse>) : Promise.reject()))
       .then((data) => {
         if (!active) return;
-        if (!data.market_data || data.market_data.length === 0) {
+        // Markethunt isn't ours: keep only the days that read as a date and a price, so a change on their side
+        // shows as no chart rather than breaking the page.
+        const points = Array.isArray(data?.market_data) ? data.market_data.filter(isPricePoint) : [];
+        if (points.length === 0) {
           setState({ status: 'empty' });
         } else {
-          setState({ status: 'ready', data });
+          setState({ status: 'ready', data: { ...data, market_data: points } });
         }
       })
       .catch(() => active && setState({ status: 'error' }));
@@ -245,19 +266,21 @@ export function MarketPrice({ itemId }: { itemId: number }) {
     <section className="mt-10">
       <SectionHeading>Marketplace price</SectionHeading>
 
-      {state.status === 'loading' && (
+      {state.status === 'loading' && attempt === 0 && (
         <div className="mt-4 h-64 animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800" />
       )}
 
-      {state.status === 'error' && (
+      {/* While a retry is under way the message stays, with its button, so the keyboard isn't left on nothing. */}
+      {(state.status === 'error' || (state.status === 'loading' && attempt > 0)) && (
         <p className="mt-4 rounded-2xl ring-1 ring-zinc-200 px-4 py-3 text-sm text-zinc-700 dark:ring-zinc-800 dark:text-zinc-300">
           Couldn&rsquo;t load prices from Markethunt.{' '}
           <button
             type="button"
-            onClick={() => setAttempt((n) => n + 1)}
-            className="font-medium text-pink-700 underline underline-offset-2 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200"
+            aria-disabled={state.status === 'loading'}
+            onClick={() => state.status === 'error' && setAttempt((n) => n + 1)}
+            className="font-medium text-pink-700 underline underline-offset-2 hover:text-pink-900 aria-disabled:text-zinc-500 aria-disabled:no-underline dark:text-pink-300 dark:hover:text-pink-200 dark:aria-disabled:text-zinc-400"
           >
-            Try again
+            {state.status === 'loading' ? 'Trying again…' : 'Try again'}
           </button>{' '}
           or{' '}
           <a
@@ -280,9 +303,13 @@ export function MarketPrice({ itemId }: { itemId: number }) {
 function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse }) {
   const series = data.market_data!;
   const [range, setRange] = useState<RangeKey>('90d');
+  const [showTable, setShowTable] = useState(false);
 
   const latest = series[series.length - 1];
   const latestTime = new Date(latest.date).getTime();
+  // Read once: the card is drawn after the prices arrive in the browser, so there's no server render to match.
+  const [now] = useState(() => Date.now());
+  const current = isCurrentPrice(latest.date, now);
 
   const selected = RANGES.find((option) => option.key === range)!;
   const window = useMemo(() => {
@@ -310,17 +337,24 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
             {formatGold(latest.price)}
             <span className="ml-1.5 text-base font-normal text-zinc-600 dark:text-zinc-400">gold</span>
           </div>
-          <div className="mt-1 flex items-center gap-3 text-sm">
-            <span
-              className={
-                up
-                  ? 'font-medium text-emerald-700 dark:text-emerald-400'
-                  : 'font-medium text-rose-700 dark:text-rose-400'
-              }
-            >
-              <span aria-hidden="true">{up ? '▲' : '▼'}</span>
-              <span className="sr-only">{up ? 'Up' : 'Down'}</span> {Math.abs(change).toFixed(1)}% {period}
-            </span>
+          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+            {current ? (
+              <span
+                className={
+                  up
+                    ? 'font-medium text-emerald-700 dark:text-emerald-400'
+                    : 'font-medium text-rose-700 dark:text-rose-400'
+                }
+              >
+                <span aria-hidden="true">{up ? '▲' : '▼'}</span>
+                <span className="sr-only">{up ? 'Up' : 'Down'}</span> {Math.abs(change).toFixed(1)}% {period}
+              </span>
+            ) : (
+              // An item that hasn't traded lately: the date matters more than a trend that ended back then.
+              <span className="font-medium text-amber-800 dark:text-amber-300">
+                Last traded {formatDate(latest.date)}
+              </span>
+            )}
             {/* SUPER|brie+ priced in itself is always 1 SB; skip the noise. */}
             {Math.abs(latest.sb_price - 1) > 0.001 && (
               <span className="text-zinc-600 dark:text-zinc-400">{formatSb(latest.sb_price)} SUPER|brie+</span>
@@ -363,6 +397,49 @@ function MarketCard({ itemId, data }: { itemId: number; data: MarkethuntResponse
       <div className="mt-4">
         <PriceChart points={window} />
       </div>
+
+      {/* Hovering the chart reads out a day's price, which a keyboard or a screen reader can't do. The same days,
+          newest first, as a table; its rows are only made once it's opened. */}
+      <details className="mt-3" onToggle={(event) => setShowTable(event.currentTarget.open)}>
+        <summary className="cursor-pointer py-1 text-sm font-medium text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white">
+          Show these prices as a table
+        </summary>
+        {showTable && (
+          <div className="mt-2 max-h-72 overflow-y-auto rounded-xl ring-1 ring-zinc-200 dark:ring-zinc-800">
+            <table className="w-full text-sm">
+              <caption className="sr-only">Price and amount traded for each day in the chart</caption>
+              <thead className="sticky top-0 bg-zinc-50 text-left text-xs text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+                <tr>
+                  <th scope="col" className="px-3 py-2 font-medium">
+                    Day
+                  </th>
+                  <th scope="col" className="px-3 py-2 text-right font-medium">
+                    Price
+                  </th>
+                  <th scope="col" className="px-3 py-2 text-right font-medium">
+                    Traded
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                {[...window].reverse().map((point) => (
+                  <tr key={point.date}>
+                    <th scope="row" className="px-3 py-1.5 text-left font-normal text-zinc-700 dark:text-zinc-300">
+                      {formatDate(point.date)}
+                    </th>
+                    <td className="px-3 py-1.5 text-right tabular-nums text-zinc-900 dark:text-zinc-100">
+                      {formatGold(point.price)}
+                    </td>
+                    <td className="px-3 py-1.5 text-right tabular-nums text-zinc-600 dark:text-zinc-400">
+                      {point.volume != null ? formatGold(point.volume) : ''}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </details>
 
       <div className="mt-4 flex flex-wrap items-end justify-between gap-x-4 gap-y-2 border-t border-zinc-100 pt-3 text-xs text-zinc-600 dark:border-zinc-800 dark:text-zinc-400">
         <span>

@@ -1,4 +1,5 @@
 import { getResourcesByCategory } from '@/lib/site-data';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PageHeader } from '@/components/page-header';
 import { ItemList } from '@/components/item-list';
 import { TableCellsIcon } from '@heroicons/react/20/solid';
@@ -18,6 +19,7 @@ export default async function Spreadsheets() {
 
   return (
     <>
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Spreadsheets' }]} />
       <PageHeader
         title="MouseHunt spreadsheets"
         description="Community-maintained sheets for minlucks, wisdom, crowns, and item data."

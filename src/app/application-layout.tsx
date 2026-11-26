@@ -1,6 +1,7 @@
 'use client';
 import { usePathname } from 'next/navigation';
 import React, { useId, useState, type ReactNode } from 'react';
+import { preconnect } from 'react-dom';
 
 import { Navbar, NavbarItem, NavbarSection, NavbarSpacer } from '@/components/navbar';
 import {
@@ -18,6 +19,7 @@ import { SidebarLayout } from '@/components/sidebar-layout';
 import { SearchProvider } from '@/components/search/search-context';
 import { SearchButton } from '@/components/search/search-button';
 import { Footer } from '@/components/footer';
+import { PrefetchOnIntent } from '@/components/prefetch-on-intent';
 
 // Imported directly: going through @/lib/site-data would bundle every site
 // dataset into this client component, and so into every page.
@@ -40,6 +42,19 @@ import { Avatar } from '@/components/avatar';
 import { locationImageUrl } from '@/lib/image-urls';
 
 const locations = locationsData as LocationRegion[];
+
+/** The site's own tools. They live at the top level, but in the sidebar they belong to Tools. */
+const TOOL_PATHS = [
+  '/catch-rate-estimator',
+  '/best-setup',
+  '/map-planner',
+  '/rank-up-calculator',
+  '/minlucks',
+  '/relic-hunter',
+  '/valour-rift-floors',
+  '/essence-calculator',
+  '/queso-pump-calculator',
+];
 
 /**
  * One region of locations, collapsed unless the current page is inside it, so the
@@ -71,7 +86,7 @@ function LocationRegionGroup({ region, pathname }: { region: LocationRegion; pat
           className={`size-4 shrink-0 fill-zinc-500 transition-transform motion-reduce:transition-none dark:fill-zinc-400 ${expanded ? 'rotate-90' : ''}`}
         />
         <span className="flex-1 truncate">{region.name}</span>
-        <span className="text-xs tabular-nums text-zinc-500 dark:text-zinc-400">{region.locations.length}</span>
+        <span className="text-xs tabular-nums text-zinc-600 dark:text-zinc-400">{region.locations.length}</span>
       </button>
       {expanded && (
         <div id={listId} className="mb-2 ml-3 border-l border-zinc-950/5 pl-1 dark:border-white/10">
@@ -79,7 +94,6 @@ function LocationRegionGroup({ region, pathname }: { region: LocationRegion; pat
             <SidebarItem
               key={location.id}
               href={`/locations/${location.id}`}
-              prefetch={false}
               current={pathname === `/locations/${location.id}`}
               className="rounded-md"
             >
@@ -99,10 +113,15 @@ interface ApplicationLayoutProps {
 
 export function ApplicationLayout({ children }: ApplicationLayoutProps) {
   const pathname = usePathname();
+  // Nearly every page's art comes from the image host; opening the connection early takes a round trip off the
+  // first image.
+  preconnect('https://i.mouse.rip');
 
   return (
     <SearchProvider>
+      <PrefetchOnIntent />
       <SidebarLayout
+        footer={<Footer />}
         navbar={
           <Navbar>
             <NavbarSection>
@@ -172,7 +191,7 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                 </SidebarItem>
                 <SidebarItem
                   href="/tools"
-                  current={pathname === '/tools' || pathname.startsWith('/tools/')}
+                  current={pathname === '/tools' || pathname.startsWith('/tools/') || TOOL_PATHS.includes(pathname)}
                   className="rounded focus:outline-hidden focus:ring-2 focus:ring-pink-500"
                 >
                   <WrenchIcon aria-hidden="true" />
@@ -227,13 +246,17 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
                   <QuestionMarkCircleIcon aria-hidden="true" />
                   <SidebarLabel>About</SidebarLabel>
                 </SidebarItem>
-                <SidebarItem href="https://github.com/MHCommunity">
+                <SidebarItem href="https://github.com/MHCommunity" target="_blank" rel="noopener noreferrer">
                   <GitHubIcon />
-                  <SidebarLabel>GitHub</SidebarLabel>
+                  <SidebarLabel>
+                    GitHub<span className="sr-only"> (opens in a new tab)</span>
+                  </SidebarLabel>
                 </SidebarItem>
-                <SidebarItem href="https://discord.gg/mousehunt">
+                <SidebarItem href="https://discord.gg/mousehunt" target="_blank" rel="noopener noreferrer">
                   <DiscordIcon />
-                  <SidebarLabel>Discord</SidebarLabel>
+                  <SidebarLabel>
+                    Discord<span className="sr-only"> (opens in a new tab)</span>
+                  </SidebarLabel>
                 </SidebarItem>
               </SidebarSection>
             </SidebarBody>
@@ -241,7 +264,6 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
         }
       >
         {children}
-        <Footer />
       </SidebarLayout>
     </SearchProvider>
   );

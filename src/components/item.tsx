@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 
 import { ArrowUpRightIcon } from '@heroicons/react/20/solid';
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 import { Badge } from '@/components/badge';
 import { isOurUrl, isInternalPath } from '@/utils';
 
@@ -20,9 +20,9 @@ interface ItemProps {
 /** The focus ring takes the section's colour, matching the sidebar. */
 const focusStyles: Record<string, string> = {
   guide: 'focus-visible:ring-pink-500',
-  extension: 'focus-visible:ring-cyan-500',
+  extension: 'focus-visible:ring-cyan-600',
   spreadsheet: 'focus-visible:ring-blue-500',
-  tool: 'focus-visible:ring-green-500',
+  tool: 'focus-visible:ring-green-700',
   userscript: 'focus-visible:ring-purple-500',
 };
 
@@ -59,6 +59,8 @@ export function Item({ item, showtags = false, headingLevel = 2, showCategory = 
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <Title className="text-base/6 font-semibold text-zinc-900 dark:text-zinc-100">{item.name}</Title>
           {item.category && showCategory && <Badge color={`${item.category}Badge`}>{item.category}</Badge>}
+          {/* Nearly every script here is built into MouseHunt Improved, so the ones to notice are the few that aren't. */}
+          {item.category === 'userscript' && !item.mhImproved && <Badge color="tag">Not in MouseHunt Improved</Badge>}
         </div>
         <p className="mt-0.5 text-sm/6 text-pretty text-zinc-600 dark:text-zinc-400">{item.description}</p>
         {item.tags && showtags && (

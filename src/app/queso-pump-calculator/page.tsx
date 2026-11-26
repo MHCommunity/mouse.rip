@@ -6,6 +6,7 @@ import React, { type ChangeEvent } from 'react';
 import { useStoredState } from '@/lib/use-stored-state';
 
 import { Input } from '@/components/input';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PageHeader } from '@/components/page-header';
 import { PageLink } from '@/components/page-link';
 
@@ -25,7 +26,7 @@ import {
 const labelClasses = 'flex flex-col gap-1.5 text-sm font-medium text-zinc-950 dark:text-white';
 
 const selectClasses =
-  'w-full rounded-lg border border-zinc-950/45 bg-white px-3 py-2.5 text-base/6 text-zinc-950 shadow-sm hover:border-zinc-950/60 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 sm:py-1.5 sm:text-sm/6 dark:border-white/35 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/45';
+  'w-full rounded-lg border border-zinc-950/45 bg-white px-3 py-2.5 text-base/6 text-zinc-950 shadow-sm hover:border-zinc-950/60 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500 sm:py-1.5 sm:text-sm/6 dark:border-white/35 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/45';
 
 const checkboxClasses =
   'size-4 shrink-0 rounded border-zinc-300 accent-pink-600 text-pink-600 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2 dark:border-zinc-700 dark:focus-visible:ring-offset-zinc-900';
@@ -87,6 +88,9 @@ export default function QuesoPumpCalculator() {
 
   return (
     <div className="max-w-3xl">
+      <Breadcrumbs
+        items={[{ name: 'Home', href: '/' }, { name: 'Tools', href: '/tools' }, { name: 'Queso pump calculator' }]}
+      />
       <PageHeader
         icon={FireIcon}
         iconClassName="bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300"
@@ -129,7 +133,7 @@ export default function QuesoPumpCalculator() {
 
         <fieldset className="flex flex-col gap-y-2 sm:flex-row sm:flex-wrap sm:gap-x-6">
           <legend className="sr-only">Boosts</legend>
-          <label className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+          <label className="flex min-h-6 items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
             <input
               type="checkbox"
               checked={useMagicEssence}
@@ -138,7 +142,7 @@ export default function QuesoPumpCalculator() {
             />
             Magic Essence (doubles cheese per craft)
           </label>
-          <label className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+          <label className="flex min-h-6 items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
             <input
               type="checkbox"
               checked={useOesb}
@@ -147,7 +151,7 @@ export default function QuesoPumpCalculator() {
             />
             Overgrown Ember Stone Base (+50% pump)
           </label>
-          <label className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+          <label className="flex min-h-6 items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
             <input
               type="checkbox"
               checked={useQpc}
@@ -183,6 +187,7 @@ export default function QuesoPumpCalculator() {
       {/* Stays mounted while empty so screen readers announce the first result. */}
       <div
         aria-live="polite"
+        aria-atomic="true"
         className={best ? `mt-6 p-5 text-base/7 text-zinc-700 dark:text-zinc-300 ${HEADLINE_PANEL}` : undefined}
       >
         {best ? (
@@ -221,7 +226,15 @@ export default function QuesoPumpCalculator() {
       </div>
 
       {best && (
-        <div className="mt-6 overflow-x-auto rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white dark:ring-zinc-800 dark:bg-zinc-900">
+        <div
+          // A box that scrolls sideways has to take focus to be scrolled from the keyboard; the lint rule doesn't
+          // know that case.
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+          tabIndex={0}
+          role="region"
+          aria-label="Upgrade steps"
+          className="mt-6 overflow-x-auto rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:ring-zinc-800 dark:bg-zinc-900"
+        >
           <table className="min-w-full divide-y divide-zinc-200 dark:divide-zinc-800">
             <thead className="bg-zinc-50 dark:bg-zinc-800/50">
               <tr>

@@ -7,6 +7,7 @@ import { useStoredState } from '@/lib/use-stored-state';
 
 import { Button } from '@/components/button';
 import { Input } from '@/components/input';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PageHeader } from '@/components/page-header';
 import { PageLink } from '@/components/page-link';
 
@@ -102,18 +103,15 @@ export default function EssenceCalculator() {
     const handlePaste = (e: ClipboardEvent) => {
       if (!e.clipboardData) return;
       const text = e.clipboardData.getData('text');
-
-      setAmounts((current) => {
-        const newAmounts = [...current];
-        ESSENCES.forEach((essence, idx) => {
-          const regex = new RegExp(`(\\d+[\\d,]*)\\s+${essence} Essence`, 'i');
-          const match = text.match(regex);
-          if (match) {
-            newAmounts[idx] = match[1].replace(/,/g, '');
-          }
-        });
-        return newAmounts;
-      });
+      const pasted = ESSENCES.map((essence) =>
+        text.match(new RegExp(`(\\d+[\\d,]*)\\s+${essence} Essence`, 'i'))?.[1].replace(/,/g, ''),
+      );
+      // A plain number pasted into one box is left to that box.
+      if (!pasted.some(Boolean)) return;
+      // The amounts are filled in here. Left alone, the browser would also type the whole pasted text into the
+      // focused box, which keeps its digits and ends up with a number nobody entered.
+      e.preventDefault();
+      setAmounts((current) => current.map((amount, idx) => pasted[idx] ?? amount));
     };
 
     window.addEventListener('paste', handlePaste);
@@ -127,6 +125,9 @@ export default function EssenceCalculator() {
 
   return (
     <div className="max-w-3xl">
+      <Breadcrumbs
+        items={[{ name: 'Home', href: '/' }, { name: 'Tools', href: '/tools' }, { name: 'Essence calculator' }]}
+      />
       <PageHeader
         icon={BeakerIcon}
         iconClassName="bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300"
@@ -138,7 +139,7 @@ export default function EssenceCalculator() {
             <PageLink href="https://www.mousehuntgame.com/inventory.php?tab=crafting&sub_tab=crafting_table">
               Crafting Table
             </PageLink>{' '}
-            and paste them here with Ctrl+V (or Cmd+V).
+            and paste them anywhere on this page.
           </>
         }
       />
@@ -171,7 +172,7 @@ export default function EssenceCalculator() {
                   <td className="py-2.5 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-zinc-950 sm:pl-6 dark:text-white">
                     <label htmlFor={`essence-${essence}`} className="flex items-center gap-2">
                       <Image
-                        src={`/images/essence/${essence.toLowerCase()}.png`}
+                        src={`/images/essence/small/${essence.toLowerCase()}.png`}
                         alt=""
                         width={24}
                         height={24}
@@ -210,11 +211,18 @@ export default function EssenceCalculator() {
           hasInput ? `mt-6 flex flex-wrap items-center justify-between gap-4 p-5 ${HEADLINE_PANEL}` : undefined
         }
       >
-        <p aria-live="polite" className="text-base/7 text-zinc-700 dark:text-zinc-300">
+        <p aria-live="polite" aria-atomic="true" className="text-base/7 text-zinc-700 dark:text-zinc-300">
           {hasInput && <Summary finalCounts={finalCounts} crafted={craftableFromLower.some((n) => n > 0)} />}
         </p>
         {hasInput && (
-          <Button outline onClick={() => setAmounts(Array(ESSENCES.length).fill(''))}>
+          <Button
+            outline
+            onClick={() => {
+              setAmounts(Array(ESSENCES.length).fill(''));
+              // The button goes when the amounts do; start again at the first box.
+              document.getElementById(`essence-${ESSENCES[0]}`)?.focus();
+            }}
+          >
             Clear amounts
           </Button>
         )}

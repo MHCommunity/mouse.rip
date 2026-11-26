@@ -2,6 +2,7 @@ import { ArrowUpRightIcon, BoltIcon } from '@heroicons/react/20/solid';
 import clsx from 'clsx';
 import React from 'react';
 
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PageHeader } from '@/components/page-header';
 import { getResourcesByCategory } from '@/lib/site-data';
 import { pageMetadata } from '@/seo';
@@ -30,6 +31,7 @@ export default async function Extensions() {
 
   return (
     <>
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Extensions' }]} />
       <PageHeader
         title="MouseHunt browser extensions"
         description="Browser add-ons for in-game improvements and hunt logging."

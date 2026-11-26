@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 
 import raw from '@/data/generated/catch-rate.json';
-import { bestSetups } from '@/lib/catch-rate/best-setup';
+import { bestSetups, shownScore, tiedForBest } from '@/lib/catch-rate/best-setup';
 import { buildCatalog, type RawCatchRateData } from '@/lib/catch-rate/data';
 import { estimate, type Setup } from '@/lib/catch-rate/engine';
 import { EMPTY_SETUP } from '@/lib/catch-rate/options';
@@ -13,9 +13,44 @@ const meadow = where({ location: 'meadow', cheese: 'cheddar_cheese' });
 
 describe('bestSetups', () => {
   test('ranks every weapon and base pair, best first, and stops at the limit', () => {
-    const results = bestSetups(meadow, catalog, everything, { kind: 'catches' }, 25);
+    const goal = { kind: 'catches' } as const;
+    const results = bestSetups(meadow, catalog, everything, goal, 25);
     expect(results).toHaveLength(25);
-    for (let i = 1; i < results.length; i++) expect(results[i - 1].catches).toBeGreaterThanOrEqual(results[i].catches);
+    // Ranked on the score as it's shown, to a tenth of a catch.
+    for (let i = 1; i < results.length; i++) {
+      expect(shownScore(results[i - 1], goal)).toBeGreaterThanOrEqual(shownScore(results[i], goal));
+    }
+  });
+
+  test('setups level on the shown score go by what they have to spare, not by rounding in the data', () => {
+    const goal = { kind: 'catches' } as const;
+    const results = bestSetups(meadow, catalog, everything, goal);
+    const tied = tiedForBest(results, goal);
+    expect(tied).toBeGreaterThan(1);
+    for (let i = 1; i < tied; i++) {
+      const [above, below] = [results[i - 1], results[i]];
+      expect(above.weakest).toBeGreaterThanOrEqual(below.weakest);
+      if (above.weakest === below.weakest) expect(above.trap.luck).toBeGreaterThanOrEqual(below.trap.luck);
+    }
+    expect(tiedForBest([], goal)).toBe(0);
+  });
+
+  test('a charm is only listed where it beats the same trap without it, once per trap', () => {
+    // Plenty of traps catch everything here on their own. Charms with their own attraction data used to edge
+    // ahead of them on a 0.01 rounding difference and fill the list.
+    const pond = where({ location: 'prologue_pond', cheese: 'clamembert_cheese' });
+    const goal = { kind: 'catches' } as const;
+    const candidates = { ...everything, charms: [...catalog.charms.keys()] };
+    const results = bestSetups(pond, catalog, candidates, goal);
+    expect(results[0].charm).toBe('');
+    const plain = new Map(results.filter((r) => !r.charm).map((r) => [`${r.weapon}|${r.base}`, r]));
+    const withCharm = results.filter((r) => r.charm);
+    for (const result of withCharm) {
+      const same = plain.get(`${result.weapon}|${result.base}`);
+      if (same) expect(shownScore(result, goal)).toBeGreaterThan(shownScore(same, goal));
+    }
+    const traps = withCharm.map((r) => `${r.weapon}|${r.base}`);
+    expect(new Set(traps).size).toBe(traps.length);
   });
 
   test('only uses the items it is given', () => {

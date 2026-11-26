@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { WrenchIcon } from '@heroicons/react/20/solid';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PageHeader } from '@/components/page-header';
 import { SectionHeading } from '@/components/section-heading';
 import { ToolCard, type Tint } from '@/components/tool-card';
@@ -26,7 +27,7 @@ const ART: { id: string; image: string; tint: Tint }[] = [
   { id: 'relic-hunter', image: mouseImageUrl('relic_hunter'), tint: 'violet' },
   { id: 'valour-rift-floors', image: locationImageUrl('valour-rift'), tint: 'sky' },
   { id: 'trap-special-effects', image: itemImageUrl('chrome_acronym_weapon'), tint: 'sky' },
-  { id: 'essence-calculator', image: '/images/essence/icuri.png', tint: 'violet' },
+  { id: 'essence-calculator', image: '/images/essence/small/icuri.png', tint: 'violet' },
   { id: 'queso-pump-calculator', image: itemImageUrl('queso_pump_egg_convertible'), tint: 'amber' },
   { id: 'titles', image: titleImageUrl('fabled'), tint: 'pink' },
 ];
@@ -50,6 +51,7 @@ export default function Tools() {
 
   return (
     <div>
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Tools' }]} />
       <PageHeader
         title="MouseHunt tools"
         description="Calculators and lookups for planning your next hunt: our own first, then the community’s favorites on other sites."

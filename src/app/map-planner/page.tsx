@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 
 import { MapIcon } from '@heroicons/react/20/solid';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PageHeader } from '@/components/page-header';
 import { PageLink } from '@/components/page-link';
 
@@ -22,6 +23,9 @@ export default function MapPlannerPage() {
 
   return (
     <div>
+      <Breadcrumbs
+        items={[{ name: 'Home', href: '/' }, { name: 'Tools', href: '/tools' }, { name: 'Treasure map planner' }]}
+      />
       <PageHeader
         title="Treasure map planner"
         description={

@@ -92,8 +92,21 @@ describe('rankUp', () => {
     expect(result.steps).toEqual([]);
   });
 
-  test('wisdom already past the target needs nothing more', () => {
-    const result = rankUp(titles, { currentIndex: 0, targetIndex: 1, progress: '', exactWisdom: '999999999' });
+  test('exact wisdom past the target moves the target to the title after the one reached', () => {
+    // A first visit: Novice aiming for Recruit, then only the wisdom typed in.
+    const result = rankUp(titles, { currentIndex: 0, targetIndex: 1, progress: '', exactWisdom: '7500000' });
+    expect(result.current.id).toBe('baron_baroness');
+    expect(result.currentIndex).toBe(index('baron_baroness'));
+    expect(result.target?.id).toBe('count_countess');
+    expect(result.needed).toBe(titles[index('count_countess')].wisdom - 7_500_000);
+    expect(result.steps.map((title) => title.id)).toEqual(['count_countess']);
+  });
+
+  test('exact wisdom at the top title leaves nothing to aim for', () => {
+    const top = titles[titles.length - 1];
+    const result = rankUp(titles, { currentIndex: 0, targetIndex: 1, progress: '', exactWisdom: String(top.wisdom) });
+    expect(result.current.id).toBe(top.id);
+    expect(result.target).toBeUndefined();
     expect(result.needed).toBe(0);
   });
 });

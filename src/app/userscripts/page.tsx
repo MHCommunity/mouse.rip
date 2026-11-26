@@ -1,4 +1,5 @@
 import { getResourcesByCategory } from '@/lib/site-data';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PageHeader } from '@/components/page-header';
 import { PageLink } from '@/components/page-link';
 import { ItemList } from '@/components/item-list';
@@ -20,13 +21,13 @@ export default async function Userscripts() {
 
   return (
     <>
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Userscripts' }]} />
       <PageHeader
         title="MouseHunt userscripts"
         description={
           <>
             Scripts you install in your browser to add features to MouseHunt.{' '}
-            <PageLink href="https://github.com/MHCommunity/mousehunt-improved">MouseHunt Improved</PageLink> includes
-            most of these features in one extension.
+            <PageLink href="/extensions">MouseHunt Improved</PageLink> includes most of these features in one extension.
           </>
         }
         count={items.length}

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 import { useSearchParams } from 'next/navigation';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 
@@ -64,13 +64,32 @@ const TYPE_ART: Record<string, string> = {
   skin: 'jet_black_acronym_skin',
 };
 
-export function ItemsBrowser({
-  counts,
-  classificationOrder,
-}: {
+interface ItemsBrowserProps {
   /** Per-type totals, so the default view renders without the item list. */
   counts: Record<string, number>;
   classificationOrder: string[];
+}
+
+/**
+ * The browser with its filters read off the address. Reading the address stops prerendering at the nearest
+ * Suspense boundary, so the page gives that boundary a plain ItemsBrowser as its fallback: that's what lands in
+ * the HTML, and this takes over once the page is running.
+ */
+export function ItemsBrowserFromUrl(props: ItemsBrowserProps) {
+  const searchParams = useSearchParams();
+  return <ItemsBrowser {...props} search={searchParams.toString()} syncUrl />;
+}
+
+export function ItemsBrowser({
+  counts,
+  classificationOrder,
+  search = '',
+  syncUrl = false,
+}: ItemsBrowserProps & {
+  /** The address's query string. Empty for the prerendered view, which has no filters. */
+  search?: string;
+  /** Off for the prerendered view, which mustn't rewrite an address it couldn't read. */
+  syncUrl?: boolean;
 }) {
   // The item list itself is code-split and only fetched once the visitor
   // actually filters — the landing view is just the type cards, and the chunk is
@@ -79,9 +98,7 @@ export function ItemsBrowser({
   const [loadFailed, setLoadFailed] = useState(false);
 
   // The URL is the source of truth for the view, so a filtered page is linkable.
-  const searchParams = useSearchParams();
-  const search = searchParams.toString();
-  const initial = filtersFromUrl(searchParams, classificationOrder);
+  const initial = filtersFromUrl(new URLSearchParams(search), classificationOrder);
 
   const [query, setQuery] = useState(initial.query);
   const [active, setActive] = useState<string | null>(initial.active);
@@ -100,8 +117,10 @@ export function ItemsBrowser({
   // replaceState feeds back into useSearchParams, so remember what we wrote to
   // tell our own edits apart from a real navigation.
   // Writes are deferred so typing doesn't call replaceState on every keystroke.
+  const searchRef = useRef<HTMLInputElement>(null);
   const written = useRef(search);
   useEffect(() => {
+    if (!syncUrl) return;
     const timer = setTimeout(() => {
       const params = new URLSearchParams(window.location.search);
       if (active) params.set('type', active);
@@ -119,7 +138,7 @@ export function ItemsBrowser({
       window.history.replaceState(null, '', next ? `?${next}` : window.location.pathname);
     }, 200);
     return () => clearTimeout(timer);
-  }, [active, query, tradableOnly, tag, sub]);
+  }, [active, query, tradableOnly, tag, sub, syncUrl]);
 
   // A soft navigation (the sidebar's Items link, a /items?type= card) changes the
   // URL out from under us; adopt it so the browser doesn't stay stuck on the
@@ -227,31 +246,36 @@ export function ItemsBrowser({
 
   return (
     <div>
-      <div className="flex items-center gap-2 rounded-2xl ring-1 ring-zinc-200 bg-white px-4 shadow-xs dark:ring-zinc-800 dark:bg-zinc-900">
-        <MagnifyingGlassIcon className="size-5 shrink-0 text-zinc-400" aria-hidden="true" />
+      <div className="flex items-center gap-2 rounded-xl border border-zinc-950/45 bg-white px-4 shadow-sm focus-within:border-pink-600 focus-within:ring-2 focus-within:ring-pink-500 dark:border-white/35 dark:bg-zinc-900 dark:focus-within:border-pink-400">
+        <MagnifyingGlassIcon className="size-5 shrink-0 text-zinc-500 dark:text-zinc-400" aria-hidden="true" />
         <input
+          ref={searchRef}
           type="text"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Search items by name…"
           aria-label="Search items by name"
-          className="w-full border-0 bg-transparent py-3 text-base text-zinc-900 placeholder:text-zinc-400 focus:outline-hidden dark:text-white"
+          className="w-full border-0 bg-transparent py-3 text-base text-zinc-900 placeholder:text-zinc-500 focus:outline-hidden dark:text-white dark:placeholder:text-zinc-400"
         />
-        {filtering && items && (
-          <span className="shrink-0 text-xs tabular-nums text-zinc-500 dark:text-zinc-400">
-            {formatNumber(total)} {total === 1 ? 'item' : 'items'}
-          </span>
-        )}
+        {/* Always there, so a screen reader hears the count change as the filters do. */}
+        <span role="status" className="shrink-0 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
+          {filtering && items && `${formatNumber(total)} ${total === 1 ? 'item' : 'items'}`}
+        </span>
       </div>
 
       {/* Type chips narrow a search; with no filter on, the type cards below do that job instead.
           The toggle keeps its own column so the chips coming and going never move it. */}
       <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
-        <div className="order-last flex min-w-0 flex-1 flex-wrap items-center gap-2 sm:order-first">
+        <div
+          role="group"
+          aria-label="Item type"
+          className="order-last flex min-w-0 flex-1 flex-wrap items-center gap-2 sm:order-first"
+        >
           {filtering && (
             <>
               <button
                 type="button"
+                aria-pressed={active === null}
                 onClick={() => chooseType(null)}
                 className={`${pillBase} ${
                   active === null
@@ -267,6 +291,7 @@ export function ItemsBrowser({
                   <button
                     key={key}
                     type="button"
+                    aria-pressed={active === key}
                     onClick={() => chooseType(active === key ? null : key)}
                     className={`${pillBase} ${
                       active === key
@@ -413,7 +438,14 @@ export function ItemsBrowser({
           <p className="mt-3 flex flex-wrap gap-2">
             {/* The search may match items of another type; offer the way there first. */}
             {active && Object.entries(chipCounts).some(([key, count]) => key !== active && count > 0) && (
-              <button type="button" onClick={() => chooseType(null)} className={emptyActionClasses}>
+              <button
+                type="button"
+                onClick={() => {
+                  chooseType(null);
+                  searchRef.current?.focus();
+                }}
+                className={emptyActionClasses}
+              >
                 Search every type
               </button>
             )}
@@ -424,6 +456,8 @@ export function ItemsBrowser({
                 setQuery('');
                 setTradableOnly(false);
                 setTag(null);
+                // This button leaves with the empty result; the search field is where to go next.
+                searchRef.current?.focus();
               }}
               className={emptyActionClasses}
             >
@@ -448,7 +482,6 @@ export function ItemsBrowser({
                     <li key={item.id} className="break-inside-avoid">
                       <Link
                         href={`/items/${slug}`}
-                        prefetch={false}
                         className="flex items-center gap-2 py-1 text-sm text-zinc-600 transition hover:text-pink-700 dark:text-zinc-400 dark:hover:text-pink-300"
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}

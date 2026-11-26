@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 
 import type { ConvertibleRow } from '@/types';
 import { formatGold, formatNumber } from '@/utils';
@@ -10,10 +10,18 @@ import { itemImageUrl } from '@/lib/image-urls';
 import { SectionHeading } from '@/components/section-heading';
 import { SourceLink } from '@/components/source-link';
 
+import { formatPriceDate, isCurrentPrice } from './market-price';
+
 interface MarkethuntListRow {
   item_info: { item_id: number };
   // null for items Markethunt tracks but has no market data for (~10% of rows).
-  latest_market_data: { price: number } | null;
+  latest_market_data: { price: number; date?: string } | null;
+}
+
+/** An item's latest Markethunt price and the day it's from. */
+interface LatestPrice {
+  price: number;
+  date?: string;
 }
 
 /**
@@ -25,18 +33,21 @@ const INTRINSIC_PRICES: Record<number, number> = { 431: 1 };
 
 // The list covers every item, so share one request across convertible pages for
 // the whole session instead of refetching it on each navigation.
-let pricesPromise: Promise<Map<number, number>> | null = null;
+let pricesPromise: Promise<Map<number, LatestPrice>> | null = null;
 
-function loadMarketPrices(): Promise<Map<number, number>> {
+function loadMarketPrices(): Promise<Map<number, LatestPrice>> {
   if (!pricesPromise) {
-    pricesPromise = fetch('https://api.markethunt.win/items')
+    pricesPromise = fetch('https://api.markethunt.win/items', { signal: AbortSignal.timeout(15_000) })
       .then((res) => (res.ok ? (res.json() as Promise<MarkethuntListRow[]>) : Promise.reject()))
       .then((rows) => {
         if (!Array.isArray(rows)) throw new Error('Unexpected Markethunt response');
         return new Map(
-          rows.flatMap((row) =>
-            row.latest_market_data ? [[row.item_info.item_id, row.latest_market_data.price] as [number, number]] : [],
-          ),
+          rows.flatMap((row) => {
+            const latest = row?.latest_market_data;
+            return latest && typeof latest.price === 'number' && typeof row.item_info?.item_id === 'number'
+              ? [[row.item_info.item_id, { price: latest.price, date: latest.date }] as [number, LatestPrice]]
+              : [];
+          }),
         );
       })
       .catch((error) => {
@@ -49,14 +60,14 @@ function loadMarketPrices(): Promise<Map<number, number>> {
 }
 
 /**
- * Current marketplace prices by item id, fetched once from Markethunt.
+ * The latest marketplace price for each item id, fetched once from Markethunt.
  *
  * Stays null unless the fetch actually succeeds: with no market data, the only
  * rewards we could price are the intrinsic ones, and totalling those alone would
  * state a confident "worth ~X gold" that is off by orders of magnitude.
  */
-function useMarketPrices(): Map<number, number> | null {
-  const [prices, setPrices] = useState<Map<number, number> | null>(null);
+function useMarketPrices(): Map<number, LatestPrice> | null {
+  const [prices, setPrices] = useState<Map<number, LatestPrice> | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -71,9 +82,9 @@ function useMarketPrices(): Map<number, number> | null {
   return prices;
 }
 
-/** Expected gold from one row: drop chance × average quantity × current price. */
-function rowValue(row: ConvertibleRow, prices: Map<number, number> | null): number | null {
-  const price = INTRINSIC_PRICES[row.id] ?? prices?.get(row.id);
+/** Expected gold from one row: drop chance × average quantity × latest price. */
+function rowValue(row: ConvertibleRow, prices: Map<number, LatestPrice> | null): number | null {
+  const price = INTRINSIC_PRICES[row.id] ?? prices?.get(row.id)?.price;
   if (price == null) return null;
   const averageQuantity = ((row.min ?? row.max ?? 0) + (row.max ?? row.min ?? 0)) / 2;
   const chance = Number(row.chance) / 100;
@@ -99,7 +110,10 @@ export function ConvertibleContents({ itemId, rows }: { itemId: number; rows: Co
   const expectedValue = valued.reduce((sum, { value }) => sum + (value ?? 0), 0);
   const pricedCount = valued.filter(({ value }) => value != null).length;
   const showValues = prices !== null && pricedCount > 0;
-  const ownPrice = prices?.get(itemId);
+  const own = prices?.get(itemId);
+  // Read once the prices are in: they arrive in the browser, so there's no server render to match.
+  const [now] = useState(() => Date.now());
+  const ownIsCurrent = own?.date ? isCurrentPrice(own.date, now) : true;
 
   return (
     <section>
@@ -108,7 +122,7 @@ export function ConvertibleContents({ itemId, rows }: { itemId: number; rows: Co
         From <SourceLink source="mhct" />.
       </p>
 
-      <div className="mt-4 overflow-hidden rounded-2xl ring-1 ring-zinc-200 dark:ring-zinc-800">
+      <div className="mt-4 overflow-x-auto rounded-2xl ring-1 ring-zinc-200 dark:ring-zinc-800">
         <table className="w-full text-sm">
           <thead className="bg-zinc-50 text-left text-xs text-zinc-600 dark:bg-zinc-900/60 dark:text-zinc-400">
             <tr>
@@ -167,15 +181,21 @@ export function ConvertibleContents({ itemId, rows }: { itemId: number; rows: Co
             ~{formatGold(expectedValue)} gold
           </strong>{' '}
           on average
-          {ownPrice != null && (
-            <>
-              , and it currently sells for <span className="tabular-nums">{formatGold(ownPrice)} gold</span> on the
-              Marketplace
-            </>
-          )}
+          {own != null &&
+            (ownIsCurrent ? (
+              <>
+                , and it currently sells for <span className="tabular-nums">{formatGold(own.price)} gold</span> on the
+                Marketplace
+              </>
+            ) : (
+              <>
+                , and it last sold for <span className="tabular-nums">{formatGold(own.price)} gold</span> on the
+                Marketplace, on {formatPriceDate(own.date!)}
+              </>
+            ))}
           .{' '}
           <span className="text-zinc-500 dark:text-zinc-400">
-            Covers {pricedCount} of {valued.length} rewards, at current Markethunt prices.
+            Covers {pricedCount} of {valued.length} rewards, at the latest price Markethunt has for each.
           </span>
         </p>
       )}

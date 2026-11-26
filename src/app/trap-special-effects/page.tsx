@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 
 import { SparklesIcon } from '@heroicons/react/20/solid';
 import { PageHeader } from '@/components/page-header';
@@ -10,13 +10,7 @@ import { getLocations, getTrapEffects } from '@/lib/site-data';
 import { matchEffectItems } from '@/lib/trap-effect-items';
 import { pageMetadata } from '@/seo';
 import type { TrapEffect } from '@/types';
-import {
-  EffectsBrowser,
-  EffectsBrowserFromUrl,
-  type EffectItem,
-  type EffectLocation,
-  type SharedEffect,
-} from './effects-browser';
+import { EffectsBrowser, type EffectItem, type EffectLocation, type SharedEffect } from './effects-browser';
 
 export const metadata = pageMetadata({
   title: 'Trap and Base Special Effects',
@@ -108,10 +102,7 @@ export default function TrapSpecialEffectsPage() {
         iconClassName="bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300"
       />
 
-      {/* The browser reads ?location= with useSearchParams, which needs a Suspense boundary to prerender. */}
-      <Suspense fallback={<EffectsBrowser {...props} initialLocation="" syncUrl={false} />}>
-        <EffectsBrowserFromUrl {...props} />
-      </Suspense>
+      <EffectsBrowser {...props} />
     </div>
   );
 }

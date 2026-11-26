@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useSyncExternalStore } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import { GameImage } from '@/components/game-image';
 import { Link } from '@/components/link';
@@ -38,34 +38,32 @@ interface BrowserProps {
 }
 
 const selectClasses =
-  'w-full rounded-lg border border-zinc-950/45 bg-white px-3 py-2.5 text-base/6 text-zinc-950 shadow-sm hover:border-zinc-950/60 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 sm:py-1.5 sm:text-sm/6 dark:border-white/35 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/45';
+  'w-full rounded-lg border border-zinc-950/45 bg-white px-3 py-2.5 text-base/6 text-zinc-950 shadow-sm hover:border-zinc-950/60 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500 sm:py-1.5 sm:text-sm/6 dark:border-white/35 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/45';
 
-const linkClasses = 'hover:text-pink-700 hover:underline dark:hover:text-pink-300';
+const linkClasses =
+  'underline decoration-zinc-300 underline-offset-2 hover:text-pink-700 hover:decoration-current dark:decoration-zinc-600 dark:hover:text-pink-300';
 
-export function EffectsBrowserFromUrl(props: BrowserProps) {
-  const searchParams = useSearchParams();
-  return <EffectsBrowser {...props} initialLocation={searchParams.get('location') ?? ''} syncUrl />;
-}
+const noSubscribe = () => () => {};
 
-export function EffectsBrowser({
-  locations,
-  shared,
-  initialLocation,
-  syncUrl,
-}: BrowserProps & {
-  initialLocation: string;
-  /** Off for the prerendered fallback, which mustn't rewrite a link it couldn't read. */
-  syncUrl: boolean;
-}) {
+export function EffectsBrowser({ locations, shared }: BrowserProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const [selected, setSelected] = useState(initialLocation);
+  // The page is prerendered with every location showing, and a ?location= link narrows it once it's running. The
+  // address is read this way and not with useSearchParams: that hook makes the browser throw away the prerendered
+  // list (some 2,700 elements) and build it again, link or no link.
+  const linked = useSyncExternalStore(
+    noSubscribe,
+    () => new URLSearchParams(window.location.search).get('location') ?? '',
+    () => '',
+  );
+  // What the visitor picks here wins over the link they came in on.
+  const [picked, setPicked] = useState<string | null>(null);
+  const selected = picked ?? linked;
   const pickerRef = useRef<HTMLDivElement>(null);
   const current = locations.find((location) => location.key === selected);
 
   const choose = (key: string) => {
-    setSelected(key);
-    if (!syncUrl) return;
+    setPicked(key);
     const params = new URLSearchParams(window.location.search);
     if (key) params.set('location', key);
     else params.delete('location');
@@ -113,10 +111,13 @@ export function EffectsBrowser({
 
       {current ? (
         <div className="mt-8">
-          <LocationCard location={current} effects={current.effects} />
+          <LocationCard location={current} effects={current.effects} heading="h2" />
           <button
             type="button"
-            onClick={() => choose('')}
+            onClick={() => {
+              choose('');
+              document.getElementById('effects-location')?.focus({ preventScroll: true });
+            }}
             className="mt-4 text-sm font-medium text-pink-700 hover:text-pink-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:text-pink-300 dark:hover:text-pink-200"
           >
             Show all locations
@@ -149,6 +150,8 @@ export function EffectsBrowser({
                                 onClick={() => {
                                   choose(location.key);
                                   pickerRef.current?.scrollIntoView({ block: 'start' });
+                                  // This button is about to be replaced by the location's own view.
+                                  document.getElementById('effects-location')?.focus({ preventScroll: true });
                                 }}
                                 className={`${linkClasses} focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500`}
                               >
@@ -210,18 +213,35 @@ export function EffectsBrowser({
   );
 }
 
-function LocationCard({ location, effects }: { location: EffectLocation; effects: TrapEffect[] }) {
+function LocationCard({
+  location,
+  effects,
+  heading,
+}: {
+  location: EffectLocation;
+  effects: TrapEffect[];
+  heading?: 'h2' | 'h3';
+}) {
   return (
     <div className="rounded-2xl ring-1 ring-zinc-200 bg-white shadow-xs dark:ring-zinc-800 dark:bg-zinc-900">
-      <LocationEffects location={location} effects={effects} />
+      <LocationEffects location={location} effects={effects} heading={heading} />
     </div>
   );
 }
 
-function LocationEffects({ location, effects }: { location: EffectLocation; effects: TrapEffect[] }) {
+function LocationEffects({
+  location,
+  effects,
+  heading: Heading = 'h3',
+}: {
+  location: EffectLocation;
+  effects: TrapEffect[];
+  /** h2 when a location is shown by itself, straight under the page title; h3 under a region's heading. */
+  heading?: 'h2' | 'h3';
+}) {
   return (
     <div className="px-5 py-4">
-      <h3 className="text-base font-semibold tracking-tight text-zinc-900 dark:text-white">
+      <Heading className="text-base font-semibold tracking-tight text-zinc-900 dark:text-white">
         {location.href ? (
           <Link href={location.href} className={linkClasses}>
             {location.name}
@@ -229,7 +249,7 @@ function LocationEffects({ location, effects }: { location: EffectLocation; effe
         ) : (
           location.name
         )}
-      </h3>
+      </Heading>
       <dl className="mt-2 divide-y divide-zinc-100 dark:divide-zinc-800">
         {effects.map((effect) => (
           <div
@@ -256,7 +276,7 @@ function EffectName({ effect }: { effect: TrapEffect }) {
       {items.length > 0 && (
         <span className="flex shrink-0 gap-1">
           {items.map((item) => (
-            <Link key={item.href} href={item.href} prefetch={false} title={item.name} className="shrink-0">
+            <Link key={item.href} href={item.href} title={item.name} className="shrink-0">
               <GameImage src={item.image} width={24} height={24} className="size-6 object-contain" />
               <span className="sr-only">{item.name}</span>
             </Link>
@@ -264,7 +284,7 @@ function EffectName({ effect }: { effect: TrapEffect }) {
         </span>
       )}
       {single ? (
-        <Link href={single.href} prefetch={false} className="pt-0.5 hover:text-pink-700 dark:hover:text-pink-300">
+        <Link href={single.href} className="pt-0.5 hover:text-pink-700 dark:hover:text-pink-300">
           {effect.name}
         </Link>
       ) : (

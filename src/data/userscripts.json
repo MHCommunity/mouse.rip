@@ -68,6 +68,7 @@
     "name": "Rank-up Forecaster",
     "description": "Records your wisdom over time and predicts when you'll rank up.",
     "category": "userscript",
+    "source": "GreasyFork",
     "tags": [
       "stats",
       "wisdom"
@@ -340,6 +341,7 @@
     "name": "Halloween Brew Helper",
     "description": "Adds buttons to brew Evil Extract instantly.",
     "category": "userscript",
+    "source": "GreasyFork",
     "tags": [
       "event",
       "halloween"
@@ -387,7 +389,7 @@
     "name": "Journal Log Tracker",
     "description": "Shows when your next journal log is due, with a button to open your last one.",
     "url": "https://greasyfork.org/en/scripts/490675-mh-journal-log-tracker",
-    "source": "Greasyfork",
+    "source": "GreasyFork",
     "category": "userscript",
     "tags": [
       "ui"

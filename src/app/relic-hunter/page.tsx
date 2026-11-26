@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { MapPinIcon } from '@heroicons/react/20/solid';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PageHeader } from '@/components/page-header';
 
 import { getEnvironments, getLocations, getRelicHunterHints } from '@/lib/site-data';
@@ -37,6 +38,7 @@ export default function RelicHunterPage() {
 
   return (
     <div>
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Tools', href: '/tools' }, { name: 'Relic Hunter' }]} />
       <PageHeader
         title="Relic Hunter"
         description="Each day the Relic Hunter slips away to a new corner of the kingdom and leaves behind a riddle about where she's gone."
@@ -44,7 +46,7 @@ export default function RelicHunterPage() {
         iconClassName="bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300"
       />
 
-      <RelicHunterLive />
+      <RelicHunterLive locationIds={[...locationIds]} />
 
       <SectionHeading className="mt-12">Riddles by location</SectionHeading>
       <RiddleFinder

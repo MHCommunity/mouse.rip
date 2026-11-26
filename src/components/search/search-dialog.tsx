@@ -25,7 +25,7 @@ import {
 } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { ColorScaleBadge } from '@/components/color-scale-badge';
 import { GameImage } from '@/components/game-image';
@@ -136,7 +136,12 @@ export function SearchDialog({
   const [lazyRecords, setLazyRecords] = useState<SearchRecord[]>([]);
   // False until the mouse and item indexes have arrived (or failed), the first time search opens.
   const [indexSettled, setIndexSettled] = useState(false);
-  const debouncedQuery = useDebouncedValue(query, 120);
+  // One of the lists didn't arrive, so what's shown is missing its mice or its items.
+  const [indexIncomplete, setIndexIncomplete] = useState(false);
+  const pausedQuery = useDebouncedValue(query, 120);
+  // An emptied field is an empty search straight away. Waiting out the pause left the last "No results" on show
+  // under an empty field as the palette closed.
+  const debouncedQuery = query.trim() === '' ? '' : pausedQuery;
 
   // Pull in the (large) mouse and item indexes the first time search is opened.
   // allSettled, not all: if one index fails to load, keep the one that did —
@@ -148,10 +153,28 @@ export function SearchDialog({
       if (!active) return;
       const loaded = results.flatMap((result) => (result.status === 'fulfilled' ? result.value : []));
       if (loaded.length > 0) setLazyRecords(loaded);
+      setIndexIncomplete(results.some((result) => result.status === 'rejected'));
       setIndexSettled(true);
     });
     return () => {
       active = false;
+    };
+  }, [open]);
+
+  // Opened from the phone menu, the menu closes in the same moment and hands focus back to its own button, taking
+  // it from this field. Claim it back once that has happened, unless the visitor has already moved on inside.
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const claim = () => {
+      const input = inputRef.current;
+      if (input && !input.closest('[role="dialog"]')?.contains(document.activeElement)) input.focus();
+    };
+    const frame = requestAnimationFrame(claim);
+    const timer = setTimeout(claim, 350);
+    return () => {
+      cancelAnimationFrame(frame);
+      clearTimeout(timer);
     };
   }, [open]);
 
@@ -214,7 +237,7 @@ export function SearchDialog({
   const trimmed = debouncedQuery.trim();
 
   return (
-    <Dialog open={open} onClose={dismiss} className="relative z-50">
+    <Dialog open={open} onClose={dismiss} aria-label="Search" className="relative z-50">
       <DialogBackdrop
         transition
         className="fixed inset-0 bg-zinc-950/40 backdrop-blur-sm transition-opacity data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in dark:bg-black/60"
@@ -229,7 +252,9 @@ export function SearchDialog({
             <div className="flex items-center gap-3 border-b border-zinc-200 px-4 dark:border-zinc-800">
               <MagnifyingGlassIcon className="size-5 shrink-0 text-zinc-500 dark:text-zinc-400" aria-hidden="true" />
               <ComboboxInput
+                ref={inputRef}
                 autoFocus
+                aria-label="Search mice, items, locations, guides and tools"
                 className="w-full border-0 bg-transparent py-4 text-base text-zinc-900 placeholder:text-zinc-500 focus:outline-hidden focus:ring-0 dark:text-white dark:placeholder:text-zinc-400"
                 placeholder="Search mice, items, locations, guides…"
                 value={query}
@@ -276,6 +301,25 @@ export function SearchDialog({
               </p>
             )}
 
+            {indexIncomplete && (
+              <p
+                role="alert"
+                className="border-b border-zinc-200 px-4 py-2 text-xs text-zinc-700 dark:border-zinc-800 dark:text-zinc-300"
+              >
+                The list of mice and items didn&rsquo;t load, so they&rsquo;re missing from these results. Check your
+                connection and reload the page.
+              </p>
+            )}
+
+            {/* Always there, so a screen reader hears how the results change with each search. */}
+            <p role="status" className="sr-only">
+              {trimmed.length > 0 && indexSettled
+                ? results.length === 0
+                  ? `No results for ${trimmed}.`
+                  : `${results.length} ${results.length === 1 ? 'result' : 'results'}.`
+                : ''}
+            </p>
+
             {trimmed.length > 0 && indexSettled && results.length === 0 && (
               <div className="px-4 py-10 text-center text-sm text-zinc-600 dark:text-zinc-400">
                 <p>No results for &ldquo;{trimmed}&rdquo;.</p>
@@ -283,16 +327,18 @@ export function SearchDialog({
                   Browse{' '}
                   <Link
                     href="/mice"
+                    prefetch={false}
                     onClick={finish}
-                    className="font-medium text-pink-700 underline-offset-2 hover:underline dark:text-pink-400"
+                    className="font-medium text-pink-700 underline decoration-pink-700/30 underline-offset-2 hover:decoration-current dark:text-pink-400 dark:decoration-pink-400/40"
                   >
                     all mice
                   </Link>{' '}
                   and{' '}
                   <Link
                     href="/items"
+                    prefetch={false}
                     onClick={finish}
-                    className="font-medium text-pink-700 underline-offset-2 hover:underline dark:text-pink-400"
+                    className="font-medium text-pink-700 underline decoration-pink-700/30 underline-offset-2 hover:decoration-current dark:text-pink-400 dark:decoration-pink-400/40"
                   >
                     all items
                   </Link>
@@ -301,7 +347,7 @@ export function SearchDialog({
                     href={`https://mhwiki.hitgrab.com/wiki/index.php?search=${encodeURIComponent(trimmed)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-medium text-pink-700 underline-offset-2 hover:underline dark:text-pink-400"
+                    className="font-medium text-pink-700 underline decoration-pink-700/30 underline-offset-2 hover:decoration-current dark:text-pink-400 dark:decoration-pink-400/40"
                   >
                     search MHWiki
                     <span className="sr-only"> (opens in a new tab)</span>
@@ -321,7 +367,7 @@ export function SearchDialog({
                 {answer?.mouse && (
                   <ComboboxOption
                     value={answer}
-                    className="group mb-2 block cursor-pointer rounded-2xl ring-1 ring-zinc-200 p-3 data-focus:ring-pink-300 data-focus:bg-pink-50/60 dark:ring-zinc-800 dark:data-focus:ring-pink-800 dark:data-focus:bg-pink-950/30"
+                    className="group mb-2 block cursor-pointer rounded-2xl ring-1 ring-zinc-200 p-3 data-focus:ring-pink-300 data-focus:bg-pink-50/60 data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-pink-600 dark:data-focus:outline-pink-400 dark:ring-zinc-800 dark:data-focus:ring-pink-800 dark:data-focus:bg-pink-950/30"
                   >
                     <div className="flex items-start gap-3">
                       {answer.image && (
@@ -408,7 +454,7 @@ export function SearchDialog({
                       <ComboboxOption
                         key={record.id}
                         value={record}
-                        className="group flex cursor-pointer items-center gap-3 rounded-lg px-2 py-2 data-focus:bg-pink-50 dark:data-focus:bg-pink-950/40"
+                        className="group flex cursor-pointer items-center gap-3 rounded-lg px-2 py-2 data-focus:bg-pink-50 data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-pink-600 dark:data-focus:outline-pink-400 dark:data-focus:bg-pink-950/40"
                       >
                         {record.image ? (
                           <GameImage
@@ -464,7 +510,7 @@ export function SearchDialog({
                   <ComboboxOption
                     key={record.id}
                     value={record}
-                    className="flex cursor-pointer items-center justify-between gap-3 rounded-lg px-2 py-2 text-sm data-focus:bg-pink-50 dark:data-focus:bg-pink-950/40"
+                    className="flex cursor-pointer items-center justify-between gap-3 rounded-lg px-2 py-2 text-sm data-focus:bg-pink-50 data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-pink-600 dark:data-focus:outline-pink-400 dark:data-focus:bg-pink-950/40"
                   >
                     <span className="font-medium text-zinc-900 dark:text-zinc-100">{record.title}</span>
                     <span className="truncate text-xs text-zinc-600 dark:text-zinc-400">{record.subtitle}</span>

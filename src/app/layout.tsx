@@ -16,6 +16,8 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
+  // Only keyboard hints and code in guides use it, so it loads when one of those is on the page.
+  preload: false,
 });
 
 import type { Metadata, Viewport } from 'next';

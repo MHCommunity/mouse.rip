@@ -7,6 +7,7 @@ import React, { Suspense, useState, type ChangeEvent } from 'react';
 import { Input } from '@/components/input';
 import { BuildingOffice2Icon } from '@heroicons/react/20/solid';
 import { formatNumber } from '@/utils';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PageHeader } from '@/components/page-header';
 
 interface FloorGroup {
@@ -37,6 +38,9 @@ function reorderFloors(floorNum: number): FloorGroup[] {
 export default function ValourRiftFloorsPage() {
   return (
     <div className="max-w-2xl">
+      <Breadcrumbs
+        items={[{ name: 'Home', href: '/' }, { name: 'Tools', href: '/tools' }, { name: 'Valour Rift floors' }]}
+      />
       <PageHeader
         title="Valour Rift floors"
         description="Floor types in the Valour Rift tower repeat in a cycle of eight. Enter your floor to see what's coming next."

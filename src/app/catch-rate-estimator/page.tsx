@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 
 import { ScaleIcon } from '@heroicons/react/20/solid';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PageHeader } from '@/components/page-header';
 import { PageLink } from '@/components/page-link';
 
@@ -17,6 +18,9 @@ export const metadata = pageMetadata({
 export default function CatchRateEstimatorPage() {
   return (
     <div>
+      <Breadcrumbs
+        items={[{ name: 'Home', href: '/' }, { name: 'Tools', href: '/tools' }, { name: 'Catch rate estimator' }]}
+      />
       <PageHeader
         title="Catch rate estimator"
         description={

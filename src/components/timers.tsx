@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 import React, { createContext, useContext } from 'react';
 
 import { POWER_TYPE_CHIP, powerTypeLabel } from '@/lib/power-types';
@@ -191,12 +191,10 @@ export function LocationTimerPanel({ locationName }: { locationName: string }) {
                       {stageLabel(stage)}
                       <PowerChip type={stage.power_type} />
                     </span>
-                    <time
-                      dateTime={stage.starts_at}
-                      className="text-zinc-600 tabular-nums dark:text-zinc-400"
-                      title={formatLocalTime(stage.starts_at)}
-                    >
+                    {/* The clock time is written out: as a tooltip it was out of reach on a phone or a keyboard. */}
+                    <time dateTime={stage.starts_at} className="text-zinc-600 tabular-nums dark:text-zinc-400">
                       in {formatCountdown(Date.parse(stage.starts_at) - now)}
+                      <span className="text-zinc-500 dark:text-zinc-400"> · {formatLocalTime(stage.starts_at)}</span>
                     </time>
                   </li>
                 ))}

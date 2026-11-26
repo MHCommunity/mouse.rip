@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 
 import { GameImage } from '@/components/game-image';
 import { SectionHeading } from '@/components/section-heading';

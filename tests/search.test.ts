@@ -176,3 +176,64 @@ describe('searchRecords', () => {
     expect(titles('cluttergrin curiosities', 1)).toEqual(['Cluttergrin the Commodore of Curiosities']);
   });
 });
+
+describe('more shorthand', () => {
+  test.each([
+    ['bb', 'Bountiful Beanstalk'],
+    ['lny', 'Lunar New Year'],
+    ['sos', 'School of Sorcery'],
+    ['mp', 'Moussu Picchu'],
+    ['price', 'Markethunt'],
+  ])('%p finds %p', (query, expected) => {
+    expect(titles(query, 6).join(' | ')).toContain(expected);
+  });
+});
+
+describe('weights', () => {
+  const record = (id: string, title: string, extra: Partial<SearchRecord> = {}): SearchRecord => ({
+    id,
+    group: 'Pages',
+    kind: 'page',
+    title,
+    href: `/${id}`,
+    keywords: title.toLowerCase(),
+    ...extra,
+  });
+
+  test('“timers” leads with the site’s own timers, then the locations that have one, then the userscript', () => {
+    for (const query of ['timers', 'timer']) {
+      const found = titles(query, 6);
+      expect(found[0]).toBe('Location timers');
+      expect(found.slice(1, 5).sort()).toEqual(["Balack's Cove", 'Forbidden Grove', 'Seasonal Garden', 'Toxic Spill']);
+      expect(found[5]).toBe('Timers+');
+    }
+  });
+
+  test('a location with a timer still comes first for its own name', () => {
+    expect(titles('seasonal garden', 1)).toEqual(['Seasonal Garden']);
+    expect(titles('forbidden grove', 1)).toEqual(['Forbidden Grove']);
+  });
+
+  test('a weighted word finds a record that never mentions it, and sets how high', () => {
+    const list = [
+      record('named', 'Tides'),
+      record('weighted', 'Something else', { weighting: { terms: { tide: 2000 } } }),
+      record('unrelated', 'Nothing to see'),
+    ];
+    expect(searchRecords(list, 'tides').map((r) => r.id)).toEqual(['weighted', 'named']);
+    // Below an exact name match, it still shows, further down.
+    list[1].weighting = { terms: { tide: 50 } };
+    expect(searchRecords(list, 'tides').map((r) => r.id)).toEqual(['named', 'weighted']);
+  });
+
+  test('a standing weight moves a record among the results but doesn’t add it to them', () => {
+    const list = [
+      record('first', 'Cheese guide'),
+      record('second', 'Cheese guide two', { weighting: { always: 5000 } }),
+      record('third', 'Charm guide', { weighting: { always: 5000 } }),
+    ];
+    expect(searchRecords(list, 'cheese').map((r) => r.id)).toEqual(['second', 'first']);
+    list[1].weighting = { always: -5000 };
+    expect(searchRecords(list, 'cheese').map((r) => r.id)).toEqual(['first', 'second']);
+  });
+});

@@ -17,7 +17,10 @@ import {
 import miceJson from '@/data/generated/mice.json';
 import {
   EMPTY_SETUP,
+  applyChanges,
+  bestSetupLinkFor,
   cheesesFor,
+  overlayOnSaved,
   resolveStage,
   setupFromParams,
   setupToParams,
@@ -359,6 +362,90 @@ describe('estimator options and links', () => {
   test('links leave out defaults, and an empty link is the empty setup', () => {
     expect(setupToParams(EMPTY_SETUP).toString()).toBe('');
     expect(setupFromParams(new URLSearchParams())).toEqual(EMPTY_SETUP);
+  });
+
+  test('a link that names only a place keeps the saved trap, shield and bonuses', () => {
+    const saved =
+      'location=meadow&cheese=cheddar_cheese&weapon=acronym_weapon&base=rift_base&charm=luck_trinket&gs=0&bonus_luck=5';
+    const here = setupFromParams(overlayOnSaved(saved, new URLSearchParams('location=meadow')));
+    expect(here).toMatchObject({ location: 'meadow', cheese: 'cheddar_cheese', weapon: 'acronym_weapon' });
+
+    // Somewhere else: the trap comes along, the old location's stage and cheese don't.
+    const moved = setupFromParams(overlayOnSaved(`${saved}&stage=Night`, new URLSearchParams('location=harbour')));
+    expect(moved).toMatchObject({
+      location: 'harbour',
+      stage: '-',
+      cheese: '',
+      weapon: 'acronym_weapon',
+      base: 'rift_base',
+      charm: 'luck_trinket',
+      goldenShield: false,
+      bonusLuck: 5,
+    });
+
+    // What the link does say wins, and nothing saved is just the link.
+    const named = setupFromParams(overlayOnSaved(saved, new URLSearchParams('location=harbour&cheese=brie_cheese')));
+    expect(named.cheese).toBe('brie_cheese');
+    expect(setupFromParams(overlayOnSaved('', new URLSearchParams('location=harbour')))).toEqual({
+      ...EMPTY_SETUP,
+      location: 'harbour',
+    });
+  });
+
+  test('a mouse page links to a Best Setup search that can find the mouse, keeping the hunter’s settings', () => {
+    const href = bestSetupLinkFor(catalog, 'glazed', {
+      location: 'Ice Fortress',
+      stage: null,
+      cheese: 'Glazed Pecan Pecorino Cheese',
+    });
+    expect(href).toStartWith('/best-setup?location=winter_hunt_fortress&cheese=');
+    expect(href).toEndWith('&target=glazed&keep=1');
+
+    // The link's place, cheese and target go over what was saved; the shield and bonus stay.
+    const merged = overlayOnSaved(
+      'location=meadow&cheese=cheddar_cheese&gs=0&bonus_luck=5',
+      new URLSearchParams(href!.split('?')[1]),
+    );
+    expect(merged.get('location')).toBe('winter_hunt_fortress');
+    expect(merged.get('target')).toBe('glazed');
+    expect(merged.get('gs')).toBe('0');
+    expect(merged.get('bonus_luck')).toBe('5');
+  });
+
+  test('a mouse that only comes with a charm gets a link that arms it', () => {
+    const scholar = [...catalog.charms.values()].find((charm) => charm.name === 'Scholar Charm')!;
+    const zurreal = [...catalog.mice.values()].find((mouse) => mouse.name === 'Zurreal the Eternal')!;
+    const withCharm = catalog.populations.find(
+      (population) => population.charm === scholar.type && population.mice.some((entry) => entry.type === zurreal.type),
+    )!;
+    const href = bestSetupLinkFor(catalog, zurreal.type, {
+      location: catalog.locationName.get(withCharm.location)!,
+      stage: withCharm.stage === '-' ? null : withCharm.stage,
+      cheese: catalog.cheeseName.get(withCharm.cheese)!,
+      charm: 'Scholar Charm',
+    });
+    expect(href).toContain(`charm=${scholar.type}`);
+  });
+
+  test('no link when the catch rate data doesn’t have the mouse there', () => {
+    const spot = { location: 'Meadow', stage: null, cheese: 'Cheddar Cheese' };
+    expect(bestSetupLinkFor(catalog, 'glazed', spot)).toBeUndefined();
+    expect(bestSetupLinkFor(catalog, 'glazed', { ...spot, location: 'Nowhere' })).toBeUndefined();
+    expect(bestSetupLinkFor(catalog, 'glazed', { ...spot, charm: 'No Such Charm' })).toBeUndefined();
+  });
+
+  test('a location opens on the cheese most hunted there, not the first in the alphabet', () => {
+    const pick = (location: string) => applyChanges(catalog, { ...EMPTY_SETUP }, { location });
+    for (const location of ['mountain', 'meadow', 'fort_rox', 'pollution_outbreak']) {
+      const setup = pick(location);
+      const here = catalog.populations.filter(
+        (population) =>
+          population.location === location && population.stage === setup.stage && population.charm === '-',
+      );
+      const most = Math.max(...here.map((population) => population.sample));
+      expect(here.find((population) => population.cheese === setup.cheese)?.sample, location).toBe(most);
+    }
+    expect(pick('mountain').cheese).not.toBe('abominable_asiago_cheese');
   });
 
   test('junk in a link falls back to defaults', () => {

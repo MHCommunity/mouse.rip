@@ -2,13 +2,12 @@
 
 import * as Headless from '@headlessui/react';
 import clsx from 'clsx';
-import { LayoutGroup, motion } from 'framer-motion';
-import React, { forwardRef, useId } from 'react';
+import React, { forwardRef } from 'react';
 import { TouchTarget } from './button';
 import { Link } from './link';
 
 export function Sidebar({ className, ...props }: React.ComponentPropsWithoutRef<'nav'>) {
-  return <nav {...props} className={clsx(className, 'flex h-full min-h-0 flex-col')} />;
+  return <nav aria-label="Site" {...props} className={clsx(className, 'flex h-full min-h-0 flex-col')} />;
 }
 
 export function SidebarHeader({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
@@ -48,13 +47,7 @@ export function SidebarFooter({ className, ...props }: React.ComponentPropsWitho
 }
 
 export function SidebarSection({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
-  const id = useId();
-
-  return (
-    <LayoutGroup id={id}>
-      <div {...props} data-slot="section" className={clsx(className, 'flex flex-col gap-0.5')} />
-    </LayoutGroup>
-  );
+  return <div {...props} data-slot="section" className={clsx(className, 'flex flex-col gap-0.5')} />;
 }
 
 export function SidebarDivider({ className, ...props }: React.ComponentPropsWithoutRef<'hr'>) {
@@ -112,8 +105,11 @@ export const SidebarItem = forwardRef(function SidebarItem(
   return (
     <span className={clsx(className, 'relative')}>
       {current && (
-        <motion.span
-          layoutId="current-indicator"
+        // Named for the View Transitions API, which slides it to the new item as the page changes. It used to
+        // take an animation library in every page's JavaScript to do the same.
+        <span
+          aria-hidden="true"
+          style={{ viewTransitionName: 'current-indicator' }}
           className="absolute inset-y-2 -left-4 w-0.5 rounded-full bg-zinc-950 dark:bg-white"
         />
       )}
@@ -123,6 +119,7 @@ export const SidebarItem = forwardRef(function SidebarItem(
           {...props}
           className={classes}
           data-current={current ? 'true' : undefined}
+          aria-current={current ? 'page' : undefined}
           ref={ref}
         >
           <TouchTarget>{children}</TouchTarget>

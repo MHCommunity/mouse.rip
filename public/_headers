@@ -1,3 +1,11 @@
 # https://developers.cloudflare.com/workers/static-assets/headers
 /_next/static/*
   Cache-Control: public,max-age=31536000,immutable
+
+# Not content-hashed, so a week and a grace period, the same as i.mouse.rip.
+/images/*
+  Cache-Control: public,max-age=604800,stale-while-revalidate=86400
+
+# Static files are served before the worker runs, so next.config.ts's headers don't reach them.
+/*
+  X-Content-Type-Options: nosniff

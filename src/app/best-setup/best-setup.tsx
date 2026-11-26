@@ -1,16 +1,17 @@
 'use client';
 
 import clsx from 'clsx';
-import React, { useEffect, useMemo, useState, useSyncExternalStore } from 'react';
+import React, { useDeferredValue, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
+import { Announce } from '@/components/announce';
 import { GameImage } from '@/components/game-image';
 import { ItemPicker } from '@/components/item-picker';
 import { Link } from '@/components/link';
-import { bestSetups, type Goal, type RankedSetup } from '@/lib/catch-rate/best-setup';
+import { bestSetups, tiedForBest, type Goal, type RankedSetup } from '@/lib/catch-rate/best-setup';
 import type { Catalog } from '@/lib/catch-rate/data';
 import { findPopulation, type Extras, type Setup } from '@/lib/catch-rate/engine';
-import { EMPTY_SETUP, applyChanges, setupFromParams, setupToParams } from '@/lib/catch-rate/options';
+import { EMPTY_SETUP, applyChanges, overlayOnSaved, setupFromParams, setupToParams } from '@/lib/catch-rate/options';
 import { itemImageUrl } from '@/lib/image-urls';
 import { powerTypeLabel } from '@/lib/power-types';
 import { formatNumber } from '@/utils';
@@ -28,6 +29,8 @@ import {
   useCatchRateCatalog,
   useItemOptions,
   JumpToResults,
+  NoDataHint,
+  startOverClasses,
 } from '../catch-rate-estimator/fields';
 
 const SETUP_KEY = 'mouse.rip:best-setup';
@@ -49,6 +52,22 @@ const KINDS = [
 ] as const;
 
 const noSubscribe = () => () => {};
+
+/**
+ * Arrow keys for a group of role="radio" buttons, as a screen reader tells its user to expect: they move to the
+ * next choice and pick it. Each button also takes tabIndex 0 only when it's the one chosen.
+ */
+function radioKeys(event: React.KeyboardEvent<HTMLElement>) {
+  const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
+  if (!step) return;
+  const radios = [...event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="radio"]:not(:disabled)')];
+  const next =
+    radios[(radios.indexOf(document.activeElement as HTMLButtonElement) + step + radios.length) % radios.length];
+  if (!next) return;
+  event.preventDefault();
+  next.focus();
+  next.click();
+}
 function read(key: string): string {
   try {
     return window.localStorage.getItem(key) ?? '';
@@ -65,7 +84,13 @@ function write(key: string, value: string) {
   }
 }
 
-function parseOwned(stored: string): OwnedItems | null {
+const NO_ITEMS: OwnedItems = { weapons: [], bases: [], charms: [] };
+const isEmpty = (items: OwnedItems) => KINDS.every(({ key }) => items[key].length === 0);
+const sameItems = (a: OwnedItems, b: OwnedItems) =>
+  KINDS.every(({ key }) => a[key].length === b[key].length && a[key].every((type) => b[key].includes(type)));
+
+/** The saved list, and whether the search was down to it. The list is kept while every item is searched. */
+function parseOwned(stored: string): { items: OwnedItems; mineOnly: boolean } | null {
   try {
     const value: unknown = JSON.parse(stored);
     if (!value || typeof value !== 'object') return null;
@@ -73,7 +98,10 @@ function parseOwned(stored: string): OwnedItems | null {
       const entry = (value as Record<string, unknown>)[key];
       return Array.isArray(entry) ? entry.filter((item): item is string => typeof item === 'string') : [];
     };
-    return { weapons: list('weapons'), bases: list('bases'), charms: list('charms') };
+    return {
+      items: { weapons: list('weapons'), bases: list('bases'), charms: list('charms') },
+      mineOnly: (value as Record<string, unknown>).all !== true,
+    };
   } catch {
     // Nothing saved, or something else under the key.
     return null;
@@ -82,9 +110,10 @@ function parseOwned(stored: string): OwnedItems | null {
 
 /** Items in a link (own_weapons=a,b&own_bases=…), for MouseHunt Improved or a bookmarklet to send a hunter's own. */
 function ownedFromParams(params: URLSearchParams): OwnedItems | null {
-  if (!KINDS.some(({ param }) => params.has(param))) return null;
   const list = (param: string) => (params.get(param) ?? '').split(',').filter(Boolean);
-  return { weapons: list('own_weapons'), bases: list('own_bases'), charms: list('own_charms') };
+  const items = { weapons: list('own_weapons'), bases: list('own_bases'), charms: list('own_charms') };
+  // A link with the parameters but nothing in them isn't a list to switch to.
+  return isEmpty(items) ? null : items;
 }
 
 interface Settings {
@@ -123,35 +152,58 @@ export function BestSetupFromUrl() {
     () => read(OWNED_KEY),
     () => ON_SERVER,
   );
-  const search = new URLSearchParams(params.toString());
-  const linked = search.has('location');
+  const link = new URLSearchParams(params.toString());
+  const linked = link.has('location');
   const ready = storedSetup !== ON_SERVER;
+  // A link that names only the place (a location page's "Best setup here") keeps the hunter's charm, shield and
+  // bonuses; the tool's own links always carry a cheese. A link from elsewhere on the site that does name a
+  // cheese, such as a mouse page's, asks for the same with keep=1.
+  const keepsSettings = linked && ready && (!link.has('cheese') || link.get('keep') === '1');
   const initial = linked
-    ? settingsFromParams(search)
+    ? settingsFromParams(keepsSettings ? overlayOnSaved(storedSetup, link) : link)
     : ready && storedSetup
       ? settingsFromParams(new URLSearchParams(storedSetup))
       : undefined;
-  const owned = ownedFromParams(search) ?? (ready ? parseOwned(storedOwned) : null);
+  const linkedItems = ownedFromParams(link);
+  const saved = ready ? parseOwned(storedOwned) : null;
   return (
     <BestSetup
       key={ready ? 'ready' : 'server'}
       initial={initial}
-      initialOwned={owned}
-      importedOwned={Boolean(ownedFromParams(search))}
+      initialItems={linkedItems ?? saved?.items}
+      initialMineOnly={linkedItems ? true : (saved?.mineOnly ?? false)}
+      importedItems={Boolean(linkedItems)}
+      replacedItems={linkedItems && saved && !sameItems(linkedItems, saved.items) ? saved.items : undefined}
+      itemsInAddress={KINDS.some(({ param }) => link.has(param))}
       syncUrl={ready}
     />
   );
 }
 
+/** A list to go back to: the one a link replaced, or the one before every tick was set or cleared at once. */
+interface Undo {
+  items: OwnedItems;
+  of: 'link' | 'all';
+}
+
 export function BestSetup({
   initial,
-  initialOwned = null,
-  importedOwned = false,
+  initialItems = NO_ITEMS,
+  initialMineOnly = false,
+  importedItems = false,
+  replacedItems,
+  itemsInAddress = false,
   syncUrl,
 }: {
   initial?: Settings;
-  initialOwned?: OwnedItems | null;
-  importedOwned?: boolean;
+  initialItems?: OwnedItems;
+  initialMineOnly?: boolean;
+  /** The list came in the link that was opened. */
+  importedItems?: boolean;
+  /** The saved list the link's took the place of, when it was a different one. */
+  replacedItems?: OwnedItems;
+  /** The address still carries a list, to take out once it's saved. */
+  itemsInAddress?: boolean;
   syncUrl: boolean;
 }) {
   const router = useRouter();
@@ -160,24 +212,32 @@ export function BestSetup({
   const [settings, setSettings] = useState<Settings>(
     initial ?? { setup: { ...EMPTY_SETUP }, goal: { kind: 'catches' }, tryCharms: false },
   );
-  // Null until the hunter says which items they own: until then, every item in the game is fair game.
-  const [owned, setOwned] = useState<OwnedItems | null>(initialOwned);
+  // The hunter's ticked items, and whether the search is down to them. The two are kept apart so that looking at
+  // every item and coming back doesn't cost them the list.
+  const [items, setItems] = useState<OwnedItems>(initialItems);
+  const [mineOnly, setMineOnly] = useState(initialMineOnly);
+  const [undo, setUndo] = useState<Undo | null>(replacedItems ? { items: replacedItems, of: 'link' } : null);
+  // The address is cleaned of the list once it's saved, so remember here that it came from a link.
+  const [imported] = useState(importedItems);
 
   // Remember the settings and the item list for the next visit, including ones that came in a link.
   useEffect(() => {
     if (syncUrl) write(SETUP_KEY, settingsToParams(settings).toString());
   }, [settings, syncUrl]);
   useEffect(() => {
-    if (syncUrl && owned) write(OWNED_KEY, JSON.stringify(owned));
-  }, [owned, syncUrl]);
+    if (!syncUrl) return;
+    // Nothing ticked and nothing saved before: leave storage alone.
+    if (!mineOnly && isEmpty(items) && !read(OWNED_KEY)) return;
+    write(OWNED_KEY, JSON.stringify(mineOnly ? items : { ...items, all: true }));
+  }, [items, mineOnly, syncUrl]);
   // Items sent in a link are saved above; take them out of the address so it can be shared.
   useEffect(() => {
-    if (!syncUrl || !importedOwned) return;
+    if (!syncUrl || !itemsInAddress) return;
     const params = new URLSearchParams(window.location.search);
     for (const { param } of KINDS) params.delete(param);
     const query = params.toString();
     router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
-  }, [syncUrl, importedOwned, router, pathname]);
+  }, [syncUrl, itemsInAddress, router, pathname]);
 
   const update = (next: Settings) => {
     setSettings(next);
@@ -186,16 +246,59 @@ export function BestSetup({
     router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
   };
 
+  // Settings picked up from the last visit, or filled out from a link that kept them, aren't in the address yet.
+  // Put them there once, so the address can be copied and shared without touching the form first.
+  const addressed = useRef(false);
+  useEffect(() => {
+    if (!syncUrl || addressed.current || itemsInAddress) return;
+    addressed.current = true;
+    const query = settingsToParams(settings).toString();
+    if (query && query !== window.location.search.slice(1)) {
+      window.history.replaceState(null, '', `${pathname}?${query}`);
+    }
+  }, [syncUrl, settings, pathname, itemsInAddress]);
+
+  // A link may name only a location; fill in a valid stage and cheese. Memoised so the search below runs when the
+  // settings change and not on every render (each address update re-renders this).
+  const complete = useMemo(() => {
+    if (!catalog || !settings.setup.location) return settings;
+    let setup = applyChanges(catalog, settings.setup, {});
+    let goal = settings.goal;
+    if (goal.kind === 'mouse') {
+      const target = goal.mouse;
+      const attracts = (candidate: Setup) =>
+        findPopulation(candidate, catalog)?.mice.some((entry) => entry.type === target) ?? false;
+      // A link aims for a mouse, and the saved charm it's laid over can bring its own set of mice without that
+      // one. Then the charm gives way; if the mouse still isn't there, there's nothing to aim for.
+      if (!attracts(setup)) {
+        if (setup.charm && attracts({ ...setup, charm: '' })) setup = { ...setup, charm: '' };
+        else goal = { kind: 'catches' };
+      }
+    }
+    return { ...settings, setup, goal };
+  }, [catalog, settings]);
+
   if (!catalog) return <CatalogStatus failed={failed} />;
   return (
     <BestSetupForm
       catalog={catalog}
-      // A link may name only a location; fill in a valid stage and cheese.
-      settings={settings.setup.location ? { ...settings, setup: applyChanges(catalog, settings.setup, {}) } : settings}
+      settings={complete}
       onChange={update}
-      owned={owned}
-      onOwned={setOwned}
-      imported={importedOwned}
+      items={items}
+      mineOnly={mineOnly}
+      onMineOnly={setMineOnly}
+      onItems={(next, all) => {
+        // Ticking or clearing everything at once can be taken back; a single tick after that settles it.
+        setUndo(all ? { items, of: 'all' } : null);
+        setItems(next);
+      }}
+      imported={imported}
+      undo={undo}
+      onUndo={() => {
+        if (!undo) return;
+        setItems(undo.items);
+        setUndo(null);
+      }}
     />
   );
 }
@@ -204,18 +307,28 @@ function BestSetupForm({
   catalog,
   settings,
   onChange,
-  owned,
-  onOwned,
+  items,
+  mineOnly,
+  onMineOnly,
+  onItems,
   imported,
+  undo,
+  onUndo,
 }: {
   catalog: Catalog;
   settings: Settings;
   onChange: (settings: Settings) => void;
-  owned: OwnedItems | null;
-  onOwned: (owned: OwnedItems | null) => void;
+  items: OwnedItems;
+  mineOnly: boolean;
+  onMineOnly: (mineOnly: boolean) => void;
+  onItems: (items: OwnedItems, all?: boolean) => void;
   imported: boolean;
+  undo: Undo | null;
+  onUndo: () => void;
 }) {
   const { setup, goal, tryCharms } = settings;
+  // Null while every item in the game is being searched.
+  const owned = mineOnly ? items : null;
   const options = useItemOptions(catalog, setup);
   const setSetup = (next: Setup) => {
     const population = findPopulation(next, catalog);
@@ -242,10 +355,18 @@ function BestSetupForm({
   );
 
   const population = setup.location && setup.cheese ? findPopulation(setup, catalog) : undefined;
+  // Trying every pair takes long enough to feel on a phone, so the search runs behind the form: a keystroke shows
+  // at once, and the results catch up.
+  const wanted = useMemo(() => ({ setup, candidates, goal }), [setup, candidates, goal]);
+  const searched = useDeferredValue(wanted);
   const results = useMemo(
-    () => (population ? bestSetups(setup, catalog, candidates, goal) : []),
-    [population, setup, catalog, candidates, goal],
+    () =>
+      searched.setup.location && searched.setup.cheese && findPopulation(searched.setup, catalog)
+        ? bestSetups(searched.setup, catalog, searched.candidates, searched.goal)
+        : [],
+    [searched, catalog],
   );
+  const searching = searched !== wanted;
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)]">
@@ -254,7 +375,13 @@ function BestSetupForm({
 
         <fieldset className={clsx(cardClasses, 'space-y-4')}>
           <legend className="sr-only">What to aim for</legend>
-          <div role="radiogroup" aria-label="Aim for" className="grid grid-cols-2 gap-2">
+          <div
+            role="radiogroup"
+            aria-label="Aim for"
+            tabIndex={-1}
+            onKeyDown={radioKeys}
+            className="grid grid-cols-2 gap-2"
+          >
             {(
               [
                 ['catches', 'Most catches', 'Everything the cheese attracts'],
@@ -266,6 +393,7 @@ function BestSetupForm({
                 type="button"
                 role="radio"
                 aria-checked={goal.kind === kind}
+                tabIndex={goal.kind === kind ? 0 : -1}
                 disabled={kind === 'mouse' && !population}
                 onClick={() =>
                   onChange({
@@ -279,7 +407,7 @@ function BestSetupForm({
                 className={clsx(
                   'rounded-xl px-3 py-2 text-left ring-1 transition focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 disabled:cursor-not-allowed disabled:opacity-50',
                   goal.kind === kind
-                    ? 'bg-pink-50 ring-pink-300 dark:bg-pink-950/50 dark:ring-pink-800'
+                    ? 'bg-pink-50 ring-2 ring-pink-600 dark:bg-pink-950/50 dark:ring-pink-400'
                     : 'bg-white ring-zinc-200 hover:ring-zinc-300 dark:bg-white/5 dark:ring-zinc-700',
                 )}
               >
@@ -354,15 +482,61 @@ function BestSetupForm({
 
         <ExtrasCard catalog={catalog} setup={setup} onExtra={setExtra} items={ownItems} />
 
-        <OwnedItemsCard catalog={catalog} owned={owned} onOwned={onOwned} imported={imported} />
+        {/* "Only mine" lists every weapon in the game as a checkbox; this is the way past them to the results. */}
+        <a
+          href="#results"
+          className="sr-only focus:not-sr-only focus:inline-block focus:rounded-lg focus:bg-white focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-pink-700 focus:ring-2 focus:ring-pink-500 dark:focus:bg-zinc-900 dark:focus:text-pink-300"
+        >
+          Skip to the results
+        </a>
+        <OwnedItemsCard
+          catalog={catalog}
+          items={items}
+          mineOnly={mineOnly}
+          onMineOnly={onMineOnly}
+          onItems={onItems}
+          imported={imported}
+          undo={undo}
+          onUndo={onUndo}
+        />
+        {setup.location && (
+          <button
+            type="button"
+            onClick={() => onChange({ setup: { ...EMPTY_SETUP }, goal: { kind: 'catches' }, tryCharms: false })}
+            className={startOverClasses}
+          >
+            Start over
+          </button>
+        )}
         <JumpToResults target="results" />
       </form>
 
-      <section id="results" aria-labelledby="best-heading" aria-live="polite" className="min-w-0 scroll-mt-4">
+      <section
+        id="results"
+        aria-labelledby="best-heading"
+        className={clsx('min-w-0 scroll-mt-4 transition-opacity', searching && 'opacity-60')}
+      >
         <h2 id="best-heading" className="sr-only">
           Best setups
         </h2>
-        <Results catalog={catalog} setup={setup} goal={goal} results={results} hasPopulation={Boolean(population)} />
+        <Announce>
+          {results.length > 0
+            ? `Best setup: ${catalog.weapons.get(results[0].weapon)?.name ?? 'a weapon'} with ${
+                catalog.bases.get(results[0].base)?.name ?? 'a base'
+              }${results[0].charm ? ` and ${catalog.charms.get(results[0].charm)?.name ?? 'a charm'}` : ''}. ${formatNumber(results.length)} setups ranked.`
+            : population
+              ? 'No weapons or bases to try.'
+              : ''}
+        </Announce>
+        <Results
+          catalog={catalog}
+          setup={searched.setup}
+          goal={searched.goal}
+          results={results}
+          hasPopulation={Boolean(population)}
+          cheese={catalog.cheeseName.get(setup.cheese) ?? 'This cheese'}
+          charmsWithData={options.charms.filter((charm) => charm.hint).map((charm) => charm.name)}
+        />
       </section>
     </div>
   );
@@ -371,14 +545,23 @@ function BestSetupForm({
 /** Which items to search: everything in the game, or the hunter's own, kept on this device. */
 function OwnedItemsCard({
   catalog,
-  owned,
-  onOwned,
+  items,
+  mineOnly,
+  onMineOnly,
+  onItems,
   imported,
+  undo,
+  onUndo,
 }: {
   catalog: Catalog;
-  owned: OwnedItems | null;
-  onOwned: (owned: OwnedItems | null) => void;
+  items: OwnedItems;
+  mineOnly: boolean;
+  onMineOnly: (mineOnly: boolean) => void;
+  /** `all` when every tick shown was set or cleared at once, which can be undone. */
+  onItems: (items: OwnedItems, all?: boolean) => void;
   imported: boolean;
+  undo: Undo | null;
+  onUndo: () => void;
 }) {
   const [kind, setKind] = useState<(typeof KINDS)[number]['key']>('weapons');
   const [query, setQuery] = useState('');
@@ -386,8 +569,10 @@ function OwnedItemsCard({
   const list = [...all[kind].values()];
   const needle = query.trim().toLowerCase();
   const shown = needle ? list.filter((item) => item.name.toLowerCase().includes(needle)) : list;
-  const mine = new Set(owned?.[kind] ?? []);
-  const set = (types: string[]) => owned && onOwned({ ...owned, [kind]: types });
+  const mine = new Set(items[kind]);
+  const set = (types: string[], everyShown = false) => onItems({ ...items, [kind]: types }, everyShown);
+  const linkClasses =
+    'font-medium text-pink-700 underline decoration-pink-700/30 underline-offset-2 hover:text-pink-900 hover:decoration-pink-900 dark:text-pink-300 dark:decoration-pink-300/40 dark:hover:text-pink-200';
 
   return (
     <fieldset className={clsx(cardClasses, 'space-y-4')}>
@@ -395,29 +580,46 @@ function OwnedItemsCard({
       <div>
         <p className="text-sm font-medium text-zinc-950 dark:text-white">Your items</p>
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-          {owned
-            ? `Searching your ${formatNumber(owned.weapons.length)} weapons, ${formatNumber(owned.bases.length)} bases and ${formatNumber(owned.charms.length)} charms.`
-            : 'Searching every weapon and base in the game. Tick the ones you own to see what you can use today.'}
-          {imported && owned ? ' These came from the link you opened.' : ''}
+          {mineOnly
+            ? `Searching your ${formatNumber(items.weapons.length)} weapons, ${formatNumber(items.bases.length)} bases and ${formatNumber(items.charms.length)} charms.`
+            : isEmpty(items)
+              ? 'Searching every weapon and base in the game. Tick the ones you own to see what you can use today.'
+              : 'Searching every weapon and base in the game.'}
+          {imported && mineOnly ? ' These came from the link you opened.' : ''}
+          {undo?.of === 'link' && mineOnly && (
+            <>
+              {' '}
+              <button type="button" className={linkClasses} onClick={onUndo}>
+                Use my saved items instead
+              </button>
+            </>
+          )}
         </p>
       </div>
-      <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label="Which items">
+      <div
+        className="grid grid-cols-2 gap-2"
+        role="radiogroup"
+        aria-label="Which items"
+        tabIndex={-1}
+        onKeyDown={radioKeys}
+      >
         {(
           [
             [false, 'Every item'],
             [true, 'Only mine'],
           ] as const
-        ).map(([mineOnly, label]) => (
+        ).map(([value, label]) => (
           <button
             key={label}
             type="button"
             role="radio"
-            aria-checked={Boolean(owned) === mineOnly}
-            onClick={() => onOwned(mineOnly ? (owned ?? { weapons: [], bases: [], charms: [] }) : null)}
+            aria-checked={mineOnly === value}
+            tabIndex={mineOnly === value ? 0 : -1}
+            onClick={() => onMineOnly(value)}
             className={clsx(
               'rounded-xl px-3 py-2 text-sm font-medium ring-1 transition focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500',
-              Boolean(owned) === mineOnly
-                ? 'bg-pink-50 text-pink-900 ring-pink-300 dark:bg-pink-950/50 dark:text-pink-100 dark:ring-pink-800'
+              mineOnly === value
+                ? 'bg-pink-50 text-pink-900 ring-2 ring-pink-600 dark:bg-pink-950/50 dark:text-pink-100 dark:ring-pink-400'
                 : 'bg-white text-zinc-800 ring-zinc-200 hover:ring-zinc-300 dark:bg-white/5 dark:text-zinc-200 dark:ring-zinc-700',
             )}
           >
@@ -426,7 +628,7 @@ function OwnedItemsCard({
         ))}
       </div>
 
-      {owned && (
+      {mineOnly && (
         <div className="space-y-3">
           <div className="inline-flex rounded-lg bg-zinc-100 p-1 dark:bg-zinc-800" role="group" aria-label="Item kind">
             {KINDS.map(({ key, label }) => (
@@ -442,7 +644,7 @@ function OwnedItemsCard({
                     : 'text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white',
                 )}
               >
-                {label} <span className="tabular-nums text-xs font-normal">{formatNumber(owned[key].length)}</span>
+                {label} <span className="tabular-nums text-xs font-normal">{formatNumber(items[key].length)}</span>
               </button>
             ))}
           </div>
@@ -458,17 +660,27 @@ function OwnedItemsCard({
             <button
               type="button"
               className="font-medium text-pink-700 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200"
-              onClick={() => set([...new Set([...mine, ...shown.map((item) => item.type)])])}
+              onClick={() => set([...new Set([...mine, ...shown.map((item) => item.type)])], true)}
             >
               Tick all{needle ? ' shown' : ''}
             </button>
             <button
               type="button"
               className="font-medium text-pink-700 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200"
-              onClick={() => set([...mine].filter((type) => !shown.some((item) => item.type === type)))}
+              onClick={() =>
+                set(
+                  [...mine].filter((type) => !shown.some((item) => item.type === type)),
+                  true,
+                )
+              }
             >
               Untick all{needle ? ' shown' : ''}
             </button>
+            {undo?.of === 'all' && (
+              <button type="button" className={clsx(linkClasses, 'ml-auto')} onClick={onUndo}>
+                Undo
+              </button>
+            )}
           </div>
           <ul className="max-h-80 space-y-0.5 overflow-y-auto rounded-xl bg-zinc-50 p-1.5 dark:bg-white/5">
             {shown.map((item) => (
@@ -508,15 +720,30 @@ function Results({
   goal,
   results,
   hasPopulation,
+  cheese,
+  charmsWithData,
 }: {
   catalog: Catalog;
   setup: Setup;
   goal: Goal;
   results: RankedSetup[];
   hasPopulation: boolean;
+  cheese: string;
+  /** Charms that have their own attraction data for this location and cheese. */
+  charmsWithData: string[];
 }) {
   const [shown, setShown] = useState(PAGE);
-  if (!setup.location || !hasPopulation) {
+  if (setup.location && !hasPopulation) {
+    return (
+      <div className="rounded-2xl border border-dashed border-zinc-300 p-8 text-center dark:border-zinc-700">
+        <p className="text-base font-medium text-zinc-900 dark:text-white">No attraction data for this cheese here</p>
+        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+          <NoDataHint cheese={cheese} charmsWithData={charmsWithData} />
+        </p>
+      </div>
+    );
+  }
+  if (!setup.location) {
     return (
       <div className="rounded-2xl border border-dashed border-zinc-300 p-8 text-center dark:border-zinc-700">
         <p className="text-base font-medium text-zinc-900 dark:text-white">Pick where you’re hunting</p>
@@ -539,6 +766,7 @@ function Results({
 
   const targetName = goal.kind === 'mouse' ? catalog.mice.get(goal.mouse)?.name : undefined;
   const name = (map: Map<string, { name: string }>, type: string) => map.get(type)?.name ?? type;
+  const tied = tiedForBest(results, goal);
 
   return (
     <div className="space-y-3">
@@ -546,6 +774,8 @@ function Results({
         {goal.kind === 'mouse'
           ? `The setups that catch the most ${targetName ?? 'of that mouse'} per 100 hunts.`
           : 'The setups that catch the most mice per 100 hunts.'}
+        {tied > 1 &&
+          ` ${tied === results.length ? 'Every setup listed catches' : `The first ${tied} catch`} the same, so any of them will do.`}
       </p>
       <ol className="space-y-2">
         {results.slice(0, shown).map((result, index) => {
@@ -604,7 +834,7 @@ function Results({
                 </p>
                 <Link
                   href={`/catch-rate-estimator?${link.toString()}`}
-                  className="text-sm font-medium whitespace-nowrap text-pink-700 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200"
+                  className="inline-block py-0.5 text-sm font-medium whitespace-nowrap text-pink-700 underline decoration-pink-700/30 underline-offset-2 hover:text-pink-900 hover:decoration-current dark:text-pink-300 dark:decoration-pink-300/40 dark:hover:text-pink-200"
                 >
                   See each mouse
                 </Link>

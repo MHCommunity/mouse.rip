@@ -26,3 +26,14 @@ test('sorting reorders the setups', async ({ page }) => {
     await expect(select).toHaveValue(/\w+/);
   }
 });
+
+test('a mouse that only comes with a charm says which', async ({ page }) => {
+  await page.goto('/map-planner');
+  await page.getByRole('textbox').first().fill('Zurreal the Eternal');
+  const card = page
+    .locator('main ol > li')
+    .filter({ hasText: 'Crystal Library' })
+    .filter({ hasText: 'per hunt' })
+    .first();
+  await expect(card).toContainText('Scholar Charm');
+});

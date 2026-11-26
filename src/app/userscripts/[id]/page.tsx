@@ -5,7 +5,7 @@ import { getResourcesByCategory } from '@/lib/site-data';
 import React from 'react';
 
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
-import { BadgeButton } from '@/components/badge';
+import { BadgeButton } from '@/components/badge-button';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PageHeader } from '@/components/page-header';
 import { PageLink } from '@/components/page-link';
@@ -78,8 +78,8 @@ export default async function UserscriptPage({ params }: { params: Promise<{ id:
 
       {item.mhImproved && (
         <p className="mt-6 text-sm/6 text-zinc-600 dark:text-zinc-400">
-          <PageLink href="https://github.com/MHCommunity/mousehunt-improved">MouseHunt Improved</PageLink> has this
-          feature built in, so you don&apos;t need this script if you use it.
+          <PageLink href="/extensions">MouseHunt Improved</PageLink> has this feature built in, so you don&apos;t need
+          this script if you use it.
         </p>
       )}
 

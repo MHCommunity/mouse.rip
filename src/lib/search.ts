@@ -4,6 +4,7 @@ import miceGroups from '@/data/generated/mice-groups.json';
 import { loadItemIndex, loadMouseIndex, type IndexedItem, type IndexedMouse } from '@/lib/client-index';
 import { POWER_TYPES, bestPowerTypes, powerTypeSetLabel } from '@/lib/power-types';
 import { itemImageUrl, locationImageUrl, mouseGroupImageUrl, mouseImageUrl, titleImageUrl } from '@/lib/image-urls';
+import { TIMER_LOCATION_NAMES } from '@/lib/timer-locations';
 
 export type SearchGroup = 'Pages' | 'Mice' | 'Groups' | 'Locations' | 'Items' | 'Guides' | 'Resources' | 'Titles';
 
@@ -29,6 +30,20 @@ export interface MouseAnswer {
   best?: IndexedMouse['best'];
 }
 
+/**
+ * A hand-set lean on where a record ranks. See WEIGHTS for the scale the numbers are on.
+ */
+export interface Weighting {
+  /** Added whenever the record is among the results, whatever was searched for. Negative pushes it down. */
+  always?: number;
+  /**
+   * Words this record should be found for, each with what it adds when that word is searched. The word doesn't
+   * have to be anywhere in the record's own text: `{ timer: 1200 }` both makes "timers" find it and decides how
+   * high. Written as the search stems them: singular, lowercase.
+   */
+  terms?: Record<string, number>;
+}
+
 export interface SearchRecord {
   id: string;
   group: SearchGroup;
@@ -43,6 +58,8 @@ export interface SearchRecord {
   image?: string;
   /** Haystack used for matching; normalized together with the query. */
   keywords: string;
+  /** A lean set where the record is made, for a whole class of records. WEIGHTS adds to it for single ones. */
+  weighting?: Weighting;
 }
 
 // Order controls how groups are stacked in the results list.
@@ -117,6 +134,13 @@ const PAGE_RECORDS: SearchRecord[] = [
     'Queso pump calculator',
     'Queso geyser pump planning',
     'queso pump calculator geyser river',
+  ],
+  // The home page's "Right now" strip is the one place every rotating location's timer is together.
+  [
+    '/#timers-heading',
+    'Location timers',
+    'What’s on now at the rotating locations, and what’s next',
+    'timers timer countdown right now tide season open closed forbidden grove balack cove seasonal garden toxic spill',
   ],
   ['/about', 'About', 'About mouse.rip', 'about contact info'],
 ].map(([href, title, subtitle, keywords]) => ({
@@ -218,6 +242,10 @@ export function getStaticSearchRecords(): SearchRecord[] {
         href: `/locations/${location.id}`,
         image: locationImageUrl(location.id),
         keywords: `${location.name} ${region.name} ${env?.description ?? ''} location area region`.toLowerCase(),
+        // Their pages show the stage that's on now and what's coming up.
+        weighting: TIMER_LOCATION_NAMES.includes(location.name)
+          ? { terms: { timer: TIMER_LOCATION_WEIGHT } }
+          : undefined,
       });
     }
   }
@@ -388,6 +416,15 @@ const SYNONYMS: Record<string, string[]> = {
   uc: ['ultimate charm'],
   ml: ['minluck', 'minlucks'],
   cre: ['catch rate estimator'],
+  lny: ['lunar new year'],
+  bb: ['bountiful beanstalk'],
+  price: ['markethunt', 'marketplace'],
+  prices: ['markethunt', 'marketplace'],
+  // The trap's name is the acronym spelled out.
+  acronym: ['arcane capturing rod of never yielding mystery'],
+  superbrie: ['super brie'],
+  sos: ['school of sorcery'],
+  mp: ['moussu picchu'],
   mhct: ['mousehunt community tools'],
 };
 
@@ -499,6 +536,38 @@ function matchToken(token: QueryToken, record: ReturnType<typeof normalizedRecor
   return null;
 }
 
+/**
+ * Hand-set weights, by record id, for when the scoring below lands on the wrong thing. This is the place to
+ * push one record up or down without touching how everything else ranks.
+ *
+ * The numbers are on the same scale as the scores they're added to:
+ *   - a searched word found in a record's name adds 20 to 40, and in its description 15;
+ *   - the search being the start of the name adds 600, and the whole name 1,000;
+ *   - asking for a kind ("… guide") adds 1,500 to records of that kind.
+ * So 1,000 or so puts a record level with an exact name match, and a few dozen only breaks ties.
+ *
+ * Ids are `page-<path>`, `location-<id>`, `region-<id>`, `group-<id>`, `mouse-<id>`, `gameitem-<id>`,
+ * `title-<id>`, and `item-<category>-<id>` for guides, tools, extensions, spreadsheets and userscripts.
+ */
+export const WEIGHTS: Record<string, Weighting> = {
+  // "timers" is the exact name of the Timers+ userscript, which would otherwise come first; the site's own
+  // timers should.
+  'page-/#timers-heading': { terms: { timer: 1200 } },
+};
+
+/** Just under the timers page, and just over a userscript named for the word. */
+const TIMER_LOCATION_WEIGHT = 1100;
+
+/** Everything that leans on a record: what it was made with, and what WEIGHTS says about it by id. */
+function weightingFor(record: SearchRecord): Weighting | undefined {
+  const byId = Object.hasOwn(WEIGHTS, record.id) ? WEIGHTS[record.id] : undefined;
+  if (!byId || !record.weighting) return byId ?? record.weighting;
+  return {
+    always: (record.weighting.always ?? 0) + (byId.always ?? 0),
+    terms: { ...record.weighting.terms, ...byId.terms },
+  };
+}
+
 // A small lean towards the things people search for most when matches tie.
 const KIND_PRIOR: Partial<Record<SearchKind, number>> = {
   mouse: 30,
@@ -544,14 +613,20 @@ export function searchRecords(records: SearchRecord[], query: string, limit = 40
 
   for (const record of records) {
     const normalized = normalizedRecord(record);
-    let score = 0;
+    const weighting = weightingFor(record);
+    let score = weighting?.always ?? 0;
     let matchesAll = true;
     for (const token of required) {
       const match = matchToken(token, normalized);
-      if (!match) {
+      // A weighted word counts as found even when it's nowhere in the record's own text.
+      const termWeight = weighting?.terms
+        ? [token.text, token.typed].find((word) => Object.hasOwn(weighting.terms!, word))
+        : undefined;
+      if (!match && termWeight === undefined) {
         matchesAll = false;
         break;
       }
+      if (termWeight !== undefined) score += weighting!.terms![termWeight];
       // "beginner" finding the Essentials guide by its name beats finding a passing mention.
       const synonymInTitle = () =>
         token.alternatives.some((alternative) => ` ${normalized.title}`.includes(` ${alternative}`));

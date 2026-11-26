@@ -1,3 +1,7 @@
+'use client';
+
+// A client module on purpose. Imported into a server component's graph, `import * as Headless` makes every
+// Headless UI component part of that page's JavaScript; here the bundler keeps only what's used.
 import * as Headless from '@headlessui/react';
 import clsx from 'clsx';
 import React, { forwardRef } from 'react';

@@ -161,7 +161,7 @@ export default function TitlesPage() {
                   className="size-10 shrink-0"
                 />
                 <div className="min-w-0 flex-1">
-                  <div className="text-base font-semibold text-zinc-900 dark:text-zinc-100">{title.name}</div>
+                  <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">{title.name}</h2>
                   {wisdom !== undefined && (
                     <div className="text-xs tabular-nums text-zinc-500 dark:text-zinc-400">
                       {wisdom.toLocaleString('en-US')} wisdom

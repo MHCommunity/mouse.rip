@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 
 import { mouseSlug } from '@/lib/game-data';
 import { mouseImageUrl } from '@/lib/image-urls';

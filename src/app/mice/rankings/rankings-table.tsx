@@ -9,6 +9,7 @@ import { Input } from '@/components/input';
 import { Link } from '@/components/link';
 import { mouseImageUrl } from '@/lib/image-urls';
 import { rankMice, type RankBy, type RankedMouse } from '@/lib/rankings';
+import { useRememberedCount } from '@/lib/use-remembered-count';
 import { formatNumber } from '@/utils';
 
 export type { RankedMouse } from '@/lib/rankings';
@@ -23,7 +24,7 @@ const COLUMNS: { key: RankBy; label: string }[] = [
 const PAGE_SIZE = 100;
 
 const selectClasses =
-  'rounded-lg border border-zinc-950/45 bg-white px-3 py-1.5 text-sm/6 text-zinc-950 shadow-sm hover:border-zinc-950/60 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500/30 dark:border-white/35 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/45';
+  'rounded-lg border border-zinc-950/45 bg-white px-3 py-1.5 text-sm/6 text-zinc-950 shadow-sm hover:border-zinc-950/60 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500 dark:border-white/35 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/45';
 
 function isRankBy(value: string | null): value is RankBy {
   return value === 'points' || value === 'gold' || value === 'wisdom';
@@ -37,6 +38,7 @@ export function RankingsTableFromUrl({ mice }: { mice: RankedMouse[] }) {
       mice={mice}
       initialBy={isRankBy(by) ? by : 'points'}
       initialGroup={params.get('group') ?? ''}
+      initialQuery={params.get('q') ?? ''}
       focus={params.get('mouse')}
       syncUrl
     />
@@ -47,12 +49,15 @@ export function RankingsTable({
   mice,
   initialBy,
   initialGroup,
+  initialQuery = '',
   focus,
   syncUrl,
 }: {
   mice: RankedMouse[];
   initialBy: RankBy;
   initialGroup: string;
+  /** The name filter from a shared link. */
+  initialQuery?: string;
   /** The mouse a mouse page linked here for, to highlight and scroll to. */
   focus?: string | null;
   /** Off for the prerendered fallback, which mustn't rewrite a link it couldn't read. */
@@ -62,9 +67,29 @@ export function RankingsTable({
   const pathname = usePathname();
   const [by, setBy] = useState<RankBy>(initialBy);
   const [group, setGroup] = useState(initialGroup);
-  const [query, setQuery] = useState('');
-  const [limit, setLimit] = useState(PAGE_SIZE);
+  const [query, setQuery] = useState(initialQuery);
+  // Kept across a visit to a mouse's page and Back, so the list is still long enough to return to the same row.
+  const [limit, setLimit] = useRememberedCount(
+    syncUrl ? `rankings|${by}|${group}|${query.trim().toLowerCase()}` : null,
+    PAGE_SIZE,
+  );
   const moreRef = useRef<HTMLButtonElement>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  // The name filter goes in the address like the sort and group, so a filtered list can be shared. Written after a
+  // pause and without the router, so typing doesn't navigate on every keystroke.
+  useEffect(() => {
+    if (!syncUrl) return;
+    const timer = setTimeout(() => {
+      const params = new URLSearchParams(window.location.search);
+      if (query.trim()) params.set('q', query.trim());
+      else params.delete('q');
+      const next = params.toString();
+      if (next === window.location.search.slice(1)) return;
+      window.history.replaceState(null, '', `${next ? `?${next}` : window.location.pathname}${window.location.hash}`);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [query, syncUrl]);
 
   const groups = useMemo(() => [...new Set(mice.map((mouse) => mouse.group))].sort(), [mice]);
 
@@ -96,7 +121,7 @@ export function RankingsTable({
     );
     observer.observe(button);
     return () => observer.disconnect();
-  }, [shown.length, remaining]);
+  }, [shown.length, remaining, setLimit]);
 
   // A mouse page links here with ?mouse=. Highlight that row, and bring it into view once the order is
   // right and the router has finished its own scrolling for the navigation.
@@ -144,7 +169,7 @@ export function RankingsTable({
           ))}
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <div className="w-full sm:w-56">
+          <div ref={searchRef} className="w-full sm:w-56">
             <Input
               type="search"
               aria-label="Find a mouse"
@@ -172,17 +197,19 @@ export function RankingsTable({
       </div>
 
       <div className="mt-4 overflow-x-auto rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white dark:ring-zinc-800 dark:bg-zinc-900">
-        <table className="w-full text-sm">
+        {/* Fixed column widths: more rows load as the page scrolls, and with widths taken from the content a longer
+            name further down would re-flow every row already on screen. */}
+        <table className="w-full table-fixed text-sm">
           <thead className="text-left text-xs text-zinc-600 dark:text-zinc-400">
             <tr className="border-b border-zinc-200 dark:border-zinc-800">
-              <th className="w-14 px-3 py-2 text-right font-medium">Rank</th>
+              <th className="w-16 px-3 py-2 text-right font-medium">Rank</th>
               <th className="px-3 py-2 font-medium">Mouse</th>
               {COLUMNS.map(({ key, label }) => (
                 <th
                   key={key}
                   aria-sort={by === key ? 'descending' : undefined}
                   className={clsx(
-                    'px-3 py-2 text-right font-medium',
+                    'w-24 px-3 py-2 text-right font-medium sm:w-32',
                     by === key ? 'text-zinc-950 dark:text-white' : 'hidden sm:table-cell',
                   )}
                 >
@@ -196,7 +223,13 @@ export function RankingsTable({
               <tr
                 key={mouse.slug}
                 id={mouse.slug}
-                className={clsx('scroll-mt-24', highlight === mouse.slug && 'bg-pink-50 dark:bg-pink-950/40')}
+                aria-current={highlight === mouse.slug ? 'true' : undefined}
+                // The bar down the side marks the row for anyone the faint tint is lost on.
+                className={clsx(
+                  'scroll-mt-24',
+                  highlight === mouse.slug &&
+                    'bg-pink-50 shadow-[inset_3px_0_0_var(--color-pink-600)] dark:bg-pink-950/40 dark:shadow-[inset_3px_0_0_var(--color-pink-400)]',
+                )}
               >
                 <td className="px-3 py-1.5 text-right tabular-nums text-zinc-600 dark:text-zinc-400">
                   {formatNumber(rank)}
@@ -204,7 +237,6 @@ export function RankingsTable({
                 <td className="px-3 py-1.5">
                   <Link
                     href={`/mice/${mouse.slug}`}
-                    prefetch={false}
                     className="inline-flex items-center gap-2 font-medium text-zinc-900 hover:text-pink-700 dark:text-zinc-100 dark:hover:text-pink-300"
                   >
                     <GameImage src={mouseImageUrl(mouse.slug)} width={24} height={24} className="size-6 shrink-0" />
@@ -234,10 +266,26 @@ export function RankingsTable({
         </table>
         {rows.length === 0 && (
           <p className="px-3 py-6 text-center text-sm text-zinc-600 dark:text-zinc-400">
-            No mice match “{query.trim()}”{group ? ` in ${group}` : ''}.
+            No mice match “{query.trim()}”{group ? ` in ${group}` : ''}.{' '}
+            <button
+              type="button"
+              onClick={() => {
+                setQuery('');
+                setLimit(PAGE_SIZE);
+                // The button goes with the message, so put the keyboard back in the field it clears.
+                searchRef.current?.querySelector('input')?.focus();
+              }}
+              className="font-medium text-pink-700 underline underline-offset-2 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200"
+            >
+              Clear the search
+            </button>
           </p>
         )}
       </div>
+      {/* Always there, so a screen reader hears the count change as the list is filtered. */}
+      <p role="status" className="sr-only">
+        {query.trim() || group ? `${formatNumber(rows.length)} ${rows.length === 1 ? 'mouse' : 'mice'}` : ''}
+      </p>
       {remaining > 0 && (
         <button
           ref={moreRef}

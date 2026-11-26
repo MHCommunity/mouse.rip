@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 
 import { TrophyIcon } from '@heroicons/react/20/solid';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PageHeader } from '@/components/page-header';
 import { PageLink } from '@/components/page-link';
 
@@ -17,6 +18,7 @@ export const metadata = pageMetadata({
 export default function BestSetupPage() {
   return (
     <div>
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Tools', href: '/tools' }, { name: 'Best setup' }]} />
       <PageHeader
         title="Best setup"
         description={

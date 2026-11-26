@@ -152,6 +152,9 @@ function MapChips({ rows }: { rows: MouseMapRow[] }) {
           {mapName(row.map)}
           <span className="text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
             {formatAttractionRate(row.rate)}
+            <span className="sr-only">
+              , on {formatNumber(row.seen_maps)} of {formatNumber(row.total_maps)} maps
+            </span>
           </span>
         </li>
       ))}
@@ -202,6 +205,9 @@ export function MouseData({ attraction, maps }: { attraction: AttractionRow[]; m
             </>
           )}
           From <SourceLink source="mhct" /> and <SourceLink source="mh-tools" />.
+          {attractionRows.some((row) => row.charm) && attractionRows.some((row) => !row.charm) && (
+            <> A row that names a charm is the rate with that charm armed, which can be higher than without one.</>
+          )}
         </p>
 
         {attraction.length === 0 ? (

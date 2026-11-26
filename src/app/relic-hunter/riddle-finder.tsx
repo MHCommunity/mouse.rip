@@ -80,7 +80,7 @@ export function RiddleFinder({ locations }: { locations: RiddleLocation[] }) {
                   {location.href ? (
                     <Link
                       href={location.href}
-                      className="transition-colors hover:text-pink-700 dark:hover:text-pink-300"
+                      className="inline-block py-0.5 transition-colors hover:text-pink-700 dark:hover:text-pink-300"
                     >
                       {location.name}
                     </Link>

@@ -14,14 +14,17 @@ const ACCENTS: Record<string, { strong: string; soft: string; bg: string }> = {
 
 // ImageResponse fetches `image` server-side from the worker, so an unrestricted
 // param would make this route an open image proxy pointed at any host on the
-// internet. Only the two hosts our own pages actually pass are allowed through.
-const IMAGE_HOSTS = new Set(['i.mouse.rip', 'www.mousehuntgame.com']);
+// internet. Our own pages only ever pass art from the image CDN, so that's all that gets through.
+const IMAGE_HOST = 'i.mouse.rip';
+const IMAGE_PATH = '/images/';
 
 function safeImage(value: string | null): string {
   if (!value) return '';
   try {
     const url = new URL(value);
-    return url.protocol === 'https:' && IMAGE_HOSTS.has(url.host) ? url.href : '';
+    const ours = url.protocol === 'https:' && url.host === IMAGE_HOST && url.pathname.startsWith(IMAGE_PATH);
+    // Without the query string: it isn't needed, and it would let one image be asked for under endless URLs.
+    return ours ? `${url.origin}${url.pathname}` : '';
   } catch {
     return '';
   }
@@ -40,8 +43,10 @@ export async function GET(request: Request) {
   const subtitle = (searchParams.get('subtitle') || '').slice(0, 120);
   const eyebrow = (searchParams.get('eyebrow') || 'mouse.rip').slice(0, 60);
   const image = safeImage(searchParams.get('image'));
-  const accentName = searchParams.get('accent') || 'pink';
-  const accent = ACCENTS[accentName] ?? ACCENTS.pink;
+  // hasOwn, so "constructor" and the like fall back to pink instead of reading off Object.prototype.
+  const requested = searchParams.get('accent') ?? '';
+  const accentName = Object.hasOwn(ACCENTS, requested) ? requested : 'pink';
+  const accent = ACCENTS[accentName];
 
   // Key on the params we actually use, so junk or reordered params share an entry.
   const cacheKey = new URL('/og/card', url.origin);
