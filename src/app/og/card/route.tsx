@@ -18,6 +18,13 @@ const ACCENTS: Record<string, { strong: string; bg: string }> = {
 const IMAGE_HOST = 'i.mouse.rip';
 const IMAGE_PATH = '/images/';
 
+// The game's 760×127 location header has a MouseHunt logo on its left and a wooden frame along its bottom and
+// right, the same on every location. This is the widest strip of it that's all scenery, scaled to the card's width.
+const HEADER = { width: 760, height: 127 };
+const SCENERY = { left: 230, width: 470, height: 70 };
+const BANNER_SCALE = 1200 / SCENERY.width;
+const BANNER_HEIGHT = Math.floor(SCENERY.height * BANNER_SCALE);
+
 function safeImage(value: string | null): string {
   if (!value) return '';
   try {
@@ -43,6 +50,7 @@ export async function GET(request: Request) {
   const subtitle = (searchParams.get('subtitle') || '').slice(0, 120);
   const eyebrow = (searchParams.get('eyebrow') || 'mouse.rip').slice(0, 60);
   const image = safeImage(searchParams.get('image'));
+  const banner = safeImage(searchParams.get('banner'));
   // hasOwn, so "constructor" and the like fall back to pink instead of reading off Object.prototype.
   const requested = searchParams.get('accent') ?? '';
   const accentName = Object.hasOwn(ACCENTS, requested) ? requested : 'pink';
@@ -50,14 +58,14 @@ export async function GET(request: Request) {
 
   // Key on the params we actually use, so junk or reordered params share an entry.
   const cacheKey = new URL('/og/card', url.origin);
-  for (const [key, value] of Object.entries({ title, subtitle, eyebrow, image, accent: accentName })) {
+  for (const [key, value] of Object.entries({ title, subtitle, eyebrow, image, banner, accent: accentName })) {
     cacheKey.searchParams.set(key, value);
   }
   const cache = edgeCache();
   const cached = await cache?.match(cacheKey);
   if (cached) return cached;
 
-  const response = renderCard({ title, subtitle, eyebrow, image, accent });
+  const response = renderCard({ title, subtitle, eyebrow, image, banner, accent });
   response.headers.set('Cache-Control', 'public, max-age=86400, s-maxage=604800');
   if (cache) {
     getCloudflareContext().ctx.waitUntil(cache.put(cacheKey, response.clone()));
@@ -70,12 +78,14 @@ function renderCard({
   subtitle,
   eyebrow,
   image,
+  banner,
   accent,
 }: {
   title: string;
   subtitle: string;
   eyebrow: string;
   image: string;
+  banner: string;
   accent: (typeof ACCENTS)[string];
 }) {
   return new ImageResponse(
@@ -84,63 +94,99 @@ function renderCard({
         width: '100%',
         height: '100%',
         display: 'flex',
-        alignItems: 'center',
-        gap: '64px',
-        padding: '88px 96px',
+        flexDirection: 'column',
         background: `linear-gradient(135deg, ${accent.bg} 0%, #fcfcfb 60%)`,
         fontFamily: 'sans-serif',
       }}
     >
-      <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+      {banner && (
         <div
           style={{
-            fontSize: '26px',
-            fontWeight: 600,
-            letterSpacing: '0.22em',
-            textTransform: 'uppercase',
-            color: '#71717a',
+            display: 'flex',
+            position: 'relative',
+            width: '1200px',
+            height: `${BANNER_HEIGHT}px`,
+            overflow: 'hidden',
           }}
         >
-          {eyebrow}
+          {/* The whole header, scaled and slid left so only the scenery is inside the strip. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={banner}
+            width={HEADER.width}
+            height={HEADER.height}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: `${-Math.round(SCENERY.left * BANNER_SCALE)}px`,
+              width: `${Math.round(HEADER.width * BANNER_SCALE)}px`,
+              height: `${Math.round(HEADER.height * BANNER_SCALE)}px`,
+            }}
+            alt=""
+          />
         </div>
-
-        <div
-          style={{
-            marginTop: '28px',
-            fontSize: title.length > 28 ? '76px' : '104px',
-            fontWeight: 800,
-            letterSpacing: '-0.03em',
-            lineHeight: 1.02,
-            color: accent.strong,
-          }}
-        >
-          {title}
-        </div>
-
-        {subtitle && (
-          <div style={{ marginTop: '24px', fontSize: '40px', fontWeight: 500, color: '#3f3f46' }}>{subtitle}</div>
-        )}
-
-        <div style={{ marginTop: 'auto', paddingTop: '40px', fontSize: '30px', fontWeight: 700, color: '#a1a1aa' }}>
-          mouse.rip
-        </div>
-      </div>
-
-      {image && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={image}
-          width={360}
-          height={360}
-          style={{
-            width: '360px',
-            height: '360px',
-            objectFit: 'contain',
-            borderRadius: '32px',
-          }}
-          alt=""
-        />
       )}
+
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '64px',
+          flex: 1,
+          padding: banner ? '48px 96px 64px' : '88px 96px',
+        }}
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+          <div
+            style={{
+              fontSize: '26px',
+              fontWeight: 600,
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: '#71717a',
+            }}
+          >
+            {eyebrow}
+          </div>
+
+          <div
+            style={{
+              marginTop: '28px',
+              fontSize: title.length > 28 ? '76px' : '104px',
+              fontWeight: 800,
+              letterSpacing: '-0.03em',
+              lineHeight: 1.02,
+              color: accent.strong,
+            }}
+          >
+            {title}
+          </div>
+
+          {subtitle && (
+            <div style={{ marginTop: '24px', fontSize: '40px', fontWeight: 500, color: '#3f3f46' }}>{subtitle}</div>
+          )}
+
+          <div style={{ marginTop: 'auto', paddingTop: '40px', fontSize: '30px', fontWeight: 700, color: '#a1a1aa' }}>
+            mouse.rip
+          </div>
+        </div>
+
+        {image && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={image}
+            width={360}
+            height={360}
+            style={{
+              width: '360px',
+              height: '360px',
+              objectFit: 'contain',
+              borderRadius: '32px',
+            }}
+            alt=""
+          />
+        )}
+      </div>
     </div>,
     { width: 1200, height: 630 },
   );

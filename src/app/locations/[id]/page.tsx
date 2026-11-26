@@ -46,7 +46,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       ? ogCard({
           title: location.name,
           eyebrow: 'Location',
-          image: locationImageUrl(location.id),
+          // The header art is the biggest picture the game has of a location; its square one is 54px.
+          ...(location.headerImage
+            ? { banner: locationHeaderImageUrl(location.environmentId ?? location.id) }
+            : { image: locationImageUrl(location.id) }),
           accent: 'emerald',
         })
       : undefined,

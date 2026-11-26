@@ -25,7 +25,10 @@ export function ogCard(params: {
   title: string;
   subtitle?: string;
   eyebrow?: string;
+  /** Square art, shown to the right of the text. */
   image?: string;
+  /** A location's header art from the game, shown across the top with its frame cropped off. */
+  banner?: string;
   accent?: string;
 }): string {
   const search = new URLSearchParams();
@@ -33,6 +36,7 @@ export function ogCard(params: {
   if (params.subtitle) search.set('subtitle', params.subtitle);
   if (params.eyebrow) search.set('eyebrow', params.eyebrow);
   if (params.image) search.set('image', params.image);
+  if (params.banner) search.set('banner', params.banner);
   if (params.accent) search.set('accent', params.accent);
   return `/og/card?${search.toString()}`;
 }
