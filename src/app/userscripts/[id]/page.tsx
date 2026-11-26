@@ -112,8 +112,11 @@ export default async function UserscriptPage({ params }: { params: Promise<{ id:
             Install a userscript manager for your browser:
             <ul className="mt-1 ml-5 list-inside list-disc space-y-1">
               <li>
-                Chrome, Firefox, or Edge: <PageLink href="https://violentmonkey.github.io/">Violentmonkey</PageLink>{' '}
-                (recommended) or <PageLink href="https://www.tampermonkey.net/">Tampermonkey</PageLink>
+                Chrome or Edge: <PageLink href="https://www.tampermonkey.net/">Tampermonkey</PageLink>. Then open its
+                Details page in your browser’s extension settings and turn on Allow User Scripts, or scripts won’t run.
+              </li>
+              <li>
+                Firefox: <PageLink href="https://violentmonkey.github.io/">Violentmonkey</PageLink> or Tampermonkey
               </li>
               <li>
                 Android:{' '}
