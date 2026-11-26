@@ -27,6 +27,7 @@ test('changing any of the text or the picture breaks the signature', () => {
   expect(verifyOgCard({ ...card, title: 'Anything at all' }, signature)).toBe(false);
   expect(verifyOgCard({ ...card, subtitle: undefined }, signature)).toBe(false);
   expect(verifyOgCard({ ...card, eyebrow: 'mouse.rip says' }, signature)).toBe(false);
+  expect(verifyOgCard({ ...card, icon: 'trophy' }, signature)).toBe(false);
   expect(verifyOgCard({ ...card, image: 'https://i.mouse.rip/images/mice/zombie.png' }, signature)).toBe(false);
   expect(verifyOgCard({ ...card, banner: 'https://i.mouse.rip/images/locations/headers/meadow.jpg' }, signature)).toBe(
     false,

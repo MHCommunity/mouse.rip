@@ -1,20 +1,52 @@
 import { ImageResponse } from 'next/og';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
+import {
+  ArrowTrendingUpIcon,
+  BeakerIcon,
+  BuildingOffice2Icon,
+  FireIcon,
+  MapIcon,
+  MapPinIcon,
+  ScaleIcon,
+  SparklesIcon,
+  TrophyIcon,
+} from '@heroicons/react/20/solid';
+import type React from 'react';
 
-import { OG_CARD_FIELDS, verifyOgCard } from '@/lib/og-signature';
+import { OG_CARD_FIELDS, verifyOgCard, type OgCardAccent, type OgCardIcon } from '@/lib/og-signature';
 
 import { STAR } from '../star';
 
 // Dynamic 1200×630 social card driven by query params, shared by mouse, item,
-// and group pages (see `ogCard` in src/seo.ts). Rendered on demand — typically
+// group, location, and tool pages (see `ogCard` in src/seo.ts). Rendered on demand — typically
 // only when a crawler unfurls a link — so it adds no prebuilt assets. Only links
 // the site signed are rendered; any other request is sent to the site-wide card.
 export const dynamic = 'force-dynamic';
 
-const ACCENTS: Record<string, { strong: string; bg: string }> = {
-  emerald: { strong: '#047857', bg: '#ecfdf5' },
-  blue: { strong: '#1d4ed8', bg: '#eff6ff' },
-  pink: { strong: '#9d174d', bg: '#fdf2f8' },
+/** The title's colour, the background's wash, and the tile behind an icon. */
+const ACCENTS: Record<OgCardAccent, { strong: string; bg: string; tile: string }> = {
+  emerald: { strong: '#047857', bg: '#ecfdf5', tile: '#d1fae5' },
+  blue: { strong: '#1d4ed8', bg: '#eff6ff', tile: '#dbeafe' },
+  pink: { strong: '#9d174d', bg: '#fdf2f8', tile: '#fce7f3' },
+  amber: { strong: '#b45309', bg: '#fffbeb', tile: '#fef3c7' },
+  sky: { strong: '#0369a1', bg: '#f0f9ff', tile: '#e0f2fe' },
+  violet: { strong: '#6d28d9', bg: '#f5f3ff', tile: '#ede9fe' },
+  green: { strong: '#15803d', bg: '#f0fdf4', tile: '#dcfce7' },
+  rose: { strong: '#be123c', bg: '#fff1f2', tile: '#ffe4e6' },
+  orange: { strong: '#c2410c', bg: '#fff7ed', tile: '#ffedd5' },
+};
+
+/** The same icons the tools' page headers use, by the names `ogCard` takes. */
+const ICONS: Record<OgCardIcon, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
+  scale: ScaleIcon,
+  trophy: TrophyIcon,
+  sparkles: SparklesIcon,
+  'map-pin': MapPinIcon,
+  building: BuildingOffice2Icon,
+  beaker: BeakerIcon,
+  fire: FireIcon,
+  map: MapIcon,
+  'trending-up': ArrowTrendingUpIcon,
 };
 
 // ImageResponse fetches `image` server-side from the worker, so an unrestricted
@@ -56,7 +88,7 @@ function bannerLayout(banner: string) {
 }
 
 /**
- * The title's size. A card with a strip across the top has less height, and one with a picture beside
+ * The title's size. A card with a strip across the top has less height, and one with a picture or an icon beside
  * the text has less width, so a long name steps down sooner on those.
  */
 function titleSize(title: string, { strip, beside }: { strip: boolean; beside: boolean }): number {
@@ -99,21 +131,23 @@ export async function GET(request: Request) {
   const eyebrow = (searchParams.get('eyebrow') || 'mouse.rip').slice(0, 60);
   const image = safeImage(searchParams.get('image'));
   const banner = safeImage(searchParams.get('banner'));
-  // hasOwn, so "constructor" and the like fall back to pink instead of reading off Object.prototype.
+  // hasOwn, so "constructor" and the like fall back instead of reading off Object.prototype.
+  const requestedIcon = searchParams.get('icon') ?? '';
+  const icon = Object.hasOwn(ICONS, requestedIcon) ? (requestedIcon as OgCardIcon) : '';
   const requested = searchParams.get('accent') ?? '';
-  const accentName = Object.hasOwn(ACCENTS, requested) ? requested : 'pink';
+  const accentName = Object.hasOwn(ACCENTS, requested) ? (requested as OgCardAccent) : 'pink';
   const accent = ACCENTS[accentName];
 
   // Key on the params we actually use, so junk or reordered params share an entry.
   const cacheKey = new URL('/og/card', url.origin);
-  for (const [key, value] of Object.entries({ title, subtitle, eyebrow, image, banner, accent: accentName })) {
+  for (const [key, value] of Object.entries({ title, subtitle, eyebrow, image, banner, icon, accent: accentName })) {
     cacheKey.searchParams.set(key, value);
   }
   const cache = edgeCache();
   const cached = await cache?.match(cacheKey);
   if (cached) return cached;
 
-  const response = renderCard({ title, subtitle, eyebrow, image, banner, accent });
+  const response = renderCard({ title, subtitle, eyebrow, image, banner, icon, accent });
   response.headers.set('Cache-Control', 'public, max-age=86400, s-maxage=604800');
   if (cache) {
     getCloudflareContext().ctx.waitUntil(cache.put(cacheKey, response.clone()));
@@ -127,6 +161,7 @@ function renderCard({
   eyebrow,
   image,
   banner,
+  icon,
   accent,
 }: {
   title: string;
@@ -134,10 +169,12 @@ function renderCard({
   eyebrow: string;
   image: string;
   banner: string;
-  accent: (typeof ACCENTS)[string];
+  icon: OgCardIcon | '';
+  accent: (typeof ACCENTS)[OgCardAccent];
 }) {
   const strip = bannerLayout(banner);
-  const fontSize = titleSize(title, { strip: Boolean(strip), beside: Boolean(image) });
+  const Icon = icon ? ICONS[icon] : undefined;
+  const fontSize = titleSize(title, { strip: Boolean(strip), beside: Boolean(image || Icon) });
 
   return new ImageResponse(
     <div
@@ -253,6 +290,24 @@ function renderCard({
             alt=""
           />
         )}
+
+        {Icon &&
+          !image && (
+            // The page header's icon tile, at the size the pictures get.
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '360px',
+                height: '360px',
+                borderRadius: '32px',
+                background: accent.tile,
+              }}
+            >
+              <Icon width={208} height={208} fill={accent.strong} color={accent.strong} />
+            </div>
+          )}
       </div>
     </div>,
     { width: 1200, height: 630 },

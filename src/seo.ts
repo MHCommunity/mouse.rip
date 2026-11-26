@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { signOgCard } from '@/lib/og-signature';
+import { signOgCard, type OgCardAccent, type OgCardIcon } from '@/lib/og-signature';
 
 const SITE_NAME = 'mouse.rip';
 const OG_IMAGE = {
@@ -36,13 +36,15 @@ export function ogCard(params: {
   image?: string;
   /** A location's header art or a mouse group's banner from the game, shown across the top. */
   banner?: string;
-  accent?: string;
+  /** A tool's page-header icon, shown on a tinted tile to the right of the text. */
+  icon?: OgCardIcon;
+  accent?: OgCardAccent;
 }): string {
   const signature = signOgCard(params);
   if (!signature) {
     if (!warnedUnsigned) {
       warnedUnsigned = true;
-      console.warn('OG_CARD_SECRET is not set: mouse, item, and group pages will use the site-wide social card.');
+      console.warn('OG_CARD_SECRET is not set: pages with a social card of their own will use the site-wide one.');
     }
     return OG_IMAGE.url;
   }
@@ -52,6 +54,7 @@ export function ogCard(params: {
   if (params.eyebrow) search.set('eyebrow', params.eyebrow);
   if (params.image) search.set('image', params.image);
   if (params.banner) search.set('banner', params.banner);
+  if (params.icon) search.set('icon', params.icon);
   if (params.accent) search.set('accent', params.accent);
   search.set('sig', signature);
   return `/og/card?${search.toString()}`;

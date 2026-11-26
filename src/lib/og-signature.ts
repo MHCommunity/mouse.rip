@@ -1,7 +1,22 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 
 /** What a social card is made of, in the order it's signed. */
-export const OG_CARD_FIELDS = ['title', 'subtitle', 'eyebrow', 'image', 'banner', 'accent'] as const;
+export const OG_CARD_FIELDS = ['title', 'subtitle', 'eyebrow', 'image', 'banner', 'icon', 'accent'] as const;
+
+/** The icons a card can draw in place of a picture: the ones the tools' page headers use. */
+export type OgCardIcon =
+  | 'scale'
+  | 'trophy'
+  | 'sparkles'
+  | 'map-pin'
+  | 'building'
+  | 'beaker'
+  | 'fire'
+  | 'map'
+  | 'trending-up';
+
+/** The colours a card can take: its title, its background wash, and the tile behind an icon. */
+export type OgCardAccent = 'emerald' | 'blue' | 'pink' | 'amber' | 'sky' | 'violet' | 'green' | 'rose' | 'orange';
 
 export type OgCardValues = Partial<Record<(typeof OG_CARD_FIELDS)[number], string | null>>;
 
