@@ -29,7 +29,7 @@ import { JsonLd } from '@/components/json-ld';
 import { mouseJsonLd, mouseSeo } from '@/lib/entity-seo';
 import { ogCard, pageMetadata } from '@/seo';
 import { mouseImageUrl } from '@/lib/image-urls';
-import { bestAttractionRow } from '@/lib/attraction';
+import { bestAttractionRow, formatAttractionRate } from '@/lib/attraction';
 import { formatNumber } from '@/utils';
 
 import { MouseData } from './mouse-data';
@@ -64,11 +64,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 const accentLink = 'font-medium text-pink-700 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200';
-
-/** MHCT reports rates in hundredths of a percent. */
-function formatRate(rate: number): string {
-  return `${(rate / 100).toFixed(1)}%`;
-}
 
 export default async function MousePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -145,16 +140,23 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
             {best.length > 0 && (
               <div className="mt-3 flex flex-wrap items-center gap-1.5">
                 <span className="text-xs text-zinc-600 dark:text-zinc-400">Weak to</span>
-                {best.map((type) => (
-                  <Link
-                    key={type}
-                    href={`/mice?weakto=${type}`}
-                    title={`All mice weak to ${powerTypeLabel(type)}`}
-                    className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium transition hover:ring-2 hover:ring-pink-400 ${POWER_TYPE_CHIP[type] ?? ''}`}
-                  >
-                    {powerTypeLabel(type)}
-                  </Link>
-                ))}
+                {/* Every type equally effective reads better as one chip than nine. */}
+                {best.length === POWER_TYPES.length ? (
+                  <span className="inline-flex rounded-full bg-white/80 px-2.5 py-0.5 text-xs font-medium text-zinc-700 ring-1 ring-zinc-200 dark:bg-white/5 dark:text-zinc-300 dark:ring-zinc-700">
+                    Any power type
+                  </span>
+                ) : (
+                  best.map((type) => (
+                    <Link
+                      key={type}
+                      href={`/mice?weakto=${type}`}
+                      title={`All mice weak to ${powerTypeLabel(type)}`}
+                      className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium transition hover:ring-2 hover:ring-pink-400 ${POWER_TYPE_CHIP[type] ?? ''}`}
+                    >
+                      {powerTypeLabel(type)}
+                    </Link>
+                  ))
+                )}
               </div>
             )}
           </div>
@@ -181,6 +183,12 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
                 >
                   {value}
                 </Link>
+                {/* The rank was only in a hover title, which phones never show. */}
+                {ranks && (
+                  <span className="block text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
+                    #{ranks[key].toLocaleString('en-US')} of {ranks.total.toLocaleString('en-US')}
+                  </span>
+                )}
               </dd>
             </div>
           ))}
@@ -210,7 +218,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
                         )}
                       </p>
                       <p className="rounded-full bg-pink-50 px-3 py-1 text-lg font-semibold tabular-nums text-pink-800 ring-1 ring-pink-100 dark:bg-pink-950/50 dark:text-pink-200 dark:ring-pink-900/60">
-                        {formatRate(bestSpot.rate)}
+                        {formatAttractionRate(bestSpot.rate)}
                       </p>
                     </div>
                     <p className="mt-1 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">

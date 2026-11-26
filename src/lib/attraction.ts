@@ -20,3 +20,9 @@ export function bestAttractionRow(rows: AttractionRow[]): AttractionRow | undefi
     undefined,
   );
 }
+
+/** An attraction rate in hundredths of a percent, as MHCT reports it: "29.8%", or "0.45%" below one percent. */
+export function formatAttractionRate(rate: number): string {
+  const percent = rate / 100;
+  return `${percent.toFixed(percent < 1 ? 2 : 1)}%`;
+}

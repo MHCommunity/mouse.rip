@@ -6,18 +6,13 @@ import type { AttractionRow, MouseMapRow } from '@/types';
 import { formatCompactNumber, formatNumber } from '@/utils';
 import { SectionHeading } from '@/components/section-heading';
 import { SourceLink } from '@/components/source-link';
-import { bestAttractionRow } from '@/lib/attraction';
+import { bestAttractionRow, formatAttractionRate } from '@/lib/attraction';
 
 // Rows shown before "Show all", so the long tail doesn't bury the sections below.
 const ATTRACTION_PREVIEW = 10;
 const ATTRACTION_LIMIT = 50;
 const MAPS_PREVIEW = 10;
 const MAPS_LIMIT = 40;
-
-/** MHCT reports rates in hundredths of a percent. */
-function formatRate(rate: number): string {
-  return `${(rate / 100).toFixed(2)}%`;
-}
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -123,10 +118,10 @@ function AttractionTable({
                 </td>
               )}
               <td className="px-3 py-2 text-right align-top font-medium tabular-nums text-zinc-900 sm:px-4 dark:text-white">
-                {formatRate(row.rate)}
+                {formatAttractionRate(row.rate)}
                 {/* On phones the Sample column is hidden, so the sample rides under the rate. */}
                 <span className="block text-xs font-normal whitespace-nowrap text-zinc-600 sm:hidden dark:text-zinc-400">
-                  {row.total_hunts ? `${formatCompactNumber(row.total_hunts)} hunts` : 'Sample unknown'}
+                  {row.total_hunts ? `${formatCompactNumber(row.total_hunts)} hunts` : 'MH-Tools'}
                 </span>
               </td>
               <td className="hidden px-3 py-2 text-right align-top tabular-nums text-zinc-600 sm:table-cell sm:px-4 dark:text-zinc-400">
@@ -134,7 +129,7 @@ function AttractionTable({
                 {row.total_hunts ? (
                   formatNumber(row.total_hunts)
                 ) : (
-                  <span className="text-zinc-500 dark:text-zinc-400">Unknown</span>
+                  <span title="MH-Tools rates don't say how many hunts they come from">—</span>
                 )}
               </td>
             </tr>
@@ -155,7 +150,9 @@ function MapChips({ rows }: { rows: MouseMapRow[] }) {
           title={`On ${formatNumber(row.seen_maps)} of ${formatNumber(row.total_maps)} maps`}
         >
           {mapName(row.map)}
-          <span className="text-xs tabular-nums text-zinc-600 dark:text-zinc-400">{formatRate(row.rate)}</span>
+          <span className="text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
+            {formatAttractionRate(row.rate)}
+          </span>
         </li>
       ))}
     </ul>
