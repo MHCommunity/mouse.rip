@@ -70,7 +70,7 @@ export default function Tools() {
   const elsewhere = items.filter((item) => !isInternalPath(item.url));
 
   return (
-    <div className="warm">
+    <div>
       <PageHeader
         title="MouseHunt tools"
         description="Calculators and lookups for planning your next hunt. The ones here run right on mouse.rip, and below them are the community’s favourites on other sites."
@@ -82,9 +82,7 @@ export default function Tools() {
 
       {GROUPS.map((group) => (
         <section key={group.id} aria-labelledby={`tools-${group.id}`} className="mt-10 first-of-type:mt-0">
-          <SectionHeading id={`tools-${group.id}`} className="text-lg/7">
-            {group.title}
-          </SectionHeading>
+          <SectionHeading id={`tools-${group.id}`}>{group.title}</SectionHeading>
           <p className="mt-1 text-sm/6 text-zinc-600 dark:text-zinc-400">{group.blurb}</p>
           <ul className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {group.tools.flatMap((tool) => {
@@ -108,9 +106,7 @@ export default function Tools() {
 
       {ungrouped.length > 0 && (
         <section aria-labelledby="tools-more" className="mt-10">
-          <SectionHeading id="tools-more" className="text-lg/7">
-            More on mouse.rip
-          </SectionHeading>
+          <SectionHeading id="tools-more">More on mouse.rip</SectionHeading>
           <ul className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {ungrouped.map((item) => (
               <li key={item.id}>
@@ -126,9 +122,7 @@ export default function Tools() {
           aria-labelledby="tools-elsewhere"
           className="mt-12 rounded-3xl bg-zinc-50 p-5 ring-1 ring-zinc-200/70 sm:p-6 dark:bg-white/[0.03] dark:ring-zinc-800"
         >
-          <SectionHeading id="tools-elsewhere" className="text-lg/7">
-            Community favourites on other sites
-          </SectionHeading>
+          <SectionHeading id="tools-elsewhere">Community favourites on other sites</SectionHeading>
           <p className="mt-1 text-sm/6 text-zinc-600 dark:text-zinc-400">
             Built and run by other hunters. These open in a new tab.
           </p>

@@ -16,7 +16,7 @@ export const metadata = pageMetadata({
 
 export default function CatchRateEstimatorPage() {
   return (
-    <div className="warm">
+    <div>
       <PageHeader
         title="Catch rate estimator"
         description={

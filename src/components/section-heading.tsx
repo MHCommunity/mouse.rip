@@ -14,7 +14,7 @@ export function SectionHeading({
   children: React.ReactNode;
 }) {
   return (
-    <h2 id={id} className={clsx('text-base/7 font-semibold text-zinc-900 dark:text-white', className)}>
+    <h2 id={id} className={clsx('text-lg/7 font-semibold text-zinc-900 dark:text-white', className)}>
       {children}
     </h2>
   );

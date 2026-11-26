@@ -16,7 +16,7 @@ export const metadata = pageMetadata({
 
 export default function BestSetupPage() {
   return (
-    <div className="warm">
+    <div>
       <PageHeader
         title="Best setup"
         description={

@@ -130,7 +130,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
       : undefined;
 
   return (
-    <div className="warm">
+    <div>
       <JsonLd data={mouseJsonLd(mouse, attraction, slug)} />
 
       <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Mice', href: '/mice' }, { name: mouse.name }]} />
@@ -208,9 +208,7 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
 
       {(typeRows.length > 0 || bestSpot) && (
         <section aria-labelledby="how-to-catch-heading" className="mt-10">
-          <SectionHeading id="how-to-catch-heading" className="text-lg/7">
-            How to catch it
-          </SectionHeading>
+          <SectionHeading id="how-to-catch-heading">How to catch it</SectionHeading>
           {/* Where to hunt and the power types sit side by side once there's room, and stack on a phone. */}
           <div className={`mt-3 grid gap-4 ${bestSpot && typeRows.length > 0 ? 'lg:grid-cols-2' : ''}`}>
             <div className="rounded-2xl bg-white shadow-xs ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800 px-4 py-4 sm:px-5">
