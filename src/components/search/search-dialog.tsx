@@ -13,8 +13,11 @@ import {
   AcademicCapIcon,
   ArrowUpRightIcon,
   BoltIcon,
+  CubeIcon,
   DocumentTextIcon,
+  MapPinIcon,
   MagnifyingGlassIcon,
+  RectangleStackIcon,
   SwatchIcon,
   TableCellsIcon,
   TrophyIcon,
@@ -55,11 +58,16 @@ const KIND_ICONS: Partial<Record<SearchKind, React.ComponentType<React.SVGProps<
   userscript: SwatchIcon,
   title: TrophyIcon,
   page: DocumentTextIcon,
+  // Regions and mouse groups have no picture of their own; a magnifying glass read like "search for…".
+  location: MapPinIcon,
+  group: RectangleStackIcon,
+  item: CubeIcon,
+  mouse: RectangleStackIcon,
 };
 
 function KindIcon({ kind }: { kind: SearchKind }) {
   return (
-    <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+    <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-pink-50 text-pink-700 dark:bg-pink-950/40 dark:text-pink-300">
       {React.createElement(KIND_ICONS[kind] ?? MagnifyingGlassIcon, { className: 'size-4', 'aria-hidden': true })}
     </span>
   );

@@ -155,7 +155,9 @@ function ItemColumns({ items, className }: { items: ReturnType<typeof itemsOfTyp
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={itemImageUrl(slug)} alt="" loading="lazy" className="size-5 shrink-0 rounded" />
-              <span className="truncate">{item.name}</span>
+              <span className="line-clamp-2" title={item.name}>
+                {item.name}
+              </span>
             </Link>
           </li>
         );

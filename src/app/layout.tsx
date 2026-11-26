@@ -86,6 +86,8 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   return (
     <html
       lang="en"
+      // Lets Next keep smooth scrolling for in-page links while jumping instantly between pages.
+      data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} scroll-smooth bg-white text-zinc-950 antialiased transition-colors duration-300 dark:bg-zinc-900 dark:text-zinc-50`}
     >
       <body className="flex min-h-screen flex-col">

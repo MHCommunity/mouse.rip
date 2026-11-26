@@ -431,7 +431,9 @@ export function ItemsBrowser({
                             event.currentTarget.style.visibility = 'hidden';
                           }}
                         />
-                        <span className="truncate">{item.name}</span>
+                        <span className="line-clamp-2" title={item.name}>
+                          {item.name}
+                        </span>
                       </Link>
                     </li>
                   );
