@@ -1,15 +1,14 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import { ArrowTrendingUpIcon } from '@heroicons/react/20/solid';
 import { PageHeader } from '@/components/page-header';
 import { PageLink } from '@/components/page-link';
 
-import { getAllMice, mouseSlug } from '@/lib/game-data';
 import { titleImageUrl } from '@/lib/image-urls';
 import { getTitles } from '@/lib/site-data';
 import { WISDOM_BY_TITLE } from '@/lib/titles';
 import { pageMetadata } from '@/seo';
-import { RankUpCalculator, type RankTitle, type WisdomMouse } from './rank-up-calculator';
+import { RankUpCalculator, RankUpCalculatorFromUrl, type RankTitle } from './rank-up-calculator';
 
 export const metadata = pageMetadata({
   title: 'MouseHunt Rank-Up Calculator',
@@ -29,11 +28,6 @@ export default function RankUpCalculatorPage() {
       image: titleImageUrl(title.id),
     }));
 
-  const mice: WisdomMouse[] = getAllMice()
-    .filter((mouse) => mouse.wisdom > 0)
-    .map((mouse) => ({ name: mouse.name, wisdom: mouse.wisdom, slug: mouseSlug(mouse.type) }))
-    .sort((a, b) => a.name.localeCompare(b.name));
-
   return (
     <div className="max-w-3xl">
       <PageHeader
@@ -48,7 +42,10 @@ export default function RankUpCalculatorPage() {
         icon={ArrowTrendingUpIcon}
         iconClassName="bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300"
       />
-      <RankUpCalculator titles={titles} mice={mice} />
+      {/* The calculator reads a shared link's entries with useSearchParams, which needs a Suspense boundary to prerender. */}
+      <Suspense fallback={<RankUpCalculator titles={titles} syncUrl={false} />}>
+        <RankUpCalculatorFromUrl titles={titles} />
+      </Suspense>
     </div>
   );
 }

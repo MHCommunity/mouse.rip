@@ -215,6 +215,8 @@ const updateDataFiles = async () => {
           group: mouse.group,
           subgroup: mouse.subgroup,
           minlucks: mouse.minlucks,
+          // For the rank-up calculator's "in catches of" answer.
+          wisdom: mouse.wisdom,
           eff: Object.keys(eff).length > 0 ? eff : undefined,
         };
       });

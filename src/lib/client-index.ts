@@ -23,6 +23,8 @@ export interface IndexedItem {
 
 /** The search index's mouse, plus what the /mice browser filters on. */
 export type IndexedMouse = SlimMouse & {
+  /** Wisdom per catch, for the rank-up calculator. */
+  wisdom?: number;
   /** Non-zero power-type effectivenesses; feed to bestPowerTypes(). */
   eff?: Record<string, number>;
   /** The best place to hunt it (no charm if possible, trusted sample), for search's quick answer. */

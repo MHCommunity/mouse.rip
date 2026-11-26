@@ -1,11 +1,13 @@
 'use client';
 
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useEffect, useState, useSyncExternalStore } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { GameImage } from '@/components/game-image';
 import { Input } from '@/components/input';
 import { Link } from '@/components/link';
+import { loadMouseIndex, type IndexedMouse } from '@/lib/client-index';
 import { formatNumber } from '@/utils';
 
 export interface RankTitle {
@@ -16,10 +18,70 @@ export interface RankTitle {
   image: string;
 }
 
-export interface WisdomMouse {
-  name: string;
-  wisdom: number;
-  slug: string;
+/** What the hunter has entered, as it goes in the URL and in local storage. */
+interface Entries {
+  /** Title ids. */
+  title: string;
+  target: string;
+  progress: string;
+  wisdom: string;
+  mouse: string;
+}
+
+const KEYS = ['title', 'target', 'progress', 'wisdom', 'mouse'] as const;
+const STORAGE_KEY = 'mouse.rip:rank-up-calculator';
+
+/** Stands in for local storage while the server renders, where there is none. */
+const ON_SERVER = 'server';
+
+function readStorage(): string {
+  try {
+    return window.localStorage.getItem(STORAGE_KEY) ?? '';
+  } catch {
+    // Storage is blocked (private browsing, say); start fresh.
+    return '';
+  }
+}
+
+const noSubscribe = () => () => {};
+
+/** The last entries on this device, so a returning hunter doesn't type them again. */
+function parseEntries(stored: string): Partial<Entries> {
+  try {
+    const saved: unknown = JSON.parse(stored || '{}');
+    if (!saved || typeof saved !== 'object') return {};
+    return Object.fromEntries(
+      KEYS.flatMap((key) => {
+        const value = (saved as Record<string, unknown>)[key];
+        return typeof value === 'string' ? [[key, value]] : [];
+      }),
+    );
+  } catch {
+    // Something other than our JSON is stored under the key; start fresh.
+    return {};
+  }
+}
+
+function saveEntries(entries: Entries) {
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+  } catch {
+    // Blocked storage only means the next visit starts fresh.
+  }
+}
+
+/** A shared link's entries win; without one, pick up where this device left off. */
+export function RankUpCalculatorFromUrl({ titles }: { titles: RankTitle[] }) {
+  const params = useSearchParams();
+  // Read after hydration, so the first client render matches the server's.
+  const stored = useSyncExternalStore(noSubscribe, readStorage, () => ON_SERVER);
+  const linked = KEYS.some((key) => params.has(key));
+  const ready = linked || stored !== ON_SERVER;
+  const initial = linked
+    ? Object.fromEntries(KEYS.flatMap((key) => (params.has(key) ? [[key, params.get(key) ?? '']] : [])))
+    : parseEntries(ready ? stored : '');
+  // The calculator takes its entries once, so it mounts again when the saved ones arrive.
+  return <RankUpCalculator key={ready ? 'ready' : 'server'} titles={titles} initial={initial} syncUrl />;
 }
 
 const labelClasses = 'flex flex-col gap-1.5 text-sm font-medium text-zinc-950 dark:text-white';
@@ -35,12 +97,68 @@ function cleanNumber(value: string, decimal = false): string {
   return rest.length > 0 ? `${whole}.${rest.join('')}` : whole;
 }
 
-export function RankUpCalculator({ titles, mice }: { titles: RankTitle[]; mice: WisdomMouse[] }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [targetIndex, setTargetIndex] = useState(1);
-  const [progress, setProgress] = useState('');
-  const [exactWisdom, setExactWisdom] = useState('');
-  const [mouseName, setMouseName] = useState('');
+export function RankUpCalculator({
+  titles,
+  initial = {},
+  syncUrl,
+}: {
+  titles: RankTitle[];
+  initial?: Partial<Entries>;
+  /** Off for the prerendered fallback, which mustn't rewrite a link it couldn't read. */
+  syncUrl: boolean;
+}) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [entries, setEntries] = useState<Entries>(() => ({
+    title: titles[0].id,
+    target: titles[1]?.id ?? '',
+    progress: '',
+    wisdom: '',
+    mouse: '',
+    ...initial,
+  }));
+  // Every mouse's wisdom comes from the shared mouse index, fetched only once someone wants catches.
+  const [mice, setMice] = useState<IndexedMouse[] | null>(null);
+
+  const titleIndex = (id: string) => titles.findIndex((title) => title.id === id);
+  const currentIndex = Math.max(0, titleIndex(entries.title));
+  const targetIndex = titleIndex(entries.target);
+  const progress = cleanNumber(entries.progress, true);
+  const exactWisdom = cleanNumber(entries.wisdom);
+  const mouseName = entries.mouse;
+
+  const [wantsMice, setWantsMice] = useState(false);
+
+  // Fetch the list once the field is used, or when a link or a saved visit arrives with a mouse filled in.
+  useEffect(() => {
+    if (mice || !(wantsMice || mouseName)) return;
+    let current = true;
+    loadMouseIndex()
+      .then((index) => {
+        if (current) {
+          setMice(index.filter((m) => (m.wisdom ?? 0) > 0).sort((a, b) => a.name.localeCompare(b.name)));
+        }
+      })
+      .catch(() => {
+        // Without the list there's no catches answer; the next focus or keystroke tries again.
+      });
+    return () => {
+      current = false;
+    };
+  }, [mice, wantsMice, mouseName]);
+
+  const change = (patch: Partial<Entries>) => {
+    const next = { ...entries, ...patch };
+    // Keep the target above the current title.
+    if (titleIndex(next.target) <= titleIndex(next.title)) next.target = titles[titleIndex(next.title) + 1]?.id ?? '';
+    setEntries(next);
+    saveEntries(next);
+    if (!syncUrl) return;
+    const params = new URLSearchParams();
+    for (const key of KEYS) if (next[key]) params.set(key, next[key]);
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  };
 
   const current = titles[currentIndex];
   const next = titles[currentIndex + 1];
@@ -57,12 +175,11 @@ export function RankUpCalculator({ titles, mice }: { titles: RankTitle[]; mice: 
   const steps = target ? titles.slice(reached + 1, titles.indexOf(target) + 1) : [];
   const needed = target ? Math.max(0, Math.ceil(target.wisdom - wisdom)) : 0;
 
-  const mouse = mice.find((m) => m.name.toLowerCase() === mouseName.trim().toLowerCase());
-
-  const chooseCurrent = (index: number) => {
-    setCurrentIndex(index);
-    if (targetIndex <= index) setTargetIndex(index + 1);
-  };
+  // "Glazy" finds Glazy Mouse as well as the full name does.
+  const wanted = mouseName.trim().toLowerCase();
+  const mouse = wanted
+    ? mice?.find((m) => m.name.toLowerCase() === wanted || m.abbreviated_name?.toLowerCase() === wanted)
+    : undefined;
 
   return (
     <div className="space-y-8">
@@ -73,7 +190,7 @@ export function RankUpCalculator({ titles, mice }: { titles: RankTitle[]; mice: 
             <select
               className={selectClasses}
               value={currentIndex}
-              onChange={(e) => chooseCurrent(Number(e.target.value))}
+              onChange={(e) => change({ title: titles[Number(e.target.value)].id })}
             >
               {titles.map((title, index) => (
                 <option key={title.id} value={index}>
@@ -92,7 +209,9 @@ export function RankUpCalculator({ titles, mice }: { titles: RankTitle[]; mice: 
               placeholder="e.g. 42.5"
               value={progress}
               disabled={Boolean(exactWisdom) || !next}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProgress(cleanNumber(e.target.value, true))}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                change({ progress: cleanNumber(e.target.value, true) })
+              }
             />
           </label>
 
@@ -106,7 +225,7 @@ export function RankUpCalculator({ titles, mice }: { titles: RankTitle[]; mice: 
               autoComplete="off"
               placeholder="e.g. 7,500,000"
               value={exactWisdom ? formatNumber(Number(exactWisdom)) : ''}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setExactWisdom(cleanNumber(e.target.value))}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => change({ wisdom: cleanNumber(e.target.value) })}
             />
           </label>
 
@@ -116,7 +235,7 @@ export function RankUpCalculator({ titles, mice }: { titles: RankTitle[]; mice: 
               className={selectClasses}
               value={target ? titles.indexOf(target) : ''}
               disabled={!next}
-              onChange={(e) => setTargetIndex(Number(e.target.value))}
+              onChange={(e) => change({ target: titles[Number(e.target.value)].id })}
             >
               {titles.slice(currentIndex + 1).map((title) => (
                 <option key={title.id} value={titles.indexOf(title)}>
@@ -162,11 +281,12 @@ export function RankUpCalculator({ titles, mice }: { titles: RankTitle[]; mice: 
                   autoComplete="off"
                   placeholder="Type a mouse, e.g. Glazy"
                   value={mouseName}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMouseName(e.target.value)}
+                  onFocus={() => setWantsMice(true)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => change({ mouse: e.target.value })}
                 />
                 <datalist id="wisdom-mice">
-                  {mice.map((m) => (
-                    <option key={m.slug} value={m.name}>
+                  {mice?.map((m) => (
+                    <option key={m.type} value={m.name}>
                       {m.name}
                     </option>
                   ))}
@@ -175,16 +295,16 @@ export function RankUpCalculator({ titles, mice }: { titles: RankTitle[]; mice: 
               {mouse && (
                 <p className="mt-3 text-sm text-zinc-700 dark:text-zinc-300">
                   <strong className="font-semibold text-zinc-950 dark:text-white">
-                    {formatNumber(Math.ceil(needed / mouse.wisdom))}
+                    {formatNumber(Math.ceil(needed / (mouse.wisdom ?? 1)))}
                   </strong>{' '}
                   catches of{' '}
                   <Link
-                    href={`/mice/${mouse.slug}`}
+                    href={`/mice/${mouse.type.replaceAll('_', '-')}`}
                     className="font-medium text-pink-700 hover:text-pink-900 dark:text-pink-300"
                   >
                     {mouse.name}
                   </Link>
-                  , at {formatNumber(mouse.wisdom)} wisdom each.
+                  , at {formatNumber(mouse.wisdom ?? 0)} wisdom each.
                 </p>
               )}
             </div>
