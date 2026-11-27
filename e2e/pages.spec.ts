@@ -18,6 +18,13 @@ test('an unknown page is a 404 with a way back', async ({ page, consoleErrors })
   consoleErrors.splice(0);
 });
 
+test('a mouse address typed from its name offers the mouse', async ({ page, consoleErrors }) => {
+  await page.goto('/mice/glazy');
+  const suggestions = page.getByRole('region', { name: 'Were you looking for one of these?' });
+  await expect(suggestions.getByRole('link', { name: /Glazy Mouse/ })).toHaveAttribute('href', '/mice/glazed');
+  consoleErrors.splice(0);
+});
+
 test('the /cre short link goes to the catch rate estimator', async ({ page }) => {
   await page.goto('/cre');
   await expect(page).toHaveURL(/\/catch-rate-estimator$/);
@@ -55,7 +62,7 @@ test('a trap effects link opens on its location, and the list is in the page wit
   browser,
 }) => {
   await page.goto('/trap-special-effects?location=meadow');
-  await expect(page.getByLabel('Location')).toHaveValue('meadow');
+  await expect(page.getByLabel('Location', { exact: true })).toHaveValue('meadow');
   await expect(page.getByRole('heading', { level: 2, name: 'Meadow' })).toBeVisible();
 
   const context = await browser.newContext({ javaScriptEnabled: false });

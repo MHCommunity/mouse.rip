@@ -8,6 +8,8 @@ import { SearchBar } from '@/components/search/search-button';
 import { ToolCard, type Tint } from '@/components/tool-card';
 import { itemImageUrl, mouseImageUrl } from '@/lib/image-urls';
 
+import { NotFoundSuggestions } from './not-found-suggestions';
+
 export const metadata = {
   title: 'Page not found',
 };
@@ -23,7 +25,7 @@ const sections: { href: string; title: string; description: string; image: strin
   {
     href: '/items',
     title: 'Items',
-    description: 'Traps, cheese, charms and loot',
+    description: 'Traps, cheese, charms, and loot',
     image: itemImageUrl('super_brie_cheese'),
     tint: 'amber',
   },
@@ -37,14 +39,14 @@ const sections: { href: string; title: string; description: string; image: strin
   {
     href: '/guides',
     title: 'Guides',
-    description: 'Where to go and how to get there',
+    description: 'Strategy and how-tos from other hunters',
     image: itemImageUrl('treasure_map_scroll_case_convertible'),
     tint: 'sky',
   },
   {
     href: '/tools',
     title: 'Tools',
-    description: 'Calculators, planners and more',
+    description: 'Calculators, planners, and lookups',
     image: itemImageUrl('acronym_weapon'),
     tint: 'violet',
   },
@@ -77,6 +79,8 @@ export default function NotFound() {
         <HomeIcon className="size-4" aria-hidden="true" />
         Back to home
       </Link>
+
+      <NotFoundSuggestions />
 
       <nav aria-labelledby="jump-heading" className="mt-12">
         <h2 id="jump-heading" className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
