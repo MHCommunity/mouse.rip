@@ -1,70 +1,99 @@
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 
 import React from 'react';
 
-import {
-  AcademicCapIcon,
-  ArrowRightIcon,
-  BoltIcon,
-  HomeIcon,
-  SwatchIcon,
-  TableCellsIcon,
-  WrenchIcon,
-} from '@heroicons/react/20/solid';
+import { HomeIcon } from '@heroicons/react/20/solid';
 import { Heading } from '@/components/heading';
+import { SearchBar } from '@/components/search/search-button';
+import { ToolCard, type Tint } from '@/components/tool-card';
+import { itemImageUrl, mouseImageUrl } from '@/lib/image-urls';
+
+import { NotFoundSuggestions } from './not-found-suggestions';
 
 export const metadata = {
   title: 'Page not found',
 };
 
-const sections = [
-  { href: '/guides', label: 'Guides', icon: AcademicCapIcon },
-  { href: '/extensions', label: 'Extensions', icon: BoltIcon },
-  { href: '/tools', label: 'Tools', icon: WrenchIcon },
-  { href: '/spreadsheets', label: 'Spreadsheets', icon: TableCellsIcon },
-  { href: '/userscripts', label: 'Userscripts', icon: SwatchIcon },
+const sections: { href: string; title: string; description: string; image: string; tint: Tint }[] = [
+  {
+    href: '/mice',
+    title: 'Mice',
+    description: 'Every mouse, its minluck and best cheese',
+    image: mouseImageUrl('glazed'),
+    tint: 'pink',
+  },
+  {
+    href: '/items',
+    title: 'Items',
+    description: 'Traps, cheese, charms, and loot',
+    image: itemImageUrl('super_brie_cheese'),
+    tint: 'amber',
+  },
+  {
+    href: '/minlucks',
+    title: 'Minlucks',
+    description: 'Luck that guarantees a catch',
+    image: '/images/stats/luck.png',
+    tint: 'green',
+  },
+  {
+    href: '/guides',
+    title: 'Guides',
+    description: 'Strategy and how-tos from other hunters',
+    image: itemImageUrl('treasure_map_scroll_case_convertible'),
+    tint: 'sky',
+  },
+  {
+    href: '/tools',
+    title: 'Tools',
+    description: 'Calculators, planners, and lookups',
+    image: itemImageUrl('acronym_weapon'),
+    tint: 'violet',
+  },
+  {
+    href: '/extensions',
+    title: 'Extensions and scripts',
+    description: 'Add-ons that make the game easier',
+    image: itemImageUrl('chrome_acronym_weapon'),
+    tint: 'pink',
+  },
 ];
 
 export default function NotFound() {
   return (
-    <div className="py-12">
-      <p className="font-mono text-sm font-semibold tracking-widest text-pink-600 dark:text-pink-400">404</p>
-      <Heading className="mt-3">This page scurried off</Heading>
+    <div className="max-w-3xl py-12">
+      <Heading>This page scurried off</Heading>
       <p className="mt-4 text-base/7 text-pretty text-zinc-600 dark:text-zinc-300">
-        We couldn&apos;t find the page you were looking for. It may have moved, or the link might be out of date.
+        We couldn&apos;t find that page. Try searching for it instead.
       </p>
 
+      <div className="mt-6 max-w-2xl">
+        <SearchBar />
+      </div>
+
+      {/* A plain link: the shared Button's link mode breaks prerendering. */}
       <Link
         href="/"
-        className="mt-8 inline-flex items-center gap-2 rounded-lg bg-pink-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-pink-500 active:scale-[.98] motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-900"
+        className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full bg-pink-600 px-5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-pink-700 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-900"
       >
         <HomeIcon className="size-4" aria-hidden="true" />
         Back to home
       </Link>
 
-      <div className="mt-12">
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Or jump to</h2>
-        <ul className="mt-3 divide-y divide-zinc-200 dark:divide-zinc-800">
-          {sections.map(({ href, label, icon: Icon }) => (
-            <li key={href}>
-              <Link
-                href={href}
-                className="group flex items-center gap-3 py-3 text-sm font-medium text-zinc-700 transition-colors hover:text-pink-700 focus:outline-none focus-visible:text-pink-700 dark:text-zinc-300 dark:hover:text-pink-300"
-              >
-                <Icon
-                  className="size-5 text-zinc-400 group-hover:text-pink-600 dark:group-hover:text-pink-400"
-                  aria-hidden="true"
-                />
-                {label}
-                <ArrowRightIcon
-                  className="ml-auto size-4 text-zinc-300 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-pink-500 dark:text-zinc-600"
-                  aria-hidden="true"
-                />
-              </Link>
+      <NotFoundSuggestions />
+
+      <nav aria-labelledby="jump-heading" className="mt-12">
+        <h2 id="jump-heading" className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+          Or jump to
+        </h2>
+        <ul className="mt-3 grid gap-3 sm:grid-cols-2">
+          {sections.map((section) => (
+            <li key={section.href}>
+              <ToolCard {...section} />
             </li>
           ))}
         </ul>
-      </div>
+      </nav>
     </div>
   );
 }

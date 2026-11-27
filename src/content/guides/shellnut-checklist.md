@@ -1,4 +1,4 @@
-A printable checklist of the key things to complete from Baron through Archduke/Viceroy. Pairs with the full [Shellnut Guide](/guides/ranks-beyond-mhbasics). Items marked *(optional)* can be skipped depending on your situation.
+A printable checklist of what to finish from Baron through Archduke and Viceroy. Pairs with the full [Shellnut Guide](/guides/ranks-beyond-mhbasics). Items marked *(optional)* can be skipped depending on your situation.
 
 ## Baron
 

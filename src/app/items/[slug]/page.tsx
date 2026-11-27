@@ -1,13 +1,15 @@
+import clsx from 'clsx';
 import { notFound } from 'next/navigation';
 import React from 'react';
 
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { ExternalRefs } from '@/components/external-refs';
 import { Heading } from '@/components/heading';
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 
-import { getLocations } from '@/lib/site-data';
+import { getLocations, getTitles } from '@/lib/site-data';
 import {
+  estimatorParamFor,
   getAllGameItems,
   getConvertibleContents,
   getConvertiblesContaining,
@@ -21,12 +23,14 @@ import { descriptionToParagraphs, powerTypeLabel, POWER_TYPE_CHIP } from '@/lib/
 import type { GameItem, GameItemStats, MapRelation } from '@/types';
 import { JsonLd } from '@/components/json-ld';
 import { itemJsonLd, itemSeo } from '@/lib/entity-seo';
-import { itemImageUrl } from '@/lib/image-urls';
+import { itemCdnImageUrl, itemImageUrl } from '@/lib/image-urls';
 import { ogCard, pageMetadata } from '@/seo';
 import { formatNumber, titleCase } from '@/utils';
+import { classificationLabel, classificationName } from '@/lib/item-classifications';
 import { ItemData } from './item-data';
 import { MarketPrice } from './market-price';
 import { SectionHeading } from '@/components/section-heading';
+import { GameImage } from '@/components/game-image';
 
 export const dynamicParams = false;
 
@@ -43,7 +47,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     contents: item.classification === 'convertible' ? getConvertibleContents(item.id) : [],
     drops: getItemDrops(item.id),
   });
-  const cardImage = pickImage(item);
+  const cardImage = item?.images ? itemCdnImageUrl(item.type, 'large') : undefined;
   const stats = item.has_stats && typeof item.has_stats === 'object' ? item.has_stats : null;
   const cardSubtitle = stats
     ? [
@@ -53,7 +57,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         stats.has_cheese_effect && stats.cheese_effect ? stats.cheese_effect : null,
       ]
         .filter(Boolean)
-        .join(' · ')
+        .join(', ')
     : '';
   return pageMetadata({
     title,
@@ -61,7 +65,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     path: `/items/${slug}`,
     image: ogCard({
       title: item.name,
-      eyebrow: titleCase(item.classification),
+      eyebrow: classificationName(item.classification),
       subtitle: cardSubtitle || undefined,
       image: cardImage,
       accent: 'blue',
@@ -133,7 +137,7 @@ function rankNote(item: GameItem, stats: GameItemStats): string | null {
     item.classification === 'weapon'
       ? `${stats.power_type ? `${powerTypeLabel(stats.power_type)} ` : ''}weapons`
       : 'bases';
-  return `${parts.join(' · ')} of ${peers.length} ${peerLabel}`;
+  return `${parts.join(' and ')} of ${peers.length} ${peerLabel}`;
 }
 
 /** Locations this item can be used in, linked to their pages when we have one. */
@@ -170,19 +174,43 @@ function skinTarget(item: GameItem): GameItem | undefined {
   return skinTargets.get(item.type);
 }
 
-/** Items of the same classification that share the most tags with this one. */
-function relatedItems(item: GameItem): GameItem[] {
-  const tags = new Set((item.tags ?? []).filter((tag) => tag !== item.classification));
-  if (tags.size === 0) return [];
+/** How many items of each classification carry each tag, for weighing a shared tag by how rare it is. */
+const tagCounts = new Map<string, Map<string, number>>();
+function tagCountsFor(classification: string): Map<string, number> {
+  let counts = tagCounts.get(classification);
+  if (!counts) {
+    counts = new Map();
+    for (const peer of itemsWithClassification(classification)) {
+      for (const tag of new Set(peer.tags ?? [])) counts.set(tag, (counts.get(tag) ?? 0) + 1);
+    }
+    tagCounts.set(classification, counts);
+  }
+  return counts;
+}
 
-  return itemsWithClassification(item.classification)
+/**
+ * Items of the same classification that share the most telling tags with this one. A tag on more than a quarter of
+ * them ("convertibles", "treasure_chests") says nothing; rarer shared tags count for more.
+ */
+function relatedItems(item: GameItem): GameItem[] {
+  const peers = itemsWithClassification(item.classification);
+  const counts = tagCountsFor(item.classification);
+  const weights = new Map<string, number>();
+  for (const tag of new Set(item.tags ?? [])) {
+    const count = counts.get(tag) ?? 0;
+    if (tag === item.classification || count < 2 || count > peers.length / 4) continue;
+    weights.set(tag, Math.log(peers.length / count));
+  }
+  if (weights.size === 0) return [];
+
+  return peers
     .filter((peer) => peer.id !== item.id)
     .map((peer) => ({
       peer,
-      shared: (peer.tags ?? []).filter((tag) => tags.has(tag)).length,
+      score: [...new Set(peer.tags ?? [])].reduce((sum, tag) => sum + (weights.get(tag) ?? 0), 0),
     }))
-    .filter(({ shared }) => shared > 0)
-    .sort((a, b) => b.shared - a.shared || a.peer.name.localeCompare(b.peer.name))
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score || a.peer.name.localeCompare(b.peer.name))
     .slice(0, 8)
     .map(({ peer }) => peer);
 }
@@ -190,8 +218,10 @@ function relatedItems(item: GameItem): GameItem[] {
 function StatRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex items-center justify-between gap-4 px-4 py-2.5">
-      <span className="text-sm text-zinc-500 dark:text-zinc-400">{label}</span>
-      <span className="text-sm font-medium tabular-nums text-zinc-900 dark:text-white">{value}</span>
+      <span className="shrink-0 text-sm text-zinc-600 dark:text-zinc-400">{label}</span>
+      <span className="min-w-0 text-right text-sm font-medium tabular-nums break-words text-zinc-900 dark:text-white">
+        {value}
+      </span>
     </div>
   );
 }
@@ -206,7 +236,7 @@ function StatsTable({ stats }: { stats: GameItemStats }) {
         label="Power type"
         value={
           <span
-            className={`inline-flex rounded-md px-2 py-0.5 text-xs font-medium ${POWER_TYPE_CHIP[stats.power_type] ?? ''}`}
+            className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${POWER_TYPE_CHIP[stats.power_type] ?? ''}`}
           >
             {powerTypeLabel(stats.power_type)}
           </span>
@@ -228,7 +258,7 @@ function StatsTable({ stats }: { stats: GameItemStats }) {
         label="Cheese effect"
         value={
           <span
-            className={`inline-flex rounded-md px-2 py-0.5 text-xs font-medium ${
+            className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium whitespace-nowrap ${
               stats.cheese_effect.includes('Fresh')
                 ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
                 : stats.cheese_effect.includes('Stale')
@@ -246,7 +276,15 @@ function StatsTable({ stats }: { stats: GameItemStats }) {
       <StatRow
         key="min_title"
         label="Minimum title"
-        value={stats.min_title.charAt(0).toUpperCase() + stats.min_title.slice(1)}
+        value={
+          <Link
+            href="/titles"
+            className="font-medium text-zinc-900 underline decoration-zinc-300 underline-offset-2 hover:text-pink-700 hover:decoration-pink-400 dark:text-white dark:decoration-zinc-600 dark:hover:text-pink-300"
+          >
+            {/* The game stores the title's id ("archduke_archduchess"); show its name. */}
+            {getTitles().find((title) => title.id === stats.min_title)?.name ?? titleCase(stats.min_title)}
+          </Link>
+        }
       />,
     );
 
@@ -254,8 +292,8 @@ function StatsTable({ stats }: { stats: GameItemStats }) {
 
   return (
     <section className="mt-6">
-      <h2 className="text-xs font-semibold tracking-wide text-zinc-500 dark:text-zinc-400">Trap stats</h2>
-      <div className="mt-2 divide-y divide-zinc-100 overflow-hidden rounded-xl border border-zinc-200 dark:divide-zinc-800 dark:border-zinc-800">
+      <SectionHeading>Stats</SectionHeading>
+      <div className="mt-2 divide-y divide-zinc-100 overflow-hidden rounded-2xl bg-white/80 ring-1 ring-zinc-200/80 dark:divide-zinc-800 dark:bg-white/5 dark:ring-zinc-700/60">
         {rows}
       </div>
     </section>
@@ -280,7 +318,6 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
   const flags: { label: string; limit?: boolean }[] = [
     item.is_tradable ? { label: 'Tradable' } : null,
     item.is_givable ? { label: 'Givable' } : null,
-    isConvertible ? { label: 'Openable' } : null,
     item.is_limited_edition ? { label: 'Limited edition', limit: true } : null,
     item.is_quantity_limited
       ? {
@@ -296,6 +333,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
   ].filter(Boolean) as { label: string; limit?: boolean }[];
 
   const ranks = stats ? rankNote(item, stats) : null;
+  const estimatorParam = estimatorParamFor(item.type);
   const environments = itemEnvironments(item);
   const mapRelations = getMapRelationsForItem(item.id);
   const contents = isConvertible ? getConvertibleContents(item.id) : [];
@@ -312,53 +350,70 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
 
       <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Items', href: '/items' }, { name: item.name }]} />
 
-      <header className="flex flex-col gap-6 sm:flex-row sm:items-start">
-        {image && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={image}
-            alt={item.name}
-            className="h-40 w-40 shrink-0 rounded-2xl bg-white object-contain p-2 ring-1 ring-zinc-950/5 dark:bg-zinc-900 dark:ring-white/10"
-          />
-        )}
-        <div className="min-w-0">
-          <Heading>{item.name}</Heading>
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            <Link
-              href={`/items/type/${item.classification}`}
-              title={`All ${titleCase(item.classification).toLowerCase()}s`}
-              className="inline-flex rounded-md bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600 transition hover:ring-2 hover:ring-blue-400 dark:bg-zinc-800 dark:text-zinc-300"
-            >
-              {titleCase(item.classification)}
-            </Link>
-            {flags.map((flag) => (
-              <span
-                key={flag.label}
-                className={`inline-flex rounded-md px-2 py-0.5 text-xs font-medium ${
-                  flag.limit
-                    ? 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300'
-                    : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
-                }`}
-              >
-                {flag.label}
-              </span>
-            ))}
-          </div>
-          {skinFor && (
-            <p className="mt-3 text-sm text-zinc-500 dark:text-zinc-400">
-              A skin for the{' '}
-              <Link
-                href={`/items/${itemSlug(skinFor.type)}`}
-                className="font-medium text-blue-700 hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-200"
-              >
-                {skinFor.name}
-              </Link>
-              .
-            </p>
+      <header className="rounded-3xl bg-linear-to-br from-pink-50 via-white to-amber-50 p-4 ring-1 ring-pink-100/80 sm:gap-6 sm:p-6 dark:from-pink-950/30 dark:via-zinc-900 dark:to-amber-950/20 dark:ring-zinc-800">
+        <div className="flex items-start gap-4 sm:gap-6">
+          {image && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={image}
+              alt=""
+              className="size-20 shrink-0 rounded-2xl bg-white object-contain p-2 shadow-sm ring-1 ring-zinc-950/5 sm:size-40 dark:ring-white/10"
+            />
           )}
-          {stats && <StatsTable stats={stats} />}
-          {ranks && <p className="mt-2 text-xs tabular-nums text-zinc-400 dark:text-zinc-500">{ranks}</p>}
+          <div className="min-w-0">
+            <Heading>{item.name}</Heading>
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <Link
+                href={`/items/type/${item.classification}`}
+                title={`All ${classificationLabel(item.classification).toLowerCase()}`}
+                className="inline-flex rounded-full bg-white/80 px-2.5 py-0.5 text-xs font-medium text-zinc-700 ring-1 ring-zinc-200 transition hover:ring-2 hover:ring-pink-400 dark:bg-white/5 dark:text-zinc-300 dark:ring-zinc-700"
+              >
+                {classificationName(item.classification)}
+              </Link>
+              {flags.map((flag) => (
+                <span
+                  key={flag.label}
+                  className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                    flag.limit
+                      ? 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300'
+                      : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
+                  }`}
+                >
+                  {flag.label}
+                </span>
+              ))}
+            </div>
+            {skinFor && (
+              <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
+                A skin for the{' '}
+                <Link
+                  href={`/items/${itemSlug(skinFor.type)}`}
+                  className="font-medium text-pink-700 underline decoration-pink-700/30 underline-offset-2 hover:text-pink-800 hover:decoration-current dark:text-pink-300 dark:decoration-pink-300/40 dark:hover:text-pink-200"
+                >
+                  {skinFor.name}
+                </Link>
+                .
+              </p>
+            )}
+          </div>
         </div>
+        {/* Under the picture on a phone, where beside it would squeeze the table; under the title from sm up. */}
+        {(stats || ranks || estimatorParam) && (
+          <div className={clsx('max-w-md', image && 'sm:ml-46')}>
+            {stats && <StatsTable stats={stats} />}
+            {ranks && <p className="mt-2 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">{ranks}</p>}
+            {estimatorParam && (
+              <p className="mt-3 text-sm">
+                <Link
+                  href={`/catch-rate-estimator?${estimatorParam}=${item.type}`}
+                  className="font-medium text-pink-700 underline decoration-pink-700/30 underline-offset-2 hover:text-pink-800 hover:decoration-current dark:text-pink-300 dark:decoration-pink-300/40 dark:hover:text-pink-200"
+                >
+                  Try it in the catch rate estimator
+                </Link>
+              </p>
+            )}
+          </div>
+        )}
       </header>
 
       {item.is_tradable && <MarketPrice itemId={item.id} />}
@@ -367,6 +422,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
         itemId={item.id}
         obtainHint={item.obtain_hint}
         contents={contents}
+        isConvertible={isConvertible}
         drops={drops}
         foundIn={getConvertiblesContaining(item.id)}
         mapRelations={mapRelations}
@@ -382,14 +438,14 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
                 <Link
                   key={environment.name}
                   href={`/locations/${environment.id}`}
-                  className="inline-flex rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 shadow-sm transition hover:border-blue-300 hover:text-blue-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-blue-800 dark:hover:text-blue-300"
+                  className="inline-flex rounded-full ring-1 ring-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:ring-pink-300 hover:text-pink-700 dark:ring-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:ring-pink-800 dark:hover:text-pink-300"
                 >
                   {environment.name}
                 </Link>
               ) : (
                 <span
                   key={environment.name}
-                  className="inline-flex rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400"
+                  className="inline-flex rounded-full ring-1 ring-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-500 dark:ring-zinc-800 dark:bg-zinc-900 dark:text-zinc-400"
                 >
                   {environment.name}
                 </span>
@@ -407,11 +463,10 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
               <Link
                 key={skin.id}
                 href={`/items/${itemSlug(skin.type)}`}
-                className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 shadow-sm transition hover:border-blue-300 hover:text-blue-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-blue-800 dark:hover:text-blue-300"
+                className="inline-flex items-center gap-2 rounded-full ring-1 ring-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:ring-pink-300 hover:text-pink-700 dark:ring-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:ring-pink-800 dark:hover:text-pink-300"
               >
                 {skin.images?.thumbnail && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={itemImageUrl(skin.type)} alt="" loading="lazy" className="size-6 shrink-0 rounded" />
+                  <GameImage src={itemImageUrl(skin.type)} className="size-6 shrink-0 rounded" />
                 )}
                 {skin.name}
               </Link>
@@ -433,17 +488,16 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
 
       {related.length > 0 && (
         <section className="mt-10">
-          <SectionHeading>Related {titleCase(item.classification).toLowerCase()}s</SectionHeading>
+          <SectionHeading>Related {classificationLabel(item.classification).toLowerCase()}</SectionHeading>
           <ul className="mt-4 flex flex-wrap gap-2">
             {related.map((peer) => (
               <li key={peer.id}>
                 <Link
                   href={`/items/${itemSlug(peer.type)}`}
-                  className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 shadow-sm transition hover:border-blue-300 hover:text-blue-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-blue-800 dark:hover:text-blue-300"
+                  className="inline-flex items-center gap-2 rounded-full ring-1 ring-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:ring-pink-300 hover:text-pink-700 dark:ring-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:ring-pink-800 dark:hover:text-pink-300"
                 >
                   {peer.images?.thumbnail && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={itemImageUrl(peer.type)} alt="" loading="lazy" className="size-6 shrink-0 rounded" />
+                    <GameImage src={itemImageUrl(peer.type)} className="size-6 shrink-0 rounded" />
                   )}
                   {peer.name}
                 </Link>

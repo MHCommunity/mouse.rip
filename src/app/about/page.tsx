@@ -1,77 +1,114 @@
-import { Heading, Subheading } from '@/components/heading';
-import { Divider } from '@/components/divider';
+import { Subheading } from '@/components/heading';
+import { PageHeader } from '@/components/page-header';
 import { PageLink } from '@/components/page-link';
 import { pageMetadata } from '@/seo';
 
 import React from 'react';
 
 export const metadata = pageMetadata({
-  title: 'About mouse.rip - Your MouseHunt Resource Hub',
+  title: 'About mouse.rip',
   description:
-    'Learn more about mouse.rip, your comprehensive resource for MouseHunt guides, tools, and community-created content.',
+    'mouse.rip is a community-built MouseHunt site with guides, a mouse and item database, minlucks, calculators, and links to community tools.',
   path: '/about',
 });
 
+const features: { href: string; name: string; description: string }[] = [
+  { href: '/guides', name: 'Guides', description: 'strategy and how-tos from other hunters.' },
+  {
+    href: '/mice',
+    name: 'Mice',
+    description: 'every mouse, with stats, minlucks, attraction rates, and where to catch it.',
+  },
+  { href: '/items', name: 'Items', description: 'every item, with drop sources and Marketplace prices.' },
+  { href: '/minlucks', name: 'Minlucks', description: 'the luck you need to guarantee a catch with each power type.' },
+  {
+    href: '/essence-calculator',
+    name: 'Essence calculator',
+    description: 'what your essences craft into.',
+  },
+  {
+    href: '/queso-pump-calculator',
+    name: 'Queso pump calculator',
+    description: 'the fastest cheese for farming Nachore.',
+  },
+  { href: '/valour-rift-floors', name: 'Valour Rift floors', description: 'which floor types come next.' },
+  {
+    href: '/catch-rate-estimator',
+    name: 'Catch rate estimator',
+    description: 'your catch rate for every mouse with your setup.',
+  },
+  {
+    href: '/best-setup',
+    name: 'Best setup',
+    description: 'the trap that catches the most where you hunt.',
+  },
+  {
+    href: '/map-planner',
+    name: 'Treasure map planner',
+    description: 'where to hunt for the most mice on your map.',
+  },
+  {
+    href: '/rank-up-calculator',
+    name: 'Rank-up calculator',
+    description: 'the wisdom you need for your next title.',
+  },
+  { href: '/relic-hunter', name: 'Relic Hunter', description: 'where she is today, and every riddle she leaves.' },
+  { href: '/titles', name: 'Titles and ranks', description: 'what each title unlocks and the wisdom it takes.' },
+  {
+    href: '/trap-special-effects',
+    name: 'Trap and base special effects',
+    description: 'gear that does something extra in certain locations.',
+  },
+  { href: '/tools', name: 'Tools', description: 'community calculators, simulators, and planners.' },
+  { href: '/extensions', name: 'Extensions', description: 'browser add-ons for the game.' },
+  { href: '/userscripts', name: 'Userscripts', description: 'small scripts that tweak the game page.' },
+  { href: '/spreadsheets', name: 'Spreadsheets', description: 'trackers and number-crunching sheets.' },
+];
+
 export default async function About() {
   return (
-    <div>
-      <Heading>About mouse.rip</Heading>
+    <div className="max-w-2xl">
+      <PageHeader
+        title="About mouse.rip"
+        description="mouse.rip collects MouseHunt guides, game data, and community tools in one place."
+      />
 
-      <Divider className="my-10 mt-6" />
-
-      <div className="prose dark:prose-invert max-w-none">
-        <p className="mb-4">
-          Welcome to <PageLink href="/">mouse.rip</PageLink> your ultimate resource hub for the MouseHunt game. We are
-          dedicated to providing comprehensive tools, detailed guides, and valuable information to help you become a
-          master hunter in the world of Gnawnia.
-        </p>
-        <p className="mb-4">
-          Our mission is to create a centralized platform where MouseHunt players of all levels can find the resources
-          they need to enhance their gameplay experience.
+      <div className="space-y-4 text-base/7 text-zinc-700 dark:text-zinc-300">
+        <p>
+          Use it to learn the game or to look something up mid-hunt, then follow the links out to MHWiki, MHCT, and
+          Markethunt when you want more detail.
         </p>
       </div>
 
-      <Subheading className="mb-3 mt-6">Our Features</Subheading>
+      <Subheading className="mt-10">What&apos;s here</Subheading>
 
-      <ul className="mb-4 list-inside list-disc space-y-2 text-gray-700 dark:text-gray-300">
-        <li className="my-2">
-          <PageLink href="/guides">Guides</PageLink> - Detailed guides covering all aspects of MouseHunt, from beginner
-          tips to advanced strategies.
-        </li>
-        <li className="my-2">
-          <PageLink href="/extensions">Extensions</PageLink> - Browser extensions to enhance your MouseHunt experience.
-        </li>
-        <li className="my-2">
-          <PageLink href="/spreadsheets">Spreadsheets</PageLink> - Comprehensive spreadsheets for tracking progress,
-          planning hunts, and managing resources.
-        </li>
-        <li className="my-2">
-          <PageLink href="/tools">Tools</PageLink> - Various tools to assist with calculations, information lookup,
-          simulations, and more.
-        </li>
-        <li className="my-2">
-          <PageLink href="/userscripts">Userscripts</PageLink> - Custom scripts to customize your MouseHunt interface
-          and enhance the user experience.
-        </li>
+      <ul className="mt-3 list-disc space-y-2 pl-5 text-base/7 text-zinc-700 marker:text-zinc-400 dark:text-zinc-300 dark:marker:text-zinc-600">
+        {features.map(({ href, name, description }) => (
+          <li key={href}>
+            <PageLink href={href} className="font-medium">
+              {name}
+            </PageLink>
+            : {description}
+          </li>
+        ))}
       </ul>
 
-      <Subheading className="mb-3 mt-6">Connect with Us</Subheading>
+      <Subheading className="mt-10">Get involved</Subheading>
 
-      <p className="mb-4 text-gray-700 dark:text-gray-300">
-        Join us on <PageLink href="https://github.com/MHCommunity">GitHub</PageLink> or{' '}
-        <PageLink href="https://discordapp.com/invite/Ya9zEdk">Discord</PageLink> to connect with other hunters, ask
-        questions, share your ideas, and contribute to the community.
+      <p className="mt-3 text-base/7 text-zinc-700 dark:text-zinc-300">
+        Come say hi on the <PageLink href="https://discord.gg/mousehunt">MouseHunt Community Discord</PageLink> to ask
+        questions, suggest something, or share a tool you&apos;ve made. The code lives on{' '}
+        <PageLink href="https://github.com/MHCommunity">GitHub</PageLink>, and pull requests are welcome.
       </p>
 
-      <Divider className="my-10" />
-
-      <Subheading className="mb-3">Disclaimer</Subheading>
-
-      <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
-        <PageLink href="/">mouse.rip</PageLink> is a fan-made resource hub created by and for the MouseHunt
-        community.This website is not affiliated with, endorsed, or sponsored by HitGrab. All game content and materials
-        belong to <PageLink href="https://hitgrab.com/">HitGrab</PageLink>.
-      </p>
+      <div className="mt-10 border-t border-zinc-200 pt-6 dark:border-zinc-800">
+        <Subheading>Disclaimer</Subheading>
+        <p className="mt-3 text-sm/6 text-zinc-600 dark:text-zinc-400">
+          mouse.rip is a fan-made site created by and for the MouseHunt community. It is not affiliated with, endorsed
+          by, or sponsored by HitGrab. All game content and materials belong to{' '}
+          <PageLink href="https://hitgrab.com/">HitGrab</PageLink>.
+        </p>
+      </div>
     </div>
   );
 }

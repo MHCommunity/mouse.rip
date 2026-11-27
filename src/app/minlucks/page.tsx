@@ -1,62 +1,46 @@
-"use client";
+'use client';
 
-import { useSearchParams } from "next/navigation";
-import React, { Suspense, useEffect, useRef, useState, useMemo } from "react";
-import {
-  VariableSizeList as List,
-  ListChildComponentProps,
-} from "react-window";
-import AutoSizer from "react-virtualized-auto-sizer";
-import Image from "next/image";
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { Link } from '@/components/site-link';
+import clsx from 'clsx';
 
-import { ColorScaleBadge } from "@/components/color-scale-badge";
-import { PageHeader } from "@/components/page-header";
-import { Input, InputGroup } from "@/components/input";
-import { Link } from "next-view-transitions";
+import { ColorScaleBadge, MinluckLegend } from '@/components/color-scale-badge';
+import { Breadcrumbs } from '@/components/breadcrumbs';
+import { SparklesIcon } from '@heroicons/react/20/solid';
+import { PageHeader } from '@/components/page-header';
+import { useRememberedCount } from '@/lib/use-remembered-count';
+import { formatNumber } from '@/utils';
+import { GameImage } from '@/components/game-image';
+import { Input, InputGroup } from '@/components/input';
 
-import { SlimMouse } from "@/types";
+import { SlimMouse } from '@/types';
 
-import { loadMouseIndex } from "@/lib/client-index";
-import { mouseImageUrl } from "@/lib/image-urls";
+import { loadMouseIndex } from '@/lib/client-index';
+import { mouseImageUrl } from '@/lib/image-urls';
+import { POWER_TYPES, POWER_TYPE_CHIP, powerTypeLabel, powerTypeSetLabel } from '@/lib/power-types';
 
-const minluckTypes = [
-  "arcane",
-  "draconic",
-  "forgotten",
-  "hydro",
-  "physical",
-  "shadow",
-  "tactical",
-  "law",
-  "rift",
-];
+type MinluckKey = keyof NonNullable<SlimMouse['minlucks']>;
 
-function flattenMinLucksByValue(mouse: SlimMouse) {
-  if (!mouse.minlucks) return [];
-  const minluckTypesByValue = minluckTypes.filter(
-    (type) =>
-      typeof mouse.minlucks?.[type as keyof typeof mouse.minlucks] ===
-        "number" && mouse.minlucks[type as keyof typeof mouse.minlucks]! > 0,
-  );
-  const minluckTypesByValueMap: Record<number, string[]> = {};
-  minluckTypesByValue.forEach((type) => {
-    const value = mouse.minlucks?.[type as keyof typeof mouse.minlucks];
-    if (typeof value !== "number") return;
-    if (minluckTypesByValueMap[value]) {
-      minluckTypesByValueMap[value].push(type);
-    } else {
-      minluckTypesByValueMap[value] = [type];
-    }
-  });
-
-  return Object.keys(minluckTypesByValueMap).map((value) => ({
-    ...mouse,
-    types: minluckTypesByValueMap[Number(value)],
-    value: Number(value),
-  }));
+function minluckFor(mouse: SlimMouse, type: string): number | null {
+  const value = mouse.minlucks?.[type as MinluckKey];
+  return typeof value === 'number' && value > 0 ? value : null;
 }
 
-// Debounce hook
+/** Groups a mouse's minlucks by value, lowest first. */
+function minlucksByValue(mouse: SlimMouse) {
+  const byValue = new Map<number, string[]>();
+  for (const type of POWER_TYPES) {
+    const value = minluckFor(mouse, type);
+    if (value === null) continue;
+    byValue.set(value, [...(byValue.get(value) ?? []), type]);
+  }
+  return [...byValue.entries()].sort(([a], [b]) => a - b).map(([value, types]) => ({ value, types }));
+}
+
+/** Rows rendered at first and per "Show more"; the full list is over 1,300 mice. */
+const PAGE_SIZE = 100;
+
 function useDebouncedValue<T>(value: T, delay: number) {
   const [debounced, setDebounced] = useState(value);
   useEffect(() => {
@@ -66,97 +50,115 @@ function useDebouncedValue<T>(value: T, delay: number) {
   return debounced;
 }
 
-// Defined outside the page so react-window sees a stable component type and
-// doesn't remount every row on each render; the rows arrive via itemData.
-function Row({ index, style, data }: ListChildComponentProps<SlimMouse[]>) {
-  const mouse = data[index];
-  if (!mouse) return null;
+function MouseRow({ mouse, power }: { mouse: SlimMouse; power: string | null }) {
+  const rows = power ? [{ value: minluckFor(mouse, power) ?? 0, types: [power] }] : minlucksByValue(mouse);
+
   return (
-    <li
-      style={style}
-      className={`list-none ${index % 2 === 0 ? "bg-slate-50 dark:bg-gray-800/50" : ""}`}
-    >
-      <div className="px-2 py-2 sm:px-3 flex items-center justify-between h-full">
-        <div className="flex items-center w-16 shrink-0">
-          <Image
-            src={mouseImageUrl(mouse.type)}
-            alt={mouse.name}
-            width={48}
-            height={48}
-            className="inline-block w-12 h-12"
-            loading="lazy"
-          />
-        </div>
-        <div className="flex-1 min-w-0 overflow-hidden">
-          <Link
-            href={`/mice/${mouse.type.replaceAll("_", "-")}`}
-            prefetch={false}
-            className="text-lg font-medium text-gray-700 hover:text-pink-700 dark:text-gray-300 dark:hover:text-pink-300"
-          >
-            {mouse.name}
-          </Link>
-          <div className="flex items-center mt-2 text-sm flex-wrap text-gray-600 dark:text-gray-300">
-            {mouse?.group && <span className="mr-1">{mouse.group}</span>}
-            {mouse?.subgroup && (
-              <span className="mr-1">({mouse.subgroup})</span>
-            )}
+    <li className="flex items-center gap-3 border-b border-zinc-100 py-2.5 [contain-intrinsic-size:auto_72px] [content-visibility:auto] last:border-b-0 dark:border-zinc-800">
+      <GameImage src={mouseImageUrl(mouse.type)} width={48} height={48} className="size-12 shrink-0" />
+      <div className="min-w-0 flex-1">
+        <Link
+          href={`/mice/${mouse.type.replaceAll('_', '-')}`}
+          className="font-medium text-zinc-900 hover:text-pink-700 dark:text-zinc-100 dark:hover:text-pink-300"
+        >
+          {mouse.name}
+        </Link>
+        {(mouse.group || mouse.subgroup) && (
+          <div className="mt-0.5 truncate text-sm text-zinc-600 dark:text-zinc-400">
+            {mouse.group}
+            {mouse.subgroup && ` (${mouse.subgroup})`}
           </div>
-        </div>
-        <div className="flex flex-col items-end ml-4 h-full justify-center space-y-1 overflow-hidden">
-          {flattenMinLucksByValue(mouse).map((ml) => (
-            <div key={ml.value} className="flex items-center">
-              <div className="text-sm font-light w-auto mr-2 text-right text-gray-700 dark:text-gray-300">
-                {ml.types.length < 8
-                  ? ml.types
-                      .map((t) => t.charAt(0).toUpperCase() + t.slice(1))
-                      .join(", ")
-                  : "Any"}
-              </div>
-              <ColorScaleBadge value={ml.value} />
-            </div>
-          ))}
-        </div>
+        )}
       </div>
+      <dl className="flex max-w-[60%] min-w-0 flex-col items-end gap-1">
+        {rows.length === 0 ? (
+          <dd className="text-sm text-zinc-600 dark:text-zinc-400">No data</dd>
+        ) : (
+          rows.map((row) => (
+            <div key={row.value} className="flex items-center gap-2">
+              <dt className="text-right text-sm text-pretty text-zinc-700 dark:text-zinc-300">
+                {powerTypeSetLabel(row.types)}
+              </dt>
+              <dd>
+                <ColorScaleBadge value={row.value} />
+              </dd>
+            </div>
+          ))
+        )}
+      </dl>
     </li>
   );
 }
 
 export default function MinLucksPage() {
-  // MinLucks reads ?q= with useSearchParams, which needs a Suspense boundary
-  // so the header can still be prerendered.
+  // MinLucks reads ?q= and ?power= with useSearchParams, which needs a Suspense
+  // boundary so the header can still be prerendered.
   return (
-    <div className="flex h-dvh flex-col">
+    <div>
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Tools', href: '/tools' }, { name: 'Minlucks' }]} />
       <PageHeader
-        title="Mouse Minlucks"
-        description="Search any mouse to find the minimum luck needed to guarantee a catch with each power type."
+        title="Minlucks"
+        description="The minimum luck that guarantees a catch with each power type."
+        icon={SparklesIcon}
+        iconClassName="bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300"
       />
-      <Suspense>
-        <MinLucks />
+      {/* Until the link's filters are readable, show the page unfiltered rather than nothing. */}
+      <Suspense fallback={<MinLucks initialQuery="" initialPower={null} syncUrl={false} />}>
+        <MinLucksFromUrl />
       </Suspense>
     </div>
   );
 }
 
-function MinLucks() {
+function MinLucksFromUrl() {
   const searchParams = useSearchParams();
-  // Shared with site search and the /mice browser, so it's fetched at most once.
+  const param = searchParams.get('power');
+  return (
+    <MinLucks
+      initialQuery={searchParams.get('q') ?? ''}
+      initialPower={param && (POWER_TYPES as readonly string[]).includes(param) ? param : null}
+      syncUrl
+    />
+  );
+}
+
+function MinLucks({
+  initialQuery,
+  initialPower,
+  syncUrl,
+}: {
+  initialQuery: string;
+  initialPower: string | null;
+  /** Off for the prerendered fallback, which mustn't rewrite a link it couldn't read. */
+  syncUrl: boolean;
+}) {
+  const router = useRouter();
+  const pathname = usePathname();
   const [mice, setMice] = useState<SlimMouse[] | null>(null);
   const [loadFailed, setLoadFailed] = useState(false);
-  // Pre-fill the filter from a ?q= param (e.g. when arriving from site search).
-  const [filter, setFilter] = useState(() => searchParams.get("q") ?? "");
+  const [filter, setFilter] = useState(initialQuery);
+  const [power, setPower] = useState<string | null>(initialPower);
+  // Kept across a visit to a mouse's page and Back, so the list is still long enough to return to the same row.
+  const [shown, setShown] = useRememberedCount(
+    syncUrl ? `minlucks|${filter.trim().toLowerCase()}|${power ?? ''}` : null,
+    PAGE_SIZE,
+    mice !== null || loadFailed,
+  );
+  // Where to move focus after "Show more", so keyboard users land on the new rows.
+  const pendingFocus = useRef<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const listRef = useRef<List>(null);
+  const listRef = useRef<HTMLUListElement>(null);
 
-  // Escape blurs the filter; Cmd/Ctrl+K is handled globally by site search.
+  // The page opens at the top (skip link first, screen readers at the heading),
+  // so the filter isn't focused on load; Escape still steps out of it.
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && document.activeElement === inputRef.current) {
+      if (e.key === 'Escape' && document.activeElement === inputRef.current) {
         inputRef.current?.blur();
       }
     };
-    document.addEventListener("keydown", handleKeyDown);
-    inputRef.current?.focus();
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   useEffect(() => {
@@ -169,82 +171,165 @@ function MinLucks() {
     };
   }, []);
 
-  // Debounced filter value
   const debouncedFilter = useDebouncedValue(filter, 200);
 
-  // Memoized filtered mice
+  // A new filter starts from the top of its results again.
+  const filterKey = `${debouncedFilter}|${power}`;
+  const [lastFilterKey, setLastFilterKey] = useState(filterKey);
+  if (filterKey !== lastFilterKey) {
+    setLastFilterKey(filterKey);
+    setShown(PAGE_SIZE);
+  }
+
+  useEffect(() => {
+    const index = pendingFocus.current;
+    if (index === null) return;
+    pendingFocus.current = null;
+    listRef.current?.children[index]?.querySelector<HTMLElement>('a')?.focus();
+  }, [shown]);
+
+  // Keep the URL shareable without adding history entries per keystroke.
+  useEffect(() => {
+    if (!syncUrl) return;
+    const params = new URLSearchParams();
+    if (debouncedFilter.trim()) params.set('q', debouncedFilter.trim());
+    if (power) params.set('power', power);
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  }, [debouncedFilter, power, pathname, router, syncUrl]);
+
   const filteredMice = useMemo(() => {
     if (!mice) return [];
     const f = debouncedFilter.trim().toLowerCase();
-    if (!f) return mice;
-    return mice.filter(
-      (mouse: SlimMouse) =>
-        mouse.name.toLowerCase().includes(f) ||
-        mouse.group?.toLowerCase().includes(f) ||
-        mouse.subgroup?.toLowerCase().includes(f),
-    );
-  }, [mice, debouncedFilter]);
-
-  // react-window caches measured row heights by index, so a new filter result set
-  // would otherwise be laid out using the previous list's heights.
-  useEffect(() => {
-    listRef.current?.resetAfterIndex(0, true);
-  }, [filteredMice]);
-
-  // Row height calculation
-  const getRowHeight = (index: number) => {
-    const mouse = filteredMice[index];
-    if (!mouse) return 90;
-    const minluckCount = flattenMinLucksByValue(mouse).length;
-    const baseHeight = 90;
-    const extraHeight = minluckCount >= 2 ? (minluckCount - 1) * 40 - 20 : 0;
-    return baseHeight + extraHeight;
-  };
+    let result = mice;
+    if (f) {
+      result = result.filter(
+        (mouse) =>
+          mouse.name.toLowerCase().includes(f) ||
+          mouse.group?.toLowerCase().includes(f) ||
+          mouse.subgroup?.toLowerCase().includes(f),
+      );
+    }
+    if (power) {
+      result = result
+        .filter((mouse) => minluckFor(mouse, power) !== null)
+        .sort((a, b) => (minluckFor(a, power) ?? 0) - (minluckFor(b, power) ?? 0));
+    }
+    return result;
+  }, [mice, debouncedFilter, power]);
 
   return (
-    <div className="flex flex-1 flex-col min-h-0">
-      <InputGroup>
-        <Input
-          id="minluck-search"
-          type="text"
-          placeholder="Search mice by name…"
-          className="whitespace-nowrap text-right text-sm text-gray-500 dark:text-gray-400"
-          ref={inputRef}
-          onChange={(e) => setFilter(e.target.value)}
-          value={filter}
-          aria-label="Search mice by name"
-        />
-      </InputGroup>
-      <div className="mt-8 flex-1 min-h-0">
+    <div>
+      <div className="space-y-4">
+        <InputGroup>
+          <Input
+            id="minluck-search"
+            type="search"
+            placeholder="Search mice or groups…"
+            ref={inputRef}
+            onChange={(e) => setFilter(e.target.value)}
+            value={filter}
+            aria-label="Search mice or groups"
+          />
+        </InputGroup>
+
+        <fieldset>
+          <legend className="sr-only">Show minlucks for one power type</legend>
+          <div className="flex flex-wrap gap-1.5">
+            <button
+              type="button"
+              aria-pressed={power === null}
+              onClick={() => setPower(null)}
+              className={clsx(
+                'min-h-9 rounded-full px-3.5 text-sm font-medium focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500',
+                power === null
+                  ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900'
+                  : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700',
+              )}
+            >
+              All types
+            </button>
+            {POWER_TYPES.map((type) => (
+              <button
+                key={type}
+                type="button"
+                aria-pressed={power === type}
+                onClick={() => setPower(power === type ? null : type)}
+                className={clsx(
+                  'min-h-9 rounded-full px-3.5 text-sm font-medium focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500',
+                  POWER_TYPE_CHIP[type],
+                  power === type ? 'ring-2 ring-zinc-900 dark:ring-white' : 'hover:brightness-95',
+                )}
+              >
+                {powerTypeLabel(type)}
+              </button>
+            ))}
+          </div>
+        </fieldset>
+
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <MinluckLegend />
+          {mice && (
+            <p className="text-sm text-zinc-600 tabular-nums dark:text-zinc-400" aria-live="polite">
+              {formatNumber(filteredMice.length)} {filteredMice.length === 1 ? 'mouse' : 'mice'}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className="mt-4">
         {loadFailed ? (
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-zinc-600 dark:text-zinc-400">
             Couldn&rsquo;t load the mouse list. Reload the page to try again.
           </p>
         ) : !mice ? (
-          <div className="space-y-2">
+          <div className="space-y-2" aria-busy="true">
             {[0, 1, 2, 3].map((row) => (
-              <div
-                key={row}
-                className="h-20 animate-pulse rounded-lg bg-gray-100 dark:bg-gray-800"
-              />
+              <div key={row} className="h-16 animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800" />
             ))}
           </div>
+        ) : filteredMice.length === 0 ? (
+          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+            No mice match
+            {debouncedFilter.trim() && <> &ldquo;{debouncedFilter.trim()}&rdquo;</>}
+            {power && <> with a {powerTypeLabel(power)} minluck</>}.{' '}
+            <button
+              type="button"
+              className="font-medium text-pink-700 underline underline-offset-2 hover:text-pink-900 dark:text-pink-300"
+              onClick={() => {
+                setFilter('');
+                setPower(null);
+                inputRef.current?.focus();
+              }}
+            >
+              Clear filters
+            </button>
+          </p>
         ) : (
-          <AutoSizer>
-            {({ height, width }) => (
-              <List
-                ref={listRef}
-                height={height}
-                itemCount={filteredMice.length}
-                itemSize={getRowHeight}
-                itemKey={(index) => filteredMice[index]?.id ?? index}
-                itemData={filteredMice}
-                width={width}
-              >
-                {Row}
-              </List>
+          <>
+            <ul ref={listRef}>
+              {filteredMice.slice(0, shown).map((mouse) => (
+                <MouseRow key={mouse.id} mouse={mouse} power={power} />
+              ))}
+            </ul>
+            {filteredMice.length > shown && (
+              <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-zinc-600 tabular-nums dark:text-zinc-400">
+                <button
+                  type="button"
+                  onClick={() => {
+                    pendingFocus.current = shown;
+                    setShown(shown + PAGE_SIZE);
+                  }}
+                  className="min-h-9 rounded-md bg-zinc-100 px-3 font-medium text-zinc-800 hover:bg-zinc-200 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+                >
+                  Show {Math.min(PAGE_SIZE, filteredMice.length - shown)} more
+                </button>
+                <span>
+                  Showing {formatNumber(shown)} of {formatNumber(filteredMice.length)}
+                </span>
+              </div>
             )}
-          </AutoSizer>
+          </>
         )}
       </div>
     </div>

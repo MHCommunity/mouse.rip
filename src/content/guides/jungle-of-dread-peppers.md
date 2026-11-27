@@ -1,20 +1,20 @@
-A quick reference for the pepper / Havarti cheese system in the **Jungle of Dread** (Tribal Isles). You grow peppers from three seed colours — **Red (R)**, **Yellow (Y)**, and **Blue (B)** — and the combination of seeds you plant determines which pepper you grow, which Havarti cheese it makes, and therefore which mouse you'll attract.
+A quick reference for the pepper / Havarti cheese system in the **Jungle of Dread** (Tribal Isles). You grow peppers from three seed colors, **Red (R)**, **Yellow (Y)**, and **Blue (B)**, and the combination of seeds you plant determines which pepper you grow, which Havarti cheese it makes, and therefore which mouse you'll attract.
 
 ## Seed combinations → cheese → mouse
 
-| Seeds | Pepper | Cheese | Target mouse | Minluck |
+| Seeds | Pepper | Cheese | Target mouse | Minluck (Shadow) |
 | --- | --- | --- | --- | --- |
-| Red | Red | Spicy Havarti | Magma Carrier | 76 |
-| Red + Yellow | Orange | Creamy Havarti | Jurassic | 74 |
-| Yellow | Yellow | Sweet Havarti | Primal | 70 |
-| Yellow + Blue | Green | Crunchy Havarti | Fetid Swamp | 71 |
-| Blue | Blue | Magical Havarti | Stonework Warrior | 73 |
-| Red + Blue | Purple | Pungent Havarti | Chitinous | 75 |
-| Red + Yellow + Blue | Special (all three) | — | Region's toughest mice | 139 / 26 / 82 |
+| <img class="icon" src="https://i.mouse.rip/images/items/thumbnail/red-pepper-seed-craft-item.png" alt="">Red | [<img class="icon" src="https://i.mouse.rip/images/items/thumbnail/spicy-red-pepper-craft-item.png" alt="">Spicy Red](/items/spicy-red-pepper-craft-item) | [<img class="icon" src="https://i.mouse.rip/images/items/thumbnail/spicy-havarti-cheese.png" alt="">Spicy Havarti](/items/spicy-havarti-cheese) | [<img class="icon" src="https://i.mouse.rip/images/mice/thumbnail/magma-carrier.png" alt="">Magma Carrier](/mice/magma-carrier) | 61 |
+| <img class="icon" src="https://i.mouse.rip/images/items/thumbnail/red-pepper-seed-craft-item.png" alt="">Red + <img class="icon" src="https://i.mouse.rip/images/items/thumbnail/yellow-pepper-seed-craft-item.png" alt="">Yellow | [<img class="icon" src="https://i.mouse.rip/images/items/thumbnail/creamy-orange-pepper-craft-item.png" alt="">Creamy Orange](/items/creamy-orange-pepper-craft-item) | [<img class="icon" src="https://i.mouse.rip/images/items/thumbnail/creamy-havarti-cheese.png" alt="">Creamy Havarti](/items/creamy-havarti-cheese) | [<img class="icon" src="https://i.mouse.rip/images/mice/thumbnail/jurassic.png" alt="">Jurassic](/mice/jurassic) | 60 |
+| <img class="icon" src="https://i.mouse.rip/images/items/thumbnail/yellow-pepper-seed-craft-item.png" alt="">Yellow | [<img class="icon" src="https://i.mouse.rip/images/items/thumbnail/sweet-yellow-pepper-craft-item.png" alt="">Sweet Yellow](/items/sweet-yellow-pepper-craft-item) | [<img class="icon" src="https://i.mouse.rip/images/items/thumbnail/sweet-havarti-cheese.png" alt="">Sweet Havarti](/items/sweet-havarti-cheese) | [<img class="icon" src="https://i.mouse.rip/images/mice/thumbnail/primal.png" alt="">Primal](/mice/primal) | 57 |
+| <img class="icon" src="https://i.mouse.rip/images/items/thumbnail/yellow-pepper-seed-craft-item.png" alt="">Yellow + <img class="icon" src="https://i.mouse.rip/images/items/thumbnail/blue-pepper-seed-craft-item.png" alt="">Blue | [<img class="icon" src="https://i.mouse.rip/images/items/thumbnail/crunchy-green-pepper-craft-item.png" alt="">Crunchy Green](/items/crunchy-green-pepper-craft-item) | [<img class="icon" src="https://i.mouse.rip/images/items/thumbnail/crunchy-havarti-cheese.png" alt="">Crunchy Havarti](/items/crunchy-havarti-cheese) | [<img class="icon" src="https://i.mouse.rip/images/mice/thumbnail/fetid-swamp.png" alt="">Fetid Swamp](/mice/fetid-swamp) | 58 |
+| <img class="icon" src="https://i.mouse.rip/images/items/thumbnail/blue-pepper-seed-craft-item.png" alt="">Blue | [<img class="icon" src="https://i.mouse.rip/images/items/thumbnail/magical-blue-pepper-craft-item.png" alt="">Magical Blue](/items/magical-blue-pepper-craft-item) | [<img class="icon" src="https://i.mouse.rip/images/items/thumbnail/magical-havarti-cheese.png" alt="">Magical Havarti](/items/magical-havarti-cheese) | [<img class="icon" src="https://i.mouse.rip/images/mice/thumbnail/stonework-warrior.png" alt="">Stonework Warrior](/mice/stonework-warrior) | 60 |
+| <img class="icon" src="https://i.mouse.rip/images/items/thumbnail/red-pepper-seed-craft-item.png" alt="">Red + <img class="icon" src="https://i.mouse.rip/images/items/thumbnail/blue-pepper-seed-craft-item.png" alt="">Blue | [<img class="icon" src="https://i.mouse.rip/images/items/thumbnail/pungent-purple-pepper-craft-item.png" alt="">Pungent Purple](/items/pungent-purple-pepper-craft-item) | [<img class="icon" src="https://i.mouse.rip/images/items/thumbnail/pungent-havarti-cheese.png" alt="">Pungent Havarti](/items/pungent-havarti-cheese) | [<img class="icon" src="https://i.mouse.rip/images/mice/thumbnail/chitinous.png" alt="">Chitinous](/mice/chitinous) | 60 |
+| <img class="icon" src="https://i.mouse.rip/images/items/thumbnail/red-pepper-seed-craft-item.png" alt="">Red + <img class="icon" src="https://i.mouse.rip/images/items/thumbnail/yellow-pepper-seed-craft-item.png" alt="">Yellow + <img class="icon" src="https://i.mouse.rip/images/items/thumbnail/blue-pepper-seed-craft-item.png" alt="">Blue | Special (all three) | — | Region's toughest mice | 139 / 26 / 82 |
 
 ## Notes
 
-- Each single-colour or two-colour mix targets one specific mouse, so plant for the mouse you still need rather than farming blind.
-- Minluck values are the lowest luck needed to guarantee a catch with the optimal power type for that mouse — hit the minluck and you'll never miss.
+- Each single-color or two-color mix targets one specific mouse, so plant for the mouse you still need rather than farming blind.
+- Minluck values are the lowest luck that guarantees a catch with Shadow, the only power type that works on all six. Hit the minluck and you'll never miss.
 - The **three-seed** combination (Red + Yellow + Blue) grows the special pepper used for the area's hardest targets; their minlucks (139 / 26 / 82) are much higher, so bring your best setup.
-- Use the [Catch Rate Estimator](https://tsitu.github.io/MH-Tools/cre.html) or the on-site [Minluck Search](/minlucks) to confirm the luck you need for your specific trap and power type.
+- Use the [catch rate estimator](/catch-rate-estimator) or the [minluck table](/minlucks) to check the luck you need for your own trap and power type.

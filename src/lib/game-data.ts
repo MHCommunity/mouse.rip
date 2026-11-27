@@ -33,8 +33,9 @@ function lazy<T>(load: () => T): () => T {
 }
 
 /**
- * When scripts/update-data.js last actually refreshed the game data. The sitemap
- * reports this as lastmod — a file mtime would be wrong (a CI clone stamps every
+ * When scripts/update-data.js last actually refreshed the game data.
+ *
+ * The sitemap reports this as lastmod — a file mtime would be wrong (a CI clone stamps every
  * file with the checkout time), and a lastmod that always reads "just now"
  * teaches crawlers to ignore it.
  */
@@ -223,4 +224,24 @@ const getMouseMapRows = lazy(() => readJson<Record<string, MouseMapRow[]>>('mous
 /** The treasure maps a mouse can turn up on (from MHCT). */
 export function getMouseMaps(mouseId: number): MouseMapRow[] {
   return getMouseMapRows()[String(mouseId)] ?? [];
+}
+
+const getEstimatorItems = lazy(() => {
+  const { weapons, bases, charms } = readJson<{ weapons: string[][]; bases: string[][]; charms: string[][] }>(
+    'catch-rate.json',
+  );
+  return {
+    weapon: new Set(weapons.map(([type]) => type)),
+    base: new Set(bases.map(([type]) => type)),
+    charm: new Set(charms.map(([type]) => type)),
+  };
+});
+
+/** The catch rate estimator's link parameter for an item it can arm (weapon, base, or charm), if it can. */
+export function estimatorParamFor(itemType: string): 'weapon' | 'base' | 'charm' | undefined {
+  const items = getEstimatorItems();
+  if (items.weapon.has(itemType)) return 'weapon';
+  if (items.base.has(itemType)) return 'base';
+  if (items.charm.has(itemType)) return 'charm';
+  return undefined;
 }

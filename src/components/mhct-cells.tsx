@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 
 import lookup from '@/data/generated/name-lookup.json';
+import { LOCATION_ALIASES } from '@/lib/map-plan';
 
 const cheeseLookup = lookup.cheese as Record<string, string>;
 const locationLookup = lookup.location as Record<string, string>;
@@ -24,7 +25,9 @@ export function CheeseCell({ cheese }: { cheese: string }) {
 
 /** A location name (with optional stage), linked to its location page when known. */
 export function LocationCell({ location, stage }: { location: string; stage?: string | null }) {
-  const slug = locationLookup[location.trim().toLowerCase()];
+  // MHCT logs a few areas under their own names; those link to the location page they're part of.
+  const name = location.trim();
+  const slug = locationLookup[name.toLowerCase()] ?? locationLookup[(LOCATION_ALIASES[name] ?? '').toLowerCase()];
   return (
     <span className="text-zinc-800 dark:text-zinc-200">
       {slug ? (
@@ -34,7 +37,7 @@ export function LocationCell({ location, stage }: { location: string; stage?: st
       ) : (
         location
       )}
-      {stage && <span className="text-zinc-400 dark:text-zinc-500"> · {stage}</span>}
+      {stage && <span className="text-zinc-600 dark:text-zinc-400"> ({stage})</span>}
     </span>
   );
 }

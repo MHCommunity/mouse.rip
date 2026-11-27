@@ -1,4 +1,4 @@
-A reference for the **King's Gauntlet** in the Furoma region. The Gauntlet has 8 levels, each favouring a different power type and dropping a potion that converts into the next level's cheese. The tables below cover the mice on each level (with points, gold, and drop frequency), the cheese conversions for the level potion, and roughly how many catches it takes to clear a level using SuperBrie+ vs the second-best cheese. Drop-rate data and chart by **Trevor Hastings**.
+A reference for the **King's Gauntlet** in the Furoma region. The Gauntlet has 8 levels, each favoring a different power type and dropping a potion that converts into the next level's cheese. The tables below cover the mice on each level (with points, gold, and drop frequency), the cheese conversions for the level potion, and roughly how many catches it takes to clear a level using SuperBrie+ vs the second-best cheese. Drop-rate data and chart by **Trevor Hastings**.
 
 ## How to read this
 

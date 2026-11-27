@@ -1,15 +1,18 @@
 import { getResourcesByCategory } from '@/lib/site-data';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PageHeader } from '@/components/page-header';
+import { PageLink } from '@/components/page-link';
 import { ItemList } from '@/components/item-list';
 import { SwatchIcon } from '@heroicons/react/20/solid';
 import { pageMetadata } from '@/seo';
 
 import React from 'react';
+import { UserscriptTagBar } from '@/components/userscript-tag-bar';
 
 export const metadata = pageMetadata({
   title: 'MouseHunt Userscripts',
   description:
-    'A curated collection of MouseHunt userscripts that add features, automate busywork, and surface useful in-game data.',
+    'Hand-picked MouseHunt userscripts that add features to the game, such as Marketplace price charts, event puzzle helpers, and map tools.',
   path: '/userscripts',
 });
 
@@ -18,15 +21,22 @@ export default async function Userscripts() {
 
   return (
     <>
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Userscripts' }]} />
       <PageHeader
         title="MouseHunt userscripts"
-        description="Lightweight scripts that customize and extend the MouseHunt interface."
+        description={
+          <>
+            Scripts you install in your browser to add features to MouseHunt.{' '}
+            <PageLink href="/extensions">MouseHunt Improved</PageLink> includes most of these features in one extension.
+          </>
+        }
         count={items.length}
         countLabel="userscripts"
         icon={SwatchIcon}
         iconClassName="bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300"
       />
-      <ItemList items={items} showtags />
+      <UserscriptTagBar scripts={items} />
+      <ItemList items={items} showCategory={false} showtags />
     </>
   );
 }

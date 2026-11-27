@@ -4,7 +4,7 @@ import type { MetadataRoute } from 'next';
 // Next serves this at /manifest.webmanifest and auto-adds the <link rel="manifest">.
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'mouse.rip — MouseHunt Resources',
+    name: 'mouse.rip: MouseHunt Resources',
     short_name: 'mouse.rip',
     description: 'Community-built MouseHunt guides, extensions, tools, spreadsheets, and userscripts.',
     start_url: '/',

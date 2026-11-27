@@ -2,7 +2,7 @@
   {
     "id": "mousehunt-improved",
     "name": "MouseHunt Improved",
-    "description": "A collection of improvements for MouseHunt.",
+    "description": "Dozens of optional in-game improvements, including a better journal, Marketplace, and maps, and minluck and catch rate estimates on the Camp page.",
     "url": "https://github.com/MHCommunity/mousehunt-improved",
     "source": "GitHub",
     "category": "extension",
@@ -10,12 +10,22 @@
       "all"
     ],
     "priority": 1,
-    "highlight": true
+    "highlight": true,
+    "install": [
+      {
+        "browser": "Chrome",
+        "url": "https://chrome.google.com/webstore/detail/mousehunt-improved/mbkpejkkhmebmdjokdplhkljgkcfhjol"
+      },
+      {
+        "browser": "Firefox",
+        "url": "https://addons.mozilla.org/en-US/firefox/addon/mousehunt-improved/"
+      }
+    ]
   },
   {
     "id": "mousehunt-essentials-guide",
     "name": "MouseHunt Essentials Guide",
-    "description": "An up-to-date guide for all things MouseHunt.",
+    "description": "A beginner's guide to how MouseHunt works.",
     "url": "https://guide.mouse.rip/",
     "source": "guide.mouse.rip",
     "category": "guide",
@@ -67,12 +77,22 @@
   {
     "id": "mhct-extension",
     "name": "MHCT MouseHunt Helper",
-    "description": "Provides useful links and tracks game data for tools like catch rate calculators.",
+    "description": "Logs your hunts for MHCT and adds links to community tools.",
     "url": "https://github.com/m-h-c-t/mh-helper-extension",
     "source": "GitHub",
     "category": "extension",
     "locations": [
       "all"
+    ],
+    "install": [
+      {
+        "browser": "Chrome",
+        "url": "https://chrome.google.com/webstore/detail/mh-hunt-helper/ghfmjkamilolkalibpmokjigalmncfek"
+      },
+      {
+        "browser": "Firefox",
+        "url": "https://addons.mozilla.org/en-US/firefox/addon/mhct-mousehunt-helper/"
+      }
     ]
   },
   {
@@ -80,15 +100,15 @@
     "name": "Minimum Luck Values List",
     "description": "Minluck values for all mice.",
     "url": "https://docs.google.com/spreadsheets/d/13hKjNDFTFR3rTkmQzyi3d4ZDOlQJUvTfWPDQemmFW_Y/edit#gid=824520716",
-    "source": "Google Docs",
+    "source": "Google Sheets",
     "category": "spreadsheet"
   },
   {
     "id": "wisdom-values",
     "name": "Wisdom Values",
-    "description": "It's not experience, it's wisdom!",
+    "description": "Wisdom earned for each mouse.",
     "url": "https://docs.google.com/spreadsheets/d/1nzD6iiHauMMwD2eHBuAyRziYJtCVnNwSYzCKbBnrRgc/edit#gid=1426419522",
-    "source": "Google Docs",
+    "source": "Google Sheets",
     "category": "spreadsheet"
   },
   {
@@ -96,23 +116,23 @@
     "name": "MouseHunt Crown Tracker",
     "description": "Track your crowns and progress.",
     "url": "https://docs.google.com/spreadsheets/d/16s24Y4UdkCMt1JBHvVrI6a8N3gbVF6uSkz8SJJ88SP4/edit?gid=577298820#gid=577298820",
-    "source": "Google Docs",
+    "source": "Google Sheets",
     "category": "spreadsheet"
   },
   {
     "id": "location-specific-trap-effects",
-    "name": "Location Specific Trap Effects",
+    "name": "Location Trap Effects",
     "description": "Effects of traps and bases that are location-specific.",
     "url": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRg_s_It1mDCefWgwc-7Gexr5Hc7lKBztFue9kYZidI76iodSUan3BoGsagLCI1M26U_zG7uVMe9kgK/pubhtml?gid=0&single=true",
-    "source": "Google Docs",
+    "source": "Google Sheets",
     "category": "spreadsheet"
   },
   {
     "id": "most-mice-caught-in-a-row",
     "name": "Most Mice Caught in a Row",
-    "description": "How many mice of the same mouse can you catch in a row?",
+    "description": "Records for catching the same mouse many times in a row.",
     "url": "https://docs.google.com/spreadsheets/d/1AaZ7Fm_wpT_QNyvNoMLhcUdW7Z9MIJhGqlWGWAZmBjw/edit?authkey=CIT9pL4M&authkey=CIT9pL4M",
-    "source": "Google Docs",
+    "source": "Google Sheets",
     "category": "spreadsheet"
   },
   {
@@ -120,13 +140,13 @@
     "name": "MouseHunt Item DB",
     "description": "Item IDs, types, stats, and more.",
     "url": "https://docs.google.com/spreadsheets/d/1xWFQgV3T2NOvfN_I8kvFxWHbH9i240rp2UFi2SEi6Zc/edit#gid=1624144283",
-    "source": "Google Docs",
+    "source": "Google Sheets",
     "category": "spreadsheet"
   },
   {
     "id": "mousehunt-community-tools",
     "name": "MouseHunt Community Tools",
-    "description": "A collection of tools for MouseHunt.",
+    "description": "Log your hunts with the MHCT tracker. The attraction and drop rates on this site come from its data.",
     "url": "https://mhct.win/",
     "source": "mhct.win",
     "category": "tool",
@@ -135,20 +155,49 @@
   },
   {
     "id": "catch-rate-estimator",
-    "name": "Catch Rate Estimator",
-    "description": "Calculate your catch rate, based on setup.",
+    "name": "MH-Tools Catch Rate Estimator",
+    "description": "The original that mouse.rip’s estimator is built on. It also shows gold, points, and tournament points, and fills in your setup from the game with a bookmarklet.",
     "url": "https://tsitu.github.io/MH-Tools/cre.html",
     "source": "tsitu.github.io",
     "category": "tool",
-    "highlight": true,
     "locations": [
       "all"
     ]
   },
   {
+    "id": "best-setup-tool",
+    "name": "MH-Tools Best Setup",
+    "description": "The original Best Setup, which can load the traps you own straight from the game with a bookmarklet.",
+    "url": "https://tsitu.github.io/MH-Tools/setup.html",
+    "source": "tsitu.github.io",
+    "category": "tool"
+  },
+  {
+    "id": "map-solver",
+    "name": "MH-Tools Map Solver",
+    "description": "MH-Tools' map solver: paste your treasure map's mice to find the locations that attract the most of them.",
+    "url": "https://tsitu.github.io/MH-Tools/map.html",
+    "source": "tsitu.github.io",
+    "category": "tool",
+    "tags": [
+      "maps"
+    ]
+  },
+  {
+    "id": "mhct-map-helper",
+    "name": "MHCT Map Helper",
+    "description": "Look up where and with which cheese to catch each mouse on your map, from MHCT data.",
+    "url": "https://mhct.win/maphelper.php",
+    "source": "mhct.win",
+    "category": "tool",
+    "tags": [
+      "maps"
+    ]
+  },
+  {
     "id": "markethunt",
     "name": "Markethunt",
-    "description": "A tool for tracking the prices of items in the MouseHunt market.",
+    "description": "Price history for tradable Marketplace items. The prices on item pages here come from it.",
     "url": "https://markethunt.win/",
     "source": "markethunt.win",
     "category": "tool",
@@ -157,7 +206,7 @@
   {
     "id": "mousehunt-api",
     "name": "MouseHunt API",
-    "description": "An unofficial API for MouseHunt.",
+    "description": "Mouse, item, and location data as an unofficial JSON API.",
     "url": "https://api.mouse.rip/",
     "source": "api.mouse.rip",
     "category": "tool"
@@ -165,7 +214,7 @@
   {
     "id": "mouse-and-item-drops",
     "name": "Mouse & Item Drops",
-    "description": "View what items mice drop, how likely, and how much.",
+    "description": "What each mouse drops, how often, and how many.",
     "url": "https://public.tableau.com/app/profile/alex.claxton/viz/MH-by-mouse-ID2/MouseDroppingsandItemDroppers",
     "category": "tool",
     "source": "Tableau"
@@ -173,7 +222,7 @@
   {
     "id": "salt-calculator",
     "name": "Salt Calculator",
-    "description": "Calculate 'Optimal' Saltiness for King Grub.",
+    "description": "Find the best saltiness for catching King Grub.",
     "url": "https://m-h-c-t.github.io/mh-info/calculators/salt.html",
     "tags": [
       "calculator"
@@ -185,8 +234,8 @@
   },
   {
     "id": "valour-rift-floors",
-    "name": "Valour Rift Floors",
-    "description": "Easily see what floors are coming up in your Valour Rift runs.",
+    "name": "Valour Rift floors",
+    "description": "See which floors are coming up in your Valour Rift run.",
     "url": "/valour-rift-floors",
     "category": "tool",
     "tags": [
@@ -214,8 +263,8 @@
   },
   {
     "id": "essence-calculator",
-    "name": "Essence Calculator",
-    "description": "Calculate the amount of essences you can craft.",
+    "name": "Essence calculator",
+    "description": "See what your essences craft into.",
     "url": "/essence-calculator",
     "category": "tool",
     "tags": [
@@ -229,8 +278,8 @@
   },
   {
     "id": "queso-pump-calculator",
-    "name": "Queso Pump Calculator",
-    "description": "Find the most time-efficient Queso cheese to pump the volcano with.",
+    "name": "Queso pump calculator",
+    "description": "The fastest Queso cheese for farming the Nachore that upgrades the Queso River pump.",
     "url": "/queso-pump-calculator",
     "category": "tool",
     "tags": [
@@ -245,9 +294,52 @@
     ]
   },
   {
+    "id": "catch-rates",
+    "name": "Catch rate estimator",
+    "description": "Pick a location and trap to see the attraction rate, catch rate, and minluck for every mouse there.",
+    "url": "/catch-rate-estimator",
+    "category": "tool",
+    "tags": [
+      "calculator",
+      "catch rate"
+    ]
+  },
+  {
+    "id": "best-setup",
+    "name": "Best setup",
+    "description": "Rank every weapon and base you own by how many mice they'd catch at a location, or aim for one mouse, points, or gold.",
+    "url": "/best-setup",
+    "category": "tool",
+    "tags": [
+      "calculator",
+      "catch rate"
+    ]
+  },
+  {
+    "id": "map-planner",
+    "name": "Treasure map planner",
+    "description": "Paste your map's mice to see which locations and cheeses attract the most of them.",
+    "url": "/map-planner",
+    "category": "tool",
+    "tags": [
+      "maps",
+      "calculator"
+    ]
+  },
+  {
+    "id": "rank-up-calculator",
+    "name": "Rank-up calculator",
+    "description": "How much wisdom you need for your next title, and how many catches that takes.",
+    "url": "/rank-up-calculator",
+    "category": "tool",
+    "tags": [
+      "calculator"
+    ]
+  },
+  {
     "id": "titles",
-    "name": "Titles & Ranks",
-    "description": "The full MouseHunt rank ladder from Novice to the top, with badges.",
+    "name": "Titles and ranks",
+    "description": "Every MouseHunt rank in order, with what it unlocks and the wisdom it takes.",
     "url": "/titles",
     "category": "tool",
     "tags": [
@@ -256,8 +348,8 @@
   },
   {
     "id": "trap-special-effects",
-    "name": "Location Trap & Base Effects",
-    "description": "Traps, bases, and charms with special effects in specific locations — bonus loot, instacatches, attraction tweaks, and more.",
+    "name": "Trap and base special effects",
+    "description": "Traps, bases, and charms with special effects in specific locations, such as bonus loot, instacatches, and attraction tweaks.",
     "url": "/trap-special-effects",
     "category": "tool",
     "tags": [
@@ -289,8 +381,8 @@
   },
   {
     "id": "ranks-beyond-mhbasics",
-    "name": "'Shellnut' Guide",
-    "description": "A guide from Baron rank onwards, outlining key traps, bases, and areas to focus on.",
+    "name": "Shellnut Guide",
+    "description": "Which traps, bases, and areas to work on from Baron onward.",
     "url": "/guides/ranks-beyond-mhbasics",
     "sourceUrl": "https://pastebin.com/mfXiFLYA",
     "category": "guide",
@@ -301,7 +393,7 @@
   {
     "id": "shellnut-checklist",
     "name": "Shellnut Checklist",
-    "description": "A checklist of key things to complete from Baron to Archduke/duchess ranks.",
+    "description": "What to get done between Baron and Archduke or Archduchess.",
     "url": "/guides/shellnut-checklist",
     "sourceUrl": "https://pastebin.com/bNr3v7Ws",
     "category": "guide",
@@ -329,7 +421,7 @@
   {
     "id": "valour-rift-guide",
     "name": "Valour Rift Guide",
-    "description": "Valour Rift guide including Ultimate Umbra runs, upgrade strategies, and trap recommendations.",
+    "description": "Ultimate Umbra runs, upgrade strategies, and trap recommendations.",
     "url": "/guides/valour-rift-guide",
     "sourceUrl": "https://pastebin.com/UCAqCgGg",
     "category": "guide",
@@ -340,7 +432,7 @@
   {
     "id": "valour-rift-additional-info",
     "name": "Valour Rift Additional Info",
-    "description": "Valour Rift supplementary info, including upgrade orders, simulator tools, and optimization tips.",
+    "description": "Upgrade orders, simulator tools, and optimization tips.",
     "url": "/guides/valour-rift-additional-info",
     "sourceUrl": "https://pastebin.com/3E59L69r",
     "category": "guide",
@@ -415,7 +507,7 @@
   {
     "id": "rift-routes",
     "name": "Rift Routes",
-    "description": "Overview of various progression routes through Rift areas, tailored for different player setups and goals.",
+    "description": "Progression routes through the Rift areas for different setups and goals.",
     "url": "https://samsolo.wixsite.com/mhrnr/rift-routes",
     "category": "guide",
     "locations": [
@@ -429,16 +521,16 @@
   {
     "id": "ultimate-charm-farming-guide",
     "name": "Ultimate Charm Farming Guide",
-    "description": "A guide on the different methods of accumulating Ultimate Charms.",
-    "url": "https://github.com/khiemdajka/mousehunt/blob/main/guides/uc_far",
+    "description": "The ways to earn Ultimate Charms, side by side.",
+    "url": "https://github.com/khiemdajka/mousehunt/blob/main/guides/uc_farming.md",
     "source": "GitHub",
     "category": "guide",
     "dateAdded": "2025-06-25T17:49:10.001Z"
   },
   {
     "id": "folklore-forest-first-edition-guide",
-    "name": "Folklore Forest - First Edition Guide",
-    "description": "A introductory guide into the first three areas of Folklore Forest and understanding the mechanics.",
+    "name": "Folklore Forest: First Edition Guide",
+    "description": "An introduction to the first three Folklore Forest areas and their mechanics.",
     "url": "https://www.reddit.com/r/mousehunt/comments/x0ypts/folklore_forest_first_edition_guide/",
     "source": "Reddit",
     "category": "guide",
@@ -451,13 +543,12 @@
   },
   {
     "id": "minlucks",
-    "name": "Mouse Minluck Search",
-    "description": "View and search for minluck values for all mice.",
+    "name": "Minlucks",
+    "description": "The luck that guarantees a catch for every mouse, with each power type.",
     "url": "/minlucks",
     "category": "tool",
     "locations": [
       "all"
-    ],
-    "highlight": true
+    ]
   }
 ]

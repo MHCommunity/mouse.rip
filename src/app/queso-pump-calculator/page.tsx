@@ -1,13 +1,19 @@
 'use client';
 
-import React, { useState, type ChangeEvent } from 'react';
+import clsx from 'clsx';
+import React, { type ChangeEvent } from 'react';
 
-import { Heading } from '@/components/heading';
+import { useStoredState } from '@/lib/use-stored-state';
+
 import { Input } from '@/components/input';
+import { Breadcrumbs } from '@/components/breadcrumbs';
+import { PageHeader } from '@/components/page-header';
 import { PageLink } from '@/components/page-link';
 
 import { formatNumber } from '@/utils';
 
+import { FireIcon } from '@heroicons/react/20/solid';
+import { HEADLINE_PANEL } from '@/components/panel';
 import {
   bestStrategy,
   calculateStrategies,
@@ -17,15 +23,53 @@ import {
   type PumpOptions,
 } from './calc';
 
+const labelClasses = 'flex flex-col gap-1.5 text-sm font-medium text-zinc-950 dark:text-white';
+
 const selectClasses =
-  'rounded-md border border-zinc-300 bg-white px-2 py-1 text-sm font-medium text-zinc-900 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100';
+  'w-full rounded-lg border border-zinc-950/45 bg-white px-3 py-2.5 text-base/6 text-zinc-950 shadow-sm hover:border-zinc-950/60 focus:border-pink-500 focus:outline-hidden focus:ring-2 focus:ring-pink-500 sm:py-1.5 sm:text-sm/6 dark:border-white/35 dark:bg-white/5 dark:text-white dark:scheme-dark dark:hover:border-white/45';
+
+const checkboxClasses =
+  'size-4 shrink-0 rounded border-zinc-300 accent-pink-600 text-pink-600 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2 dark:border-zinc-700 dark:focus-visible:ring-offset-zinc-900';
+
+const thClasses = 'px-3 py-3 text-right text-sm font-semibold text-zinc-950 dark:text-white';
+const tdClasses = 'whitespace-nowrap px-3 py-3 text-right text-sm tabular-nums text-zinc-600 dark:text-zinc-400';
+
+interface Entries {
+  nachore: string;
+  pumpLevel: number;
+  useMagicEssence: boolean;
+  useOesb: boolean;
+  useQpc: boolean;
+}
+
+const EMPTY: Entries = { nachore: '', pumpLevel: 1, useMagicEssence: false, useOesb: false, useQpc: false };
+
+/** Entries saved on an earlier visit, if they still make sense. */
+function parseEntries(saved: unknown): Entries | undefined {
+  if (!saved || typeof saved !== 'object') return undefined;
+  const entries = { ...EMPTY, ...saved } as Entries;
+  const valid =
+    typeof entries.nachore === 'string' &&
+    /^\d*$/.test(entries.nachore) &&
+    Number.isInteger(entries.pumpLevel) &&
+    entries.pumpLevel >= 1 &&
+    entries.pumpLevel <= PUMP_LEVELS.length &&
+    [entries.useMagicEssence, entries.useOesb, entries.useQpc].every((value) => typeof value === 'boolean');
+  return valid ? entries : undefined;
+}
 
 export default function QuesoPumpCalculator() {
-  const [nachore, setNachore] = useState<string>('');
-  const [pumpLevel, setPumpLevel] = useState<number>(1);
-  const [useMagicEssence, setUseMagicEssence] = useState<boolean>(false);
-  const [useOesb, setUseOesb] = useState<boolean>(false);
-  const [useQpc, setUseQpc] = useState<boolean>(false);
+  const [entries, setEntries] = useStoredState('mouse.rip:queso-pump-calculator', EMPTY, parseEntries);
+  const { nachore, pumpLevel, useMagicEssence, useOesb, useQpc } = entries;
+  const set =
+    <K extends keyof Entries>(key: K) =>
+    (value: Entries[K]) =>
+      setEntries((current) => ({ ...current, [key]: value }));
+  const setNachore = set('nachore');
+  const setPumpLevel = set('pumpLevel');
+  const setUseMagicEssence = set('useMagicEssence');
+  const setUseOesb = set('useOesb');
+  const setUseQpc = set('useQpc');
 
   const options: PumpOptions = {
     nachore: parseInt(nachore || '0', 10),
@@ -43,86 +87,90 @@ export default function QuesoPumpCalculator() {
   const nextNachore = NEXT_PUMP_NACHORE[pumpLevel - 1];
 
   return (
-    <div className="py-6">
-      <Heading>Queso Pump Calculator</Heading>
+    <div className="max-w-3xl">
+      <Breadcrumbs
+        items={[{ name: 'Home', href: '/' }, { name: 'Tools', href: '/tools' }, { name: 'Queso pump calculator' }]}
+      />
+      <PageHeader
+        icon={FireIcon}
+        iconClassName="bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300"
+        title="Queso pump calculator"
+        description={
+          <>
+            Nachore, mined in <PageLink href="/locations/cantera-quarry">Cantera Quarry</PageLink>, upgrades the pump in{' '}
+            <PageLink href="/locations/queso-river">Queso River</PageLink>. Enter how much Nachore you need to find the
+            most time-efficient Queso to farm it with. Ported from fysh&apos;s original Queso Canyon Resource
+            Calculator.
+          </>
+        }
+      />
 
-      <p className="mt-4 rounded bg-gray-50 p-4 text-sm text-gray-800 shadow dark:bg-gray-800 dark:text-gray-100">
-        Pumping the volcano in <PageLink href="/locations/queso-river">Queso Canyon</PageLink> costs Nachore. Enter how
-        much Nachore you need and this works out the most time-efficient cheese to farm it with, comparing Bland Queso
-        all the way up to Flamin&apos; Queso. Ported from fysh&apos;s original Queso Canyon Resource Calculator.
-      </p>
-
-      <form className="mt-6 space-y-5" aria-label="Queso pump calculator form" onSubmit={(e) => e.preventDefault()}>
+      <form className="space-y-5" aria-label="Queso pump calculator" onSubmit={(e) => e.preventDefault()}>
         <div className="grid gap-4 sm:grid-cols-2">
-          <label className="flex flex-col gap-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label className={labelClasses}>
             Nachore wanted
             <Input
-              type="number"
+              type="text"
               inputMode="numeric"
               pattern="[0-9]*"
-              min={1}
+              autoComplete="off"
               placeholder="e.g. 1000"
               value={nachore}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setNachore(e.target.value.replace(/[^0-9]/g, ''))}
-              aria-label="Nachore wanted"
             />
           </label>
 
-          <label className="flex flex-col gap-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label className={labelClasses}>
             Pump level
-            <select
-              className={selectClasses}
-              value={pumpLevel}
-              onChange={(e) => setPumpLevel(Number(e.target.value))}
-              aria-label="Pump level"
-            >
+            <select className={selectClasses} value={pumpLevel} onChange={(e) => setPumpLevel(Number(e.target.value))}>
               {PUMP_LEVELS.map((amount, idx) => (
                 <option key={idx + 1} value={idx + 1}>
-                  Level {idx + 1} — {amount} Bland Queso/catch
+                  Level {idx + 1}: {amount} Bland Queso/catch
                 </option>
               ))}
             </select>
           </label>
         </div>
 
-        <fieldset className="flex flex-wrap gap-x-6 gap-y-2">
+        <fieldset className="flex flex-col gap-y-2 sm:flex-row sm:flex-wrap sm:gap-x-6">
           <legend className="sr-only">Boosts</legend>
-          <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+          <label className="flex min-h-6 items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
             <input
               type="checkbox"
               checked={useMagicEssence}
               onChange={(e) => setUseMagicEssence(e.target.checked)}
-              className="size-4 rounded border-gray-300 text-sky-600 focus:ring-sky-500"
+              className={checkboxClasses}
             />
-            Using Magic Essence (doubles cheese per craft)
+            Magic Essence (doubles cheese per craft)
           </label>
-          <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+          <label className="flex min-h-6 items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
             <input
               type="checkbox"
               checked={useOesb}
               onChange={(e) => setUseOesb(e.target.checked)}
-              className="size-4 rounded border-gray-300 text-sky-600 focus:ring-sky-500"
+              className={checkboxClasses}
             />
             Overgrown Ember Stone Base (+50% pump)
           </label>
-          <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+          <label className="flex min-h-6 items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
             <input
               type="checkbox"
               checked={useQpc}
               onChange={(e) => setUseQpc(e.target.checked)}
-              className="size-4 rounded border-gray-300 text-sky-600 focus:ring-sky-500"
+              className={checkboxClasses}
             />
             Queso Pump Charms (×2 pump)
           </label>
         </fieldset>
       </form>
 
-      <p className="mt-4 text-sm text-gray-600 dark:text-gray-400">
-        Pumping <strong>{basePump}</strong> Bland Queso per catch
+      <p className="mt-5 text-sm/6 text-zinc-600 dark:text-zinc-400">
+        Pumping <strong className="font-semibold text-zinc-950 dark:text-white">{basePump}</strong> Bland Queso per
+        catch
         {boostedPump !== basePump && (
           <>
             {' '}
-            (boosted to <strong>{boostedPump}</strong>)
+            (boosted to <strong className="font-semibold text-zinc-950 dark:text-white">{boostedPump}</strong>)
           </>
         )}
         .{' '}
@@ -130,21 +178,34 @@ export default function QuesoPumpCalculator() {
           <>Pump is at the maximum level.</>
         ) : (
           <>
-            Next pump level needs <strong>{formatNumber(nextNachore)}</strong> Nachore.
+            Next pump level needs{' '}
+            <strong className="font-semibold text-zinc-950 dark:text-white">{formatNumber(nextNachore)}</strong>{' '}
+            Nachore.
           </>
         )}
       </p>
 
-      {best ? (
-        <>
-          <div className="mt-6 rounded bg-emerald-50 p-4 text-emerald-900 shadow dark:bg-emerald-950/60 dark:text-emerald-100">
+      {/* Stays mounted while empty so screen readers announce the first result. */}
+      <div
+        aria-live="polite"
+        aria-atomic="true"
+        className={best ? `mt-6 p-5 text-base/7 text-zinc-700 dark:text-zinc-300 ${HEADLINE_PANEL}` : undefined}
+      >
+        {best ? (
+          <>
             <p>
-              The most time-efficient strategy is <strong>{best.name}</strong>, taking a minimum of{' '}
-              <strong>{formatNumber(best.hunts)}</strong> hunts
+              The most time-efficient strategy is{' '}
+              <strong className="font-semibold text-zinc-950 dark:text-white">{best.name}</strong>, taking a minimum of{' '}
+              <strong className="font-semibold text-zinc-950 dark:text-white">{formatNumber(best.hunts)}</strong>{' '}
+              {best.hunts === 1 ? 'hunt' : 'hunts'}
               {best.tier > 0 && (
                 <>
                   {' '}
-                  and <strong>{formatNumber(best.blandQueso)}</strong> Bland Queso
+                  and{' '}
+                  <strong className="font-semibold text-zinc-950 dark:text-white">
+                    {formatNumber(best.blandQueso)}
+                  </strong>{' '}
+                  Bland Queso
                   {useMagicEssence && best.magicEssence > 0 && <>, {formatNumber(best.magicEssence)} Magic Essence</>}
                   {useQpc && (
                     <>
@@ -156,98 +217,78 @@ export default function QuesoPumpCalculator() {
               .
             </p>
             {best.essenceSavedHunts > 0 && (
-              <p className="mt-1 text-sm">
-                {useMagicEssence ? 'Using' : 'Not using'} Magic Essence {useMagicEssence ? 'saves' : 'costs'} you{' '}
-                {formatNumber(best.essenceSavedHunts)} hunts ({best.essenceSavedPercent.toFixed(2)}%) versus the
-                alternative.
+              <p className="mt-1 text-sm/6 text-zinc-600 dark:text-zinc-400">
+                Magic Essence {useMagicEssence ? 'saves' : 'would save'} {formatNumber(best.essenceSavedHunts)}{' '}
+                {best.essenceSavedHunts === 1 ? 'hunt' : 'hunts'} ({best.essenceSavedPercent.toFixed(2)}%).
               </p>
             )}
-          </div>
+          </>
+        ) : null}
+      </div>
 
-          <div className="mt-6 overflow-hidden shadow md:rounded-lg">
-            <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-600">
-              <thead className="bg-gray-50 dark:bg-gray-800">
-                <tr>
-                  <th
-                    scope="col"
-                    className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 dark:text-gray-100"
-                  >
-                    Cheese
+      {best && (
+        <div
+          // A box that scrolls sideways has to take focus to be scrolled from the keyboard; the lint rule doesn't
+          // know that case.
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+          tabIndex={0}
+          role="region"
+          aria-label="Upgrade steps"
+          className="mt-6 overflow-x-auto rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:ring-zinc-800 dark:bg-zinc-900"
+        >
+          <table className="min-w-full divide-y divide-zinc-200 dark:divide-zinc-800">
+            <thead className="bg-zinc-50 dark:bg-zinc-800/50">
+              <tr>
+                <th
+                  scope="col"
+                  className="py-3 pr-3 pl-4 text-left text-sm font-semibold text-zinc-950 sm:pl-6 dark:text-white"
+                >
+                  Cheese
+                </th>
+                <th scope="col" className={thClasses}>
+                  Total hunts
+                </th>
+                <th scope="col" className={thClasses}>
+                  Bland Queso
+                </th>
+                {useMagicEssence && (
+                  <th scope="col" className={thClasses}>
+                    Magic Essence
                   </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100"
-                  >
-                    Total hunts
+                )}
+                {useQpc && (
+                  <th scope="col" className={thClasses}>
+                    Pump Charms
                   </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100"
-                  >
-                    Bland Queso
-                  </th>
-                  {useMagicEssence && (
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100"
-                    >
-                      Magic Essence
-                    </th>
-                  )}
-                  {useQpc && (
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900 dark:text-gray-100"
-                    >
-                      Pump Charms
-                    </th>
-                  )}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-900">
-                {strategies.map((s) => (
-                  <tr
-                    key={s.tier}
-                    className={
-                      s.tier === best.tier
-                        ? 'bg-emerald-50/60 dark:bg-emerald-950/30'
-                        : 'hover:bg-gray-50 dark:hover:bg-gray-800/50'
-                    }
-                  >
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 dark:text-white">
+                )}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
+              {strategies.map((s) => {
+                const isBest = s.tier === best.tier;
+
+                return (
+                  <tr key={s.tier} className={clsx(isBest && 'bg-pink-50 dark:bg-pink-950/30')}>
+                    <td className="py-3 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-zinc-950 sm:pl-6 dark:text-white">
                       {s.name}
-                      {s.tier === best.tier && (
-                        <span className="ml-2 rounded bg-emerald-600 px-1.5 py-0.5 text-xs font-semibold text-white">
-                          best
+                      {isBest && (
+                        <span className="ml-2 rounded-md bg-pink-600 px-1.5 py-0.5 text-xs font-semibold text-white">
+                          Best
                         </span>
                       )}
                     </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-right text-sm tabular-nums text-gray-700 dark:text-gray-300">
-                      {formatNumber(s.hunts)}
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-right text-sm tabular-nums text-gray-500 dark:text-gray-400">
-                      {formatNumber(s.blandQueso)}
-                    </td>
+                    <td className={clsx(tdClasses, 'text-zinc-950 dark:text-white')}>{formatNumber(s.hunts)}</td>
+                    <td className={tdClasses}>{formatNumber(s.blandQueso)}</td>
                     {useMagicEssence && (
-                      <td className="whitespace-nowrap px-3 py-4 text-right text-sm tabular-nums text-gray-500 dark:text-gray-400">
-                        {s.magicEssence > 0 ? formatNumber(s.magicEssence) : '—'}
-                      </td>
+                      <td className={tdClasses}>{s.magicEssence > 0 ? formatNumber(s.magicEssence) : '—'}</td>
                     )}
-                    {useQpc && (
-                      <td className="whitespace-nowrap px-3 py-4 text-right text-sm tabular-nums text-gray-500 dark:text-gray-400">
-                        {formatNumber(s.pumpCharms)}
-                      </td>
-                    )}
+                    {useQpc && <td className={tdClasses}>{formatNumber(s.pumpCharms)}</td>}
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </>
-      ) : (
-        <p className="mt-6 rounded bg-gray-50 p-4 text-gray-800 shadow dark:bg-gray-800 dark:text-gray-100">
-          Enter the amount of Nachore you need to see the most efficient cheese strategy.
-        </p>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

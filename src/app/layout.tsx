@@ -16,13 +16,15 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
+  // Only keyboard hints and code in guides use it, so it loads when one of those is on the page.
+  preload: false,
 });
 
 import type { Metadata, Viewport } from 'next';
 import { scriptJson } from '@/components/json-ld';
 
 const SITE_DESCRIPTION =
-  'Your comprehensive resource for MouseHunt guides, browser extensions, tools, spreadsheets, and userscripts to enhance your MouseHunt experience.';
+  'A community-built MouseHunt hub: every mouse and item with minlucks, drops, and prices, plus guides, calculators, extensions, userscripts, and spreadsheets.';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://mouse.rip'),
@@ -51,7 +53,7 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     url: 'https://mouse.rip',
     locale: 'en_US',
-    images: [{ url: '/og', width: 1200, height: 630, alt: 'mouse.rip — MouseHunt guides, tools, and resources' }],
+    images: [{ url: '/og', width: 1200, height: 630, alt: 'mouse.rip: MouseHunt guides, tools, and resources' }],
   },
   twitter: {
     card: 'summary_large_image',
@@ -73,8 +75,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   colorScheme: 'light dark',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#fcfcfb' },
-    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
+    { media: '(prefers-color-scheme: light)', color: '#fbfaf8' },
+    { media: '(prefers-color-scheme: dark)', color: '#0c0a09' },
   ],
 };
 
@@ -86,12 +88,14 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   return (
     <html
       lang="en"
+      // Lets Next keep smooth scrolling for in-page links while jumping instantly between pages.
+      data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} scroll-smooth bg-white text-zinc-950 antialiased transition-colors duration-300 dark:bg-zinc-900 dark:text-zinc-50`}
     >
       <body className="flex min-h-screen flex-col">
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-pink-700 focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:bg-zinc-900 dark:focus:text-pink-300"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-pink-700 focus:shadow-lg focus:outline-hidden focus:ring-2 focus:ring-pink-500 dark:focus:bg-zinc-900 dark:focus:text-pink-300"
         >
           Skip to content
         </a>

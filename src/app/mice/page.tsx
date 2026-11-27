@@ -2,15 +2,17 @@ import React, { Suspense } from 'react';
 
 import { MouseIcon } from '@/components/game-icons';
 import { PageHeader } from '@/components/page-header';
+import { Breadcrumbs } from '@/components/breadcrumbs';
+import { Link } from '@/components/link';
 
 import { getAllMice, getAllMiceGroups } from '@/lib/game-data';
 import { pageMetadata } from '@/seo';
-import { MiceBrowser, type SlimGroup } from './mice-browser';
+import { MiceBrowser, MiceBrowserFromUrl, type SlimGroup } from './mice-browser';
 
 export const metadata = pageMetadata({
   title: 'MouseHunt Mice & Groups',
   description:
-    'Every mouse in MouseHunt — browse by group, or search and filter by power-type weakness to find stats, minlucks, and attraction rates.',
+    'Every mouse in MouseHunt. Browse by group, or search and filter by power-type weakness to find stats, minlucks, and attraction rates.',
   path: '/mice',
 });
 
@@ -28,21 +30,34 @@ export default function MiceIndexPage() {
 
   return (
     <div>
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Mice' }]} />
       <PageHeader
         title="Mice"
-        description="Every mouse in MouseHunt. Browse by group, or filter by the power type it's weakest to — each mouse has its own page with stats, minlucks, and the best cheese and location to catch it. Catch data comes from MHCT."
+        description={
+          <>
+            Every mouse in MouseHunt, with stats, minlucks, and the best cheese and location to catch each one. You can
+            also{' '}
+            <Link
+              href="/mice/rankings"
+              className="font-medium text-pink-700 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200"
+            >
+              rank them by points, gold, or wisdom
+            </Link>
+            .
+          </>
+        }
         count={mice.length}
         countLabel="mice"
         icon={MouseIcon}
         iconClassName="bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"
       />
 
-      {/* MiceBrowser reads the filters off the URL with useSearchParams, which
-          would opt this page into dynamic rendering without a boundary here. The
-          page must stay static: game-data reads its JSON off disk at build time,
-          and that disk isn't there in the Cloudflare worker. */}
-      <Suspense>
-        <MiceBrowser groups={groups} />
+      {/* The browser reads its filters off the URL with useSearchParams, which would opt this page into dynamic
+          rendering without a boundary here. The page must stay static: game-data reads its JSON off disk at build
+          time, and that disk isn't there in the Cloudflare worker. The fallback is the browser with no filters,
+          so the search box and group cards are in the HTML and not waiting on JavaScript. */}
+      <Suspense fallback={<MiceBrowser groups={groups} />}>
+        <MiceBrowserFromUrl groups={groups} />
       </Suspense>
     </div>
   );

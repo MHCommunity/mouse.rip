@@ -12,6 +12,16 @@ export function formatNumber(num: number): string {
   return num?.toLocaleString('en-US') || '0';
 }
 
+/** A count with its noun: "1 mouse", "1,311 mice". The plural defaults to the noun plus "s". */
+export function formatCount(count: number, singular: string, plural = `${singular}s`): string {
+  return `${formatNumber(count)} ${count === 1 ? singular : plural}`;
+}
+
+/** "19.7K": for sample sizes squeezed under a rate in a phone-width table cell. */
+export function formatCompactNumber(num: number): string {
+  return new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(num ?? 0);
+}
+
 /**
  * Cleans and formats a description by removing HTML tags and normalizing whitespace.
  *
@@ -20,9 +30,15 @@ export function formatNumber(num: number): string {
  */
 export function cleanDescription(description: string): string {
   if (!description) return '';
-  return description
-    .replace(/<[^>]*>/g, '') // Remove HTML tags
-    .trim();
+  return (
+    description
+      .replace(/<[^>]*>/g, '')
+      // The game bakes a live countdown into some descriptions ("Current season:
+      // Winter / Changing to Spring… in 1 day 18 hours"). Captured at data-refresh
+      // time it's wrong by the time anyone reads it, and the page shows a live timer.
+      .replace(/\s*Current season:[\s\S]*$/, '')
+      .trim()
+  );
 }
 
 /**
@@ -68,12 +84,15 @@ export function formatSb(value: number): string {
  * @return {boolean} True for paths like `/guides/foo`
  */
 export function isInternalPath(url: string): boolean {
-  return typeof url === 'string' && url.startsWith('/');
+  // "//example.com" starts with a slash too, but it's another site.
+  return typeof url === 'string' && url.startsWith('/') && !url.startsWith('//');
 }
 
 /**
- * Whether a URL points to one of our own pages — either a relative path or a
- * `mouse.rip` (or subdomain) host. Used to attribute and style links to
+ * Whether a URL points to one of our own pages: a relative path or mouse.rip itself.
+ *
+ * Sibling services on subdomains (api.mouse.rip) are
+ * separate sites, so they count as outbound. Used to attribute and style links to
  * mouse.rip differently from outbound links.
  *
  * @param {string} url The URL to check
@@ -84,7 +103,7 @@ export function isOurUrl(url: string): boolean {
   if (isInternalPath(url)) return true;
   try {
     const { hostname } = new URL(url);
-    return hostname === 'mouse.rip' || hostname.endsWith('.mouse.rip');
+    return hostname === 'mouse.rip' || hostname === 'www.mouse.rip';
   } catch {
     return false;
   }

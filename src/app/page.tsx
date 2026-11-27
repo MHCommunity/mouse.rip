@@ -1,22 +1,18 @@
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 
 import React from 'react';
 
-import {
-  AcademicCapIcon,
-  ArrowRightIcon,
-  BoltIcon,
-  SwatchIcon,
-  TableCellsIcon,
-  WrenchIcon,
-} from '@heroicons/react/20/solid';
-import { CheeseIcon, MouseIcon } from '@/components/game-icons';
-import { Subheading } from '@/components/heading';
-import { ItemList } from '@/components/item-list';
-import { SearchBar } from '@/components/search/search-button';
+import { ArrowUpRightIcon, ChevronDownIcon, ScaleIcon } from '@heroicons/react/20/solid';
+import clsx from 'clsx';
 
-import { getResourcesByCategory, getPopularResources } from '@/lib/site-data';
+import { ItemList } from '@/components/item-list';
+import { SearchBar, SearchExamples } from '@/components/search/search-button';
+import { TINTS, type Tint } from '@/components/tool-card';
+import { TimersStrip } from '@/components/timers';
+
+import { getLocations, getResourcesByCategory, getPopularResources } from '@/lib/site-data';
 import { getAllGameItems, getAllMice } from '@/lib/game-data';
+import { itemImageUrl, locationImageUrl, mouseImageUrl } from '@/lib/image-urls';
 import { pageMetadata } from '@/seo';
 import { formatNumber } from '@/utils';
 
@@ -27,232 +23,400 @@ export const metadata = pageMetadata({
   path: '/',
 });
 
-type Category = {
+/** Real mice whose answer cards show off what search does. */
+const searchExamples = ['Glazy', 'Abominable Snow', 'Zombie', 'Relic Hunter'];
+
+/** The essentials guide new hunters should start with. */
+const BEGINNER_GUIDE = 'https://guide.mouse.rip/';
+
+/** The tools hunters reach for mid-session, one tap from the front door. */
+const quickLookups = [
+  {
+    href: '/catch-rate-estimator',
+    name: 'Catch rate estimator',
+    description: 'Your odds against every mouse',
+    // The same scales as the estimator's own page header.
+    icon: ScaleIcon,
+    tint: 'pink',
+  },
+  {
+    href: '/best-setup',
+    name: 'Best setup',
+    description: 'The trap that catches the most',
+    image: itemImageUrl('infinite_dark_magic_mirror_weapon'),
+    tint: 'violet',
+  },
+  {
+    href: '/minlucks',
+    name: 'Minlucks',
+    description: 'Luck that guarantees a catch',
+    // The game's own luck stat icon, from the trap stats on the Camp page.
+    image: '/images/stats/luck.png',
+    tint: 'green',
+  },
+  {
+    href: '/relic-hunter',
+    name: 'Relic Hunter',
+    description: 'Where she is right now',
+    image: mouseImageUrl('relic_hunter'),
+    tint: 'violet',
+  },
+  {
+    href: '/valour-rift-floors',
+    name: 'Valour Rift floors',
+    description: 'Which floor types come next',
+    image: locationImageUrl('valour-rift'),
+    tint: 'sky',
+  },
+  {
+    href: '/essence-calculator',
+    name: 'Essence calculator',
+    description: 'What your essences craft into',
+    image: '/images/essence/small/icuri.png',
+    tint: 'pink',
+  },
+] satisfies {
   href: string;
   name: string;
   description: string;
-  countLabel: string;
-  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  /** Resource category to count, for the guide/tool/userscript-style tiles. */
-  category?: string;
-  /** Pre-computed count, for tiles backed by the game-data catalog. */
+  image?: string;
+  icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  tint: Tint;
+}[];
+
+type DirectoryEntry = {
+  href: string;
+  name: string;
+  description: string;
   count?: number;
-  featured?: boolean;
-  /** lg-breakpoint column span inside the bento grid. */
-  span: string;
-  /** Icon chip background + foreground. */
-  chip: string;
-  /** Border that warms to the accent on hover. */
-  hoverBorder: string;
-  ring: string;
+  countLabel?: string;
+  /** A few in-game portraits that show what's inside. */
+  preview?: string[];
+  /** Mouse portraits stay square; item art gets soft corners. */
+  previewIsMice?: boolean;
+  /** The section's sidebar colour, so phones learn the same colour code. */
+  accent: Accent;
 };
 
-const categories: Array<Category> = [
-  {
-    href: '/guides',
-    name: 'Guides',
-    description: 'From your very first hunt to endgame optimization, written and battle-tested by experienced hunters.',
-    countLabel: 'guides',
-    icon: AcademicCapIcon,
-    category: 'guide',
-    featured: true,
-    span: 'lg:col-span-3',
-    chip: 'bg-pink-100 text-pink-700 dark:bg-pink-950 dark:text-pink-300',
-    hoverBorder: 'hover:border-pink-300 dark:hover:border-pink-800',
-    ring: 'focus-visible:ring-pink-500',
-  },
-  {
-    href: '/mice',
-    name: 'Mice',
-    description: 'Every mouse in the game with stats, minlucks, and the best cheese and location to catch each one.',
-    countLabel: 'mice',
-    icon: MouseIcon,
-    count: getAllMice().length,
-    featured: true,
-    span: 'lg:col-span-3',
-    chip: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
-    hoverBorder: 'hover:border-emerald-300 dark:hover:border-emerald-800',
-    ring: 'focus-visible:ring-emerald-500',
-  },
-  {
-    href: '/items',
-    name: 'Items',
-    description: 'Weapons, bases, charms, cheese, and chests, with stats and where they drop.',
-    countLabel: 'items',
-    icon: CheeseIcon,
-    count: getAllGameItems().length,
-    span: 'lg:col-span-2',
-    chip: 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
-    hoverBorder: 'hover:border-amber-300 dark:hover:border-amber-800',
-    ring: 'focus-visible:ring-amber-500',
-  },
-  {
-    href: '/extensions',
-    name: 'Extensions',
-    description: 'Browser add-ons that layer quality-of-life features onto the MouseHunt interface.',
-    countLabel: 'extensions',
-    icon: BoltIcon,
-    category: 'extension',
-    span: 'lg:col-span-2',
-    chip: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-950 dark:text-cyan-300',
-    hoverBorder: 'hover:border-cyan-300 dark:hover:border-cyan-800',
-    ring: 'focus-visible:ring-cyan-500',
-  },
-  {
-    href: '/tools',
-    name: 'Tools',
-    description: 'Calculators, simulators, and lookups for planning your next hunt.',
-    countLabel: 'tools',
-    icon: WrenchIcon,
-    category: 'tool',
-    span: 'lg:col-span-2',
-    chip: 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300',
-    hoverBorder: 'hover:border-green-300 dark:hover:border-green-800',
-    ring: 'focus-visible:ring-green-500',
-  },
-  {
-    href: '/userscripts',
-    name: 'Userscripts',
-    description: 'Lightweight scripts that customize and extend the game interface.',
-    countLabel: 'userscripts',
-    icon: SwatchIcon,
-    category: 'userscript',
-    span: 'lg:col-span-3',
-    chip: 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300',
-    hoverBorder: 'hover:border-purple-300 dark:hover:border-purple-800',
-    ring: 'focus-visible:ring-purple-500',
-  },
-  {
-    href: '/spreadsheets',
-    name: 'Spreadsheets',
-    description: 'Community-maintained sheets for tracking progress and crunching numbers.',
-    countLabel: 'spreadsheets',
-    icon: TableCellsIcon,
-    category: 'spreadsheet',
-    span: 'md:col-span-2 lg:col-span-3',
-    chip: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300',
-    hoverBorder: 'hover:border-indigo-300 dark:hover:border-indigo-800',
-    ring: 'focus-visible:ring-indigo-500',
-  },
-];
+type Accent = 'emerald' | 'amber' | 'pink' | 'green' | 'cyan' | 'purple' | 'blue';
 
-const easing = 'ease-[cubic-bezier(0.32,0.72,0,1)]';
+/** Full class strings per sidebar colour (Tailwind can't see classes built from parts). */
+const ACCENTS: Record<Accent, { name: string; tile: string }> = {
+  emerald: {
+    name: 'text-emerald-800 dark:text-emerald-200',
+    tile: 'hover:ring-emerald-300 hover:bg-emerald-50/60 focus-visible:ring-emerald-600 dark:hover:ring-emerald-800 dark:hover:bg-emerald-950/30',
+  },
+  amber: {
+    name: 'text-amber-800 dark:text-amber-200',
+    tile: 'hover:ring-amber-300 hover:bg-amber-50/60 focus-visible:ring-amber-700 dark:hover:ring-amber-800 dark:hover:bg-amber-950/30',
+  },
+  pink: {
+    name: 'text-pink-800 dark:text-pink-200',
+    tile: 'hover:ring-pink-300 hover:bg-pink-50/60 focus-visible:ring-pink-500 dark:hover:ring-pink-800 dark:hover:bg-pink-950/30',
+  },
+  green: {
+    name: 'text-green-800 dark:text-green-200',
+    tile: 'hover:ring-green-300 hover:bg-green-50/60 focus-visible:ring-green-700 dark:hover:ring-green-800 dark:hover:bg-green-950/30',
+  },
+  cyan: {
+    name: 'text-cyan-800 dark:text-cyan-200',
+    tile: 'hover:ring-cyan-300 hover:bg-cyan-50/60 focus-visible:ring-cyan-600 dark:hover:ring-cyan-800 dark:hover:bg-cyan-950/30',
+  },
+  purple: {
+    name: 'text-purple-800 dark:text-purple-200',
+    tile: 'hover:ring-purple-300 hover:bg-purple-50/60 focus-visible:ring-purple-500 dark:hover:ring-purple-800 dark:hover:bg-purple-950/30',
+  },
+  blue: {
+    name: 'text-blue-800 dark:text-blue-200',
+    tile: 'hover:ring-blue-300 hover:bg-blue-50/60 focus-visible:ring-blue-500 dark:hover:ring-blue-800 dark:hover:bg-blue-950/30',
+  },
+};
+
+type DirectoryGroup = {
+  id: string;
+  title: string;
+  entries: DirectoryEntry[];
+};
+
+function directory(): DirectoryGroup[] {
+  const resourceCount = (category: string) => getResourcesByCategory(category).length;
+
+  return [
+    {
+      id: 'game-data',
+      title: 'Game data',
+      entries: [
+        {
+          href: '/mice',
+          name: 'Mice',
+          description: 'Stats, minlucks, and where to catch each one',
+          count: getAllMice().length,
+          countLabel: 'mice',
+          accent: 'emerald',
+          preview: ['bark', 'cheesy_party', 'high_roller', 'dragon'].map((type) => mouseImageUrl(type)),
+          previewIsMice: true,
+        },
+        {
+          href: '/items',
+          name: 'Items',
+          description: 'Weapons, bases, charms, cheese, and chests',
+          count: getAllGameItems().length,
+          countLabel: 'items',
+          accent: 'amber',
+          preview: ['super_brie_cheese', 'gilded_trinket', 'bland_queso_cheese', 'brie_cheese'].map((type) =>
+            itemImageUrl(type),
+          ),
+        },
+      ],
+    },
+    {
+      id: 'learn',
+      title: 'Guides and tools',
+      entries: [
+        {
+          href: '/guides',
+          name: 'Guides',
+          description: 'Strategy and how-tos from other hunters',
+          count: resourceCount('guide'),
+          countLabel: 'guides',
+          accent: 'pink',
+        },
+        {
+          href: '/tools',
+          name: 'Tools',
+          description: 'Calculators, simulators, and planners',
+          count: resourceCount('tool'),
+          countLabel: 'tools',
+          accent: 'green',
+        },
+      ],
+    },
+    {
+      id: 'community',
+      title: 'Add-ons and sheets',
+      entries: [
+        {
+          href: '/extensions',
+          name: 'Extensions',
+          description: 'Browser add-ons for the game',
+          count: resourceCount('extension'),
+          countLabel: 'extensions',
+          accent: 'cyan',
+        },
+        {
+          href: '/userscripts',
+          name: 'Userscripts',
+          description: 'Small scripts that tweak the game page',
+          count: resourceCount('userscript'),
+          countLabel: 'userscripts',
+          accent: 'purple',
+        },
+        {
+          href: '/spreadsheets',
+          name: 'Spreadsheets',
+          description: 'Trackers and number-crunching sheets',
+          count: resourceCount('spreadsheet'),
+          countLabel: 'spreadsheets',
+          accent: 'blue',
+        },
+      ],
+    },
+  ];
+}
 
 export default function Home() {
   const popular = getPopularResources();
+  const groups = directory();
+  const regions = getLocations();
+  const mouseCount = getAllMice().length;
+  const itemCount = getAllGameItems().length;
 
   return (
     <div className="mx-auto max-w-5xl">
-      {/* ---------- Hero ---------- */}
-      <section className="relative isolate pt-2 pb-10">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -top-32 left-1/2 -z-10 h-[460px] w-[820px] max-w-[140%] -translate-x-1/2 opacity-70 blur-[90px] dark:opacity-50"
-        >
-          <div className="absolute left-0 top-10 h-64 w-64 rounded-full bg-pink-300/50 dark:bg-pink-600/25" />
-          <div className="absolute left-1/3 top-0 h-64 w-64 rounded-full bg-cyan-300/40 dark:bg-cyan-500/20" />
-          <div className="absolute right-0 top-16 h-64 w-64 rounded-full bg-purple-300/40 dark:bg-purple-600/20" />
+      <section className="pt-2">
+        <h1 className="text-3xl font-semibold tracking-tight text-balance text-zinc-950 sm:text-4xl dark:text-white">
+          MouseHunt guides, tools, and resources
+        </h1>
+        <p className="mt-2 max-w-2xl text-base/7 text-pretty text-zinc-600 sm:text-lg/8 dark:text-zinc-300">
+          Minlucks, cheese, and drops for {formatNumber(mouseCount)} mice and {formatNumber(itemCount)} items, plus the
+          community&rsquo;s best guides and tools.
+        </p>
+
+        <div className="mt-5">
+          {/* As wide as the cards below, so every box on the page shares one right edge. */}
+          <SearchBar />
+          <SearchExamples
+            examples={searchExamples}
+            label="Try a mouse for its minluck and best cheese:"
+            className="mt-3"
+          />
         </div>
 
-        <div className="max-w-2xl">
-          <h1 className="text-4xl font-semibold tracking-tight text-balance text-zinc-950 sm:text-5xl lg:text-6xl dark:text-white">
-            MouseHunt guides, tools, and resources
-          </h1>
-
-          <p className="mt-5 text-lg/8 text-pretty text-zinc-600 dark:text-zinc-300">
-            A community-built collection of guides, extensions, tools, spreadsheets, and userscripts. Everything you
-            need to hunt smarter, in one place.
-          </p>
-
-          <div className="mt-8">
-            <SearchBar />
-          </div>
-        </div>
-      </section>
-
-      {/* ---------- Category bento ---------- */}
-      <section aria-labelledby="browse-heading" className="border-t border-zinc-200 pt-10 dark:border-zinc-800">
-        <div className="max-w-2xl">
-          <h2
-            id="browse-heading"
-            className="text-2xl font-semibold tracking-tight text-zinc-950 sm:text-3xl dark:text-white"
+        <p className="mt-4 text-sm text-pretty text-zinc-600 dark:text-zinc-400">
+          New to MouseHunt? {/* Opens in a new tab, like the same guide's card under Community favorites. */}
+          <a
+            href={BEGINNER_GUIDE}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-0.5 font-medium text-pink-700 underline-offset-2 hover:underline focus:outline-hidden focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-pink-500 dark:text-pink-300"
           >
-            Find the right resource
-          </h2>
-          <p className="mt-2 text-base/7 text-zinc-600 dark:text-zinc-400">
-            Explore game data, planning tools, and community resources by what you need right now.
-          </p>
-        </div>
-        <div className="mt-7 grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-6">
-          {categories.map(
-            ({
-              href,
-              name,
-              description,
-              countLabel,
-              icon: Icon,
-              category,
-              count: fixedCount,
-              featured,
-              span,
-              chip,
-              hoverBorder,
-              ring,
-            }) => {
-              const count = fixedCount ?? getResourcesByCategory(category!).length;
+            Start with the Essentials guide
+            <ArrowUpRightIcon className="size-3.5" aria-hidden="true" />
+            <span className="sr-only"> (opens in a new tab)</span>
+          </a>
+        </p>
 
-              return (
+        <nav aria-labelledby="lookups-heading" className="mt-7">
+          <h2 id="lookups-heading" className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+            Handy tools
+          </h2>
+          <ul className="mt-3 grid grid-cols-2 gap-2 lg:grid-cols-3">
+            {quickLookups.map(({ href, name, description, tint, image, icon: Icon }) => (
+              <li key={href}>
                 <Link
-                  key={href}
                   href={href}
-                  aria-label={`Browse ${name}`}
-                  className={`group flex h-full min-h-52 flex-col rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition duration-300 ${easing} hover:-translate-y-1 hover:shadow-md active:translate-y-0 motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#fafafa] md:col-span-2 dark:border-zinc-800 dark:bg-zinc-900 dark:focus-visible:ring-offset-[#09090b] ${span} ${hoverBorder} ${ring}`}
+                  className="group flex h-full items-center gap-2.5 rounded-2xl bg-white px-3 py-2.5 shadow-xs ring-1 ring-zinc-200 transition hover:-translate-y-0.5 hover:shadow-md hover:ring-pink-200 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:gap-3 sm:px-3.5 sm:py-3 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:ring-pink-900"
                 >
                   <span
-                    className={`flex items-center justify-center rounded-xl transition-transform duration-300 ${easing} group-hover:scale-105 motion-reduce:transform-none ${chip} ${featured ? 'size-14' : 'size-12'}`}
+                    className={clsx(
+                      'flex size-11 shrink-0 items-center justify-center rounded-xl ring-1 ring-inset',
+                      TINTS[tint],
+                    )}
                   >
-                    <Icon className={featured ? 'size-7' : 'size-6'} aria-hidden="true" />
+                    {Icon ? (
+                      <Icon className="size-6 shrink-0 text-pink-700 dark:text-pink-300" aria-hidden="true" />
+                    ) : (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={image}
+                        alt=""
+                        width={32}
+                        height={32}
+                        loading="lazy"
+                        decoding="async"
+                        // Soft corners on every picture here, the Relic Hunter's too, so the cards match.
+                        className="size-8 shrink-0 rounded-md object-contain"
+                      />
+                    )}
                   </span>
-
-                  <h2
-                    className={`mt-5 font-semibold tracking-tight text-zinc-900 dark:text-white ${featured ? 'text-2xl' : 'text-lg'}`}
-                  >
-                    {name}
-                  </h2>
-                  <p
-                    className={`mt-1.5 text-pretty text-zinc-600 dark:text-zinc-400 ${featured ? 'text-base/7 max-w-md' : 'text-sm/6'}`}
-                  >
-                    {description}
-                  </p>
-
-                  <span className="mt-auto flex items-center justify-between pt-6">
-                    <span className="text-xs font-medium tabular-nums text-zinc-400 dark:text-zinc-500">
-                      {formatNumber(count)} {countLabel}
+                  <span className="min-w-0">
+                    <span className="block text-sm/5 font-semibold text-zinc-900 group-hover:text-pink-700 dark:text-zinc-100 dark:group-hover:text-pink-300">
+                      {name}
                     </span>
-                    {/* Button-in-button trailing arrow. */}
-                    <span
-                      className={`flex size-8 items-center justify-center rounded-full bg-zinc-100 text-zinc-400 transition-all duration-300 ${easing} group-hover:translate-x-0.5 group-hover:bg-zinc-900 group-hover:text-white motion-reduce:transform-none dark:bg-white/10 dark:text-zinc-400 dark:group-hover:bg-white dark:group-hover:text-zinc-900`}
-                    >
-                      <ArrowRightIcon className="size-4" aria-hidden="true" />
+                    {/* Phones get the names alone, so the tiles stay short and the timers come sooner. */}
+                    <span className="mt-0.5 hidden text-xs/5 text-zinc-600 sm:block dark:text-zinc-400">
+                      {description}
                     </span>
                   </span>
                 </Link>
-              );
-            },
-          )}
-        </div>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <TimersStrip className="mt-7" />
       </section>
 
-      {/* ---------- Community favorites ---------- */}
-      <section className="mt-20 border-t border-zinc-200 pb-8 pt-10 dark:border-zinc-800">
-        <Subheading level={2} className="text-2xl tracking-tight sm:text-3xl">
-          Community favorites
-        </Subheading>
-        <p className="mt-1.5 text-base/7 text-zinc-600 dark:text-zinc-400">
-          A few of the resources hunters reach for most often.
-        </p>
-        <ItemList items={popular} />
-      </section>
+      {/* The sidebar carries these from lg up, so only smaller screens get them here. */}
+      <nav aria-labelledby="browse-heading" className="mt-12 lg:hidden">
+        <h2 id="browse-heading" className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+          Browse
+        </h2>
+        <div className="mt-3 space-y-6">
+          {groups.map((group) => (
+            <div key={group.id}>
+              <h3 id={`${group.id}-heading`} className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                {group.title}
+              </h3>
+              <ul aria-labelledby={`${group.id}-heading`} className="mt-2 grid gap-2 sm:grid-cols-2">
+                {group.entries.map(({ href, name, description, count, countLabel, preview, previewIsMice, accent }) => (
+                  <li key={href}>
+                    <Link
+                      href={href}
+                      className={clsx(
+                        'group flex h-full items-center gap-3 rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white px-3.5 py-3 transition-colors focus:outline-hidden focus-visible:ring-2 dark:ring-zinc-800 dark:bg-zinc-900',
+                        ACCENTS[accent].tile,
+                      )}
+                    >
+                      <span className="min-w-0 flex-1">
+                        <span className="flex items-baseline justify-between gap-3">
+                          <span className={clsx('text-sm font-semibold', ACCENTS[accent].name)}>{name}</span>
+                          {count !== undefined && (
+                            <span className="shrink-0 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
+                              {formatNumber(count)} {countLabel}
+                            </span>
+                          )}
+                        </span>
+                        <span className="mt-0.5 block text-xs/5 text-zinc-600 dark:text-zinc-400">{description}</span>
+                        {preview && (
+                          <span className="mt-2 flex -space-x-1.5" aria-hidden="true">
+                            {preview.map((src) => (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img
+                                key={src}
+                                src={src}
+                                alt=""
+                                width={28}
+                                height={28}
+                                loading="lazy"
+                                decoding="async"
+                                className={clsx(
+                                  'size-7 bg-white object-cover ring-2 ring-white dark:bg-zinc-800 dark:ring-zinc-900',
+                                  !previewIsMice && 'rounded-md dark:brightness-90',
+                                )}
+                              />
+                            ))}
+                          </span>
+                        )}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+          {/* Phones have no sidebar, so this is their way into the location pages. Folded, since it's 14 regions long. */}
+          <details className="group rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white dark:ring-zinc-800 dark:bg-zinc-900">
+            <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 rounded-lg px-3.5 py-3 hover:bg-pink-50/50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:hover:bg-pink-950/20 [&::-webkit-details-marker]:hidden">
+              <span>
+                <span className="block text-sm font-semibold text-zinc-900 dark:text-zinc-100">Locations</span>
+                <span className="mt-0.5 block text-xs/5 text-zinc-600 dark:text-zinc-400">
+                  Mice, loot, and guides for every location, by region
+                </span>
+              </span>
+              <ChevronDownIcon
+                className="size-5 shrink-0 text-zinc-500 transition-transform group-open:rotate-180 motion-reduce:transition-none dark:text-zinc-400"
+                aria-hidden="true"
+              />
+            </summary>
+            <ul className="flex flex-wrap gap-2 border-t border-zinc-200 p-3 dark:border-zinc-800">
+              {regions.map((region) => (
+                <li key={region.id}>
+                  <Link
+                    href={`/regions/${region.id}`}
+                    className="inline-flex min-h-11 items-center gap-2 rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white px-3 text-sm font-medium text-zinc-800 transition-colors hover:ring-pink-300 hover:bg-pink-50/50 hover:text-pink-700 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 sm:min-h-9 dark:ring-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:ring-pink-800 dark:hover:bg-pink-950/20 dark:hover:text-pink-300"
+                  >
+                    {region.name}
+                    <span className="text-xs font-normal tabular-nums text-zinc-600 dark:text-zinc-400">
+                      {region.locations.length}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </div>
+      </nav>
+
+      {popular.length > 0 && (
+        <section aria-labelledby="favorites-heading" className="mt-12">
+          <h2 id="favorites-heading" className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+            Community favorites
+          </h2>
+          <ItemList items={popular} headingLevel={3} compact />
+        </section>
+      )}
     </div>
   );
 }

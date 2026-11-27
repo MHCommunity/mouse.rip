@@ -2,7 +2,7 @@
 
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import clsx from 'clsx';
-import React, { useSyncExternalStore } from 'react';
+import React, { useState, useSyncExternalStore } from 'react';
 
 import { useSearch } from './search-context';
 
@@ -18,50 +18,139 @@ function useShortcutLabel() {
   );
 }
 
-/** Full-width search box for the home page. Looks like an input, opens the palette. */
+/**
+ * Search field for the home page.
+ *
+ * It's a real input, so a tap brings up the keyboard straight away; the first keystroke hands the text to the palette.
+ * Closing the palette (Esc, Cancel) leaves the text here, so a typo isn't a retype.
+ * It doesn't take keystrokes from elsewhere on the page: Cmd/Ctrl+K and "/" open search.
+ */
 export function SearchBar({ className }: { className?: string }) {
-  const { open } = useSearch();
+  const { open, preload, isOpen, closedQuery } = useSearch();
   const shortcut = useShortcutLabel();
+  const [value, setValue] = useState('');
+
+  // When the palette closes, take back whatever was typed in it.
+  const [wasOpen, setWasOpen] = useState(isOpen);
+  if (isOpen !== wasOpen) {
+    setWasOpen(isOpen);
+    if (!isOpen) setValue(closedQuery);
+  }
 
   return (
-    <button
-      type="button"
-      onClick={open}
+    <label
       className={clsx(
-        'group flex w-full items-center gap-3 rounded-xl border border-zinc-200 bg-white px-5 py-4 text-left shadow-sm transition duration-200 hover:border-pink-300 hover:shadow-md active:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-pink-800',
+        'group flex w-full cursor-text items-center gap-3 rounded-xl border border-zinc-950/45 bg-white px-5 py-4 shadow-sm transition-[border-color,box-shadow] duration-200 hover:border-pink-500 hover:shadow-md focus-within:border-pink-500 focus-within:ring-2 focus-within:ring-pink-500 dark:border-white/35 dark:bg-zinc-900 dark:hover:border-pink-400 dark:focus-within:border-pink-400',
         className,
       )}
     >
       <MagnifyingGlassIcon
-        className="size-5 shrink-0 text-zinc-400 transition-colors group-hover:text-pink-500"
+        className="size-5 shrink-0 text-zinc-500 transition-colors group-hover:text-pink-600 group-focus-within:text-pink-600 dark:text-zinc-400"
         aria-hidden="true"
       />
-      <span className="flex-1 text-base text-zinc-500 dark:text-zinc-400">Search mice, locations, guides, tools…</span>
-      <kbd className="hidden shrink-0 rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-400 sm:block dark:border-zinc-700 dark:bg-zinc-800">
+      <span className="sr-only">Search mice, items, locations, guides, and tools</span>
+      <input
+        type="search"
+        value={value}
+        autoComplete="off"
+        spellCheck={false}
+        enterKeyHint="search"
+        aria-haspopup="dialog"
+        placeholder="Search mice, items, guides…"
+        onFocus={preload}
+        onClick={() => {
+          if (value) open(value);
+        }}
+        onChange={(event) => {
+          setValue(event.target.value);
+          if (event.target.value) open(event.target.value);
+        }}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            open(value);
+          }
+        }}
+        className="min-w-0 flex-1 bg-transparent text-base text-zinc-900 placeholder:text-zinc-500 focus:outline-hidden dark:text-white dark:placeholder:text-zinc-400 [&::-webkit-search-cancel-button]:hidden"
+      />
+      <kbd
+        // Inside the label, so without this the shortcut is read out as part of the field's name.
+        aria-hidden="true"
+        className="hidden shrink-0 rounded-md border whitespace-nowrap border-zinc-200 bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-500 pointer-fine:block dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400"
+      >
         {shortcut}
       </kbd>
-    </button>
+    </label>
+  );
+}
+
+/**
+ * Real mice to try, so the in-place answer (minluck, best cheese, weaknesses)
+ * can be seen before anyone knows to type for it.
+ */
+export function SearchExamples({
+  examples,
+  label = 'Try',
+  className,
+}: {
+  examples: string[];
+  label?: string;
+  className?: string;
+}) {
+  const { open, preload } = useSearch();
+
+  return (
+    <p
+      className={clsx(
+        'flex flex-wrap items-center gap-x-1.5 gap-y-2 text-sm text-zinc-600 dark:text-zinc-400',
+        className,
+      )}
+    >
+      <span>{label}</span>
+      {examples.map((name, index) => (
+        <button
+          key={name}
+          type="button"
+          onPointerEnter={preload}
+          onFocus={preload}
+          onClick={() => open(name)}
+          // Two fit on one line at phone width; the rest join from sm up.
+          className={clsx(
+            index >= 2 && 'max-sm:hidden',
+            'inline-flex items-center rounded-full border border-zinc-200 bg-white px-2.5 py-1 font-medium pointer-coarse:min-h-11 pointer-coarse:px-3.5 text-zinc-800 transition-colors hover:border-pink-300 hover:bg-pink-50/50 hover:text-pink-700 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:border-pink-800 dark:hover:bg-pink-950/20 dark:hover:text-pink-300',
+          )}
+        >
+          {name}
+        </button>
+      ))}
+    </p>
   );
 }
 
 /** Compact search trigger for the sidebar / navbar. */
 export function SearchButton({ className }: { className?: string }) {
-  const { open } = useSearch();
+  const { open, preload } = useSearch();
   const shortcut = useShortcutLabel();
 
   return (
     <button
       type="button"
-      onClick={open}
-      aria-label="Search"
+      // Pointing at or tabbing to the button starts loading search, so it's ready by the click.
+      onPointerEnter={preload}
+      onFocus={preload}
+      onClick={() => open()}
       className={clsx(
-        'group flex items-center gap-2.5 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-left text-sm shadow-sm transition hover:border-pink-300 hover:shadow-md active:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-pink-800',
+        'group flex shrink-0 items-center gap-2.5 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-left text-sm shadow-sm transition hover:border-pink-300 hover:shadow-md active:translate-y-px focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-pink-800',
         className,
       )}
     >
-      <MagnifyingGlassIcon className="size-4 shrink-0 text-zinc-400" aria-hidden="true" />
-      <span className="flex-1 text-zinc-400 dark:text-zinc-500">Search…</span>
-      <kbd className="rounded border border-zinc-200 bg-zinc-50 px-1.5 py-0.5 text-[11px] font-medium text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800">
+      <MagnifyingGlassIcon className="size-4 shrink-0 text-zinc-500 dark:text-zinc-400" aria-hidden="true" />
+      <span className="flex-1 text-zinc-600 max-[359px]:sr-only dark:text-zinc-400">Search…</span>
+      <kbd
+        aria-hidden="true"
+        // From 400px up: on a narrower window with a mouse, the hint pushed the button into the wordmark.
+        className="hidden shrink-0 rounded border whitespace-nowrap border-zinc-200 bg-zinc-50 px-1.5 py-0.5 text-[11px] font-medium text-zinc-500 pointer-fine:min-[400px]:block dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400"
+      >
         {shortcut}
       </kbd>
     </button>

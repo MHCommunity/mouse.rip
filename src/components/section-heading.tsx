@@ -2,12 +2,19 @@ import React from 'react';
 
 import clsx from 'clsx';
 
-/** The small-caps heading over each section of a mouse, item or location page. */
-export function SectionHeading({ className, children }: { className?: string; children: React.ReactNode }) {
+/** The heading over each section of a mouse, item or location page: a step above body text, never below it. */
+export function SectionHeading({
+  id,
+  className,
+  children,
+}: {
+  /** For a section's aria-labelledby. */
+  id?: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
   return (
-    <h2
-      className={clsx('text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500', className)}
-    >
+    <h2 id={id} className={clsx('text-lg/7 font-semibold text-zinc-900 dark:text-white', className)}>
       {children}
     </h2>
   );

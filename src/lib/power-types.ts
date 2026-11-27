@@ -70,3 +70,22 @@ export function descriptionToParagraphs(description?: string): string[] {
     .map((line) => line.trim())
     .filter(Boolean);
 }
+
+/**
+ * A short label for a set of power types that share a value.
+ *
+ * "Any" only when every type is present, "All but Rift" when one or two are missing, and a plain
+ * list otherwise. Saying "Any" for a mouse one type can't catch sends hunters
+ * into hunts that can't succeed.
+ */
+export function powerTypeSetLabel(types: readonly string[]): string {
+  const present = new Set(types);
+  const missing = POWER_TYPES.filter((type) => !present.has(type));
+  if (missing.length === 0) return 'Any';
+  if (missing.length <= 2 && types.length > missing.length) {
+    return `All but ${missing.map(powerTypeLabel).join(' and ')}`;
+  }
+  return POWER_TYPES.filter((type) => present.has(type))
+    .map(powerTypeLabel)
+    .join(', ');
+}

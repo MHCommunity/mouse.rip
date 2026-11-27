@@ -12,6 +12,10 @@ export const ResourceSchema = z.object({
   priority: z.number().optional(),
   highlight: z.boolean().optional(),
   tags: z.array(z.string()).optional(),
+  /** Userscripts only: MouseHunt Improved has the same feature built in. */
+  mhImproved: z.boolean().optional(),
+  /** Extensions only: store pages to install from, as { browser: 'Chrome', url }. */
+  install: z.array(z.object({ browser: z.string(), url: z.string() })).optional(),
 });
 export type Resource = z.infer<typeof ResourceSchema>;
 

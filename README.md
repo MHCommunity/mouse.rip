@@ -44,6 +44,12 @@ When you're finished, run lint, formatting, and TypeScript checks:
 
 Use `bun run format` to apply formatting and `bun run build` to verify production page generation.
 
+Mouse, item, group, location, and tool pages link to a social card that `/og/card` draws on request. The site signs those
+links and the route only draws signed ones, so a production build needs `OG_CARD_SECRET` set to a long random string,
+both when the pages are built and in the deployed Worker. An `.env.local` covers both when you deploy from your own
+machine. Without it everything still works: those pages use the site-wide card, and `bun run dev` signs with a
+stand-in key.
+
 If you're happy with your changes, you can submit a Pull Request!
 
 ## 🗒️ Updating the content

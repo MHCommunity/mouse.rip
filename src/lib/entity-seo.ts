@@ -4,6 +4,7 @@ import type { AttractionRow, ConvertibleRow, GameItem, ItemDropper, Mouse } from
 import { POWER_TYPES, powerTypeLabel } from '@/lib/power-types';
 import { cleanDescription, formatNumber } from '@/utils';
 import { mouseImageUrl } from '@/lib/image-urls';
+import { bestAttractionRow, formatAttractionRate } from '@/lib/attraction';
 
 /**
  * Titles and descriptions for the mouse and item pages.
@@ -45,11 +46,12 @@ function bestMinluck(mouse: Mouse): { type: string; value: number } | null {
 }
 
 export function mouseSeo(mouse: Mouse, attraction: AttractionRow[]) {
-  const best = attraction[0];
+  // The same pick as the page's "Best attraction rate" and search's quick answer.
+  const best = bestAttractionRow(attraction);
   const minluck = bestMinluck(mouse);
 
   const where = best
-    ? `Best caught in ${best.location}${best.stage ? ` (${best.stage})` : ''} with ${best.cheese}${best.charm ? ` and ${best.charm}` : ''} — ${(best.rate / 100).toFixed(2)}% attraction rate.`
+    ? `Best caught in ${best.location}${best.stage ? ` (${best.stage})` : ''} with ${best.cheese}${best.charm ? ` and ${best.charm}` : ''}, at a ${formatAttractionRate(best.rate)} attraction rate.`
     : null;
 
   const luck = minluck ? `Minluck ${formatNumber(minluck.value)} ${powerTypeLabel(minluck.type)}.` : null;
@@ -63,7 +65,7 @@ export function mouseSeo(mouse: Mouse, attraction: AttractionRow[]) {
   const fallback = cleanDescription(mouse.description ?? '');
 
   return {
-    title: `${mouse.name} — How to Catch, Minluck & Attraction Rates`,
+    title: `${mouse.name}: How to Catch, Minluck & Attraction Rates`,
     description:
       sentences(where, luck, worth) ||
       trim(fallback) ||
@@ -99,10 +101,13 @@ export function itemSeo(item: GameItem, { contents, drops }: { contents: Convert
       .map((row) => row.name)
       .join(' and ');
     const rest = contents.length - 2;
-    const yields = rest > 0 ? `Can contain ${top}, and ${formatNumber(rest)} other rewards.` : `Can contain ${top}.`;
+    const yields =
+      rest > 0
+        ? `Can contain ${top}, plus ${formatNumber(rest)} other ${rest === 1 ? 'reward' : 'rewards'}.`
+        : `Can contain ${top}.`;
 
     return {
-      title: `${item.name} — What's Inside & Drop Odds`,
+      title: `${item.name}: What's Inside & Drop Odds`,
       description: sentences(yields, 'Full contents with the odds for each, plus where to get one.'),
     };
   }
@@ -118,7 +123,7 @@ export function itemSeo(item: GameItem, { contents, drops }: { contents: Convert
     ].filter(Boolean);
 
     return {
-      title: `${item.name} — Power, Luck & Stats`,
+      title: `${item.name}: Power, Luck & Stats`,
       description: sentences(
         `${item.name}: ${parts.join(', ')}.`,
         stats.has_cheese_effect && stats.cheese_effect ? `${stats.cheese_effect}.` : null,
@@ -131,7 +136,7 @@ export function itemSeo(item: GameItem, { contents, drops }: { contents: Convert
   const bestDrop = drops[0];
   if (bestDrop) {
     return {
-      title: `${item.name} — Where It Drops & Drop Rates`,
+      title: `${item.name}: Where It Drops & Drop Rates`,
       description: sentences(
         `${item.name} drops from ${bestDrop.mouse_name} in ${bestDrop.locations[0]}, at a ${bestDrop.drop_likelihood}% drop rate.`,
         drops.length > 1 ? `Dropped by ${formatNumber(drops.length)} mice.` : null,
@@ -140,7 +145,7 @@ export function itemSeo(item: GameItem, { contents, drops }: { contents: Convert
   }
 
   return {
-    title: `${item.name} — MouseHunt Item`,
+    title: `${item.name}: MouseHunt Item`,
     description: trim(fallback) || `Stats, drop rates, and where to find the ${item.name} in MouseHunt.`,
   };
 }
@@ -162,7 +167,7 @@ const SITE = 'https://mouse.rip';
 export function mouseJsonLd(mouse: Mouse, attraction: AttractionRow[], slug: string) {
   const { description } = mouseSeo(mouse, attraction);
   const minluck = bestMinluck(mouse);
-  const best = attraction[0];
+  const best = bestAttractionRow(attraction);
 
   const properties = [
     property('Points', mouse.points),
@@ -170,6 +175,7 @@ export function mouseJsonLd(mouse: Mouse, attraction: AttractionRow[], slug: str
     mouse.group ? property('Group', mouse.group) : null,
     minluck ? property(`Minluck (${powerTypeLabel(minluck.type)})`, minluck.value) : null,
     best ? property('Best cheese', best.cheese) : null,
+    best?.charm ? property('Best charm', best.charm) : null,
     best ? property('Best location', best.location) : null,
     best ? property('Attraction rate', `${(best.rate / 100).toFixed(2)}%`) : null,
   ].filter(Boolean);

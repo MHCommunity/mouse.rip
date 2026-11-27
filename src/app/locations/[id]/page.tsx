@@ -1,27 +1,30 @@
 import { notFound } from 'next/navigation';
 import React from 'react';
 
-import { Avatar } from '@/components/avatar';
 import { Breadcrumbs } from '@/components/breadcrumbs';
+import { ExternalRefs } from '@/components/external-refs';
 import { Heading } from '@/components/heading';
 import { ItemList } from '@/components/item-list';
-import { MouseGrid } from '@/components/mouse-grid';
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 
 import { getResourcesForLocation, getLocation, getLocations, getTrapEffects } from '@/lib/site-data';
-import { getItemsForEnvironment, getLocationLoot, getMiceForRegionName, itemSlug } from '@/lib/game-data';
+import { getItemsForEnvironment, getLocationLoot, itemSlug } from '@/lib/game-data';
 import { ogCard, pageMetadata } from '@/seo';
-import { cleanDescription, formatNumber } from '@/utils';
+import { cleanDescription } from '@/utils';
 import { itemImageUrl, locationHeaderImageUrl, locationImageUrl } from '@/lib/image-urls';
 import { SectionHeading } from '@/components/section-heading';
-import { SourceLink } from '@/components/source-link';
+import { ClampedText } from '@/components/clamped-text';
+import { GameImage } from '@/components/game-image';
+
+import { LocationArt } from './location-art';
+import { LocationMice, getLocationMiceByCheese } from './location-mice';
+import { LocationLoot } from './location-loot';
+import { LocationTimerPanel, TimersProvider } from '@/components/timers';
+import { TIMER_LOCATION_NAMES } from '@/lib/timer-locations';
+import { ToolCard } from '@/components/tool-card';
+import catchRateData from '@/data/generated/catch-rate.json';
 
 export const dynamicParams = false;
-
-const LOOT_ROWS_SHOWN = 40;
-
-// Temporarily hidden: "Items for this location", "Loot found here", and the mice grid.
-const SHOW_EXTRA_SECTIONS = false;
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
@@ -32,17 +35,22 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   }
 
   const where = location.article ? location.article : location.name;
+  // Most of the page is the mouse list, so the title leads with that.
+  const hasMice = Boolean(location.name && getLocationMiceByCheese(location.name).total > 0);
   return pageMetadata({
-    title: `MouseHunt Resources for ${where}`,
+    title: hasMice ? `${location.name}: Mice, Best Cheese & Minlucks` : `${location.name ?? where}: MouseHunt Location`,
     description: location.description
       ? cleanDescription(location.description)
-      : `Guides, tools, and community resources for ${where} in MouseHunt.`,
+      : `The mice found in ${where} in MouseHunt, the cheese that attracts each one, and their minlucks.`,
     path: `/locations/${resolvedParams.id}`,
     image: location.name
       ? ogCard({
           title: location.name,
           eyebrow: 'Location',
-          image: locationImageUrl(location.id),
+          // The header art is the biggest picture the game has of a location; its square one is 54px.
+          ...(location.headerImage
+            ? { banner: locationHeaderImageUrl(location.environmentId ?? location.id) }
+            : { image: locationImageUrl(location.id) }),
           accent: 'emerald',
         })
       : undefined,
@@ -68,6 +76,22 @@ export function generateStaticParams() {
   return paths.flat();
 }
 
+/** A resource tagged to more locations than this is general advice, not about this place. */
+const MAX_LOCAL_LOCATIONS = 10;
+
+const linkClass =
+  'underline decoration-zinc-300 underline-offset-2 hover:text-zinc-900 dark:decoration-zinc-600 dark:hover:text-zinc-200';
+
+/** The sidebar region (Gnawnia, Rift Plane…) a location is listed under. */
+function regionFor(locationId: string) {
+  return getLocations().find((region) => region.locations.some((location) => location.id === locationId));
+}
+
+/** Shares one timer fetch between the timer panel and the mice list's live stage. */
+function WithTimers({ enabled, children }: { enabled: boolean; children: React.ReactNode }) {
+  return enabled ? <TimersProvider>{children}</TimersProvider> : <>{children}</>;
+}
+
 export default async function Location({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
   const location = getLocation(resolvedParams.id);
@@ -75,42 +99,112 @@ export default async function Location({ params }: { params: Promise<{ id: strin
   if (!location) {
     notFound();
   }
-  const items = getResourcesForLocation(resolvedParams.id);
 
-  const mice = location.name ? getMiceForRegionName(location.name) : [];
+  const name = location.name ?? 'Location';
+  const regionEntry = regionFor(resolvedParams.id);
+  const region = regionEntry?.name;
+  const description = location.description ? cleanDescription(location.description) : undefined;
+  // Only rotating locations have a timer; the rest never fetch one.
+  const rotating = Boolean(location.name && TIMER_LOCATION_NAMES.includes(location.name));
+
+  const { groups: cheeseGroups, total: miceTotal } = location.name
+    ? getLocationMiceByCheese(location.name)
+    : { groups: [], total: 0 };
   const trapEffects = location.name
     ? (getTrapEffects().find((entry) => entry.location === location.name)?.effects ?? [])
     : [];
   const environmentKey = location.environmentId ?? location.id;
+  // The catch rate tools know locations by the game's id; match this page to one by name.
+  const catchRateLocation = catchRateData.locations.find((entry) => entry.name === location.name)?.id;
   const locationItems = getItemsForEnvironment(environmentKey);
-  const loot = location.name ? getLocationLoot(location.name) : [];
+
+  // Guides and tools written for this location lead the page. Site-wide ones, and broad ones
+  // like the Essentials guide that's tagged to every early location, wait at the bottom.
+  const resources = getResourcesForLocation(resolvedParams.id);
+  const isLocal = (resource: (typeof resources)[number]) =>
+    !resource.locations?.includes('all') && (resource.locations?.length ?? 0) <= MAX_LOCAL_LOCATIONS;
+  const localResources = resources.filter(isLocal);
+  const generalResources = resources.filter((resource) => !isLocal(resource));
 
   return (
-    <>
-      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: location.name ?? 'Location' }]} />
+    <WithTimers enabled={rotating}>
+      <Breadcrumbs
+        items={[
+          { name: 'Home', href: '/' },
+          ...(regionEntry && region !== name ? [{ name: regionEntry.name, href: `/regions/${regionEntry.id}` }] : []),
+          { name },
+        ]}
+      />
 
-      {location.headerImage && (
-        // eslint-disable-next-line @next/next/no-img-element
+      {location.headerImage && <LocationArt src={locationHeaderImageUrl(environmentKey)} className="mb-6 max-w-2xl" />}
+
+      <header className="flex items-start gap-3 sm:gap-4">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={locationHeaderImageUrl(location.environmentId ?? location.id)}
+          src={locationImageUrl(location.id)}
           alt=""
-          className="mb-6 h-40 w-full rounded-2xl object-cover ring-1 ring-zinc-950/5 dark:ring-white/10"
+          width={54}
+          height={54}
+          className="mt-0.5 size-11 shrink-0 rounded-lg ring-1 ring-zinc-950/5 sm:size-[54px] dark:ring-white/10"
         />
+        <div className="min-w-0">
+          <Heading>{name}</Heading>
+          {regionEntry && region !== name && (
+            <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+              <Link href={`/regions/${regionEntry.id}`} className={linkClass}>
+                {regionEntry.name}
+              </Link>
+            </p>
+          )}
+        </div>
+      </header>
+
+      {description && <ClampedText className="mt-4 max-w-prose">{description}</ClampedText>}
+
+      {rotating && location.name && <LocationTimerPanel locationName={location.name} />}
+
+      {localResources.length > 0 && (
+        <section className="mt-10">
+          <SectionHeading>Guides and tools for {name}</SectionHeading>
+          <ItemList items={localResources} headingLevel={3} compact />
+        </section>
       )}
 
-      <Heading>
-        <Avatar src={locationImageUrl(location.id)} alt={location.name} square className="mr-2" />
-        MouseHunt Resources for {location.article ? location.article : location.name}
-      </Heading>
+      {miceTotal > 0 && location.name && (
+        <LocationMice locationName={location.name} groups={cheeseGroups} total={miceTotal} />
+      )}
 
-      <ItemList items={items} />
+      {catchRateLocation && (
+        <section className="mt-10" aria-labelledby="plan-heading">
+          <SectionHeading id="plan-heading">Plan your hunt here</SectionHeading>
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+            <li>
+              <ToolCard
+                href={`/catch-rate-estimator?location=${catchRateLocation}`}
+                title="Catch rates here"
+                description={`Your catch rate against every mouse in ${name} with your trap.`}
+                image={itemImageUrl('acronym_weapon')}
+                tint="pink"
+              />
+            </li>
+            <li>
+              <ToolCard
+                href={`/best-setup?location=${catchRateLocation}`}
+                title="Best setup here"
+                description={`The weapon and base that catch the most in ${name}.`}
+                image={itemImageUrl('infinite_dark_magic_mirror_weapon')}
+                tint="violet"
+              />
+            </li>
+          </ul>
+        </section>
+      )}
 
-      {SHOW_EXTRA_SECTIONS && locationItems.length > 0 && (
-        <section className="mt-12">
+      {location.name && <LocationLoot rows={getLocationLoot(location.name)} />}
+
+      {locationItems.length > 0 && (
+        <section className="mt-10">
           <SectionHeading>Items for this location</SectionHeading>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-            Gear, bait, and other items that are specific to hunting here.
-          </p>
           <ul className="mt-4 flex flex-wrap gap-2">
             {locationItems.map((item) => {
               const slug = itemSlug(item.type);
@@ -118,10 +212,9 @@ export default async function Location({ params }: { params: Promise<{ id: strin
                 <li key={item.id}>
                   <Link
                     href={`/items/${slug}`}
-                    className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 shadow-sm transition hover:border-blue-300 hover:text-blue-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-blue-800 dark:hover:text-blue-300"
+                    className="inline-flex items-center gap-2 rounded-full ring-1 ring-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 transition hover:ring-pink-300 hover:text-pink-700 dark:ring-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:ring-pink-800 dark:hover:text-pink-300"
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={itemImageUrl(slug)} alt="" loading="lazy" className="size-6 shrink-0 rounded" />
+                    <GameImage src={itemImageUrl(slug)} width={24} height={24} className="size-6 shrink-0 rounded" />
                     {item.name}
                   </Link>
                 </li>
@@ -131,87 +224,31 @@ export default async function Location({ params }: { params: Promise<{ id: strin
         </section>
       )}
 
-      {SHOW_EXTRA_SECTIONS && loot.length > 0 && (
-        <section className="mt-12">
-          <SectionHeading>Loot found here</SectionHeading>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-            How often the mouse most likely to drop each item here drops it, from <SourceLink source="mhct" />.
-          </p>
-          <div className="mt-4 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
-            <table className="w-full text-sm">
-              <thead className="bg-zinc-50 text-left text-xs uppercase tracking-wider text-zinc-500 dark:bg-zinc-900/60 dark:text-zinc-400">
-                <tr>
-                  <th className="px-4 py-2 font-medium">Item</th>
-                  <th className="px-4 py-2 text-right font-medium">Drop rate</th>
-                  <th className="hidden px-4 py-2 text-right font-medium sm:table-cell">Sample</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
-                {loot.slice(0, LOOT_ROWS_SHOWN).map((row) => (
-                  <tr key={row.id}>
-                    <td className="px-4 py-2">
-                      <Link
-                        href={`/items/${row.slug}`}
-                        className="inline-flex items-center gap-2 text-zinc-900 hover:text-blue-700 dark:text-white dark:hover:text-blue-300"
-                      >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={itemImageUrl(row.slug)} alt="" loading="lazy" className="size-6 shrink-0 rounded" />
-                        {row.name}
-                      </Link>
-                      <div className="ml-8 text-xs text-zinc-400 dark:text-zinc-500">
-                        from{' '}
-                        <Link href={`/mice/${row.mouse_slug}`} className="hover:text-blue-700 dark:hover:text-blue-300">
-                          {row.mouse_name}
-                        </Link>
-                      </div>
-                    </td>
-                    <td className="px-4 py-2 text-right font-medium tabular-nums text-zinc-900 dark:text-white">
-                      {row.rate.toFixed(2)}%
-                    </td>
-                    <td className="hidden px-4 py-2 text-right tabular-nums text-zinc-400 sm:table-cell dark:text-zinc-500">
-                      {formatNumber(row.catches)} catches
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          {loot.length > LOOT_ROWS_SHOWN && (
-            <p className="mt-3 text-sm text-zinc-400 dark:text-zinc-500">
-              Showing the {LOOT_ROWS_SHOWN} most likely of {loot.length} items seen dropping here.
-            </p>
-          )}
-        </section>
-      )}
-
       {trapEffects.length > 0 && (
-        <section className="mt-12">
-          <SectionHeading>Trap special effects here</SectionHeading>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-            Traps with unique behavior in this location. See{' '}
-            <Link
-              href="/trap-special-effects"
-              className="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:hover:text-zinc-200"
-            >
-              all trap special effects
+        <section className="mt-10">
+          <SectionHeading>Trap and base special effects here</SectionHeading>
+          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+            See{' '}
+            <Link href="/trap-special-effects" className={linkClass}>
+              all trap and base special effects
             </Link>
             .
           </p>
-          <div className="mt-4 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
+          <div className="mt-4 overflow-hidden rounded-2xl shadow-xs ring-1 ring-zinc-200 bg-white dark:ring-zinc-800 dark:bg-zinc-900">
             <table className="w-full text-sm">
-              <thead className="bg-zinc-50 text-left text-xs uppercase tracking-wider text-zinc-500 dark:bg-zinc-900/60 dark:text-zinc-400">
+              <thead className="border-b border-zinc-200 bg-zinc-50 text-left text-xs text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-400">
                 <tr>
-                  <th className="px-4 py-2 font-medium">Trap</th>
-                  <th className="px-4 py-2 font-medium">Effect</th>
+                  <th className="px-3 py-2 font-medium sm:px-4">Trap</th>
+                  <th className="px-3 py-2 font-medium sm:px-4">Effect</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {trapEffects.map((effect) => (
-                  <tr key={effect.name}>
-                    <td className="px-4 py-2 font-medium whitespace-nowrap text-zinc-900 dark:text-white">
+                  <tr key={effect.name} className="align-top">
+                    <td className="px-3 py-2 font-medium text-zinc-900 sm:px-4 sm:whitespace-nowrap dark:text-white">
                       {effect.name}
                     </td>
-                    <td className="px-4 py-2 text-zinc-600 dark:text-zinc-300">{effect.effect}</td>
+                    <td className="px-3 py-2 text-zinc-600 sm:px-4 dark:text-zinc-300">{effect.effect}</td>
                   </tr>
                 ))}
               </tbody>
@@ -220,14 +257,14 @@ export default async function Location({ params }: { params: Promise<{ id: strin
         </section>
       )}
 
-      {SHOW_EXTRA_SECTIONS && mice.length > 0 && (
-        <section className="mt-12">
-          <SectionHeading>{mice.length} mice found here</SectionHeading>
-          <div className="mt-4">
-            <MouseGrid mice={mice} />
-          </div>
+      {generalResources.length > 0 && (
+        <section className="mt-10">
+          <SectionHeading>More guides and tools</SectionHeading>
+          <ItemList items={generalResources} headingLevel={3} compact />
         </section>
       )}
-    </>
+
+      {location.name && <ExternalRefs name={location.name} kind="locations" />}
+    </WithTimers>
   );
 }

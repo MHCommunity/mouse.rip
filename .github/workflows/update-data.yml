@@ -28,6 +28,9 @@ jobs:
 
       - name: Set up Bun
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          # One version everywhere, so a new Bun release can't change what the lockfile installs unannounced.
+          bun-version-file: .bun-version
 
       - name: Install dependencies
         run: bun install --frozen-lockfile --ignore-scripts
@@ -35,11 +38,22 @@ jobs:
       - name: Update data
         run: bun run update:data
 
+      # The trap effects come from a community spreadsheet, not the API. If the sheet is down or reads
+      # wrong, the script exits without writing, and the rest of the update still goes out.
+      - name: Update trap effects
+        run: bun run update:trap-effects
+        continue-on-error: true
+
+      # The push below goes straight to main, and a push made with GITHUB_TOKEN doesn't start the Code Quality
+      # workflow. So this is the only check the new data gets: the unit tests read it (links, names, catch rates).
+      - name: Check the new data
+        run: bun run test
+
       - name: Commit changes
         run: |
           git config --local user.name "Mousebot"
           git config --local user.email "mousebot@mouse.rip"
-          git add src/data/generated
+          git add src/data/generated src/data/trap-effects.json
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0

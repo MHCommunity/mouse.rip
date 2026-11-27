@@ -2,14 +2,23 @@
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 import { useSearchParams } from 'next/navigation';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 
 import { loadItemIndex, type IndexedItem } from '@/lib/client-index';
-import { CLASSIFICATION_DESCRIPTIONS } from '@/lib/item-classifications';
+import {
+  CLASSIFICATION_DESCRIPTIONS,
+  SUBGROUPS,
+  classificationLabel,
+  classificationName,
+  itemSubgroup,
+  subgroupLabel,
+  subgroupsPresent,
+} from '@/lib/item-classifications';
 import { itemImageUrl } from '@/lib/image-urls';
-import { formatNumber, titleCase } from '@/utils';
+import { useRememberedCount } from '@/lib/use-remembered-count';
+import { formatNumber } from '@/utils';
 import { SectionHeading } from '@/components/section-heading';
 
 /** The mice browser's cap too: past this, rows render on request. */
@@ -24,8 +33,11 @@ function useDebouncedValue<T>(value: T, delay: number) {
   return debounced;
 }
 
+const emptyActionClasses =
+  'rounded-full bg-white px-3 py-1 text-sm font-medium text-pink-700 ring-1 ring-zinc-200 hover:ring-pink-300 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 dark:bg-zinc-900 dark:text-pink-300 dark:ring-zinc-700';
+
 const pillBase =
-  'shrink-0 rounded-full px-3 py-1 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500';
+  'shrink-0 rounded-full px-3 py-1 text-sm font-medium transition focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500';
 
 function filtersFromUrl(params: URLSearchParams, classificationOrder: string[]) {
   const type = params.get('type');
@@ -34,16 +46,51 @@ function filtersFromUrl(params: URLSearchParams, classificationOrder: string[]) 
     query: params.get('q') ?? '',
     tradableOnly: params.get('tradable') === '1',
     tag: params.get('tag') ?? null,
+    sub: params.get('sub') ?? null,
   };
+}
+
+/** A familiar item to picture each type. */
+const TYPE_ART: Record<string, string> = {
+  weapon: 'acronym_weapon',
+  base: 'valour_rift_prestige_base',
+  bait: 'super_brie_cheese',
+  trinket: 'super_power_trinket',
+  potion: 'greater_radioactive_blue_cheese_potion',
+  crafting_item: 'curds_and_whey_craft_item',
+  convertible: 'treasure_map_scroll_case_convertible',
+  collectible: 'christmas_coal_collectible',
+  stat: 'gold_stat_item',
+  map_piece: 'gnawnia_map_piece',
+  skin: 'jet_black_acronym_skin',
+};
+
+interface ItemsBrowserProps {
+  /** Per-type totals, so the default view renders without the item list. */
+  counts: Record<string, number>;
+  classificationOrder: string[];
+}
+
+/**
+ * The browser with its filters read off the address. Reading the address stops prerendering at the nearest
+ * Suspense boundary, so the page gives that boundary a plain ItemsBrowser as its fallback: that's what lands in
+ * the HTML, and this takes over once the page is running.
+ */
+export function ItemsBrowserFromUrl(props: ItemsBrowserProps) {
+  const searchParams = useSearchParams();
+  return <ItemsBrowser {...props} search={searchParams.toString()} syncUrl />;
 }
 
 export function ItemsBrowser({
   counts,
   classificationOrder,
-}: {
-  /** Per-type totals, so the default view renders without the item list. */
-  counts: Record<string, number>;
-  classificationOrder: string[];
+  search = '',
+  syncUrl = false,
+}: ItemsBrowserProps & {
+  /** The address's query string. Empty for the prerendered view, which has no filters. */
+  search?: string;
+  /** Off for the prerendered view, which mustn't rewrite an address it couldn't read. */
+  syncUrl?: boolean;
 }) {
   // The item list itself is code-split and only fetched once the visitor
   // actually filters — the landing view is just the type cards, and the chunk is
@@ -52,22 +99,29 @@ export function ItemsBrowser({
   const [loadFailed, setLoadFailed] = useState(false);
 
   // The URL is the source of truth for the view, so a filtered page is linkable.
-  const searchParams = useSearchParams();
-  const search = searchParams.toString();
-  const initial = filtersFromUrl(searchParams, classificationOrder);
+  const initial = filtersFromUrl(new URLSearchParams(search), classificationOrder);
 
   const [query, setQuery] = useState(initial.query);
   const [active, setActive] = useState<string | null>(initial.active);
   const [tradableOnly, setTradableOnly] = useState(initial.tradableOnly);
   // Set only by following a tag link from an item page; cleared from here.
   const [tag, setTag] = useState<string | null>(initial.tag);
+  // A sub-group of the chosen type, for the types the game splits up.
+  const [sub, setSub] = useState<string | null>(initial.sub);
+  const subgroups = active ? SUBGROUPS[active] : undefined;
+  const chooseType = (key: string | null) => {
+    setActive(key);
+    setSub(null);
+  };
 
   // Reflect the active filters back into the URL so the view stays shareable.
   // replaceState feeds back into useSearchParams, so remember what we wrote to
   // tell our own edits apart from a real navigation.
   // Writes are deferred so typing doesn't call replaceState on every keystroke.
+  const searchRef = useRef<HTMLInputElement>(null);
   const written = useRef(search);
   useEffect(() => {
+    if (!syncUrl) return;
     const timer = setTimeout(() => {
       const params = new URLSearchParams(window.location.search);
       if (active) params.set('type', active);
@@ -78,12 +132,14 @@ export function ItemsBrowser({
       else params.delete('tradable');
       if (tag) params.set('tag', tag);
       else params.delete('tag');
+      if (sub) params.set('sub', sub);
+      else params.delete('sub');
       const next = params.toString();
       written.current = next;
       window.history.replaceState(null, '', next ? `?${next}` : window.location.pathname);
     }, 200);
     return () => clearTimeout(timer);
-  }, [active, query, tradableOnly, tag]);
+  }, [active, query, tradableOnly, tag, sub, syncUrl]);
 
   // A soft navigation (the sidebar's Items link, a /items?type= card) changes the
   // URL out from under us; adopt it so the browser doesn't stay stuck on the
@@ -95,6 +151,7 @@ export function ItemsBrowser({
     setQuery(next.query);
     setTradableOnly(next.tradableOnly);
     setTag(next.tag);
+    setSub(next.sub);
   }, [search, classificationOrder]);
 
   // Filtering 4,000+ items on every keystroke is wasted work; wait for a pause.
@@ -126,30 +183,63 @@ export function ItemsBrowser({
     [items],
   );
 
-  const grouped = useMemo(() => {
+  // Sections are types, or a split type's sub-groups once that type is chosen.
+  const { grouped, subCounts } = useMemo(() => {
     const q = debouncedQuery.trim().toLowerCase();
     const map = new Map<string, IndexedItem[]>();
+    const perSub: Record<string, number> = {};
     for (const { item, lowerName } of sortedItems) {
       if (active && item.classification !== active) continue;
       if (tradableOnly && !item.tradable) continue;
       if (tag && !item.tags?.includes(tag)) continue;
       if (q && !lowerName.includes(q)) continue;
-      const list = map.get(item.classification) ?? [];
+      const group = subgroups ? (itemSubgroup(item) ?? '') : item.classification;
+      if (subgroups) perSub[group] = (perSub[group] ?? 0) + 1;
+      if (sub && group !== sub) continue;
+      const list = map.get(group) ?? [];
       list.push(item);
-      map.set(item.classification, list);
+      map.set(group, list);
     }
-    return classificationOrder.filter((key) => map.has(key)).map((key) => [key, map.get(key)!] as const);
-  }, [sortedItems, debouncedQuery, active, tradableOnly, tag, classificationOrder]);
+    const order = active && subgroups ? subgroupsPresent(active, map.keys()) : classificationOrder;
+    return {
+      grouped: order.filter((key) => map.has(key)).map((key) => [key, map.get(key)!] as const),
+      subCounts: perSub,
+    };
+  }, [sortedItems, debouncedQuery, active, subgroups, sub, tradableOnly, tag, classificationOrder]);
+  const sectionName = (key: string) => (active && subgroups ? subgroupLabel(active, key) : classificationName(key));
 
   const total = grouped.reduce((sum, [, list]) => sum + list.length, 0);
 
+  // What each type chip would show if picked: every filter except the type itself.
+  const chipCounts = useMemo(() => {
+    if (!items) return counts;
+    const q = debouncedQuery.trim().toLowerCase();
+    const out: Record<string, number> = {};
+    for (const { item, lowerName } of sortedItems) {
+      if (tradableOnly && !item.tradable) continue;
+      if (tag && !item.tags?.includes(tag)) continue;
+      if (q && !lowerName.includes(q)) continue;
+      out[item.classification] = (out[item.classification] ?? 0) + 1;
+    }
+    return out;
+  }, [items, counts, sortedItems, debouncedQuery, tradableOnly, tag]);
+
   // Broad filters (a whole type, tradable only) can match thousands of items, so
-  // render the first ROW_LIMIT until asked. Changing the filters re-caps it.
-  const filterKey = [debouncedQuery.trim(), active, tradableOnly, tag].join('|');
-  const [expandedFor, setExpandedFor] = useState<string | null>(null);
-  const showAll = expandedFor === filterKey;
+  // render the first ROW_LIMIT until asked. Changing the filters re-caps it. The count is kept across a visit to
+  // an item's page and Back, so "Show all" doesn't have to be pressed again to return to the same item.
+  const filterKey = [debouncedQuery.trim(), active, sub, tradableOnly, tag].join('|');
+  const [limit, setLimit] = useRememberedCount(
+    syncUrl ? `items|${filterKey}` : null,
+    ROW_LIMIT,
+    !filtering || items !== null || loadFailed,
+  );
+  const [lastFilterKey, setLastFilterKey] = useState(filterKey);
+  if (filterKey !== lastFilterKey) {
+    setLastFilterKey(filterKey);
+    setLimit(ROW_LIMIT);
+  }
   const visible = useMemo(() => {
-    let budget = showAll ? Number.POSITIVE_INFINITY : ROW_LIMIT;
+    let budget = limit;
     const out = [];
     for (const [key, list] of grouped) {
       if (budget <= 0) break;
@@ -158,69 +248,120 @@ export function ItemsBrowser({
       out.push([key, list, shown] as const);
     }
     return out;
-  }, [grouped, showAll]);
+  }, [grouped, limit]);
+
+  // Types with a description get a card; the rest are rare enough for a line of links.
+  const mainTypes = classificationOrder.filter((key) => CLASSIFICATION_DESCRIPTIONS[key]);
+  const otherTypes = classificationOrder.filter((key) => !CLASSIFICATION_DESCRIPTIONS[key]);
 
   return (
     <div>
-      <div className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-        <MagnifyingGlassIcon className="size-5 shrink-0 text-zinc-400" aria-hidden="true" />
+      <div className="flex items-center gap-2 rounded-xl border border-zinc-950/45 bg-white px-4 shadow-sm focus-within:border-pink-600 focus-within:ring-2 focus-within:ring-pink-500 dark:border-white/35 dark:bg-zinc-900 dark:focus-within:border-pink-400">
+        <MagnifyingGlassIcon className="size-5 shrink-0 text-zinc-500 dark:text-zinc-400" aria-hidden="true" />
         <input
+          ref={searchRef}
           type="text"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Search items by name…"
           aria-label="Search items by name"
-          className="w-full border-0 bg-transparent py-3 text-base text-zinc-900 placeholder:text-zinc-400 focus:outline-none dark:text-white"
+          className="w-full border-0 bg-transparent py-3 text-base text-zinc-900 placeholder:text-zinc-500 focus:outline-hidden dark:text-white dark:placeholder:text-zinc-400"
         />
-        {filtering && items && (
-          <span className="shrink-0 text-xs tabular-nums text-zinc-400 dark:text-zinc-500">{total}</span>
-        )}
+        {/* Always there, so a screen reader hears the count change as the filters do. */}
+        <span role="status" className="shrink-0 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">
+          {filtering && items && `${formatNumber(total)} ${total === 1 ? 'item' : 'items'}`}
+        </span>
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center gap-2">
-        <button
-          type="button"
-          onClick={() => setActive(null)}
-          className={`${pillBase} ${
-            active === null
-              ? 'bg-blue-600 text-white'
-              : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
-          }`}
+      {/* Type chips narrow a search; with no filter on, the type cards below do that job instead.
+          The toggle keeps its own column so the chips coming and going never move it. */}
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
+        <div
+          role="group"
+          aria-label="Item type"
+          className="order-last flex min-w-0 flex-1 flex-wrap items-center gap-2 sm:order-first"
         >
-          All
-        </button>
-        {classificationOrder.map((key) => (
-          <button
-            key={key}
-            type="button"
-            onClick={() => setActive((current) => (current === key ? null : key))}
-            className={`${pillBase} ${
-              active === key
-                ? 'bg-blue-600 text-white'
-                : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
-            }`}
-          >
-            {titleCase(key)}
-            <span className="ml-1.5 text-xs tabular-nums opacity-60">{formatNumber(counts[key] ?? 0)}</span>
-          </button>
-        ))}
-        <label className="ml-auto flex cursor-pointer items-center gap-2 text-sm text-zinc-600 dark:text-zinc-300">
+          {filtering && (
+            <>
+              <button
+                type="button"
+                aria-pressed={active === null}
+                onClick={() => chooseType(null)}
+                className={`${pillBase} ${
+                  active === null
+                    ? 'bg-pink-600 text-white'
+                    : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
+                }`}
+              >
+                All
+              </button>
+              {classificationOrder
+                .filter((key) => active === key || (chipCounts[key] ?? 0) > 0)
+                .map((key) => (
+                  <button
+                    key={key}
+                    type="button"
+                    aria-pressed={active === key}
+                    onClick={() => chooseType(active === key ? null : key)}
+                    className={`${pillBase} ${
+                      active === key
+                        ? 'bg-pink-600 text-white'
+                        : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
+                    }`}
+                  >
+                    {classificationName(key)}
+                    <span className="ml-1.5 text-xs font-normal tabular-nums">
+                      {formatNumber(chipCounts[key] ?? 0)}
+                    </span>
+                  </button>
+                ))}
+            </>
+          )}
+        </div>
+        <label className="flex shrink-0 cursor-pointer items-center gap-2 self-end py-1 text-sm text-zinc-600 sm:self-auto dark:text-zinc-300">
           <input
             type="checkbox"
             checked={tradableOnly}
             onChange={(event) => setTradableOnly(event.target.checked)}
-            className="size-4 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 dark:border-zinc-600"
+            className="size-4 rounded border-zinc-300 text-pink-600 focus:ring-pink-500 dark:border-zinc-600"
           />
           Tradable only
         </label>
       </div>
+
+      {filtering && active && subgroups && items && (
+        <div
+          className="mt-3 flex flex-wrap items-center gap-2 border-l-2 border-pink-200 pl-3 dark:border-pink-900"
+          aria-label={`${classificationName(active)} groups`}
+          role="group"
+        >
+          {[null, ...subgroupsPresent(active, Object.keys(subCounts))].map((key) => (
+            <button
+              key={key ?? 'all'}
+              type="button"
+              onClick={() => setSub(key)}
+              aria-pressed={sub === key}
+              className={`${pillBase} ${
+                sub === key
+                  ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900'
+                  : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
+              }`}
+            >
+              {key ? subgroupLabel(active, key) : `All ${classificationLabel(active).toLowerCase()}`}
+              <span className="ml-1.5 text-xs font-normal tabular-nums">
+                {formatNumber(key ? (subCounts[key] ?? 0) : Object.values(subCounts).reduce((a, b) => a + b, 0))}
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
 
       {tag && (
         <div className="mt-3">
           <button
             type="button"
             onClick={() => setTag(null)}
-            className="inline-flex items-center gap-1.5 rounded-md bg-blue-600 px-2 py-1 text-xs font-medium text-white transition hover:bg-blue-700"
+            className="inline-flex items-center gap-1.5 rounded-md bg-pink-600 px-2 py-1 text-xs font-medium text-white transition hover:bg-pink-700"
           >
             Tagged &ldquo;{tag.replaceAll('_', ' ')}&rdquo;
             <span aria-hidden="true">×</span>
@@ -233,28 +374,59 @@ export function ItemsBrowser({
         <div className="mt-8">
           <SectionHeading>Browse by type</SectionHeading>
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {classificationOrder.map((key) => (
+            {mainTypes.map((key) => (
               <Link
                 key={key}
                 href={`/items/type/${key}`}
-                className="group flex flex-col rounded-xl border border-zinc-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md motion-reduce:transform-none dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-blue-800"
+                className="group flex flex-col rounded-2xl ring-1 ring-zinc-200 bg-white p-4 text-left shadow-xs transition hover:-translate-y-0.5 hover:ring-pink-300 hover:shadow-md motion-reduce:transform-none dark:ring-zinc-800 dark:bg-zinc-900 dark:hover:ring-pink-800"
               >
-                <div className="flex w-full items-baseline justify-between gap-2">
-                  <span className="font-semibold tracking-tight text-zinc-900 transition-colors group-hover:text-blue-700 dark:text-white dark:group-hover:text-blue-300">
-                    {titleCase(key)}
+                <span className="flex items-start gap-3">
+                  {TYPE_ART[key] && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={itemImageUrl(TYPE_ART[key])}
+                      alt=""
+                      loading="lazy"
+                      className="size-11 shrink-0 rounded-xl bg-zinc-50 object-contain p-1 ring-1 ring-zinc-100 dark:bg-zinc-800 dark:ring-zinc-700"
+                    />
+                  )}
+                  <span className="min-w-0 flex-1">
+                    <span className="flex w-full items-baseline justify-between gap-2">
+                      <span className="font-semibold tracking-tight text-zinc-900 transition-colors group-hover:text-pink-700 dark:text-white dark:group-hover:text-pink-300">
+                        {classificationName(key)}
+                      </span>
+                      <span className="shrink-0 text-xs tabular-nums text-zinc-500 dark:text-zinc-400">
+                        {formatNumber(counts[key] ?? 0)}
+                      </span>
+                    </span>
+                    <span className="mt-1 line-clamp-2 block text-sm text-pretty text-zinc-500 dark:text-zinc-400">
+                      {CLASSIFICATION_DESCRIPTIONS[key]}
+                    </span>
                   </span>
-                  <span className="shrink-0 text-xs tabular-nums text-zinc-400 dark:text-zinc-500">
-                    {formatNumber(counts[key] ?? 0)}
-                  </span>
-                </div>
-                {CLASSIFICATION_DESCRIPTIONS[key] && (
-                  <span className="mt-1 line-clamp-2 text-sm text-pretty text-zinc-500 dark:text-zinc-400">
-                    {CLASSIFICATION_DESCRIPTIONS[key]}
-                  </span>
-                )}
+                </span>
               </Link>
             ))}
           </div>
+          {otherTypes.length > 0 && (
+            <div className="mt-6">
+              <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">Other types</h3>
+              <ul className="mt-2 flex flex-wrap gap-x-5 gap-y-1.5 text-sm">
+                {otherTypes.map((key) => (
+                  <li key={key}>
+                    <Link
+                      href={`/items/type/${key}`}
+                      className="text-zinc-700 hover:text-pink-700 hover:underline dark:text-zinc-300 dark:hover:text-pink-300"
+                    >
+                      {classificationName(key)}
+                    </Link>
+                    <span className="ml-1.5 text-xs tabular-nums text-zinc-500 dark:text-zinc-400">
+                      {formatNumber(counts[key] ?? 0)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       ) : loadFailed ? (
         <p className="mt-10 text-sm text-zinc-500 dark:text-zinc-400">
@@ -267,14 +439,49 @@ export function ItemsBrowser({
           ))}
         </div>
       ) : total === 0 ? (
-        <p className="mt-10 text-sm text-zinc-500 dark:text-zinc-400">No items match your filters.</p>
+        <div className="mt-10 text-sm text-zinc-600 dark:text-zinc-400">
+          <p>
+            No items match
+            {debouncedQuery.trim() ? ` “${debouncedQuery.trim()}”` : ' these filters'}
+            {active ? ` among ${classificationLabel(active).toLowerCase()}` : ''}.
+          </p>
+          <p className="mt-3 flex flex-wrap gap-2">
+            {/* The search may match items of another type; offer the way there first. */}
+            {active && Object.entries(chipCounts).some(([key, count]) => key !== active && count > 0) && (
+              <button
+                type="button"
+                onClick={() => {
+                  chooseType(null);
+                  searchRef.current?.focus();
+                }}
+                className={emptyActionClasses}
+              >
+                Search every type
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => {
+                chooseType(null);
+                setQuery('');
+                setTradableOnly(false);
+                setTag(null);
+                // This button leaves with the empty result; the search field is where to go next.
+                searchRef.current?.focus();
+              }}
+              className={emptyActionClasses}
+            >
+              Clear filters
+            </button>
+          </p>
+        </div>
       ) : (
         <div className="mt-8 space-y-10">
           {visible.map(([key, list, shown]) => (
             <section key={key}>
               <h2 className="text-sm font-semibold tracking-tight text-zinc-900 dark:text-white">
-                {titleCase(key)}
-                <span className="ml-2 text-xs font-normal tabular-nums text-zinc-400 dark:text-zinc-500">
+                {sectionName(key)}
+                <span className="ml-2 text-xs font-normal tabular-nums text-zinc-500 dark:text-zinc-400">
                   {formatNumber(list.length)}
                 </span>
               </h2>
@@ -285,8 +492,7 @@ export function ItemsBrowser({
                     <li key={item.id} className="break-inside-avoid">
                       <Link
                         href={`/items/${slug}`}
-                        prefetch={false}
-                        className="flex items-center gap-2 py-1 text-sm text-zinc-600 transition hover:text-blue-700 dark:text-zinc-400 dark:hover:text-blue-300"
+                        className="flex items-center gap-2 py-1 text-sm text-zinc-600 transition hover:text-pink-700 dark:text-zinc-400 dark:hover:text-pink-300"
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
@@ -298,7 +504,9 @@ export function ItemsBrowser({
                             event.currentTarget.style.visibility = 'hidden';
                           }}
                         />
-                        <span className="truncate">{item.name}</span>
+                        <span className="line-clamp-2" title={item.name}>
+                          {item.name}
+                        </span>
                       </Link>
                     </li>
                   );
@@ -306,13 +514,13 @@ export function ItemsBrowser({
               </ul>
             </section>
           ))}
-          {total > ROW_LIMIT && !showAll && (
-            <p className="text-sm text-zinc-400 dark:text-zinc-500">
-              Showing the first {formatNumber(ROW_LIMIT)} of {formatNumber(total)}.{' '}
+          {total > limit && (
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">
+              Showing the first {formatNumber(limit)} of {formatNumber(total)}.{' '}
               <button
                 type="button"
-                onClick={() => setExpandedFor(filterKey)}
-                className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                onClick={() => setLimit(total)}
+                className="font-medium text-pink-700 hover:text-pink-900 dark:text-pink-300 dark:hover:text-pink-200"
               >
                 Show all
               </button>

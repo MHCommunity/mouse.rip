@@ -1,6 +1,7 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import React, { type ReactNode } from 'react';
+import React, { useId, useState, type ReactNode } from 'react';
+import { preconnect } from 'react-dom';
 
 import { Navbar, NavbarItem, NavbarSection, NavbarSpacer } from '@/components/navbar';
 import {
@@ -18,6 +19,7 @@ import { SidebarLayout } from '@/components/sidebar-layout';
 import { SearchProvider } from '@/components/search/search-context';
 import { SearchButton } from '@/components/search/search-button';
 import { Footer } from '@/components/footer';
+import { PrefetchOnIntent } from '@/components/prefetch-on-intent';
 
 // Imported directly: going through @/lib/site-data would bundle every site
 // dataset into this client component, and so into every page.
@@ -27,6 +29,7 @@ import type { LocationRegion } from '@/types';
 import {
   AcademicCapIcon,
   BoltIcon,
+  ChevronRightIcon,
   HomeIcon,
   QuestionMarkCircleIcon,
   SwatchIcon,
@@ -40,179 +43,220 @@ import { locationImageUrl } from '@/lib/image-urls';
 
 const locations = locationsData as LocationRegion[];
 
+/** The site's own tools. They live at the top level, but in the sidebar they belong to Tools. */
+const TOOL_PATHS = [
+  '/catch-rate-estimator',
+  '/best-setup',
+  '/map-planner',
+  '/rank-up-calculator',
+  '/minlucks',
+  '/relic-hunter',
+  '/valour-rift-floors',
+  '/essence-calculator',
+  '/queso-pump-calculator',
+];
+
+/**
+ * One region of locations, collapsed unless the current page is inside it, so the
+ * sidebar isn't 70 links long. The current region opens itself on arrival, but
+ * can still be collapsed.
+ */
+function LocationRegionGroup({ region, pathname }: { region: LocationRegion; pathname: string }) {
+  const containsCurrent = region.locations.some((location) => pathname === `/locations/${location.id}`);
+  const [expanded, setExpanded] = useState(containsCurrent);
+  const [wasCurrent, setWasCurrent] = useState(containsCurrent);
+  if (containsCurrent !== wasCurrent) {
+    setWasCurrent(containsCurrent);
+    if (containsCurrent) setExpanded(true);
+  }
+  // The desktop sidebar and the mobile drawer each render this, so the ID must be per instance.
+  const listId = useId();
+
+  return (
+    <div>
+      <button
+        type="button"
+        aria-expanded={expanded}
+        aria-controls={listId}
+        onClick={() => setExpanded(!expanded)}
+        className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left text-sm/5 font-medium text-zinc-700 hover:bg-zinc-950/5 hover:text-zinc-950 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-pink-500 sm:py-1.5 dark:text-zinc-300 dark:hover:bg-white/5 dark:hover:text-white"
+      >
+        <ChevronRightIcon
+          aria-hidden="true"
+          className={`size-4 shrink-0 fill-zinc-500 transition-transform motion-reduce:transition-none dark:fill-zinc-400 ${expanded ? 'rotate-90' : ''}`}
+        />
+        <span className="flex-1 truncate">{region.name}</span>
+        <span className="text-xs tabular-nums text-zinc-600 dark:text-zinc-400">{region.locations.length}</span>
+      </button>
+      {expanded && (
+        <div id={listId} className="mb-2 ml-3 border-l border-zinc-950/5 pl-1 dark:border-white/10">
+          {region.locations.map((location) => (
+            <SidebarItem
+              key={location.id}
+              href={`/locations/${location.id}`}
+              current={pathname === `/locations/${location.id}`}
+              className="rounded-md"
+            >
+              <Avatar slot="icon" src={locationImageUrl(location.id)} alt="" square />
+              <SidebarLabel>{location.name}</SidebarLabel>
+            </SidebarItem>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 interface ApplicationLayoutProps {
   children: ReactNode;
 }
 
 export function ApplicationLayout({ children }: ApplicationLayoutProps) {
   const pathname = usePathname();
+  // Nearly every page's art comes from the image host; opening the connection early takes a round trip off the
+  // first image.
+  preconnect('https://i.mouse.rip');
 
   return (
     <SearchProvider>
+      <PrefetchOnIntent />
       <SidebarLayout
+        footer={<Footer />}
         navbar={
           <Navbar>
             <NavbarSection>
-              <NavbarItem href="/" current={pathname === '/'}>
+              {/* The logo is the home link; a current-page underline beneath it reads as a stray rule. */}
+              <NavbarItem href="/" aria-label="mouse.rip home">
                 <Logo />
-                <span className="text-2xl text-pink-800 hover:text-pink-900 dark:text-pink-200 dark:hover:text-pink-300">
+                <span className="text-xl text-pink-800 hover:text-pink-900 min-[360px]:text-2xl dark:text-pink-200 dark:hover:text-pink-300">
                   mouse.rip
                 </span>
               </NavbarItem>
             </NavbarSection>
             <NavbarSpacer />
-            <NavbarSection>
-              <SearchButton className="w-auto" />
-            </NavbarSection>
+            {/* The home page leads with its own search field; a second one up here only splits attention. */}
+            {pathname !== '/' && (
+              <NavbarSection>
+                <SearchButton className="w-auto" />
+              </NavbarSection>
+            )}
           </Navbar>
         }
         sidebar={
           <Sidebar>
             <SidebarHeader>
-              <SidebarItem href="/" aria-label="Home">
+              <SidebarItem href="/" aria-label="mouse.rip home">
                 <Logo aria-hidden="true" />
-                <SidebarLabel className="rounded text-2xl text-pink-800 hover:text-pink-900 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:text-pink-200 dark:hover:text-pink-300">
+                <SidebarLabel className="rounded text-2xl text-pink-800 hover:text-pink-900 focus:outline-hidden focus:ring-2 focus:ring-pink-500 dark:text-pink-200 dark:hover:text-pink-300">
                   mouse.rip
                 </SidebarLabel>
               </SidebarItem>
             </SidebarHeader>
 
             <SidebarBody>
-              <div className="px-2 pb-2">
-                <SearchButton className="w-full" />
-              </div>
+              {pathname !== '/' && (
+                <div className="px-2 pb-2">
+                  <SearchButton className="w-full" />
+                </div>
+              )}
               <SidebarSection>
                 <SidebarItem
                   href="/"
                   current={pathname === '/'}
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="rounded focus:outline-hidden focus:ring-2 focus:ring-pink-500"
                 >
                   <HomeIcon aria-hidden="true" />
                   <SidebarLabel>Home</SidebarLabel>
                 </SidebarItem>
                 <SidebarItem
                   href="/guides"
-                  current={pathname.startsWith('/guide')}
-                  aria-label="Guides"
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  // Titles and trap effects are listed on the Guides page, so Guides stays lit there.
+                  current={
+                    pathname.startsWith('/guide') ||
+                    pathname.startsWith('/titles') ||
+                    pathname.startsWith('/trap-special-effects')
+                  }
+                  className="rounded focus:outline-hidden focus:ring-2 focus:ring-pink-500"
                 >
                   <AcademicCapIcon aria-hidden="true" />
-                  <SidebarLabel className="text-pink-800 hover:text-pink-900 dark:text-pink-200 dark:hover:text-pink-300">
-                    Guides
-                  </SidebarLabel>
+                  <SidebarLabel>Guides</SidebarLabel>
                 </SidebarItem>
                 <SidebarItem
                   href="/extensions"
                   current={pathname.startsWith('/extension')}
-                  aria-label="Extensions"
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="rounded focus:outline-hidden focus:ring-2 focus:ring-pink-500"
                 >
                   <BoltIcon aria-hidden="true" />
-                  <SidebarLabel className="text-cyan-800 hover:text-cyan-900 dark:text-cyan-200 dark:hover:text-cyan-300">
-                    Extensions
-                  </SidebarLabel>
+                  <SidebarLabel>Extensions</SidebarLabel>
                 </SidebarItem>
                 <SidebarItem
                   href="/tools"
-                  current={pathname.startsWith('/tool')}
-                  aria-label="Tools"
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+                  current={pathname === '/tools' || pathname.startsWith('/tools/') || TOOL_PATHS.includes(pathname)}
+                  className="rounded focus:outline-hidden focus:ring-2 focus:ring-pink-500"
                 >
                   <WrenchIcon aria-hidden="true" />
-                  <SidebarLabel className="text-green-800 hover:text-green-900 dark:text-green-200 dark:hover:text-green-300">
-                    Tools
-                  </SidebarLabel>
+                  <SidebarLabel>Tools</SidebarLabel>
                 </SidebarItem>
                 <SidebarItem
                   href="/spreadsheets"
                   current={pathname.startsWith('/spreadsheet')}
-                  aria-label="Spreadsheets"
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="rounded focus:outline-hidden focus:ring-2 focus:ring-pink-500"
                 >
                   <TableCellsIcon aria-hidden="true" />
-                  <SidebarLabel className="text-blue-800 hover:text-blue-900 dark:text-blue-200 dark:hover:text-blue-300">
-                    Spreadsheets
-                  </SidebarLabel>
+                  <SidebarLabel>Spreadsheets</SidebarLabel>
                 </SidebarItem>
                 <SidebarItem
                   href="/userscripts"
                   current={pathname.startsWith('/userscript')}
-                  aria-label="Userscripts"
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="rounded focus:outline-hidden focus:ring-2 focus:ring-pink-500"
                 >
                   <SwatchIcon aria-hidden="true" />
-                  <SidebarLabel className="text-purple-800 hover:text-purple-900 dark:text-purple-200 dark:hover:text-purple-300">
-                    Userscripts
-                  </SidebarLabel>
+                  <SidebarLabel>Userscripts</SidebarLabel>
                 </SidebarItem>
                 <SidebarItem
                   href="/mice"
                   current={
                     pathname.startsWith('/mice') || pathname.startsWith('/mouse') || pathname.startsWith('/groups')
                   }
-                  aria-label="Mice"
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="rounded focus:outline-hidden focus:ring-2 focus:ring-pink-500"
                 >
                   <MouseIcon aria-hidden="true" />
-                  <SidebarLabel className="text-emerald-800 hover:text-emerald-900 dark:text-emerald-200 dark:hover:text-emerald-300">
-                    Mice
-                  </SidebarLabel>
+                  <SidebarLabel>Mice</SidebarLabel>
                 </SidebarItem>
                 <SidebarItem
                   href="/items"
                   current={pathname.startsWith('/item')}
-                  aria-label="Items"
-                  className="rounded focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="rounded focus:outline-hidden focus:ring-2 focus:ring-pink-500"
                 >
                   <CheeseIcon aria-hidden="true" />
-                  <SidebarLabel className="text-amber-800 hover:text-amber-900 dark:text-amber-200 dark:hover:text-amber-300">
-                    Items
-                  </SidebarLabel>
+                  <SidebarLabel>Items</SidebarLabel>
                 </SidebarItem>
               </SidebarSection>
 
-              <SidebarDivider />
               <SidebarSection>
+                <SidebarHeading>Locations</SidebarHeading>
                 {locations.map((region) => (
-                  <div key={region.id}>
-                    <SidebarHeading
-                      className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400"
-                      aria-label={`${region.name} region`}
-                    >
-                      {region.name}
-                    </SidebarHeading>
-                    <div>
-                      {region.locations.map((location) => (
-                        <SidebarItem
-                          key={location.id}
-                          href={`/locations/${location.id}`}
-                          prefetch={false}
-                          current={pathname === `/locations/${location.id}`}
-                          className="rounded-md text-xs font-semibold text-gray-400 hover:bg-gray-800 hover:text-white"
-                        >
-                          <Avatar slot="icon" src={locationImageUrl(location.id)} alt={location.name} square />
-                          {location.name}
-                        </SidebarItem>
-                      ))}
-                    </div>
-                    <div className="mt-4 flex-1" aria-hidden="true" />
-                  </div>
+                  <LocationRegionGroup key={region.id} region={region} pathname={pathname} />
                 ))}
               </SidebarSection>
 
               <SidebarDivider />
               <SidebarSection>
                 <SidebarItem href="/about" current={pathname.startsWith('/about')}>
-                  <QuestionMarkCircleIcon />
+                  <QuestionMarkCircleIcon aria-hidden="true" />
                   <SidebarLabel>About</SidebarLabel>
                 </SidebarItem>
-                <SidebarItem href="https://github.com/MHCommunity">
+                <SidebarItem href="https://github.com/MHCommunity" target="_blank" rel="noopener noreferrer">
                   <GitHubIcon />
-                  <SidebarLabel>GitHub</SidebarLabel>
+                  <SidebarLabel>
+                    GitHub<span className="sr-only"> (opens in a new tab)</span>
+                  </SidebarLabel>
                 </SidebarItem>
-                <SidebarItem href="https://discord.gg/mousehunt">
+                <SidebarItem href="https://discord.gg/mousehunt" target="_blank" rel="noopener noreferrer">
                   <DiscordIcon />
-                  <SidebarLabel>Discord</SidebarLabel>
+                  <SidebarLabel>
+                    Discord<span className="sr-only"> (opens in a new tab)</span>
+                  </SidebarLabel>
                 </SidebarItem>
               </SidebarSection>
             </SidebarBody>
@@ -220,7 +264,6 @@ export function ApplicationLayout({ children }: ApplicationLayoutProps) {
         }
       >
         {children}
-        <Footer />
       </SidebarLayout>
     </SearchProvider>
   );

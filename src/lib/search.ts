@@ -1,15 +1,55 @@
 import { getResources, getLocations, getTitles, getEnvironments } from '@/lib/site-data';
-import { titleCase } from '@/utils';
+import { classificationName } from '@/lib/item-classifications';
 import miceGroups from '@/data/generated/mice-groups.json';
-import type { SlimMouse } from '@/types';
-import { loadItemIndex, loadMouseIndex, type IndexedItem } from '@/lib/client-index';
+import { loadItemIndex, loadMouseIndex, type IndexedItem, type IndexedMouse } from '@/lib/client-index';
+import { POWER_TYPES, bestPowerTypes, powerTypeSetLabel } from '@/lib/power-types';
 import { itemImageUrl, locationImageUrl, mouseGroupImageUrl, mouseImageUrl, titleImageUrl } from '@/lib/image-urls';
+import { TIMER_LOCATION_NAMES } from '@/lib/timer-locations';
+import { formatCount } from '@/utils';
 
 export type SearchGroup = 'Pages' | 'Mice' | 'Groups' | 'Locations' | 'Items' | 'Guides' | 'Resources' | 'Titles';
+
+/** What a record is, finer than its display group: lets "beginner guide" favour guides. */
+export type SearchKind =
+  | 'page'
+  | 'mouse'
+  | 'group'
+  | 'location'
+  | 'item'
+  | 'guide'
+  | 'tool'
+  | 'extension'
+  | 'spreadsheet'
+  | 'userscript'
+  | 'title';
+
+/** The numbers a hunter usually wants from a mouse, so search can answer without a page load. */
+export interface MouseAnswer {
+  /** Lowest minlucks first, each with the power types that share it. */
+  minlucks: { value: number; label: string }[];
+  weakTo: string[];
+  best?: IndexedMouse['best'];
+}
+
+/**
+ * A hand-set lean on where a record ranks. See WEIGHTS for the scale the numbers are on.
+ */
+export interface Weighting {
+  /** Added whenever the record is among the results, whatever was searched for. Negative pushes it down. */
+  always?: number;
+  /**
+   * Words this record should be found for, each with what it adds when that word is searched. The word doesn't
+   * have to be anywhere in the record's own text: `{ timer: 1200 }` both makes "timers" find it and decides how
+   * high. Written as the search stems them: singular, lowercase.
+   */
+  terms?: Record<string, number>;
+}
 
 export interface SearchRecord {
   id: string;
   group: SearchGroup;
+  kind: SearchKind;
+  mouse?: MouseAnswer;
   title: string;
   subtitle?: string;
   /** A short, highlighted fact shown on the right of the row (e.g. a mouse's minluck). */
@@ -19,6 +59,8 @@ export interface SearchRecord {
   image?: string;
   /** Haystack used for matching; normalized together with the query. */
   keywords: string;
+  /** A lean set where the record is made, for a whole class of records. WEIGHTS adds to it for single ones. */
+  weighting?: Weighting;
 }
 
 // Order controls how groups are stacked in the results list.
@@ -37,9 +79,15 @@ const PAGE_RECORDS: SearchRecord[] = [
   ['/', 'Home', 'Guides, tools, and resources', 'home start overview'],
   [
     '/mice',
-    'Mice & groups',
+    'Mice and groups',
     'Browse mice by group or power type',
     'mice mouse bestiary stats minluck groups clan tribe',
+  ],
+  [
+    '/mice/rankings',
+    'Mice ranked',
+    'By points, gold, or wisdom',
+    'mice rankings ranked most points gold wisdom best highest',
   ],
   ['/items', 'Items', 'Browse every item', 'items weapons bases charms cheese collectibles'],
   ['/guides', 'Guides', 'Walkthroughs and strategy', 'guides walkthrough strategy how to'],
@@ -48,64 +96,90 @@ const PAGE_RECORDS: SearchRecord[] = [
   ['/spreadsheets', 'Spreadsheets', 'Community sheets', 'spreadsheets sheets google docs'],
   ['/userscripts', 'Userscripts', 'Scripts for the game UI', 'userscripts scripts tampermonkey'],
   ['/minlucks', 'Minlucks', 'Minimum luck to guarantee a catch', 'minluck minlucks luck catch rate power type mouse'],
-  ['/titles', 'Titles & ranks', 'Ranks and wisdom requirements', 'titles ranks wisdom novice fabled'],
+  ['/titles', 'Titles and ranks', 'Ranks and wisdom requirements', 'titles ranks wisdom novice fabled'],
   ['/relic-hunter', 'Relic Hunter', "Where she's hiding and her riddles", 'relic hunter riddle hint'],
   [
     '/trap-special-effects',
-    'Trap Special Effects',
-    'Location-specific trap effects',
-    'trap special effects bonus location',
+    'Trap and base special effects',
+    'Location-specific trap and base effects',
+    'trap base special effects bonus location',
   ],
-  ['/valour-rift-floors', 'Valour Rift Floors', 'Floor-by-floor reference', 'valour rift floors tower eclipse'],
-  ['/essence-calculator', 'Essence Calculator', 'Floating Islands essence', 'essence calculator floating islands'],
+  ['/valour-rift-floors', 'Valour Rift floors', 'Floor-by-floor reference', 'valour rift floors tower eclipse'],
+  [
+    '/essence-calculator',
+    'Essence calculator',
+    'Living Garden essences',
+    'essence calculator living garden aleth ber cynd icuri',
+  ],
+  [
+    '/catch-rate-estimator',
+    'Catch rate estimator',
+    'Your catch rate for every mouse',
+    'catch rate estimator cre chance setup trap power luck minluck gold points wisdom per hunt',
+  ],
+  [
+    '/best-setup',
+    'Best setup',
+    'The best trap for where you hunt',
+    'best setup trap weapon base charm optimal which trap most gold points profit',
+  ],
+  ['/map-planner', 'Treasure map planner', 'Where to hunt for your map', 'treasure map planner plan mice solver route'],
+  [
+    '/rank-up-calculator',
+    'Rank-up calculator',
+    'Wisdom to your next title',
+    'rank up title wisdom calculator next rank',
+  ],
   [
     '/queso-pump-calculator',
-    'Queso Pump Calculator',
+    'Queso pump calculator',
     'Queso geyser pump planning',
     'queso pump calculator geyser river',
+  ],
+  // The home page's "Right now" strip is the one place every rotating location's timer is together.
+  [
+    '/#timers-heading',
+    'Location timers',
+    'What’s on now at the rotating locations, and what’s next',
+    'timers timer countdown right now tide season open closed forbidden grove balack cove seasonal garden toxic spill',
   ],
   ['/about', 'About', 'About mouse.rip', 'about contact info'],
 ].map(([href, title, subtitle, keywords]) => ({
   id: `page-${href}`,
   group: 'Pages' as const,
+  kind: 'page' as const,
   title,
   subtitle,
   href,
   keywords: `${title} ${subtitle} ${keywords}`.toLowerCase(),
 }));
 
-const TYPE_LABELS: Record<string, string> = {
-  arcane: 'Arcane',
-  draconic: 'Draconic',
-  forgotten: 'Forgotten',
-  hydro: 'Hydro',
-  physical: 'Physical',
-  shadow: 'Shadow',
-  tactical: 'Tactical',
-  law: 'Law',
-  rift: 'Rift',
-};
-
-function minluckSummary(mouse: SlimMouse): string | undefined {
-  const entries = Object.entries(mouse.minlucks ?? {}).filter(
-    ([, value]) => typeof value === 'number' && value > 0,
-  ) as [string, number][];
-  if (entries.length === 0) return undefined;
-
-  const min = Math.min(...entries.map(([, value]) => value));
-  const types = entries.filter(([, value]) => value === min).map(([type]) => TYPE_LABELS[type] ?? type);
-  const label = types.length > 3 ? `${types.slice(0, 3).join(', ')} +${types.length - 3}` : types.join(', ');
-  return `Minluck ${min} · ${label}`;
+function mouseAnswer(mouse: IndexedMouse): MouseAnswer {
+  const byValue = new Map<number, string[]>();
+  for (const type of POWER_TYPES) {
+    const value = mouse.minlucks?.[type as keyof NonNullable<IndexedMouse['minlucks']>];
+    if (typeof value !== 'number' || value <= 0) continue;
+    byValue.set(value, [...(byValue.get(value) ?? []), type]);
+  }
+  const minlucks = [...byValue.entries()]
+    .sort(([a], [b]) => a - b)
+    .map(([value, types]) => ({ value, label: powerTypeSetLabel(types) }));
+  return { minlucks, weakTo: bestPowerTypes(mouse.eff), best: mouse.best };
 }
 
-function toMouseRecord(mouse: SlimMouse): SearchRecord {
-  const subtitle = [mouse.group, mouse.subgroup].filter(Boolean).join(' · ') || undefined;
+function toMouseRecord(mouse: IndexedMouse): SearchRecord {
+  const subtitle =
+    mouse.group && mouse.subgroup ? `${mouse.group} (${mouse.subgroup})` : mouse.group || mouse.subgroup || undefined;
+  const answer = mouseAnswer(mouse);
+  const lowest = answer.minlucks[0];
   return {
     id: `mouse-${mouse.id}`,
     group: 'Mice',
+    kind: 'mouse',
     title: mouse.name,
     subtitle,
-    badge: minluckSummary(mouse),
+    badge: lowest ? `Minluck ${lowest.value} (${lowest.label})` : undefined,
+    mouse: answer,
     href: `/mice/${mouse.type.replaceAll('_', '-')}`,
     image: mouseImageUrl(mouse.type),
     keywords:
@@ -123,7 +197,9 @@ let staticRecords: SearchRecord[] | null = null;
 export function getStaticSearchRecords(): SearchRecord[] {
   if (staticRecords) return staticRecords;
 
-  const records: SearchRecord[] = [...PAGE_RECORDS];
+  // Copies, since an on-site tool's listing adds its words to them below.
+  const records: SearchRecord[] = PAGE_RECORDS.map((record) => ({ ...record }));
+  const pageByHref = new Map(records.map((record) => [record.href, record]));
 
   for (const group of miceGroups as {
     id: string;
@@ -135,11 +211,24 @@ export function getStaticSearchRecords(): SearchRecord[] {
     records.push({
       id: `group-${group.id}`,
       group: 'Groups',
+      kind: 'group',
       title: group.name,
-      subtitle: `${group.mouse_ids.length} mice`,
+      subtitle: formatCount(group.mouse_ids.length, 'mouse', 'mice'),
       href: `/groups/${group.id}`,
       image: mouseGroupImageUrl(group.id),
       keywords: `${group.name} ${group.description_short ?? ''} group mice clan tribe`.toLowerCase(),
+    });
+  }
+
+  for (const region of getLocations()) {
+    records.push({
+      id: `region-${region.id}`,
+      group: 'Locations',
+      kind: 'location',
+      title: region.name,
+      subtitle: `Region with ${region.locations.length} locations`,
+      href: `/regions/${region.id}`,
+      keywords: `${region.name} region ${region.locations.map((location) => location.name).join(' ')}`.toLowerCase(),
     });
   }
 
@@ -150,11 +239,16 @@ export function getStaticSearchRecords(): SearchRecord[] {
       records.push({
         id: `location-${location.id}`,
         group: 'Locations',
+        kind: 'location',
         title: location.name,
         subtitle: region.name,
         href: `/locations/${location.id}`,
         image: locationImageUrl(location.id),
         keywords: `${location.name} ${region.name} ${env?.description ?? ''} location area region`.toLowerCase(),
+        // Their pages show the stage that's on now and what's coming up.
+        weighting: TIMER_LOCATION_NAMES.includes(location.name)
+          ? { terms: { timer: TIMER_LOCATION_WEIGHT } }
+          : undefined,
       });
     }
   }
@@ -163,15 +257,23 @@ export function getStaticSearchRecords(): SearchRecord[] {
     const isGuide = item.category === 'guide';
     // Userscripts always resolve to their on-site detail page, like the Item card.
     const href = item.category === 'userscript' ? `/userscripts/${item.id}` : item.url;
+    const keywords =
+      `${item.name} ${item.description} ${item.category} ${item.source ?? ''} ${(item.tags ?? []).join(' ')}`.toLowerCase();
+    // The site's own tools are listed as resources too. One result per page: the listing's words go on the page's.
+    const page = pageByHref.get(href);
+    if (page) {
+      page.keywords = `${page.keywords} ${keywords}`;
+      continue;
+    }
     records.push({
       id: `item-${item.category}-${item.id}`,
       group: isGuide ? 'Guides' : 'Resources',
+      kind: item.category as SearchKind,
       title: item.name,
       subtitle: isGuide ? 'Guide' : capitalize(item.category),
       href,
       external: /^https?:/i.test(href),
-      keywords:
-        `${item.name} ${item.description} ${item.category} ${item.source ?? ''} ${(item.tags ?? []).join(' ')}`.toLowerCase(),
+      keywords,
     });
   }
 
@@ -179,6 +281,7 @@ export function getStaticSearchRecords(): SearchRecord[] {
     records.push({
       id: `title-${title.id}`,
       group: 'Titles',
+      kind: 'title',
       title: title.name,
       subtitle: 'Rank',
       href: '/titles',
@@ -191,15 +294,26 @@ export function getStaticSearchRecords(): SearchRecord[] {
   return records;
 }
 
+/** Everyday words for the game's item classifications ("bait" is what hunters call cheese). */
+const CLASSIFICATION_TERMS: Record<string, string> = {
+  bait: 'cheese',
+  weapon: 'trap',
+  trinket: 'charm',
+  convertible: 'chest box bundle open',
+  skin: 'trap skin',
+};
+
 function toGameItemRecord(item: IndexedItem): SearchRecord {
   return {
     id: `gameitem-${item.id}`,
     group: 'Items',
+    kind: 'item',
     title: item.name,
-    subtitle: titleCase(item.classification),
+    subtitle: classificationName(item.classification),
     href: `/items/${item.type.replaceAll('_', '-')}`,
     image: itemImageUrl(item.type),
-    keywords: `${item.name} ${item.classification} item`.toLowerCase(),
+    keywords:
+      `${item.name} ${item.classification} ${CLASSIFICATION_TERMS[item.classification] ?? ''} ${(item.tags ?? []).join(' ')} item`.toLowerCase(),
   };
 }
 
@@ -229,45 +343,330 @@ export function normalizeSearchText(value: string): string {
 
 // Records never change once built, so normalize each one once rather than on
 // every keystroke across thousands of records.
-const normalizedRecords = new WeakMap<SearchRecord, { keywords: string; title: string }>();
+const normalizedRecords = new WeakMap<SearchRecord, { keywords: string; title: string; titleWords: string[] }>();
 
 function normalizedRecord(record: SearchRecord) {
   let normalized = normalizedRecords.get(record);
   if (!normalized) {
-    normalized = { keywords: normalizeSearchText(record.keywords), title: normalizeSearchText(record.title) };
+    const title = normalizeSearchText(record.title);
+    // "fulmina" should find Ful'Mina, so the name also goes in with its apostrophes dropped.
+    const joined = /['‘’]/.test(record.title) ? ` ${normalizeSearchText(record.title.replace(/['‘’]/g, ''))}` : '';
+    normalized = {
+      // Leading space so word-start checks can look for " token".
+      keywords: ` ${normalizeSearchText(`${record.title} ${record.keywords}`)}${joined}`,
+      title,
+      titleWords: title.split(' '),
+    };
     normalizedRecords.set(record, normalized);
   }
   return normalized;
 }
 
-/** AND-match every token against keywords, then rank by how well the title matches. */
-export function searchRecords(records: SearchRecord[], query: string, limit = 40): SearchRecord[] {
-  const q = normalizeSearchText(query);
-  if (!q) return [];
+/** Words that say what kind of thing is wanted rather than what it's called. */
+const KIND_WORDS: Record<string, SearchKind[]> = {
+  mouse: ['mouse'],
+  mice: ['mouse'],
+  item: ['item'],
+  items: ['item'],
+  guide: ['guide'],
+  guides: ['guide'],
+  walkthrough: ['guide'],
+  tutorial: ['guide'],
+  spreadsheet: ['spreadsheet'],
+  spreadsheets: ['spreadsheet'],
+  sheet: ['spreadsheet'],
+  sheets: ['spreadsheet'],
+  tool: ['tool', 'page'],
+  tools: ['tool', 'page'],
+  calculator: ['tool', 'page'],
+  extension: ['extension'],
+  extensions: ['extension'],
+  addon: ['extension'],
+  script: ['userscript'],
+  scripts: ['userscript'],
+  userscript: ['userscript'],
+  userscripts: ['userscript'],
+  location: ['location'],
+  area: ['location'],
+  group: ['group'],
+  title: ['title'],
+  rank: ['title'],
+};
 
-  const tokens = q.split(/\s+/).filter(Boolean);
+/**
+ * Other ways hunters say the same thing. Matched at the start of a word, so a
+ * short alternative like "basic" can't match inside an unrelated name.
+ */
+const SYNONYMS: Record<string, string[]> = {
+  beginner: ['newbie', 'starter', 'starting', 'basic', 'essential', 'novice', 'intro', 'getting started', 'new player'],
+  newbie: ['beginner', 'starter', 'basic', 'essential', 'novice', 'new player'],
+  starter: ['beginner', 'starting', 'basic', 'essential', 'novice'],
+  start: ['beginner', 'starting', 'basic', 'essential'],
+  basic: ['beginner', 'essential', 'novice'],
+  basics: ['beginner', 'essential', 'novice'],
+  returning: ['return', 'returner', 'comeback'],
+  progression: ['progress', 'upgrade', 'route'],
+  calc: ['calculator', 'estimator'],
+  calculator: ['estimator', 'simulator'],
+  map: ['treasure map', 'mapping', 'scroll case'],
+  luck: ['minluck'],
+  // Community shorthand.
+  sb: ['super brie'],
+  vr: ['valour rift'],
+  fi: ['floating islands'],
+  lab: ['labyrinth'],
+  gwh: ['great winter hunt'],
+  bwr: ['bristle woods rift'],
+  frox: ['fort rox'],
+  zt: ['zugzwang'],
+  // The page is "Trap and base special effects".
+  tse: ['trap special effects', 'special effects'],
+  rh: ['relic hunter'],
+  uu: ['ultimate umbra'],
+  uc: ['ultimate charm'],
+  ml: ['minluck', 'minlucks'],
+  cre: ['catch rate estimator'],
+  lny: ['lunar new year'],
+  bb: ['bountiful beanstalk'],
+  price: ['markethunt', 'marketplace'],
+  prices: ['markethunt', 'marketplace'],
+  // The trap's name is the acronym spelled out.
+  acronym: ['arcane capturing rod of never yielding mystery'],
+  superbrie: ['super brie'],
+  sos: ['school of sorcery'],
+  mp: ['moussu picchu'],
+  mhct: ['mousehunt community tools'],
+};
+
+/** Whole phrases that mean something simpler; applied before the query is split into words. */
+const PHRASES: [RegExp, string][] = [
+  // Someone saying they're new wants a guide, not the "Beginner's Luck" item.
+  [/\b(new|newer|first time|fresh) (player|hunter)s?\b/g, 'beginner guide'],
+  [/\b(getting|get|just) started\b/g, 'beginner guide'],
+  // "i'm new" normalises to "i m new".
+  [/\b(i m|im|i am) new\b/g, 'beginner guide'],
+  [/\b(how|where) (to|do i) start\b/g, 'beginner guide'],
+  [/\bcoming back\b/g, 'returning'],
+];
+
+/** Dictionary lookups that ignore inherited keys, so a query like "constructor" is just a word. */
+function kindsFor(word: string): SearchKind[] | undefined {
+  return Object.hasOwn(KIND_WORDS, word) ? KIND_WORDS[word] : undefined;
+}
+
+function synonymsFor(word: string): string[] {
+  return Object.hasOwn(SYNONYMS, word) ? SYNONYMS[word] : [];
+}
+
+// "i'm" normalises to "i m".
+const STOPWORDS = new Set([
+  'a',
+  'an',
+  'the',
+  'for',
+  'to',
+  'of',
+  'in',
+  'on',
+  'and',
+  'how',
+  'what',
+  'where',
+  'is',
+  'my',
+  'i',
+  'im',
+  'm',
+  'am',
+  'me',
+]);
+
+/** A query word, plus the alternatives that also satisfy it. */
+interface QueryToken {
+  /** The word stemmed, so "guides" finds "guide". */
+  text: string;
+  /** The word as typed, for plurals stemming spells differently: "curiosities" isn't in "curiosity". */
+  typed: string;
+  alternatives: string[];
+  /** Whether a near miss counts: long words always, four-letter ones only when nothing matches as typed. */
+  fuzzy: boolean;
+}
+
+function stem(token: string): string {
+  if (token.length > 4 && token.endsWith('ies')) return `${token.slice(0, -3)}y`;
+  if (token.length > 3 && token.endsWith('s') && !token.endsWith('ss')) return token.slice(0, -1);
+  return token;
+}
+
+/** Edit distance, counting two swapped letters ("brei" for "brie") as one edit; gives up once past `max`. */
+function editDistance(a: string, b: string, max: number): number {
+  if (Math.abs(a.length - b.length) > max) return max + 1;
+  let before: number[] = [];
+  let previous = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    const current = [i];
+    let rowMin = i;
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      current[j] = Math.min(previous[j] + 1, current[j - 1] + 1, previous[j - 1] + cost);
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
+        current[j] = Math.min(current[j], before[j - 2] + 1);
+      }
+      rowMin = Math.min(rowMin, current[j]);
+    }
+    if (rowMin > max) return max + 1;
+    before = previous;
+    previous = current;
+  }
+  return previous[b.length];
+}
+
+type Match = 'literal' | 'synonym' | 'fuzzy';
+
+/** At this length a one-letter typo is close to too many other words ("tide" and "time"), so it's a fallback. */
+const SHORT_TYPO_LENGTH = 4;
+
+function matchToken(token: QueryToken, record: ReturnType<typeof normalizedRecord>): Match | null {
+  // Short words ("sb", "vr") only count at the start of a word, or "sb" would match "crossbow".
+  for (const text of token.typed === token.text ? [token.text] : [token.text, token.typed]) {
+    if (record.keywords.includes(text.length <= 3 ? ` ${text}` : text)) return 'literal';
+  }
+  for (const alternative of token.alternatives) {
+    if (record.keywords.includes(` ${alternative}`)) return 'synonym';
+  }
+  // Typos: only against the name, to keep noise down.
+  if (token.fuzzy) {
+    const max = token.text.length >= 8 ? 2 : 1;
+    for (const word of record.titleWords) {
+      if (word.length >= 4 && editDistance(token.text, word.slice(0, token.text.length + max), max) <= max) {
+        return 'fuzzy';
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Hand-set weights, by record id, for when the scoring below lands on the wrong thing. This is the place to
+ * push one record up or down without touching how everything else ranks.
+ *
+ * The numbers are on the same scale as the scores they're added to:
+ *   - a searched word found in a record's name adds 20 to 40, and in its description 15;
+ *   - the search being the start of the name adds 600, and the whole name 1,000;
+ *   - asking for a kind ("… guide") adds 1,500 to records of that kind.
+ * So 1,000 or so puts a record level with an exact name match, and a few dozen only breaks ties.
+ *
+ * Ids are `page-<path>`, `location-<id>`, `region-<id>`, `group-<id>`, `mouse-<id>`, `gameitem-<id>`,
+ * `title-<id>`, and `item-<category>-<id>` for guides, tools, extensions, spreadsheets and userscripts.
+ */
+export const WEIGHTS: Record<string, Weighting> = {
+  // "timers" is the exact name of the Timers+ userscript, which would otherwise come first; the site's own
+  // timers should.
+  'page-/#timers-heading': { terms: { timer: 1200 } },
+};
+
+/** Just under the timers page, and just over a userscript named for the word. */
+const TIMER_LOCATION_WEIGHT = 1100;
+
+/** Everything that leans on a record: what it was made with, and what WEIGHTS says about it by id. */
+function weightingFor(record: SearchRecord): Weighting | undefined {
+  const byId = Object.hasOwn(WEIGHTS, record.id) ? WEIGHTS[record.id] : undefined;
+  if (!byId || !record.weighting) return byId ?? record.weighting;
+  return {
+    always: (record.weighting.always ?? 0) + (byId.always ?? 0),
+    terms: { ...record.weighting.terms, ...byId.terms },
+  };
+}
+
+// A small lean towards the things people search for most when matches tie.
+const KIND_PRIOR: Partial<Record<SearchKind, number>> = {
+  mouse: 30,
+  page: 25,
+  guide: 20,
+  location: 20,
+  item: 10,
+};
+
+/** Enough to lift a location over a mouse whose name starts the same way ("floating", "toxic"), and no more. */
+const LOCATION_NAME_BONUS = 15;
+
+/**
+ * Every content word must match (literally, through a synonym, or within a typo
+ * or two); words like "guide" or "mouse" steer towards that kind instead of
+ * having to appear. Results come back best first.
+ */
+export function searchRecords(records: SearchRecord[], query: string, limit = 40): SearchRecord[] {
+  let q = normalizeSearchText(query);
+  if (!q) return [];
+  for (const [pattern, replacement] of PHRASES) q = q.replace(pattern, replacement);
+
+  const words = q.split(' ').filter(Boolean);
+  const contentWords = words.filter((word) => !STOPWORDS.has(word));
+  const kindWords = contentWords.filter((word) => kindsFor(word));
+  const nameWords = contentWords.filter((word) => !kindsFor(word));
+  // "spreadsheets" alone is a search for that page, not a filter with nothing to filter.
+  const required = (nameWords.length > 0 ? nameWords : contentWords.length > 0 ? contentWords : words).map(
+    (text): QueryToken => {
+      const stemmed = stem(text);
+      const token = { text: stemmed, typed: text, alternatives: [...synonymsFor(text), ...synonymsFor(stemmed)] };
+      if (stemmed.length > SHORT_TYPO_LENGTH) return { ...token, fuzzy: true };
+      if (stemmed.length < SHORT_TYPO_LENGTH) return { ...token, fuzzy: false };
+      // "relc" matches nothing, so it gets a near miss ("relic"); "tide" matches plenty, so it doesn't get "time".
+      const plain = { ...token, fuzzy: false };
+      return { ...token, fuzzy: !records.some((record) => matchToken(plain, normalizedRecord(record))) };
+    },
+  );
+  const wantedKinds = new Set(nameWords.length > 0 ? kindWords.flatMap((word) => kindsFor(word) ?? []) : []);
+  const nameQuery = nameWords.length > 0 ? nameWords.join(' ') : q;
+
   const scored: { record: SearchRecord; score: number }[] = [];
 
   for (const record of records) {
-    const { keywords, title } = normalizedRecord(record);
+    const normalized = normalizedRecord(record);
+    const weighting = weightingFor(record);
+    let score = weighting?.always ?? 0;
     let matchesAll = true;
-    for (const token of tokens) {
-      if (!keywords.includes(token)) {
+    for (const token of required) {
+      const match = matchToken(token, normalized);
+      // A weighted word counts as found even when it's nowhere in the record's own text.
+      const termWeight = weighting?.terms
+        ? [token.text, token.typed].find((word) => Object.hasOwn(weighting.terms!, word))
+        : undefined;
+      if (!match && termWeight === undefined) {
         matchesAll = false;
         break;
+      }
+      if (termWeight !== undefined) score += weighting!.terms![termWeight];
+      // "beginner" finding the Essentials guide by its name beats finding a passing mention.
+      const synonymInTitle = () =>
+        token.alternatives.some((alternative) => ` ${normalized.title}`.includes(` ${alternative}`));
+      if (match === 'literal') {
+        if (normalized.title.startsWith(token.text)) score += 40;
+        else if (normalized.titleWords.some((word) => word.startsWith(token.text))) score += 30;
+        else if (normalized.title.includes(token.text)) score += 20;
+        // The word itself in the description still beats a synonym there.
+        else score += synonymInTitle() ? 60 : 15;
+      } else if (match === 'synonym') {
+        score += synonymInTitle() ? 60 : 10;
       }
     }
     if (!matchesAll) continue;
 
-    let score = 0;
-    if (title === q) score += 1000;
-    else if (title.startsWith(q)) score += 600;
-    else if (title.includes(q)) score += 300;
+    const { title } = normalized;
+    // The whole query beats the query without its kind words: "rank up" is the Rank-up calculator before
+    // it's anything starting with "up".
+    // Shorthand that spells out a name exactly ("cre", "rh") is as good as typing the name.
+    const shorthandForTitle = required.some((token) => token.alternatives.includes(title));
+    if (title === q || shorthandForTitle) score += 1000;
+    else if (title === nameQuery) score += 950;
+    else if (title.startsWith(q) || title.startsWith(nameQuery)) {
+      score += title.startsWith(q) ? 600 : 550;
+      if (record.kind === 'location') score += LOCATION_NAME_BONUS;
+    } else if (title.includes(nameQuery)) score += 300;
 
-    for (const token of tokens) {
-      if (title.startsWith(token)) score += 40;
-      else if (title.includes(token)) score += 20;
-    }
+    // Asking for a kind ("… guide") outranks a name that merely starts the same way.
+    if (wantedKinds.has(record.kind)) score += 1500;
+    score += KIND_PRIOR[record.kind] ?? 0;
 
     scored.push({ record, score });
   }
@@ -275,9 +674,8 @@ export function searchRecords(records: SearchRecord[], query: string, limit = 40
   scored.sort((a, b) => b.score - a.score || a.record.title.length - b.record.title.length);
   if (scored.length <= limit) return scored.map((entry) => entry.record);
 
-  // Keep broad item/mouse matches from consuming the entire result budget before
-  // the dialog groups them. Two slots per matching group preserves navigation
-  // results, then the remaining slots go to the strongest matches globally.
+  // Keep broad item/mouse matches from consuming the whole result budget: two
+  // slots per matching group first, then the strongest matches overall.
   const selected = new Set<SearchRecord>();
   for (const group of GROUP_ORDER) {
     let reserved = 0;

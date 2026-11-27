@@ -19,12 +19,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/extensions',
     '/userscripts',
     '/mice',
+    '/mice/rankings',
     '/items',
     '/about',
     '/minlucks',
     '/valour-rift-floors',
     '/essence-calculator',
     '/queso-pump-calculator',
+    '/catch-rate-estimator',
+    '/best-setup',
+    '/map-planner',
+    '/rank-up-calculator',
     '/titles',
     '/trap-special-effects',
     '/relic-hunter',
@@ -47,6 +52,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     })),
   );
+
+  const regionRoutes = getLocations().map((region) => ({
+    url: `${BASE_URL}/regions/${region.id}`,
+    changeFrequency: 'monthly' as const,
+    priority: 0.5,
+  }));
 
   const userscriptRoutes = getResourcesByCategory('userscript').map((item) => ({
     url: `${BASE_URL}/userscripts/${item.id}`,
@@ -89,6 +100,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...staticRoutes,
     ...guideRoutes,
     ...locationRoutes,
+    ...regionRoutes,
     ...userscriptRoutes,
     ...mouseRoutes,
     ...groupRoutes,

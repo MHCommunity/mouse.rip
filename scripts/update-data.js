@@ -1,6 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+import { buildCatchRateData } from './catch-rate-data.js';
+
 const DATA_DIR = path.join(__dirname, '../src/data/generated');
 // Override to update from a local `wrangler dev` of the API.
 const API_URL = process.env.API_URL ?? 'https://api.mouse.rip';
@@ -69,7 +71,12 @@ const requireRecord = (value, label) => {
 
 // Labels allowed to shrink past the coverage floor on this run, for when the API
 // deliberately serves less (e.g. ALLOW_SHRINK=item-drops,location-loot).
-const ALLOW_SHRINK = new Set((process.env.ALLOW_SHRINK ?? '').split(',').map((label) => label.trim()).filter(Boolean));
+const ALLOW_SHRINK = new Set(
+  (process.env.ALLOW_SHRINK ?? '')
+    .split(',')
+    .map((label) => label.trim())
+    .filter(Boolean),
+);
 
 export const validateMinimumCoverage = (label, currentCount, previousCount, ratio = 0.9) => {
   const minimum = Math.max(1, Math.floor(previousCount * ratio));
@@ -83,6 +90,23 @@ export const validateMinimumCoverage = (label, currentCount, previousCount, rati
         `based on the previous ${previousCount} — refusing to replace the snapshot`,
     );
   }
+};
+
+// The game API sometimes returns names HTML-escaped (e.g. "&lt3 Gift Basket",
+// without the semicolon). React renders those literally, so decode them once here.
+const NAME_KEYS = new Set(['name', 'mouse_name', 'abbreviated_name', 'convertible']);
+const ENTITIES = { lt: '<', gt: '>', amp: '&', quot: '"', apos: "'", '#39': "'" };
+
+const decodeEntities = (value) => value.replace(/&(lt|gt|amp|quot|apos|#39);?/g, (_, entity) => ENTITIES[entity]);
+
+const decodeNameEntities = (value) => {
+  if (Array.isArray(value)) return value.map(decodeNameEntities);
+  if (value && 'object' === typeof value) {
+    for (const [key, child] of Object.entries(value)) {
+      value[key] = NAME_KEYS.has(key) && 'string' === typeof child ? decodeEntities(child) : decodeNameEntities(child);
+    }
+  }
+  return value;
 };
 
 const updateDataFiles = async () => {
@@ -193,6 +217,8 @@ const updateDataFiles = async () => {
           group: mouse.group,
           subgroup: mouse.subgroup,
           minlucks: mouse.minlucks,
+          // For the rank-up calculator's "in catches of" answer.
+          wisdom: mouse.wisdom,
           eff: Object.keys(eff).length > 0 ? eff : undefined,
         };
       });
@@ -213,7 +239,9 @@ const fetchJson = async (endpoint) => {
   if (undefined === json || null === json) {
     throw new TypeError(`${endpoint} returned no JSON data`);
   }
-  return json;
+  // Every response, not just the item list: names reach the site from several
+  // endpoints (reverse convertibles, attraction, map relations…).
+  return decodeNameEntities(json);
 };
 
 /**
@@ -252,7 +280,7 @@ export const fetchPerEntity = async (
           }
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const json = await response.json();
-          rows = requireArray(json, `${label} entity ${id}`);
+          rows = decodeNameEntities(requireArray(json, `${label} entity ${id}`));
         } catch (error) {
           lastError = error;
           if (attempt === 2) break;
@@ -309,6 +337,159 @@ export const validateItemReferences = (label, ids, itemIds) => {
       `${label}: references ${missing.length} item IDs absent from game-items.json: ` + missing.slice(0, 20).join(', '),
     );
   }
+};
+
+/**
+ * Loot seen in at least this share of locations is left off as event or global loot.
+ *
+ * Event and global drops (Party, Snowball and Wealth charms, SUPER|brie+, Ful'Mina's Gift…)
+ * turn up at nearly every location, often at high rates, and would top every
+ * location's loot list without saying anything about the place. Real location
+ * loot is the opposite: almost every item drops in fewer than five locations.
+ */
+export const GLOBAL_LOOT_SHARE = 0.4;
+
+/**
+ * Seasonal event loot that any mouse can drop while the event runs.
+ *
+ * Lunar New Year candles, Spring Egg Hunt eggs and charge charms, Winter Hunt
+ * gift boxes, birthday cupcakes, the yearly charms: it reaches too few locations
+ * for the share rule to catch, but says nothing about the place.
+ *
+ * Listed by ID, not matched by name: plenty of real location loot shares a word
+ * with event loot (Golden Goose Egg in Bountiful Beanstalk, Festive Spirit in
+ * Cinnamon Hill), and the Great Winter Hunt's own locations keep their loot.
+ * Each year's new charms need adding here.
+ */
+export const EVENT_LOOT_IDS = new Set([
+  151, // Red Pocket Envelope
+  437, // Red Winter Hunt Gift Box
+  547, // Antique Green Plaid Egg
+  549, // Antique Blue Argyle Egg
+  550, // Antique Stripy Red Egg
+  551, // Antique Wavy Purple Egg
+  552, // Antique Scalloped Pink Egg
+  553, // Gift Egg
+  554, // Antique Sharing Egg
+  555, // Antique Friendly Egg
+  556, // Antique Caring Egg
+  700, // Dreaded Charm
+  701, // Spooky Charm
+  823, // Party Charm
+  1029, // Purple Winter Hunt Gift Box
+  1164, // Eggscavator Charge Charm
+  1228, // Sugar Rush Plushie
+  1237, // Ultimate Spooky Charm
+  1288, // Festive Ultimate Luck Charm
+  1289, // Festive Ultimate Power Charm
+  1290, // Snowball Charm
+  1439, // High Charge Egg
+  1442, // Low Charge Egg
+  1443, // Lucky Egg
+  1448, // Medium Charge Egg
+  1451, // Gnawnia Rift Egg
+  1576, // Super Spooky Charm
+  1688, // Cupcake Charm
+  1699, // Enlarged Rift Egg
+  1714, // Eggstra Charge Charm
+  1715, // Egg Basket Box Trap Skin
+  1990, // Orange Winter Hunt Gift Box
+  2038, // Extra Sweet Cupcake Charm
+  2262, // 2017 Charm
+  2269, // Lunar Lantern Candle
+  2286, // Sprinkly Sweet Cupcake Charm
+  2307, // Enerchi Egg
+  2523, // Extreme Snowball Charm
+  2527, // Super Snowball Charm
+  2528, // Ultimate Snowball Charm
+  2539, // 2018 Charm
+  2547, // Red Lunar Lantern Candle
+  2598, // Rainy Egg
+  2603, // Windy Egg
+  2701, // Extreme Spooky Charm
+  2734, // 2019 Charm
+  2799, // Over 9,000 Egg
+  2801, // Queso Pump Egg
+  2803, // Wild Tonic Egg
+  2806, // Lightning Storm Egg
+  2812, // Dragonshard Egg
+  2957, // 2020 Charm
+  2958, // Rift 2020 Charm
+  2959, // Rift Extreme Snowball Charm
+  2960, // Rift Snowball Charm
+  2961, // Rift Super Snowball Charm
+  2962, // Rift Ultimate Snowball Charm
+  2990, // Extreme Party Charm
+  2991, // Super Party Charm
+  2992, // Ultimate Party Charm
+  2995, // 20K Golden Egg
+  3153, // 2021 Charm
+  3154, // Rift 2021 Charm
+  3366, // 2022 Charm
+  3367, // Rift 2022 Charm
+  3527, // 2023 Charm
+  3528, // Rift 2023 Charm
+  3630, // 2024 Charm
+  3631, // Rift 2024 Charm
+  3810, // Golden Winter Hunt Gift Box
+  3817, // 2025 Charm
+  3818, // Rift 2025 Charm
+  3957, // 2026 Charm
+  3958, // Rift 2026 Charm
+]);
+
+/**
+ * Event loot that is real loot in the event's own locations but a stray drop
+ * anywhere else. Keyed by item ID, with the locations (as keyed in
+ * location-loot) where it belongs.
+ */
+const WINTER_HUNT_LOCATIONS = ['event area', 'cinnamon hill', 'golem workshop', 'ice fortress'];
+export const EVENT_LOOT_HOMES = new Map([
+  [3521, WINTER_HUNT_LOCATIONS], // Festive Spirit
+]);
+
+/** Whether a drop at this location says something about the place rather than an event. */
+export const isLocationLoot = (itemId, location) => {
+  if (EVENT_LOOT_IDS.has(itemId)) return false;
+  const homes = EVENT_LOOT_HOMES.get(itemId);
+  return !homes || homes.includes(location);
+};
+
+export const withoutGlobalLoot = (lootByLocation) => {
+  const locationCount = Object.keys(lootByLocation).length;
+  const seenIn = new Map();
+  for (const rows of Object.values(lootByLocation)) {
+    for (const row of rows) seenIn.set(row.id, (seenIn.get(row.id) ?? 0) + 1);
+  }
+  const isGlobal = (id) => seenIn.get(id) >= locationCount * GLOBAL_LOOT_SHARE;
+  return Object.fromEntries(
+    Object.entries(lootByLocation).map(([location, rows]) => [location, rows.filter((row) => !isGlobal(row.id))]),
+  );
+};
+
+/**
+ * The most useful single place to hunt a mouse, for the search index.
+ *
+ * The highest rate without a charm, preferring rows with a real sample (MH-Tools
+ * rows have none and count as fine). When every row needs a charm, the charm is
+ * part of the answer, so it's kept. Keep in step with bestAttractionRow() in
+ * src/lib/attraction.ts.
+ */
+export const bestSpot = (rows) => {
+  const plain = rows.filter((row) => !row.charm);
+  const pool = plain.length > 0 ? plain : rows;
+  const trusted = pool.filter((row) => null === row.total_hunts || row.total_hunts >= 100);
+  const pick = [...(trusted.length > 0 ? trusted : pool)].sort((a, b) => b.rate - a.rate)[0];
+  if (!pick) return undefined;
+  return {
+    location: pick.location,
+    stage: pick.stage ?? undefined,
+    cheese: pick.cheese,
+    charm: pick.charm ?? undefined,
+    rate: pick.rate,
+    // Null for MH-Tools rates, which publish no sample size.
+    hunts: pick.total_hunts ?? null,
+  };
 };
 
 /**
@@ -463,6 +644,12 @@ const updateRelationalData = async (items, mice) => {
   // at the location would hide that one mouse always drops it. Built from every
   // row, not just the ones the item pages keep.
   const itemsById = new Map(items.map((item) => [item.id, item]));
+  // The mice that live at each location. A drop recorded there from any other
+  // mouse came from an event visitor, not from the place itself.
+  const regionList = pendingFiles.has('mice-regions')
+    ? JSON.parse(pendingFiles.get('mice-regions'))
+    : readGenerated('mice-regions', []);
+  const nativeMice = new Map(regionList.map((region) => [region.name.toLowerCase(), new Set(region.mouse_ids)]));
   const lootByLocation = new Map();
   for (const [mouseId, rows] of Object.entries(loot)) {
     const mouse = miceById.get(Number(mouseId));
@@ -470,6 +657,10 @@ const updateRelationalData = async (items, mice) => {
       // From one mouse at a location, a small sample is mostly charm effects and event loot.
       if (row.catches < MIN_LOCATION_LOOT_CATCHES) continue;
       const location = (DROP_LOCATION_ALIASES[row.location] ?? row.location).toLowerCase();
+      const native = nativeMice.get(location);
+      if (native && !native.has(Number(mouseId))) continue;
+      if (!isLocationLoot(row.item_id, location)) continue;
+      const item = itemsById.get(row.item_id);
       const byItem = lootByLocation.get(location) ?? new Map();
       lootByLocation.set(location, byItem);
       const current = byItem.get(row.item_id);
@@ -479,7 +670,6 @@ const updateRelationalData = async (items, mice) => {
       ) {
         continue;
       }
-      const item = itemsById.get(row.item_id);
       byItem.set(row.item_id, {
         id: item.id,
         slug: slugify(item.type),
@@ -496,11 +686,13 @@ const updateRelationalData = async (items, mice) => {
   validateMinimumCoverage('location-loot', lootByLocation.size, Object.keys(readGenerated('location-loot', {})).length);
   stage(
     'location-loot',
-    Object.fromEntries(
-      [...lootByLocation].map(([location, byItem]) => [
-        location,
-        [...byItem.values()].sort((a, b) => b.rate - a.rate || a.name.localeCompare(b.name)),
-      ]),
+    withoutGlobalLoot(
+      Object.fromEntries(
+        [...lootByLocation].map(([location, byItem]) => [
+          location,
+          [...byItem.values()].sort((a, b) => b.rate - a.rate || a.name.localeCompare(b.name)),
+        ]),
+      ),
     ),
   );
 
@@ -530,9 +722,30 @@ const updateRelationalData = async (items, mice) => {
     Object.keys(attraction).length,
     Object.keys(readGenerated('mice-attraction', {})).length,
   );
+  const storedAttraction = Object.fromEntries(
+    Object.entries(attraction).map(([id, rows]) => [id, best(rows, 'rate', 50)]),
+  );
+  stage('mice-attraction', storedAttraction);
+  stage('map-planner', buildMapPlanner(attraction));
+
+  // The catch rate estimator and Best Setup: every population, with mouse and item stats to work catch rates out.
+  console.log('Updating catch-rate...');
+  const creGroups = requireRecord(await fetchJson('cre-mice-groups'), 'cre-mice-groups');
+  stage('catch-rate', buildCatchRateData({ attraction: populations, mice, items, groups: creGroups }));
+
+  // Fold each mouse's best place to hunt into the client search index, so search
+  // can answer "where do I catch it" without shipping the full attraction table.
+  // Picked from the stored rows, so it matches what the mouse page shows.
+  const searchIndex = pendingFiles.has('mice-search')
+    ? JSON.parse(pendingFiles.get('mice-search'))
+    : readGenerated('mice-search', []);
   stage(
-    'mice-attraction',
-    Object.fromEntries(Object.entries(attraction).map(([id, rows]) => [id, best(rows, 'rate', 50)])),
+    'mice-search',
+    searchIndex.map((mouse) => {
+      const { best: _previous, ...rest } = mouse;
+      const spot = bestSpot(storedAttraction[mouse.id] ?? []);
+      return spot ? { ...rest, best: spot } : rest;
+    }),
   );
 
   // The maps each mouse turns up on. Maps seen fewer than five times, and
@@ -556,6 +769,59 @@ const updateRelationalData = async (items, mice) => {
   // data-updated (the refresh time for sitemap lastmod) is written by
   // flushPendingFiles, and only when some other file changed.
 };
+
+/** Below this, a setup can't help plan a map, so the planner never sees it. In hundredths of a percent. */
+const PLANNER_MIN_RATE = 100;
+
+/**
+ * The attraction rows the map planner needs, small enough to send to the browser.
+ *
+ * One row per mouse and setup (location, stage, cheese), without a charm where MHCT
+ * has that, since a charm is a choice the planner shouldn't make for you. Names are
+ * stored once in lookup tables and rows point into them by index.
+ */
+export function buildMapPlanner(attraction) {
+  const tables = { locations: [], stages: [''], cheeses: [], charms: [''] };
+  const indexes = Object.fromEntries(
+    Object.keys(tables).map((key) => [key, new Map(tables[key].map((v, i) => [v, i]))]),
+  );
+  const indexOf = (key, value) => {
+    let index = indexes[key].get(value);
+    if (index === undefined) {
+      index = tables[key].push(value) - 1;
+      indexes[key].set(value, index);
+    }
+    return index;
+  };
+
+  const mice = {};
+  for (const [id, rows] of Object.entries(attraction)) {
+    const plain = rows.filter((row) => !row.charm);
+    const bySetup = new Map();
+    for (const row of plain.length > 0 ? plain : rows) {
+      if (row.rate < PLANNER_MIN_RATE || !row.location || !row.cheese) continue;
+      const key = `${row.location}|${row.stage ?? ''}|${row.cheese}`;
+      const current = bySetup.get(key);
+      if (!current || row.rate > current.rate) bySetup.set(key, row);
+    }
+    if (bySetup.size === 0) continue;
+    mice[id] = [...bySetup.values()]
+      .sort((a, b) => b.rate - a.rate)
+      .map((row) => {
+        const entry = [
+          indexOf('locations', row.location),
+          indexOf('stages', row.stage ?? ''),
+          indexOf('cheeses', row.cheese),
+          row.rate,
+          row.total_hunts ?? 0,
+        ];
+        if (row.charm) entry.push(indexOf('charms', row.charm));
+        return entry;
+      });
+  }
+
+  return { ...tables, mice };
+}
 
 if (import.meta.main) {
   updateDataFiles().catch((error) => {

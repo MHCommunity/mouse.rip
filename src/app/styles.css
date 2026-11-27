@@ -1,13 +1,35 @@
 @import 'tailwindcss';
 
 :root {
-  --background: #fafafa;
-  --foreground: #18181b;
+  --background: #fbfaf8;
+  --foreground: #1c1917;
   --surface: #ffffff;
-  --surface-subtle: #f4f4f5;
-  --border: #e4e4e7;
+  --surface-subtle: #f5f4f1;
+  --border: #e7e4df;
   --accent: #be185d;
   --accent-strong: #9d174d;
+}
+
+/*
+ * Warm greys in place of Tailwind's cool zinc. Each step has zinc's lightness, so contrast is unchanged; only
+ * the hue moves from blue-grey to a warm stone. Every zinc utility on the site picks these up.
+ */
+@theme {
+  --color-zinc-50: oklch(98.5% 0.002 75);
+  --color-zinc-100: oklch(97% 0.003 75);
+  --color-zinc-200: oklch(92.3% 0.005 60);
+  --color-zinc-300: oklch(86.9% 0.007 60);
+  --color-zinc-400: oklch(70.9% 0.012 58);
+  --color-zinc-500: oklch(55.3% 0.014 58);
+  --color-zinc-600: oklch(44.4% 0.012 65);
+  --color-zinc-700: oklch(37.4% 0.011 65);
+  --color-zinc-800: oklch(26.8% 0.008 50);
+  --color-zinc-900: oklch(21.6% 0.007 55);
+  --color-zinc-950: oklch(14.7% 0.005 50);
+
+  /* Softer corners: cards, lists and inputs one step rounder than Tailwind's defaults. */
+  --radius-lg: 0.625rem;
+  --radius-xl: 0.875rem;
 }
 
 @theme inline {
@@ -19,11 +41,11 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #09090b;
-    --foreground: #f4f4f5;
-    --surface: #18181b;
-    --surface-subtle: #27272a;
-    --border: #3f3f46;
+    --background: #0c0a09;
+    --foreground: #f5f4f1;
+    --surface: #1c1917;
+    --surface-subtle: #292524;
+    --border: #44403c;
     --accent: #f472b6;
     --accent-strong: #f9a8d4;
   }
@@ -42,6 +64,12 @@
   }
 }
 
+/* A long unbroken string or a wide table would otherwise make the whole page scroll sideways on a phone. */
+html,
+body {
+  overflow-x: clip;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -56,6 +84,12 @@ body {
 
 /* Fallback focus style; component utilities can supply their own indicator. */
 @layer base {
+  /* Native checkboxes and radios in the site's pink rather than the browser's blue. */
+  input[type='checkbox'],
+  input[type='radio'] {
+    accent-color: var(--color-pink-600);
+  }
+
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
@@ -89,8 +123,28 @@ table,
     animation-iteration-count: 1 !important;
   }
 
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: none;
+  /* Every transition, the sidebar's sliding indicator included. */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/*
+ * A soft shadow on whichever side of a wide table has more to scroll to. The local layers cover the shadows at each
+ * end and scroll with the content, so a shadow only shows while there's something hidden behind it.
+ */
+@utility scroll-shadows {
+  --scroll-cover: var(--color-white);
+  --scroll-shade: rgb(0 0 0 / 0.12);
+  background:
+    linear-gradient(to right, var(--scroll-cover) 30%, transparent) left / 2.5rem 100% no-repeat local,
+    linear-gradient(to left, var(--scroll-cover) 30%, transparent) right / 2.5rem 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, var(--scroll-shade), transparent) left / 0.75rem 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, var(--scroll-shade), transparent) right / 0.75rem 100% no-repeat scroll;
+  @media (prefers-color-scheme: dark) {
+    --scroll-cover: var(--color-zinc-900);
+    --scroll-shade: rgb(0 0 0 / 0.5);
   }
 }

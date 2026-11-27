@@ -1,34 +1,41 @@
 import React from 'react';
 
-import { Link } from 'next-view-transitions';
+import { Link } from '@/components/site-link';
 
 import { mouseSlug } from '@/lib/game-data';
 import { mouseImageUrl } from '@/lib/image-urls';
 import type { Mouse } from '@/types';
 
 /** A responsive grid of mouse cards that link to each mouse's page. */
-export function MouseGrid({ mice }: { mice: Mouse[] }) {
+export function MouseGrid({
+  mice,
+  showSubgroup = true,
+}: {
+  mice: Mouse[];
+  /** Off under a heading that already names the subgroup. */
+  showSubgroup?: boolean;
+}) {
   return (
     <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
       {mice.map((mouse) => (
         <li key={mouse.id}>
           <Link
             href={`/mice/${mouseSlug(mouse.type)}`}
-            className="group flex items-center gap-3 rounded-xl border border-zinc-200 bg-white p-3 shadow-sm transition hover:border-emerald-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-emerald-800"
+            className="group flex items-center gap-3 rounded-2xl ring-1 ring-zinc-200 bg-white p-3 shadow-xs transition hover:ring-pink-300 hover:shadow-md dark:ring-zinc-800 dark:bg-zinc-900 dark:hover:ring-pink-900"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={mouseImageUrl(mouse.type)}
               alt=""
               loading="lazy"
-              className="size-10 shrink-0 rounded-md object-cover ring-1 ring-zinc-950/5 dark:ring-white/10"
+              className="size-10 shrink-0 object-cover ring-1 ring-zinc-950/5 dark:ring-white/10"
             />
             <div className="min-w-0">
-              <div className="truncate text-sm font-medium text-zinc-900 transition-colors group-hover:text-emerald-700 dark:text-zinc-100 dark:group-hover:text-emerald-300">
+              <div className="truncate text-sm font-medium text-zinc-900 transition-colors group-hover:text-pink-700 dark:text-zinc-100 dark:group-hover:text-pink-300">
                 {mouse.name}
               </div>
-              {mouse.subgroup && (
-                <div className="truncate text-xs text-zinc-400 dark:text-zinc-500">{mouse.subgroup}</div>
+              {showSubgroup && mouse.subgroup && (
+                <div className="truncate text-xs text-zinc-500 dark:text-zinc-400">{mouse.subgroup}</div>
               )}
             </div>
           </Link>
