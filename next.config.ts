@@ -1,10 +1,11 @@
 import type { NextConfig } from 'next';
 
 /**
- * What the pages load today, written down as a policy. Sent as Report-Only for now: the browser logs anything
- * that would break it without blocking, so it can be checked on the live site (Cloudflare can add scripts of its
- * own) before it's enforced. 'unsafe-inline' stays because prerendered pages carry inline bootstrap scripts,
- * which rules out per-request nonces.
+ * What the pages load today, written down as a policy.
+ *
+ * Sent as Report-Only for now: the browser logs anything that would break it without blocking, so it can be
+ * checked on the live site (Cloudflare can add scripts of its own) before it's enforced. 'unsafe-inline' stays
+ * because prerendered pages carry inline bootstrap scripts, which rules out per-request nonces.
  */
 const CONTENT_SECURITY_POLICY = [
   "default-src 'self'",

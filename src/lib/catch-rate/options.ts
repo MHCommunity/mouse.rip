@@ -80,10 +80,11 @@ export function applyChanges(catalog: Catalog, setup: Setup, changes: Partial<Se
 }
 
 /**
- * The cheese with the most hunts recorded at a location and stage, as the one to start on. Alphabetical order
- * opened the Mountain on Abominable Asiago and the Toxic Spill on a cheese hardly anyone arms. A cheese hunted
- * without any particular charm comes first, since one that only has data with a charm shows nothing until the
- * charm is picked too.
+ * The cheese with the most hunts recorded at a location and stage, as the one to start on.
+ *
+ * Alphabetical order would open the Mountain on Abominable Asiago and the Toxic Spill on a cheese hardly anyone
+ * arms. A cheese hunted without any particular charm comes first, since one that only has data with a charm shows
+ * nothing until the charm is picked too.
  */
 function mostHuntedCheese(catalog: Catalog, location: string, stage: string): string | undefined {
   let best: Catalog['populations'][number] | undefined;
