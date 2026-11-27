@@ -132,7 +132,7 @@ export default async function UserscriptPage({ params }: { params: Promise<{ id:
           <li>
             Click the <strong className="font-semibold text-zinc-950 dark:text-white">install</strong> button above.
           </li>
-          <li>Refresh the MouseHunt page to see the changes.</li>
+          <li>Reload the MouseHunt page to see the changes.</li>
         </ol>
       </section>
     </div>

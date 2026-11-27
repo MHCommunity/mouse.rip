@@ -1,4 +1,4 @@
-A guide to the Labyrinth and Zokor (shortened to **Labykor**) — a major portion of the Duke's adventure for the non-Rift portions. Adapted from Aard's original guide.
+A guide to the Labyrinth and Zokor (together, **Labykor**), a large part of the non-Rift progress at Duke. Adapted from Aard's original guide.
 
 > If the price of Glowing Gruyere Cheese in the Marketplace ever rises to the same as SuperBrie+ or higher, go back to the old guides on farming Nightshade to craft Glowing Gruyere Cheese before attempting the steps here.
 

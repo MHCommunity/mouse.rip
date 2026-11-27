@@ -72,7 +72,7 @@ export function LiveStageNote({ stages }: { stages: string[] }) {
   return (
     <p className="mt-2 text-sm text-zinc-700 dark:text-zinc-300">
       <span className="font-medium text-zinc-900 dark:text-white">{live}</span> is running now. Mice best caught in
-      another stage are greyed out.
+      another stage are grayed out.
     </p>
   );
 }

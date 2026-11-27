@@ -1,4 +1,4 @@
-A quick reference for the pepper / Havarti cheese system in the **Jungle of Dread** (Tribal Isles). You grow peppers from three seed colours — **Red (R)**, **Yellow (Y)**, and **Blue (B)** — and the combination of seeds you plant determines which pepper you grow, which Havarti cheese it makes, and therefore which mouse you'll attract.
+A quick reference for the pepper / Havarti cheese system in the **Jungle of Dread** (Tribal Isles). You grow peppers from three seed colors, **Red (R)**, **Yellow (Y)**, and **Blue (B)**, and the combination of seeds you plant determines which pepper you grow, which Havarti cheese it makes, and therefore which mouse you'll attract.
 
 ## Seed combinations → cheese → mouse
 
@@ -14,7 +14,7 @@ A quick reference for the pepper / Havarti cheese system in the **Jungle of Drea
 
 ## Notes
 
-- Each single-colour or two-colour mix targets one specific mouse, so plant for the mouse you still need rather than farming blind.
+- Each single-color or two-color mix targets one specific mouse, so plant for the mouse you still need rather than farming blind.
 - Minluck values are the lowest luck that guarantees a catch with Shadow, the only power type that works on all six. Hit the minluck and you'll never miss.
 - The **three-seed** combination (Red + Yellow + Blue) grows the special pepper used for the area's hardest targets; their minlucks (139 / 26 / 82) are much higher, so bring your best setup.
 - Use the [catch rate estimator](/catch-rate-estimator) or the [minluck table](/minlucks) to check the luck you need for your own trap and power type.

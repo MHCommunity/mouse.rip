@@ -146,7 +146,7 @@
   {
     "id": "catch-rate-estimator",
     "name": "MH-Tools Catch Rate Estimator",
-    "description": "The original that mouse.rip’s estimator is built on. It also shows gold, points and tournament points, and fills in your setup from the game with a bookmarklet.",
+    "description": "The original that mouse.rip’s estimator is built on. It also shows gold, points, and tournament points, and fills in your setup from the game with a bookmarklet.",
     "url": "https://tsitu.github.io/MH-Tools/cre.html",
     "source": "tsitu.github.io",
     "category": "tool",
@@ -269,7 +269,7 @@
   {
     "id": "queso-pump-calculator",
     "name": "Queso pump calculator",
-    "description": "The fastest Queso cheese for farming the Nachore that pumps the volcano.",
+    "description": "The fastest Queso cheese for farming the Nachore that upgrades the Queso River pump.",
     "url": "/queso-pump-calculator",
     "category": "tool",
     "tags": [
@@ -286,7 +286,7 @@
   {
     "id": "catch-rates",
     "name": "Catch rate estimator",
-    "description": "Pick a location and trap to see the attraction rate, catch rate and minluck for every mouse there.",
+    "description": "Pick a location and trap to see the attraction rate, catch rate, and minluck for every mouse there.",
     "url": "/catch-rate-estimator",
     "category": "tool",
     "tags": [
@@ -297,7 +297,7 @@
   {
     "id": "best-setup",
     "name": "Best setup",
-    "description": "Rank every weapon and base you own by how many mice they'd catch at a location, or aim for one mouse.",
+    "description": "Rank every weapon and base you own by how many mice they'd catch at a location, or aim for one mouse, points, or gold.",
     "url": "/best-setup",
     "category": "tool",
     "tags": [
@@ -329,7 +329,7 @@
   {
     "id": "titles",
     "name": "Titles and ranks",
-    "description": "Every MouseHunt rank in order, with its badge.",
+    "description": "Every MouseHunt rank in order, with what it unlocks and the wisdom it takes.",
     "url": "/titles",
     "category": "tool",
     "tags": [
@@ -372,7 +372,7 @@
   {
     "id": "ranks-beyond-mhbasics",
     "name": "Shellnut Guide",
-    "description": "A guide from Baron rank onwards, outlining key traps, bases, and areas to focus on.",
+    "description": "Which traps, bases, and areas to work on from Baron onward.",
     "url": "/guides/ranks-beyond-mhbasics",
     "sourceUrl": "https://pastebin.com/mfXiFLYA",
     "category": "guide",
@@ -383,7 +383,7 @@
   {
     "id": "shellnut-checklist",
     "name": "Shellnut Checklist",
-    "description": "A checklist of key things to complete from Baron to Archduke/duchess ranks.",
+    "description": "What to get done between Baron and Archduke or Archduchess.",
     "url": "/guides/shellnut-checklist",
     "sourceUrl": "https://pastebin.com/bNr3v7Ws",
     "category": "guide",

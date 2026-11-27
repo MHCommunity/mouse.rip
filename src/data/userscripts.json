@@ -198,7 +198,7 @@
   {
     "id": "consolidated-map-colour-coder",
     "name": "Consolidated Map Colour Coder",
-    "description": "Colours the mice on a treasure map by group and counts the uncaught mice in each. Comes with groups for common maps, or make your own.",
+    "description": "Colors the mice on a treasure map by group and counts the uncaught mice in each. Comes with groups for common maps, or make your own.",
     "url": "https://greasyfork.org/en/scripts/428959-mh-consolidated-map-colour-coder",
     "category": "userscript",
     "tags": [

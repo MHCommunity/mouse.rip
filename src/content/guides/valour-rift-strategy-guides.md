@@ -1,6 +1,6 @@
 A collection of advanced Valour Rift strategy guides covering climbing performance, retreating, Ultimate Charm farming, and the UC Prestige push. Originally written by **Dajka** on the MouseHunt Discord.
 
-These build on top of the [Valour Rift Guide](/guides/valour-rift-guide) and [Valour Rift Additional Info](/guides/valour-rift-additional-info) — start there if you're new to the area.
+These build on top of the [Valour Rift Guide](/guides/valour-rift-guide) and [Valour Rift Additional Info](/guides/valour-rift-additional-info). Start there if you're new to the area.
 
 ## Comparing climbing performance
 
