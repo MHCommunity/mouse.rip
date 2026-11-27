@@ -8,6 +8,7 @@ for (const viewport of [
     await page.setViewportSize(viewport);
     await page.goto('/items');
     const toggle = page.getByText('Tradable only');
+    await expect(toggle).toBeVisible();
     const before = await toggle.boundingBox();
 
     await page.getByLabel('Search items by name').fill('egg');
