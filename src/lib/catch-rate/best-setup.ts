@@ -9,7 +9,7 @@ import type { Catalog, Population } from './data';
 import { attractionRate, findPopulation, mouseCatch, trapStats, type Setup, type Trap } from './engine';
 import { resolveStage } from './options';
 
-export type Goal = { kind: 'catches' } | { kind: 'mouse'; mouse: string };
+export type Goal = { kind: 'catches' } | { kind: 'points' } | { kind: 'gold' } | { kind: 'mouse'; mouse: string };
 
 export interface Candidates {
   weapons: string[];
@@ -28,6 +28,9 @@ export interface RankedSetup {
   catches: number;
   /** Share of attracted mice caught, 0–1. */
   catchRate: number;
+  /** Average points and gold a hunt earns from its catches. */
+  points: number;
+  gold: number;
   /** The catch rate against the mouse it does worst against, 0–1: how much the setup has to spare. */
   weakest: number;
   /** For a target mouse: its catches per 100 hunts and catch rate. */
@@ -37,19 +40,24 @@ export interface RankedSetup {
 /** How many of the strongest pairs get each charm tried on them. */
 const CHARM_TRIALS = 50;
 
-function score(result: RankedSetup, goal: Goal): number {
-  return goal.kind === 'mouse' ? (result.target?.catches ?? 0) : result.catches;
+/** The figure a goal ranks setups on. */
+export function score(result: RankedSetup, goal: Goal): number {
+  if (goal.kind === 'mouse') return result.target?.catches ?? 0;
+  if (goal.kind === 'points') return result.points;
+  if (goal.kind === 'gold') return result.gold;
+  return result.catches;
 }
 
 /**
- * A setup's score to the precision the results print it at: a tenth of a catch, or a hundredth for one mouse.
+ * A setup's score to the precision the results print it at: a tenth of a catch, a hundredth for one mouse, or
+ * whole points and gold.
  *
  * Setups are ranked on this, not the full figure. Past what's shown, the differences are rounding in the attraction
  * data (a charm's own table of mice can sum to 100.01%), and ranking on them put those charms above the same trap
  * without one.
  */
 export function shownScore(result: RankedSetup, goal: Goal): number {
-  const places = goal.kind === 'mouse' ? 100 : 10;
+  const places = goal.kind === 'mouse' ? 100 : goal.kind === 'catches' ? 10 : 1;
   return Math.round(score(result, goal) * places) / places;
 }
 
@@ -67,6 +75,8 @@ function evaluate(setup: Setup, catalog: Catalog, population: Population, goal: 
   const rate = attractionRate(setup.cheese, trap.attraction);
   let attracted = 0;
   let caught = 0;
+  let points = 0;
+  let gold = 0;
   let weakest = 1;
   let target: RankedSetup['target'];
   for (const mouse of population.mice) {
@@ -74,6 +84,11 @@ function evaluate(setup: Setup, catalog: Catalog, population: Population, goal: 
     const attraction = mouse.rate * rate;
     attracted += attraction;
     caught += attraction * catchRate;
+    // Attraction is a percent, so this is catches per hunt.
+    const perHunt = (attraction * catchRate) / 100;
+    const stats = catalog.mice.get(mouse.type);
+    points += perHunt * (stats?.points ?? 0);
+    gold += perHunt * (stats?.gold ?? 0);
     if (attraction > 0) weakest = Math.min(weakest, catchRate);
     if (goal.kind === 'mouse' && mouse.type === goal.mouse) target = { catches: attraction * catchRate, catchRate };
   }
@@ -84,6 +99,8 @@ function evaluate(setup: Setup, catalog: Catalog, population: Population, goal: 
     trap,
     catches: caught,
     catchRate: attracted > 0 ? caught / attracted : 0,
+    points,
+    gold,
     weakest,
     target,
   };

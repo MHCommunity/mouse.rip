@@ -8,13 +8,13 @@ import { Announce } from '@/components/announce';
 import { GameImage } from '@/components/game-image';
 import { ItemPicker } from '@/components/item-picker';
 import { Link } from '@/components/link';
-import { bestSetups, tiedForBest, type Goal, type RankedSetup } from '@/lib/catch-rate/best-setup';
+import { bestSetups, score, tiedForBest, type Goal, type RankedSetup } from '@/lib/catch-rate/best-setup';
 import type { Catalog } from '@/lib/catch-rate/data';
 import { findPopulation, type Extras, type Setup } from '@/lib/catch-rate/engine';
 import { EMPTY_SETUP, applyChanges, overlayOnSaved, setupFromParams, setupToParams } from '@/lib/catch-rate/options';
 import { itemImageUrl } from '@/lib/image-urls';
 import { powerTypeLabel } from '@/lib/power-types';
-import { formatNumber } from '@/utils';
+import { formatCount, formatNumber } from '@/utils';
 
 import {
   CatalogStatus,
@@ -122,11 +122,17 @@ interface Settings {
   tryCharms: boolean;
 }
 
-function settingsFromParams(params: URLSearchParams): Settings {
+function goalFromParams(params: URLSearchParams): Goal {
   const target = params.get('target');
+  if (target) return { kind: 'mouse', mouse: target };
+  const aim = params.get('aim');
+  return aim === 'points' || aim === 'gold' ? { kind: aim } : { kind: 'catches' };
+}
+
+function settingsFromParams(params: URLSearchParams): Settings {
   return {
     setup: setupFromParams(params),
-    goal: target ? { kind: 'mouse', mouse: target } : { kind: 'catches' },
+    goal: goalFromParams(params),
     tryCharms: params.get('try_charms') === '1',
   };
 }
@@ -135,6 +141,7 @@ function settingsToParams({ setup, goal, tryCharms }: Settings): URLSearchParams
   // The weapon and base are what Best Setup finds, so they don't go in its link.
   const params = setupToParams({ ...setup, weapon: '', base: '' });
   if (goal.kind === 'mouse') params.set('target', goal.mouse);
+  else if (goal.kind !== 'catches') params.set('aim', goal.kind);
   if (tryCharms) params.set('try_charms', '1');
   return params;
 }
@@ -333,8 +340,8 @@ function BestSetupForm({
   const setSetup = (next: Setup) => {
     const population = findPopulation(next, catalog);
     // A target mouse that isn't attracted here any more falls back to most catches.
-    const keepsTarget = goal.kind === 'mouse' && population?.mice.some((mouse) => mouse.type === goal.mouse);
-    onChange({ ...settings, setup: next, goal: keepsTarget ? goal : { kind: 'catches' } });
+    const losesTarget = goal.kind === 'mouse' && !population?.mice.some((mouse) => mouse.type === goal.mouse);
+    onChange({ ...settings, setup: next, goal: losesTarget ? { kind: 'catches' } : goal });
   };
   const setExtra = <K extends keyof Extras>(key: K, value: Extras[K]) =>
     setSetup({ ...setup, extras: { ...setup.extras, [key]: value } });
@@ -386,6 +393,8 @@ function BestSetupForm({
               [
                 ['catches', 'Most catches', 'Everything the cheese attracts'],
                 ['mouse', 'One mouse', 'For a map or a tricky catch'],
+                ['points', 'Most points', 'What each catch scores'],
+                ['gold', 'Most gold', 'What each catch pays'],
               ] as const
             ).map(([kind, title, blurb]) => (
               <button
@@ -399,9 +408,9 @@ function BestSetupForm({
                   onChange({
                     ...settings,
                     goal:
-                      kind === 'catches'
-                        ? { kind }
-                        : { kind, mouse: goal.kind === 'mouse' ? goal.mouse : (population?.mice[0]?.type ?? '') },
+                      kind === 'mouse'
+                        ? { kind, mouse: goal.kind === 'mouse' ? goal.mouse : (population?.mice[0]?.type ?? '') }
+                        : { kind },
                   })
                 }
                 className={clsx(
@@ -581,7 +590,7 @@ function OwnedItemsCard({
         <p className="text-sm font-medium text-zinc-950 dark:text-white">Your items</p>
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
           {mineOnly
-            ? `Searching your ${formatNumber(items.weapons.length)} weapons, ${formatNumber(items.bases.length)} bases and ${formatNumber(items.charms.length)} charms.`
+            ? `Searching your ${formatCount(items.weapons.length, 'weapon')}, ${formatCount(items.bases.length, 'base')}, and ${formatCount(items.charms.length, 'charm')}.`
             : isEmpty(items)
               ? 'Searching every weapon and base in the game. Tick the ones you own to see what you can use today.'
               : 'Searching every weapon and base in the game.'}
@@ -773,9 +782,13 @@ function Results({
       <p className="text-sm text-zinc-700 dark:text-zinc-300">
         {goal.kind === 'mouse'
           ? `The setups that catch the most ${targetName ?? 'of that mouse'} per 100 hunts.`
-          : 'The setups that catch the most mice per 100 hunts.'}
+          : goal.kind === 'catches'
+            ? 'The setups that catch the most mice per 100 hunts.'
+            : `The setups that earn the most ${goal.kind} per hunt, before any bonuses.`}
         {tied > 1 &&
-          ` ${tied === results.length ? 'Every setup listed catches' : `The first ${tied} catch`} the same, so any of them will do.`}
+          (goal.kind === 'catches' || goal.kind === 'mouse'
+            ? ` ${tied === results.length ? 'Every setup listed catches' : `The first ${tied} catch`} the same, so any of them will do.`
+            : ` ${tied === results.length ? 'Every setup listed earns' : `The first ${tied} earn`} the same, so any of them will do.`)}
       </p>
       <ol className="space-y-2">
         {results.slice(0, shown).map((result, index) => {
@@ -822,14 +835,16 @@ function Results({
               <div className="flex items-end justify-between gap-4 sm:flex-col sm:items-end">
                 <p className="text-right">
                   <span className="block text-2xl font-semibold tabular-nums text-zinc-950 dark:text-white">
-                    {(goal.kind === 'mouse' ? (result.target?.catches ?? 0) : result.catches).toFixed(
-                      goal.kind === 'mouse' ? 2 : 1,
-                    )}
+                    {goal.kind === 'points' || goal.kind === 'gold'
+                      ? formatNumber(Math.round(score(result, goal)))
+                      : score(result, goal).toFixed(goal.kind === 'mouse' ? 2 : 1)}
                   </span>
                   <span className="block text-xs text-zinc-600 dark:text-zinc-400">
                     {goal.kind === 'mouse'
                       ? `per 100 hunts, ${((result.target?.catchRate ?? 0) * 100).toFixed(1)}% catch rate`
-                      : `per 100 hunts, ${(result.catchRate * 100).toFixed(1)}% caught`}
+                      : goal.kind === 'catches'
+                        ? `per 100 hunts, ${(result.catchRate * 100).toFixed(1)}% caught`
+                        : `${goal.kind} per hunt, ${(result.catchRate * 100).toFixed(1)}% caught`}
                   </span>
                 </p>
                 <Link

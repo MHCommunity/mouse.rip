@@ -22,6 +22,20 @@ describe('bestSetups', () => {
     }
   });
 
+  test('aiming for points or gold ranks on what a hunt earns, matching the estimator', () => {
+    for (const kind of ['points', 'gold'] as const) {
+      const goal = { kind };
+      const results = bestSetups(meadow, catalog, everything, goal, 10);
+      for (let i = 1; i < results.length; i++) {
+        expect(shownScore(results[i - 1], goal)).toBeGreaterThanOrEqual(shownScore(results[i], goal));
+      }
+      const [best] = results;
+      const check = estimate({ ...meadow, weapon: best.weapon, base: best.base, charm: best.charm }, catalog);
+      expect(best[kind]).toBeGreaterThan(0);
+      expect(best[kind]).toBeCloseTo(check!.perHunt[kind], 6);
+    }
+  });
+
   test('setups level on the shown score go by what they have to spare, not by rounding in the data', () => {
     const goal = { kind: 'catches' } as const;
     const results = bestSetups(meadow, catalog, everything, goal);

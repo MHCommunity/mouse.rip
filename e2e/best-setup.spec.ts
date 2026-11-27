@@ -27,7 +27,7 @@ test('aims for one mouse', async ({ page }) => {
 
 test('items sent in a link are searched, saved, and taken out of the address', async ({ page }) => {
   await page.goto(`${FORT_ROX}&own_weapons=dark_magic_mirror_weapon,acronym_weapon&own_bases=rift_base`);
-  await expect(page.getByText(/Searching your 2 weapons, 1 bases and 0 charms/)).toBeVisible();
+  await expect(page.getByText(/Searching your 2 weapons, 1 base, and 0 charms/)).toBeVisible();
   await expect(page.locator('#results ol > li')).toHaveCount(2);
   await expect(page).not.toHaveURL(/own_weapons/);
   // Still there on the next visit.
@@ -71,24 +71,24 @@ test('looking at every item and coming back keeps the ticked items', async ({ pa
 
 test('clearing every tick at once can be undone', async ({ page }) => {
   await page.goto(`${FORT_ROX}&own_weapons=dark_magic_mirror_weapon,acronym_weapon&own_bases=rift_base`);
-  await expect(page.getByText(/Searching your 2 weapons, 1 bases/)).toBeVisible();
+  await expect(page.getByText(/Searching your 2 weapons, 1 base,/)).toBeVisible();
   await page.getByRole('button', { name: 'Untick all', exact: true }).click();
-  await expect(page.getByText(/Searching your 0 weapons, 1 bases/)).toBeVisible();
+  await expect(page.getByText(/Searching your 0 weapons, 1 base,/)).toBeVisible();
   await page.getByRole('button', { name: 'Undo', exact: true }).click();
-  await expect(page.getByText(/Searching your 2 weapons, 1 bases/)).toBeVisible();
+  await expect(page.getByText(/Searching your 2 weapons, 1 base,/)).toBeVisible();
 });
 
 test('a list from a link can be swapped back for the saved one', async ({ page }) => {
   await page.goto(`${FORT_ROX}&own_weapons=dark_magic_mirror_weapon,acronym_weapon&own_bases=rift_base`);
-  await expect(page.getByText(/Searching your 2 weapons, 1 bases/)).toBeVisible();
+  await expect(page.getByText(/Searching your 2 weapons, 1 base,/)).toBeVisible();
   // Someone else's link, with a different list in it.
   await page.goto(`${FORT_ROX}&own_weapons=acronym_weapon&own_bases=rift_base`);
-  await expect(page.getByText(/Searching your 1 weapons, 1 bases.*These came from the link you opened/)).toBeVisible();
+  await expect(page.getByText(/Searching your 1 weapon, 1 base,.*These came from the link you opened/)).toBeVisible();
   await page.getByRole('button', { name: 'Use my saved items instead' }).click();
-  await expect(page.getByText(/Searching your 2 weapons, 1 bases/)).toBeVisible();
+  await expect(page.getByText(/Searching your 2 weapons, 1 base,/)).toBeVisible();
   // A link with the parameters but no items in them changes nothing.
   await page.goto(`${FORT_ROX}&own_weapons=&own_bases=`);
-  await expect(page.getByText(/Searching your 2 weapons, 1 bases/)).toBeVisible();
+  await expect(page.getByText(/Searching your 2 weapons, 1 base,/)).toBeVisible();
   await expect(page).not.toHaveURL(/own_weapons/);
 });
 
