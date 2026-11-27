@@ -52,6 +52,13 @@ const features: { href: string; name: string; description: string }[] = [
     name: 'Rank-up calculator',
     description: 'the wisdom you need for your next title.',
   },
+  { href: '/relic-hunter', name: 'Relic Hunter', description: 'where she is today, and every riddle she leaves.' },
+  { href: '/titles', name: 'Titles and ranks', description: 'what each title unlocks and the wisdom it takes.' },
+  {
+    href: '/trap-special-effects',
+    name: 'Trap and base special effects',
+    description: 'gear that does something extra in certain locations.',
+  },
   { href: '/tools', name: 'Tools', description: 'community calculators, simulators, and planners.' },
   { href: '/extensions', name: 'Extensions', description: 'browser add-ons for the game.' },
   { href: '/userscripts', name: 'Userscripts', description: 'small scripts that tweak the game page.' },
