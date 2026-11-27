@@ -5,6 +5,7 @@ import { loadItemIndex, loadMouseIndex, type IndexedItem, type IndexedMouse } fr
 import { POWER_TYPES, bestPowerTypes, powerTypeSetLabel } from '@/lib/power-types';
 import { itemImageUrl, locationImageUrl, mouseGroupImageUrl, mouseImageUrl, titleImageUrl } from '@/lib/image-urls';
 import { TIMER_LOCATION_NAMES } from '@/lib/timer-locations';
+import { formatCount } from '@/utils';
 
 export type SearchGroup = 'Pages' | 'Mice' | 'Groups' | 'Locations' | 'Items' | 'Guides' | 'Resources' | 'Titles';
 
@@ -114,13 +115,13 @@ const PAGE_RECORDS: SearchRecord[] = [
     '/catch-rate-estimator',
     'Catch rate estimator',
     'Your catch rate for every mouse',
-    'catch rate estimator cre chance setup trap power luck minluck',
+    'catch rate estimator cre chance setup trap power luck minluck gold points wisdom per hunt',
   ],
   [
     '/best-setup',
     'Best setup',
     'The best trap for where you hunt',
-    'best setup trap weapon base charm optimal which trap',
+    'best setup trap weapon base charm optimal which trap most gold points profit',
   ],
   ['/map-planner', 'Treasure map planner', 'Where to hunt for your map', 'treasure map planner plan mice solver route'],
   [
@@ -196,7 +197,9 @@ let staticRecords: SearchRecord[] | null = null;
 export function getStaticSearchRecords(): SearchRecord[] {
   if (staticRecords) return staticRecords;
 
-  const records: SearchRecord[] = [...PAGE_RECORDS];
+  // Copies, since an on-site tool's listing adds its words to them below.
+  const records: SearchRecord[] = PAGE_RECORDS.map((record) => ({ ...record }));
+  const pageByHref = new Map(records.map((record) => [record.href, record]));
 
   for (const group of miceGroups as {
     id: string;
@@ -210,7 +213,7 @@ export function getStaticSearchRecords(): SearchRecord[] {
       group: 'Groups',
       kind: 'group',
       title: group.name,
-      subtitle: `${group.mouse_ids.length} mice`,
+      subtitle: formatCount(group.mouse_ids.length, 'mouse', 'mice'),
       href: `/groups/${group.id}`,
       image: mouseGroupImageUrl(group.id),
       keywords: `${group.name} ${group.description_short ?? ''} group mice clan tribe`.toLowerCase(),
@@ -254,6 +257,14 @@ export function getStaticSearchRecords(): SearchRecord[] {
     const isGuide = item.category === 'guide';
     // Userscripts always resolve to their on-site detail page, like the Item card.
     const href = item.category === 'userscript' ? `/userscripts/${item.id}` : item.url;
+    const keywords =
+      `${item.name} ${item.description} ${item.category} ${item.source ?? ''} ${(item.tags ?? []).join(' ')}`.toLowerCase();
+    // The site's own tools are listed as resources too. One result per page: the listing's words go on the page's.
+    const page = pageByHref.get(href);
+    if (page) {
+      page.keywords = `${page.keywords} ${keywords}`;
+      continue;
+    }
     records.push({
       id: `item-${item.category}-${item.id}`,
       group: isGuide ? 'Guides' : 'Resources',
@@ -262,8 +273,7 @@ export function getStaticSearchRecords(): SearchRecord[] {
       subtitle: isGuide ? 'Guide' : capitalize(item.category),
       href,
       external: /^https?:/i.test(href),
-      keywords:
-        `${item.name} ${item.description} ${item.category} ${item.source ?? ''} ${(item.tags ?? []).join(' ')}`.toLowerCase(),
+      keywords,
     });
   }
 
