@@ -16,6 +16,7 @@ import { SectionHeading } from '@/components/section-heading';
 import { ClampedText } from '@/components/clamped-text';
 import { GameImage } from '@/components/game-image';
 
+import { LocationArt } from './location-art';
 import { LocationMice, getLocationMiceByCheese } from './location-mice';
 import { LocationLoot } from './location-loot';
 import { LocationTimerPanel, TimersProvider } from '@/components/timers';
@@ -135,18 +136,7 @@ export default async function Location({ params }: { params: Promise<{ id: strin
         ]}
       />
 
-      {location.headerImage && (
-        // The game's header art has a MouseHunt logo and frame baked into its
-        // left edge; a narrower box with the focus pushed right crops it away.
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={locationHeaderImageUrl(environmentKey)}
-          alt=""
-          width={760}
-          height={127}
-          className="mb-6 aspect-[600/127] w-full max-w-2xl rounded-lg object-cover object-[84%_50%] ring-1 ring-zinc-950/5 dark:ring-white/10"
-        />
-      )}
+      {location.headerImage && <LocationArt src={locationHeaderImageUrl(environmentKey)} className="mb-6 max-w-2xl" />}
 
       <header className="flex items-start gap-3 sm:gap-4">
         {/* eslint-disable-next-line @next/next/no-img-element */}
