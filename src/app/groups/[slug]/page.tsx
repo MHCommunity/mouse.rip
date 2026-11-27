@@ -7,7 +7,7 @@ import { MouseGrid } from '@/components/mouse-grid';
 
 import { getAllMiceGroups, getMiceForGroup, getMiceGroupBySlug } from '@/lib/game-data';
 import { ogCard, pageMetadata } from '@/seo';
-import { cleanDescription } from '@/utils';
+import { cleanDescription, formatCount } from '@/utils';
 import { mouseGroupImageUrl } from '@/lib/image-urls';
 import { SectionHeading } from '@/components/section-heading';
 
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     image: ogCard({
       title: group.name,
       eyebrow: 'Mouse group',
-      subtitle: `${group.mouse_ids.length} mice`,
+      subtitle: formatCount(group.mouse_ids.length, 'mouse', 'mice'),
       banner: mouseGroupImageUrl(group.id),
       accent: 'emerald',
     }),

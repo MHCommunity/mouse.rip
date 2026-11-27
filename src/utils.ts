@@ -12,6 +12,11 @@ export function formatNumber(num: number): string {
   return num?.toLocaleString('en-US') || '0';
 }
 
+/** A count with its noun: "1 mouse", "1,311 mice". The plural defaults to the noun plus "s". */
+export function formatCount(count: number, singular: string, plural = `${singular}s`): string {
+  return `${formatNumber(count)} ${count === 1 ? singular : plural}`;
+}
+
 /** "19.7K": for sample sizes squeezed under a rate in a phone-width table cell. */
 export function formatCompactNumber(num: number): string {
   return new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(num ?? 0);
@@ -27,7 +32,7 @@ export function cleanDescription(description: string): string {
   if (!description) return '';
   return (
     description
-      .replace(/<[^>]*>/g, '') // Remove HTML tags
+      .replace(/<[^>]*>/g, '')
       // The game bakes a live countdown into some descriptions ("Current season:
       // Winter / Changing to Spring… in 1 day 18 hours"). Captured at data-refresh
       // time it's wrong by the time anyone reads it, and the page shows a live timer.
