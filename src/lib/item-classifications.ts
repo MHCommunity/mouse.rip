@@ -23,7 +23,7 @@ export const CLASSIFICATION_DESCRIPTIONS: Record<string, string> = {
   convertible: 'Chests, gifts, and other openables with rewards inside.',
   collectible: 'Trophies, keepsakes, and other collectibles.',
   stat: 'Currencies, resources, codices, and other items you hold rather than arm.',
-  map_piece: 'Pieces used to assemble treasure maps.',
+  map_piece: 'Keys, maps, and passes that unlock travel to new locations.',
   skin: 'Cosmetic skins that change how a trap looks.',
 };
 

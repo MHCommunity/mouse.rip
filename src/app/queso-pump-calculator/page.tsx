@@ -97,9 +97,10 @@ export default function QuesoPumpCalculator() {
         title="Queso pump calculator"
         description={
           <>
-            Nachore upgrades the volcano pump in <PageLink href="/locations/queso-river">Queso Canyon</PageLink>. Enter
-            how much Nachore you need to find the most time-efficient Queso to farm it with. Ported from fysh&apos;s
-            original Queso Canyon Resource Calculator.
+            Nachore, mined in <PageLink href="/locations/cantera-quarry">Cantera Quarry</PageLink>, upgrades the pump in{' '}
+            <PageLink href="/locations/queso-river">Queso River</PageLink>. Enter how much Nachore you need to find the
+            most time-efficient Queso to farm it with. Ported from fysh&apos;s original Queso Canyon Resource
+            Calculator.
           </>
         }
       />
