@@ -320,23 +320,22 @@ function renderCard({
           />
         )}
 
-        {Icon &&
-          !image && (
-            // The page header's icon tile, at the size the pictures get.
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: `${ART}px`,
-                height: `${ART}px`,
-                borderRadius: '32px',
-                background: accent.tile,
-              }}
-            >
-              <Icon width={184} height={184} fill={accent.strong} color={accent.strong} />
-            </div>
-          )}
+        {Icon && !image && (
+          // The page header's icon tile, at the size the pictures get.
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: `${ART}px`,
+              height: `${ART}px`,
+              borderRadius: '32px',
+              background: accent.tile,
+            }}
+          >
+            <Icon width={184} height={184} fill={accent.strong} color={accent.strong} />
+          </div>
+        )}
       </div>
     </div>,
     { width: 1200, height: 630 },
