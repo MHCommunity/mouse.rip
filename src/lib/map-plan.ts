@@ -299,7 +299,8 @@ export function formatRate(rate: number): string {
 }
 
 export function formatHunts(hunts: number): string {
-  if (hunts < 10) return `~${Math.max(1, Math.round(hunts))} hunts`;
+  if (hunts < 1.5) return '~1 hunt';
+  if (hunts < 10) return `~${Math.round(hunts)} hunts`;
   return `~${(Math.round(hunts / 5) * 5).toLocaleString('en-US')} hunts`;
 }
 

@@ -5,7 +5,7 @@ const MAP = ['- Glazy', '2. Abominable Snow Mouse', 'Zombie', 'Burglar', 'Bionic
 test('plans a pasted map, and the link brings it back', async ({ page }) => {
   await page.goto('/map-planner');
   await page.getByRole('textbox').first().fill(MAP.join('\n'));
-  await expect(page.getByText(/Not recognised: Not a mouse/)).toBeVisible();
+  await expect(page.getByText(/Not recognized: Not a mouse/)).toBeVisible();
   await expect(page.getByText('Guaranteed attractions')).toBeVisible();
   await expect(page.getByText(/setups? attracts? at least one of your mice/)).toBeVisible();
   await expect(page).toHaveURL(/mice=/);

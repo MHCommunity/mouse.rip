@@ -27,7 +27,7 @@ import {
   type Setup,
   type SortKey,
 } from '@/lib/map-plan';
-import { formatNumber } from '@/utils';
+import { formatCount, formatNumber } from '@/utils';
 
 const INITIAL_SETUPS = 20;
 const OTHER_SETUPS_PER_MOUSE = 3;
@@ -158,7 +158,7 @@ export function MapPlanner({
 
         {loadFailed && (
           <p role="alert" className="mt-3 text-sm text-red-700 dark:text-red-400">
-            The attraction data didn&rsquo;t load. Refresh the page to try again.
+            The attraction data didn&rsquo;t load. Reload the page to try again.
           </p>
         )}
 
@@ -188,13 +188,13 @@ export function MapPlanner({
           {plan
             ? `${formatNumber(ranked.length)} ${ranked.length === 1 ? 'setup' : 'setups'} for ${matched.length} ${
                 matched.length === 1 ? 'mouse' : 'mice'
-              }.${unmatched.length > 0 ? ` ${unmatched.length} ${unmatched.length === 1 ? 'name wasn’t' : 'names weren’t'} recognised.` : ''}`
+              }.${unmatched.length > 0 ? ` ${unmatched.length} ${unmatched.length === 1 ? 'name wasn’t' : 'names weren’t'} recognized.` : ''}`
             : ''}
         </p>
 
         {unmatched.length > 0 && (
           <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
-            Not recognised:{' '}
+            Not recognized:{' '}
             {unmatched.map((name, index) => (
               <React.Fragment key={`${name}-${index}`}>
                 {index > 0 && ', '}
@@ -420,7 +420,7 @@ function SetupCard({
             key={entry.mouse.id}
             title={[
               entry.onlyHere ? 'The only location for this mouse' : '',
-              entry.hunts < MIN_HUNTS ? `Only ${formatNumber(entry.hunts)} hunts recorded on MHCT` : '',
+              entry.hunts < MIN_HUNTS ? `Only ${formatCount(entry.hunts, 'hunt')} recorded on MHCT` : '',
             ]
               .filter(Boolean)
               .join('. ')}

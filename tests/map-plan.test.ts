@@ -305,8 +305,9 @@ describe('formatting', () => {
     expect(formatRate(5)).toBe('5.0%');
   });
 
-  test('hunts round to fives past ten, and never say zero', () => {
-    expect(formatHunts(0.2)).toBe('~1 hunts');
+  test('hunts round to fives past ten, never say zero, and say one hunt', () => {
+    expect(formatHunts(0.2)).toBe('~1 hunt');
+    expect(formatHunts(1.6)).toBe('~2 hunts');
     expect(formatHunts(7.4)).toBe('~7 hunts');
     expect(formatHunts(23)).toBe('~25 hunts');
     expect(formatHunts(1234)).toBe('~1,235 hunts');
