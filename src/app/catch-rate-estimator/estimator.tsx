@@ -20,7 +20,7 @@ import {
 } from '@/lib/catch-rate/options';
 import { mouseImageUrl } from '@/lib/image-urls';
 import { powerTypeLabel } from '@/lib/power-types';
-import { formatNumber } from '@/utils';
+import { formatCount, formatNumber } from '@/utils';
 
 import {
   CatalogStatus,
@@ -67,15 +67,16 @@ export function CatchRateEstimatorFromUrl() {
   const params = useSearchParams();
   const stored = useSyncExternalStore(noSubscribe, readStorage, () => ON_SERVER);
   const link = new URLSearchParams(params.toString());
-  const linked = link.has('location') || link.has('weapon');
-  // A link with no trap in it (a location page's "Catch rates here") keeps the hunter's own trap, so it waits
-  // for the saved setup like a visit with no link does.
-  const keepsTrap = linked && !link.has('weapon') && !link.has('base');
-  const ready = (linked && !keepsTrap) || stored !== ON_SERVER;
+  const linked = ['location', 'weapon', 'base', 'charm'].some((param) => link.has(param));
+  // A link with no trap in it (a location page's "Catch rates here") keeps the hunter's own trap, and one with no
+  // place in it (an item page's "Try it") keeps their own place. Either waits for the saved setup like a visit
+  // with no link does.
+  const keepsSaved = linked && ((!link.has('weapon') && !link.has('base')) || !link.has('location'));
+  const ready = (linked && !keepsSaved) || stored !== ON_SERVER;
   const initial = !ready
     ? EMPTY_SETUP
     : linked
-      ? setupFromParams(keepsTrap ? overlayOnSaved(stored, link) : link)
+      ? setupFromParams(keepsSaved ? overlayOnSaved(stored, link) : link)
       : stored
         ? setupFromParams(new URLSearchParams(stored))
         : EMPTY_SETUP;
@@ -194,7 +195,7 @@ function EstimatorForm({
         </h2>
         <Announce>
           {result
-            ? `Catch rate ${percent(result.overall.catchRate * 100)} overall, across ${result.mice.length} mice.`
+            ? `Catch rate ${percent(result.overall.catchRate * 100)} overall, across ${formatCount(result.mice.length, 'mouse', 'mice')}.`
             : setup.location && setup.weapon && setup.base
               ? 'No attraction data for this setup.'
               : ''}
@@ -234,8 +235,8 @@ function BonusCard({ catalog, setup, onChange }: { catalog: Catalog; setup: Setu
       </summary>
       <div className="mt-4 space-y-4">
         <p className="text-sm text-zinc-600 dark:text-zinc-400">
-          Auras, events and some location effects add power and luck that aren’t on the items. Add them here, or type in
-          the power and luck your camp shows and let the estimator work them out.
+          Auras, events, and some location effects add power and luck that aren’t on the items. Add them here, or type
+          in the power and luck your camp shows and let the estimator work them out.
         </p>
         <div className="grid grid-cols-2 gap-3">
           <NumberField
@@ -319,7 +320,7 @@ function Results({
   if (!setup.location || !setup.weapon || !setup.base) {
     return (
       <div className="rounded-2xl border border-dashed border-zinc-300 p-8 text-center dark:border-zinc-700">
-        <p className="text-base font-medium text-zinc-900 dark:text-white">Pick a location, weapon and base</p>
+        <p className="text-base font-medium text-zinc-900 dark:text-white">Pick a location, weapon, and base</p>
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
           The catch rate for every mouse there shows up here as you go.
         </p>
@@ -343,6 +344,11 @@ function Results({
     ['Luck', formatNumber(trap.luck)],
     ['Attraction bonus', percent(trap.attraction, 0)],
     ['Power type', powerTypeLabel(trap.powerType)],
+  ];
+  const perHunt: [string, string][] = [
+    ['Points', formatNumber(Math.round(result.perHunt.points))],
+    ['Gold', formatNumber(Math.round(result.perHunt.gold))],
+    ['Wisdom', formatNumber(Math.round(result.perHunt.wisdom))],
   ];
 
   return (
@@ -378,6 +384,28 @@ function Results({
             </div>
           ))}
         </dl>
+        <div className="mt-4">
+          <h3 className="text-xs font-medium text-zinc-700 dark:text-zinc-300">Each hunt earns, on average</h3>
+          <dl className="mt-2 grid grid-cols-3 gap-2">
+            {perHunt.map(([label, value]) => (
+              <div
+                key={label}
+                className="rounded-2xl bg-white/80 px-3 py-2 ring-1 ring-zinc-200/80 dark:bg-white/5 dark:ring-zinc-700/60"
+              >
+                <dt className="text-xs text-zinc-600 dark:text-zinc-400">{label}</dt>
+                <dd className="mt-0.5 text-sm font-semibold tabular-nums text-zinc-900 dark:text-white">{value}</dd>
+              </div>
+            ))}
+          </dl>
+          {result.perHunt.wisdom >= 1 && (
+            <Link
+              href={`/rank-up-calculator?perhunt=${Math.round(result.perHunt.wisdom)}`}
+              className="mt-2 inline-block text-sm font-medium text-pink-700 underline decoration-pink-700/30 underline-offset-2 hover:text-pink-900 hover:decoration-current dark:text-pink-300 dark:decoration-pink-300/40 dark:hover:text-pink-200"
+            >
+              Hunts to your next title at this pace
+            </Link>
+          )}
+        </div>
       </div>
 
       {result.mice.every((mouse) => mouse.minluck === undefined) && (

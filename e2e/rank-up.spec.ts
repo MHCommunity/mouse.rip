@@ -66,3 +66,13 @@ test('entries from the last visit go into the address, and Start over clears the
   await page.reload();
   await expect(page.getByLabel('Current title').locator('option:checked')).toHaveText('Novice');
 });
+
+test('wisdom per hunt from the estimator goes on top of the saved entries', async ({ page }) => {
+  await page.goto('/rank-up-calculator');
+  await fillBaronToCount(page);
+  await expect(result(page)).toContainText('4,900,621');
+  await page.goto('/rank-up-calculator?perhunt=500');
+  await expect(result(page)).toContainText('4,900,621');
+  await expect(result(page)).toContainText('About 9,802 hunts at 500 wisdom a hunt.');
+  await expect(page).toHaveURL(/title=baron_baroness.*perhunt=500/);
+});

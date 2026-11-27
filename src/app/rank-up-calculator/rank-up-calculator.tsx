@@ -9,7 +9,7 @@ import { Input } from '@/components/input';
 import { Link } from '@/components/link';
 import { loadMouseIndex, type IndexedMouse } from '@/lib/client-index';
 import { cleanNumber, findMouseByName, rankUp, type RankTitle } from '@/lib/rank-up';
-import { formatNumber } from '@/utils';
+import { formatCount, formatNumber } from '@/utils';
 import { HEADLINE_PANEL } from '@/components/panel';
 import { ItemPicker } from '@/components/item-picker';
 import { mouseImageUrl } from '@/lib/image-urls';
@@ -24,9 +24,11 @@ interface Entries {
   progress: string;
   wisdom: string;
   mouse: string;
+  /** Wisdom a hunt earns on average, as the catch rate estimator shows it. */
+  perhunt: string;
 }
 
-const KEYS = ['title', 'target', 'progress', 'wisdom', 'mouse'] as const;
+const KEYS = ['title', 'target', 'progress', 'wisdom', 'mouse', 'perhunt'] as const;
 const STORAGE_KEY = 'mouse.rip:rank-up-calculator';
 
 /** Stands in for local storage while the server renders, where there is none. */
@@ -73,11 +75,14 @@ export function RankUpCalculatorFromUrl({ titles }: { titles: RankTitle[] }) {
   const params = useSearchParams();
   // Read after hydration, so the first client render matches the server's.
   const stored = useSyncExternalStore(noSubscribe, readStorage, () => ON_SERVER);
-  const linked = KEYS.some((key) => params.has(key));
+  const fromLink: Partial<Entries> = Object.fromEntries(
+    KEYS.flatMap((key) => (params.has(key) ? [[key, params.get(key) ?? '']] : [])),
+  );
+  // The catch rate estimator links here with only its wisdom per hunt, which goes on top of the saved entries.
+  const overlay = Object.keys(fromLink).length > 0 && Object.keys(fromLink).every((key) => key === 'perhunt');
+  const linked = Object.keys(fromLink).length > 0 && !overlay;
   const ready = linked || stored !== ON_SERVER;
-  const initial = linked
-    ? Object.fromEntries(KEYS.flatMap((key) => (params.has(key) ? [[key, params.get(key) ?? '']] : [])))
-    : parseEntries(ready ? stored : '');
+  const initial = linked ? fromLink : { ...parseEntries(ready ? stored : ''), ...fromLink };
   // The calculator takes its entries once, so it mounts again when the saved ones arrive.
   return (
     <RankUpCalculator
@@ -116,6 +121,7 @@ export function RankUpCalculator({
     progress: '',
     wisdom: '',
     mouse: '',
+    perhunt: '',
     ...initial,
   }));
   // Every mouse's wisdom comes from the shared mouse index, fetched only once someone wants catches.
@@ -127,6 +133,7 @@ export function RankUpCalculator({
   const progress = cleanNumber(entries.progress, true);
   const exactWisdom = cleanNumber(entries.wisdom);
   const mouseName = entries.mouse;
+  const perHunt = Number(cleanNumber(entries.perhunt, true)) || 0;
 
   const [wantsMice, setWantsMice] = useState(false);
   // Which try at loading the list last failed, if one did. Using the field again makes a new try.
@@ -165,7 +172,7 @@ export function RankUpCalculator({
   }, [syncUrl, restored, entries, pathname]);
 
   const startOver = () => {
-    setEntries({ title: titles[0].id, target: titles[1]?.id ?? '', progress: '', wisdom: '', mouse: '' });
+    setEntries({ title: titles[0].id, target: titles[1]?.id ?? '', progress: '', wisdom: '', mouse: '', perhunt: '' });
     try {
       window.localStorage.removeItem(STORAGE_KEY);
     } catch {
@@ -174,7 +181,9 @@ export function RankUpCalculator({
     if (syncUrl) router.replace(pathname, { scroll: false });
   };
   const started =
-    entries.title !== titles[0].id || Boolean(entries.progress || entries.wisdom || entries.mouse) || targetIndex > 1;
+    entries.title !== titles[0].id ||
+    Boolean(entries.progress || entries.wisdom || entries.mouse || entries.perhunt) ||
+    targetIndex > 1;
 
   const change = (patch: Partial<Entries>) => {
     const next = { ...entries, ...patch };
@@ -290,8 +299,10 @@ export function RankUpCalculator({
           : needed === 0
             ? `You've already reached ${target.name}.`
             : `${formatNumber(needed)} wisdom needed for ${target.name}.${
-                mouse ? ` ${formatNumber(Math.ceil(needed / (mouse.wisdom ?? 1)))} catches of ${mouse.name}.` : ''
-              }`}
+                mouse
+                  ? ` ${formatCount(Math.ceil(needed / (mouse.wisdom ?? 1)), 'catch', 'catches')} of ${mouse.name}.`
+                  : ''
+              }${perHunt > 0 ? ` About ${formatCount(Math.ceil(needed / perHunt), 'hunt')}.` : ''}`}
       </Announce>
       <section aria-label="Result" className={`p-5 ${HEADLINE_PANEL}`}>
         {!target ? (
@@ -336,7 +347,7 @@ export function RankUpCalculator({
                   <strong className="font-semibold text-zinc-950 dark:text-white">
                     {formatNumber(Math.ceil(needed / (mouse.wisdom ?? 1)))}
                   </strong>{' '}
-                  catches of{' '}
+                  {Math.ceil(needed / (mouse.wisdom ?? 1)) === 1 ? 'catch' : 'catches'} of{' '}
                   <Link
                     href={`/mice/${mouse.type.replaceAll('_', '-')}`}
                     className="font-medium text-pink-700 underline decoration-pink-700/30 underline-offset-2 hover:text-pink-900 hover:decoration-current dark:text-pink-300 dark:decoration-pink-300/40"
@@ -344,6 +355,42 @@ export function RankUpCalculator({
                     {mouse.name}
                   </Link>
                   , at {formatNumber(mouse.wisdom ?? 0)} wisdom each.
+                </p>
+              )}
+
+              <label className={`${labelClasses} mt-5 max-w-sm`}>
+                <span>
+                  Wisdom per hunt <span className={hintClasses}>(optional)</span>
+                </span>
+                <Input
+                  type="text"
+                  inputMode="decimal"
+                  autoComplete="off"
+                  placeholder="e.g. 450"
+                  value={entries.perhunt}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    change({ perhunt: cleanNumber(e.target.value, true) })
+                  }
+                />
+              </label>
+              {perHunt > 0 ? (
+                <p className="mt-3 text-sm text-zinc-700 dark:text-zinc-300">
+                  About{' '}
+                  <strong className="font-semibold text-zinc-950 dark:text-white">
+                    {formatNumber(Math.ceil(needed / perHunt))}
+                  </strong>{' '}
+                  {Math.ceil(needed / perHunt) === 1 ? 'hunt' : 'hunts'} at {formatNumber(perHunt)} wisdom a hunt.
+                </p>
+              ) : (
+                <p className="mt-2 text-xs text-zinc-600 dark:text-zinc-400">
+                  The{' '}
+                  <Link
+                    href="/catch-rate-estimator"
+                    className="font-medium text-pink-700 underline decoration-pink-700/30 underline-offset-2 hover:text-pink-900 dark:text-pink-300 dark:decoration-pink-300/40 dark:hover:text-pink-200"
+                  >
+                    catch rate estimator
+                  </Link>{' '}
+                  shows what your setup earns a hunt.
                 </p>
               )}
             </div>

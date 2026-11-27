@@ -11,7 +11,7 @@ import { CatchRateEstimator, CatchRateEstimatorFromUrl } from './estimator';
 export const metadata = pageMetadata({
   title: 'MouseHunt Catch Rate Estimator',
   description:
-    'Pick a MouseHunt location, cheese and trap setup to see the attraction rate, catch rate and minluck for every mouse there.',
+    'Pick a MouseHunt location, cheese, and trap setup to see the attraction rate, catch rate, and minluck for every mouse there.',
   path: '/catch-rate-estimator',
   image: ogCard({ title: 'Catch rate estimator', eyebrow: 'MouseHunt tool', icon: 'scale', accent: 'pink' }),
 });
