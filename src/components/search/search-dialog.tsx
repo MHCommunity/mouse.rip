@@ -28,6 +28,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { ColorScaleBadge } from '@/components/color-scale-badge';
+import { formatAttractionRate } from '@/lib/attraction';
 import { GameImage } from '@/components/game-image';
 import { POWER_TYPES, POWER_TYPE_CHIP, powerTypeLabel, powerTypeSetLabel } from '@/lib/power-types';
 import {
@@ -99,11 +100,6 @@ function exactMatch(records: SearchRecord[], query: string): SearchRecord | unde
   if (!top) return undefined;
   const title = top.title.toLowerCase();
   return title === wanted || title === `${wanted} mouse` ? top : undefined;
-}
-
-/** MHCT reports rates in hundredths of a percent; one decimal is all the samples support. */
-function formatRate(rate: number): string {
-  return `${(rate / 100).toFixed(1)}%`;
 }
 
 /** Where the best-attraction figure comes from: MHCT rows carry a sample, MH-Tools rows don't. */
@@ -254,7 +250,7 @@ export function SearchDialog({
               <ComboboxInput
                 ref={inputRef}
                 autoFocus
-                aria-label="Search mice, items, locations, guides and tools"
+                aria-label="Search mice, items, locations, guides, and tools"
                 className="w-full border-0 bg-transparent py-4 text-base text-zinc-900 placeholder:text-zinc-500 focus:outline-hidden focus:ring-0 dark:text-white dark:placeholder:text-zinc-400"
                 placeholder="Search mice, items, locations, guides…"
                 value={query}
@@ -412,7 +408,7 @@ export function SearchDialog({
                           <dt className="text-xs text-zinc-600 dark:text-zinc-400">Best attraction</dt>
                           <dd className="mt-1 text-zinc-800 dark:text-zinc-200">
                             <span className="font-semibold tabular-nums text-zinc-900 dark:text-white">
-                              {formatRate(answer.mouse.best.rate)}
+                              {formatAttractionRate(answer.mouse.best.rate)}
                             </span>{' '}
                             with {answer.mouse.best.cheese}
                             {answer.mouse.best.charm && ` and ${answer.mouse.best.charm}`}

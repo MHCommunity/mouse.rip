@@ -12,7 +12,7 @@ import lookup from '@/data/generated/name-lookup.json';
 import { getMiceForRegionName, getMouseAttraction, mouseSlug } from '@/lib/game-data';
 import { itemImageUrl, mouseImageUrl } from '@/lib/image-urls';
 import { POWER_TYPES, powerTypeSetLabel } from '@/lib/power-types';
-import { bestAttractionRow } from '@/lib/attraction';
+import { bestAttractionRow, formatAttractionRate } from '@/lib/attraction';
 import { LiveStageLabel, LiveStageNote, LiveStageProvider, LiveStageRow } from './live-stage';
 import type { AttractionRow, Mouse } from '@/types';
 
@@ -93,11 +93,6 @@ export function getLocationMiceByCheese(locationName: string): { groups: CheeseG
   return { groups, total: mice.length };
 }
 
-/** MHCT and MH-Tools rates are stored in hundredths of a percent. */
-function formatRate(rate: number): string {
-  return `${(rate / 100).toFixed(2)}%`;
-}
-
 function CheeseTitle({ cheese }: { cheese: string | null }) {
   if (cheese === null) {
     return <span className="text-zinc-700 dark:text-zinc-300">No attraction data yet</span>;
@@ -143,7 +138,7 @@ function MouseRow({ entry }: { entry: LocationMouse }) {
         </Link>
         {best && (
           <div className="mt-0.5 text-sm text-zinc-600 dark:text-zinc-400">
-            <span className="tabular-nums">{formatRate(best.rate)}</span> attraction
+            <span className="tabular-nums">{formatAttractionRate(best.rate)}</span> attraction
             {best.stage && <LiveStageLabel stage={best.stage} />}
           </div>
         )}

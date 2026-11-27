@@ -32,7 +32,7 @@ describe('mouse pages', () => {
     expect(glazy).toBeDefined();
     if (!glazy) return;
     const { description } = mouseSeo(glazy, getMouseAttraction(glazy.id));
-    expect(description).toMatch(/^Best caught in .+ with .+, at a \d+\.\d\d% attraction rate\./);
+    expect(description).toMatch(/^Best caught in .+ with .+, at a \d+\.\d+% attraction rate\./);
   });
 
   test('a long description is cut at a word, with an ellipsis', () => {

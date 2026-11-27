@@ -4,7 +4,7 @@ import type { AttractionRow, ConvertibleRow, GameItem, ItemDropper, Mouse } from
 import { POWER_TYPES, powerTypeLabel } from '@/lib/power-types';
 import { cleanDescription, formatNumber } from '@/utils';
 import { mouseImageUrl } from '@/lib/image-urls';
-import { bestAttractionRow } from '@/lib/attraction';
+import { bestAttractionRow, formatAttractionRate } from '@/lib/attraction';
 
 /**
  * Titles and descriptions for the mouse and item pages.
@@ -51,7 +51,7 @@ export function mouseSeo(mouse: Mouse, attraction: AttractionRow[]) {
   const minluck = bestMinluck(mouse);
 
   const where = best
-    ? `Best caught in ${best.location}${best.stage ? ` (${best.stage})` : ''} with ${best.cheese}${best.charm ? ` and ${best.charm}` : ''}, at a ${(best.rate / 100).toFixed(2)}% attraction rate.`
+    ? `Best caught in ${best.location}${best.stage ? ` (${best.stage})` : ''} with ${best.cheese}${best.charm ? ` and ${best.charm}` : ''}, at a ${formatAttractionRate(best.rate)} attraction rate.`
     : null;
 
   const luck = minluck ? `Minluck ${formatNumber(minluck.value)} ${powerTypeLabel(minluck.type)}.` : null;
