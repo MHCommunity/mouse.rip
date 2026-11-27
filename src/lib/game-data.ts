@@ -225,3 +225,23 @@ const getMouseMapRows = lazy(() => readJson<Record<string, MouseMapRow[]>>('mous
 export function getMouseMaps(mouseId: number): MouseMapRow[] {
   return getMouseMapRows()[String(mouseId)] ?? [];
 }
+
+const getEstimatorItems = lazy(() => {
+  const { weapons, bases, charms } = readJson<{ weapons: string[][]; bases: string[][]; charms: string[][] }>(
+    'catch-rate.json',
+  );
+  return {
+    weapon: new Set(weapons.map(([type]) => type)),
+    base: new Set(bases.map(([type]) => type)),
+    charm: new Set(charms.map(([type]) => type)),
+  };
+});
+
+/** The catch rate estimator's link parameter for an item it can arm (weapon, base, or charm), if it can. */
+export function estimatorParamFor(itemType: string): 'weapon' | 'base' | 'charm' | undefined {
+  const items = getEstimatorItems();
+  if (items.weapon.has(itemType)) return 'weapon';
+  if (items.base.has(itemType)) return 'base';
+  if (items.charm.has(itemType)) return 'charm';
+  return undefined;
+}

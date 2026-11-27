@@ -18,9 +18,19 @@ test('a shared link opens with its setup and results', async ({ page }) => {
   await expect(page.getByRole('table')).toContainText('Mouse');
 });
 
+test('what a hunt earns, with a way to see how long a rank-up takes', async ({ page }) => {
+  await page.goto(STINGER);
+  await expect(page.getByText('Each hunt earns, on average')).toBeVisible();
+  await expect(stat(page, 'Points')).toHaveText(/^[\d,]+$/);
+  await expect(stat(page, 'Gold')).toHaveText(/^[\d,]+$/);
+  await page.getByRole('link', { name: 'Hunts to your next title at this pace' }).click();
+  await expect(page).toHaveURL(/\/rank-up-calculator\?.*perhunt=\d+/);
+  await expect(page.getByLabel(/Wisdom per hunt/)).not.toHaveValue('');
+});
+
 test('picking a setup by hand fills in the results and the link', async ({ page }) => {
   await page.goto('/catch-rate-estimator');
-  await expect(page.getByText('Pick a location, weapon and base')).toBeVisible();
+  await expect(page.getByText('Pick a location, weapon, and base')).toBeVisible();
   await page.getByLabel('Location').selectOption({ label: 'Meadow' });
   await page.getByRole('combobox', { name: 'Weapon' }).fill('S.T.I.N');
   await page.getByRole('option', { name: /S\.T\.I\.N\.G\.E\.R\. Trap/ }).click();
@@ -117,14 +127,32 @@ test('a setup picked up from the last visit goes into the address, and Start ove
   await expect(page).toHaveURL(/weapon=floating_law_upgraded_weapon/);
 
   await page.getByRole('button', { name: 'Start over' }).click();
-  await expect(page.getByText('Pick a location, weapon and base')).toBeVisible();
+  await expect(page.getByText('Pick a location, weapon, and base')).toBeVisible();
   await expect(page).toHaveURL(/\/catch-rate-estimator$/);
   await page.reload();
-  await expect(page.getByText('Pick a location, weapon and base')).toBeVisible();
+  await expect(page.getByText('Pick a location, weapon, and base')).toBeVisible();
 });
 
 test('a location opens on the cheese most hunted there', async ({ page }) => {
   await page.goto('/catch-rate-estimator?location=mountain&weapon=floating_law_upgraded_weapon&base=rift_base');
   await expect(page.getByLabel('Cheese')).not.toHaveValue('abominable_asiago_cheese');
   await expect(page.getByText('Overall catch rate')).toBeVisible();
+});
+
+test('an item page’s link swaps that item into the saved setup', async ({ page }) => {
+  await page.goto(STINGER);
+  await expect(stat(page, 'Power')).toHaveText('16,027');
+  await page.goto('/items/acronym-weapon');
+  await page.getByRole('link', { name: 'Try it in the catch rate estimator' }).click();
+  await expect(page).toHaveURL(/location=meadow.*weapon=acronym_weapon.*base=rainbow_diamond_refractor_base/);
+  await expect(stat(page, 'Power type')).toHaveText('Arcane');
+});
+
+test('a mouse page’s link opens its best place with the saved trap', async ({ page }) => {
+  await page.goto(STINGER);
+  await expect(stat(page, 'Power')).toHaveText('16,027');
+  await page.goto('/mice/glazed');
+  await page.getByRole('link', { name: 'Your catch rate there' }).click();
+  await expect(page).toHaveURL(/location=winter_hunt_fortress.*weapon=floating_law_upgraded_weapon/);
+  await expect(page.getByRole('table')).toContainText('Glazy Mouse');
 });

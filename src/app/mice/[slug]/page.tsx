@@ -116,6 +116,14 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
   const attraction = getMouseAttraction(mouse.id);
   const bestSpot = bestAttractionRow(attraction);
   const bestSetupHref = bestSpot ? bestSetupLinkFor(catchRateCatalog(), mouse.type, bestSpot) : undefined;
+  // The same place in the estimator, which keeps the hunter's own trap since the link names none.
+  const catchRateHref = (() => {
+    if (!bestSetupHref) return undefined;
+    const params = new URLSearchParams(bestSetupHref.split('?')[1]);
+    params.delete('target');
+    params.delete('keep');
+    return `/catch-rate-estimator?${params.toString()}`;
+  })();
   // Without data the attraction section below says so; the card only shows for the Relic Hunter, who has a page.
   const whereCard = Boolean(bestSpot) || mouse.type === 'relic_hunter';
 
@@ -240,8 +248,11 @@ export default async function MousePage({ params }: { params: Promise<{ slug: st
                         ? `Attraction rate from ${formatNumber(bestSpot.total_hunts)} hunts on MHCT.`
                         : 'Attraction rate from MH-Tools.'}
                     </p>
-                    {bestSetupHref && (
-                      <p className="mt-3 text-sm">
+                    {bestSetupHref && catchRateHref && (
+                      <p className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+                        <Link href={catchRateHref} className={`${accentLink} inline-block py-0.5`}>
+                          Your catch rate there
+                        </Link>
                         <Link href={bestSetupHref} className={`${accentLink} inline-block py-0.5`}>
                           Best setup for this mouse
                         </Link>

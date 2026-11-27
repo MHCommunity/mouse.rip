@@ -9,6 +9,7 @@ import { Link } from '@/components/site-link';
 
 import { getLocations, getTitles } from '@/lib/site-data';
 import {
+  estimatorParamFor,
   getAllGameItems,
   getConvertibleContents,
   getConvertiblesContaining,
@@ -332,6 +333,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
   ].filter(Boolean) as { label: string; limit?: boolean }[];
 
   const ranks = stats ? rankNote(item, stats) : null;
+  const estimatorParam = estimatorParamFor(item.type);
   const environments = itemEnvironments(item);
   const mapRelations = getMapRelationsForItem(item.id);
   const contents = isConvertible ? getConvertibleContents(item.id) : [];
@@ -396,10 +398,20 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
           </div>
         </div>
         {/* Under the picture on a phone, where beside it would squeeze the table; under the title from sm up. */}
-        {(stats || ranks) && (
+        {(stats || ranks || estimatorParam) && (
           <div className={clsx('max-w-md', image && 'sm:ml-46')}>
             {stats && <StatsTable stats={stats} />}
             {ranks && <p className="mt-2 text-xs tabular-nums text-zinc-600 dark:text-zinc-400">{ranks}</p>}
+            {estimatorParam && (
+              <p className="mt-3 text-sm">
+                <Link
+                  href={`/catch-rate-estimator?${estimatorParam}=${item.type}`}
+                  className="font-medium text-pink-700 underline decoration-pink-700/30 underline-offset-2 hover:text-pink-800 hover:decoration-current dark:text-pink-300 dark:decoration-pink-300/40 dark:hover:text-pink-200"
+                >
+                  Try it in the catch rate estimator
+                </Link>
+              </p>
+            )}
           </div>
         )}
       </header>
