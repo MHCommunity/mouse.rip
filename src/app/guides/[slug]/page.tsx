@@ -3,12 +3,12 @@ import { AcademicCapIcon } from '@heroicons/react/20/solid';
 
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PageHeader } from '@/components/page-header';
-import { Markdown } from '@/components/markdown';
+import { Markdown, headingId } from '@/components/markdown';
 import { PageLink } from '@/components/page-link';
 
 import { getGuide, getOnSiteGuides } from '@/lib/site-data';
 import { pageMetadata } from '@/seo';
-import { getGuideBody } from './guide-content';
+import { getGuideBody, guideSections } from './guide-content';
 import { scriptJson } from '@/components/json-ld';
 
 // Only build the guides we know about; unknown slugs 404 instead of trying to
@@ -64,6 +64,7 @@ export default async function Guide({ params }: { params: Promise<{ slug: string
   }
 
   const url = `https://mouse.rip${guide.url}`;
+  const sections = guideSections(body, headingId);
 
   return (
     // Guides are long-form prose, so they keep a readable measure inside the
@@ -91,6 +92,29 @@ export default async function Guide({ params }: { params: Promise<{ slug: string
         icon={AcademicCapIcon}
         iconClassName="bg-pink-100 text-pink-700 dark:bg-pink-950 dark:text-pink-300"
       />
+
+      {sections.length > 0 && (
+        <nav
+          aria-labelledby="contents-heading"
+          className="mb-8 rounded-2xl bg-white p-4 shadow-xs ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800"
+        >
+          <h2 id="contents-heading" className="text-sm font-semibold text-zinc-900 dark:text-white">
+            Contents
+          </h2>
+          <ol className="mt-2 gap-x-6 space-y-1 text-sm sm:columns-2">
+            {sections.map((section) => (
+              <li key={section.id} className="break-inside-avoid">
+                <a
+                  href={`#${section.id}`}
+                  className="text-pink-700 underline decoration-pink-700/30 underline-offset-2 hover:text-pink-900 hover:decoration-current dark:text-pink-300 dark:decoration-pink-300/40 dark:hover:text-pink-200"
+                >
+                  {section.title}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
 
       <article>
         <Markdown>{body}</Markdown>
