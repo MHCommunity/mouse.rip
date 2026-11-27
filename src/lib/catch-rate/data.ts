@@ -26,7 +26,7 @@ export interface RawCatchRateData {
   populationCharms: string[];
   /** [location, stage, cheese, charm, source (0 MHCT, 1 MH-Tools), sample, then mouse and rate pairs…] */
   populations: number[][];
-  /** [type, name, power, then effectiveness % per power type in POWER_TYPE_ORDER] */
+  /** [type, name, power, effectiveness % per power type in POWER_TYPE_ORDER, then points, gold, and wisdom] */
   mice: (string | number)[][];
   weapons: ItemRow[];
   bases: ItemRow[];
@@ -55,6 +55,10 @@ export interface Mouse {
   power: number;
   /** Effectiveness of each power type, in percent. */
   effectiveness: Partial<Record<PowerType, number>>;
+  /** What one catch is worth. */
+  points: number;
+  gold: number;
+  wisdom: number;
 }
 
 export interface Population {
@@ -100,7 +104,16 @@ export function buildCatalog(raw: RawCatchRateData): Catalog {
     POWER_TYPE_ORDER.forEach((powerType, i) => {
       effectiveness[powerType] = Number(effs[i]) || 0;
     });
-    mice.set(String(type), { type: String(type), name: String(name), power: Number(power), effectiveness });
+    const [points, gold, wisdom] = effs.slice(POWER_TYPE_ORDER.length).map((value) => Number(value) || 0);
+    mice.set(String(type), {
+      type: String(type),
+      name: String(name),
+      power: Number(power),
+      effectiveness,
+      points: points ?? 0,
+      gold: gold ?? 0,
+      wisdom: wisdom ?? 0,
+    });
   }
 
   const populations = raw.populations.map(([location, stage, cheese, charm, source, sample, ...pairs]) => {

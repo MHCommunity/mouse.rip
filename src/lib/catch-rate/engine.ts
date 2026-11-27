@@ -548,6 +548,8 @@ export interface Estimate {
   attractionRate: number;
   mice: MouseResult[];
   overall: { attraction: number; catches: number; catchRate: number; minluck?: number };
+  /** Average points, gold, and wisdom a hunt earns from catches, before any bonuses on top. */
+  perHunt: { points: number; gold: number; wisdom: number };
 }
 
 /** Everything the estimator shows for a setup, or undefined until the setup is complete and has data. */
@@ -573,6 +575,9 @@ export function estimate(setup: Setup, catalog: Catalog): Estimate | undefined {
   const attraction = mice.reduce((sum, mouse) => sum + mouse.attraction, 0);
   const catches = mice.reduce((sum, mouse) => sum + mouse.catches, 0);
   const minlucks = mice.map((mouse) => mouse.minluck);
+  // `catches` is per 100 hunts.
+  const perHunt = (reward: 'points' | 'gold' | 'wisdom') =>
+    mice.reduce((sum, mouse) => sum + (mouse.catches / 100) * (catalog.mice.get(mouse.type)?.[reward] ?? 0), 0);
   return {
     trap,
     population,
@@ -584,6 +589,7 @@ export function estimate(setup: Setup, catalog: Catalog): Estimate | undefined {
       catchRate: attraction > 0 ? catches / attraction : 0,
       minluck: minlucks.some((value) => value === undefined) ? undefined : Math.max(0, ...(minlucks as number[])),
     },
+    perHunt: { points: perHunt('points'), gold: perHunt('gold'), wisdom: perHunt('wisdom') },
   };
 }
 

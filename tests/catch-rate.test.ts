@@ -317,6 +317,20 @@ describe('populations and attraction', () => {
     }
   });
 
+  test('what a hunt earns adds up each mouse’s catches and rewards', () => {
+    const result = estimate(setup(), catalog);
+    if (!result) throw new Error('no estimate');
+    const byType = new Map(miceJson.map((mouse) => [mouse.type, mouse]));
+    const expected = result.mice.reduce(
+      (sum, mouse) => sum + (mouse.catches / 100) * byType.get(mouse.type)!.points,
+      0,
+    );
+    expect(expected).toBeGreaterThan(0);
+    expect(result.perHunt.points).toBeCloseTo(expected, 6);
+    expect(result.perHunt.gold).toBeGreaterThan(0);
+    expect(result.perHunt.wisdom).toBeGreaterThan(0);
+  });
+
   test('no estimate without a population', () => {
     expect(estimate(setup({ cheese: 'no_such_cheese' }), catalog)).toBeUndefined();
   });

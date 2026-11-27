@@ -115,7 +115,15 @@ export function buildCatchRateData({ attraction, mice, items, groups }) {
     populations,
     mice: mice.map((mouse) => {
       const eff = mouse.effectivenesses ?? {};
-      return [mouse.type, mouse.name, eff.power ?? 0, ...POWER_TYPE_ORDER.map((type) => eff[type] ?? 0)];
+      return [
+        mouse.type,
+        mouse.name,
+        eff.power ?? 0,
+        ...POWER_TYPE_ORDER.map((type) => eff[type] ?? 0),
+        mouse.points ?? 0,
+        mouse.gold ?? 0,
+        mouse.wisdom ?? 0,
+      ];
     }),
     weapons,
     bases,
